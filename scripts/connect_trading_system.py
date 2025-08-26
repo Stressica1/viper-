@@ -57,7 +57,6 @@ class ViperTradingSystemConnector:
 
         requirements = [
             ('docker', 'Docker for containerized services'),
-            ('docker-compose', 'Docker Compose for orchestration'),
             ('node', 'Node.js for MCP servers'),
             ('npm', 'NPM for package management'),
             ('python', 'Python for microservices')
@@ -78,6 +77,20 @@ class ViperTradingSystemConnector:
                 print(f"❌ {description}: Not found")
                 all_good = False
 
+        # Check Docker Compose (modern syntax)
+        try:
+            result = subprocess.run(['docker', 'compose', 'version'],
+                                  capture_output=True, text=True, timeout=10)
+            if result.returncode == 0:
+                version = result.stdout.strip().split('\n')[0]
+                print(f"✅ Docker Compose for orchestration: {version}")
+            else:
+                print(f"❌ Docker Compose for orchestration: Failed to get version")
+                all_good = False
+        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
+            print(f"❌ Docker Compose for orchestration: Not found")
+            all_good = False
+
         return all_good
 
     def start_microservices(self) -> bool:
@@ -86,7 +99,7 @@ class ViperTradingSystemConnector:
 
         try:
             cmd = [
-                'docker-compose',
+                'docker', 'compose',
                 '--env-file', str(self.env_file),
                 '-f', str(self.microservices_path),
                 'up', '-d'
@@ -270,7 +283,7 @@ class ViperTradingSystemConnector:
         # Stop microservices
         try:
             cmd = [
-                'docker-compose',
+                'docker', 'compose',
                 '--env-file', str(self.env_file),
                 '-f', str(self.microservices_path),
                 'down'
