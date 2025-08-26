@@ -112,6 +112,22 @@ This will [IMPACT] and requires [VERIFICATION]."
 
 ---
 
+## 🔌 MCP (Model Context Protocol) Usage Requirements
+
+### Rule #11: Mandatory MCP Integration
+- **ALWAYS** use GitHub MCP for repository operations
+- **NEVER** make git commands without MCP context
+- **ALWAYS** leverage MCP tools for file operations
+- **REQUIRED** MCP usage for every development session
+
+### MCP Tool Usage Standards:
+- **GitHub MCP**: Repository management, branch operations, PR creation
+- **Web Search MCP**: Research patterns, documentation lookup, error resolution
+- **File System MCP**: Directory navigation, file reading, content search
+- **Terminal MCP**: Command execution with proper context awareness
+
+### MCP-First Development Workflow:
+
 ## ✅ Success Metrics
 - **Zero** linter errors after changes
 - **All** changes are atomic and focused

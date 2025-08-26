@@ -400,102 +400,143 @@ class ViperMicroservicesManager:
             print("✅ All VIPER microservices stopped successfully!")
             return True
         else:
-            print(f"⚠️  {successful}/{total} services stopped successfully")
+            failed = [service.replace("stop_", "") for service, success in results if not success]
+            print(f"❌ Failed to stop: {', '.join(failed)}")
             return False
 
+    def print_service_status(self):
+        """Print current status of all services with enhanced formatting"""
+        print("\n📊 VIPER Microservices Status:")
+        print("=" * 80)
+
+        # Group services by status
+        running = []
+        starting = []
+        stopped = []
+
+        for service_name, config in self.services.items():
+            status = self.service_status[service_name]
+            service_info = f"{service_name:<25} Port: {config.port:>4}"
+
+            if status == 'running':
+                running.append(service_info)
+            elif status == 'starting':
+                starting.append(service_info)
+            else:
+                stopped.append(service_info)
+
+        # Print services by status
+        if running:
+            print("🟢 RUNNING SERVICES:")
+            for service in running:
+                print(f"   {service} | Status: running")
+            print()
+
+        if starting:
+            print("🟡 STARTING SERVICES:")
+            for service in starting:
+                print(f"   {service} | Status: starting")
+            print()
+
+        if stopped:
+            print("🔴 STOPPED SERVICES:")
+            for service in stopped:
+                print(f"   {service} | Status: stopped")
+            print()
+
+        # Access points
+        print("🌐 ACCESS POINTS:")
+        print("   📊 Web Dashboard: http://localhost:8000")
+        print("   📈 Grafana:       http://localhost:3001")
+        print("   📊 Prometheus:    http://localhost:9090")
+        print("   🔍 Kibana:        http://localhost:5601")
+        # Service health summary
+        total = len(self.services)
+        running_count = len(running)
+        healthy_percent = (running_count / total) * 100 if total > 0 else 0
+
+        print("\n📈 SYSTEM HEALTH:")
+        print(f"   Overall Health: {healthy_percent:.1f}%")
     def check_service_health(self, service_name: str) -> str:
-        """Check health of a specific service"""
+        """Check health of a specific service with improved error handling"""
         if service_name not in self.services:
             return 'unknown'
 
         try:
-            # Simple health check - try to connect to the service
-            import socket
-            service_config = self.services[service_name]
-            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            sock.settimeout(5)
-            result = sock.connect_ex(('localhost', service_config.port))
-            sock.close()
-            
-            if result == 0:
-                return 'healthy'
-            else:
-                return 'unhealthy'
-        except Exception:
+            # Use asyncio to run the async health check
+            return asyncio.run(self._check_service_health_async(service_name))
+        except Exception as e:
+            print(f"❌ Error checking health for {service_name}: {e}")
             return 'unknown'
 
-    def print_service_status(self):
-        """Print current status of all services"""
-        print("\n📊 VIPER Microservices Status")
-        print("=" * 50)
-        
-        for service_name, service_config in self.services.items():
-            status = self.service_status.get(service_name, 'unknown')
-            status_icon = "🟢" if status == 'running' else "🔴"
-            print(f"{status_icon} {service_name:<25} Port: {service_config.port:>4} | Status: {status:<8}")
-
-    def build_services(self, parallel: bool = True) -> bool:
-        """Build all microservices"""
-        print("🔨 Building VIPER microservices...")
-        
-        if parallel:
-            print("⚡ Using parallel build mode")
-            # Build all services in parallel
-            with self.executor as executor:
-                futures = {
-                    executor.submit(self._build_single_service, service_name): service_name
-                    for service_name in self.services
-                }
-                
-                results = []
-                for future in as_completed(futures):
-                    service_name = futures[future]
-                    try:
-                        success = future.result()
-                        results.append((service_name, success))
-                    except Exception as e:
-                        print(f"❌ Build failed for {service_name}: {e}")
-                        results.append((service_name, False))
-                
-                successful = sum(1 for _, success in results if success)
-                total = len(results)
-                
-                if successful == total:
-                    print("✅ All services built successfully!")
-                    return True
-                else:
-                    print(f"⚠️  {successful}/{total} services built successfully")
-                    return False
-        else:
-            print("🐌 Using sequential build mode")
-            # Build services sequentially
-            for service_name in self.services:
-                if not self._build_single_service(service_name):
-                    return False
-            
-            print("✅ All services built successfully!")
-            return True
-
-    def _build_single_service(self, service_name: str) -> bool:
-        """Build a single service"""
+    def show_logs(self, service_name: Optional[str] = None, follow: bool = False, tail: int = 100):
+        """Show logs for services with enhanced options"""
         try:
-            print(f"🔨 Building {service_name}...")
-            
             cmd = [
                 'docker-compose',
                 '--env-file', str(self.env_file),
                 '-f', str(self.docker_compose_file),
-                'build', service_name
+                'logs'
             ]
-            
-            success, output = self._run_docker_command(cmd, service_name)
-            if success:
-                print(f"✅ {service_name} built successfully")
-                return True
+
+            if tail and not follow:
+                cmd.extend(['--tail', str(tail)])
+
+            if service_name:
+                cmd.append(service_name)
+
+            if follow:
+                cmd.append('-f')
+                print(f"📋 Showing live logs for {service_name or 'all services'} (Ctrl+C to stop)...")
             else:
-                print(f"❌ Failed to build {service_name}: {output}")
-                return False
-                
+                print(f"📋 Showing last {tail} lines of logs for {service_name or 'all services'}...")
+
+            subprocess.run(cmd)
+
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to show logs: {e.stderr}")
+        except KeyboardInterrupt:
+            print("\n📋 Log viewing stopped by user")
+
+    def build_services(self, parallel: bool = True):
+        """Build Docker images for all services with parallel processing"""
+        print("🔨 Building VIPER microservices...")
+
+        if parallel:
+            print("⚡ Building services in parallel for faster completion...")
+
+        try:
+            cmd = [
+                'docker-compose',
+                '--env-file', str(self.env_file),
+                '-f', str(self.docker_compose_file),
+                'build'
+            ]
+
+            if parallel:
+                cmd.append('--parallel')
+
+            result = subprocess.run(cmd, check=True, capture_output=True, text=True)
+            print("✅ All services built successfully!")
+
+            # Show build summary
+            if result.stdout:
+                print("\n📋 Build Summary:")
+                # Extract service names from build output
+                services_built = []
+                for line in result.stdout.split('\n'):
+                    if 'Building' in line and 'done' in line:
+                        service = line.split()[1] if len(line.split()) > 1 else 'unknown'
+                        services_built.append(service)
+
+                if services_built:
+                    print(f"   Services built: {', '.join(services_built)}")
+
+            return True
+
+        except subprocess.CalledProcessError as e:
+            print(f"❌ Failed to build services: {e.stderr}")
+            return False
         except Exception as e:
             print(f"❌ Unexpected error during build: {str(e)}")
             return False

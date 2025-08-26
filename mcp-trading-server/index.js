@@ -382,19 +382,33 @@ class ViperTradingMCPServer {
       risk_per_trade,
       max_positions,
       active: true,
-      startTime: new Date()
+      startTime: new Date(),
+      lastTradeTime: null,
+      totalTrades: 0,
+      profitableTrades: 0
     };
 
-    // Start market data streaming
-    await this.startMarketDataStream(symbol);
+    // Clear any existing intervals
+    if (this.strategyInterval) {
+      clearInterval(this.strategyInterval);
+    }
+    if (this.marketDataInterval) {
+      clearInterval(this.marketDataInterval);
+    }
 
-    // Start strategy execution loop
+    // Start market data polling (fallback if WebSocket fails)
+    this.startMarketDataPolling(symbol);
+
+    // Start strategy execution loop with error handling
     this.startStrategyLoop();
+
+    // Start position monitoring
+    this.startPositionMonitoring();
 
     return {
       content: [{
         type: 'text',
-        text: `✅ Live trading started successfully!\n\n📊 Configuration:\n- Strategy: ${strategy}\n- Symbol: ${symbol}\n- Risk per trade: ${(risk_per_trade * 100).toFixed(2)}%\n- Max positions: ${max_positions}\n- Started at: ${new Date().toISOString()}\n\n🔄 Market data streaming active\n🎯 Strategy execution loop started`
+        text: `✅ Live trading started successfully!\n\n📊 Configuration:\n- Strategy: ${strategy}\n- Symbol: ${symbol}\n- Risk per trade: ${(risk_per_trade * 100).toFixed(2)}%\n- Max positions: ${max_positions}\n- Started at: ${new Date().toISOString()}\n\n🔄 Market data polling active\n🎯 Strategy execution loop started\n📈 Position monitoring active\n\n⚠️  **TEST MODE**: Using market data only (no real trades)`
       }]
     };
   }
@@ -720,7 +734,36 @@ class ViperTradingMCPServer {
     };
   }
 
-  async startMarketDataStream(symbol) {
+  async   startMarketDataPolling(symbol) {
+    console.log(`📊 Starting market data polling for ${symbol}`);
+
+    // Poll market data every 5 seconds (safer than WebSocket for now)
+    this.marketDataInterval = setInterval(async () => {
+      try {
+        const ticker = await this.exchange.fetchTicker(symbol);
+        const ohlcv = await this.exchange.fetchOHLCV(symbol, '1m', undefined, 1);
+
+        this.marketData.set(symbol, {
+          ticker,
+          ohlcv: ohlcv[0], // Latest candle
+          timestamp: new Date(),
+          price: ticker.last,
+          volume: ticker.baseVolume,
+          change: ticker.percentage
+        });
+
+        // Log price updates every minute
+        if (new Date().getSeconds() < 5) {
+          console.log(`📈 ${symbol}: $${ticker.last.toFixed(2)} (${ticker.percentage.toFixed(2)}%)`);
+        }
+
+      } catch (error) {
+        console.error(`❌ Market data polling error for ${symbol}:`, error.message);
+      }
+    }, 5000); // Poll every 5 seconds
+  }
+
+  startMarketDataStream(symbol) {
     // WebSocket connection for real-time data
     const wsUrl = 'wss://stream.bitget.com/ws'; // Bitget WebSocket endpoint
 
@@ -747,11 +790,17 @@ class ViperTradingMCPServer {
 
       ws.on('error', (error) => {
         console.error('WebSocket error:', error);
+        // Fallback to polling if WebSocket fails
+        if (!this.marketDataInterval) {
+          this.startMarketDataPolling(symbol);
+        }
       });
 
       this.wsConnections.set(symbol, ws);
     } catch (error) {
       console.error('Failed to start market data stream:', error);
+      // Fallback to polling
+      this.startMarketDataPolling(symbol);
     }
   }
 
@@ -768,15 +817,62 @@ class ViperTradingMCPServer {
       clearInterval(this.strategyInterval);
     }
 
+    console.log('🎯 Starting strategy execution loop...');
+
     this.strategyInterval = setInterval(async () => {
       if (!this.tradingConfig?.active) return;
 
       try {
-        await this.executeStrategy();
+        // Add timeout wrapper to prevent hanging
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Strategy execution timeout')), 25000);
+        });
+
+        const executionPromise = this.executeStrategy();
+
+        await Promise.race([executionPromise, timeoutPromise]);
+
       } catch (error) {
-        console.error('Strategy execution error:', error);
+        console.error('❌ Strategy execution error:', error.message);
+        // Continue running even if one iteration fails
       }
     }, 30000); // Execute every 30 seconds
+
+    console.log('✅ Strategy loop started - checking every 30 seconds');
+  }
+
+  startPositionMonitoring() {
+    console.log('📈 Starting position monitoring...');
+
+    this.positionInterval = setInterval(async () => {
+      if (this.activePositions.size === 0) return;
+
+      try {
+        console.log(`📊 Monitoring ${this.activePositions.size} active positions...`);
+
+        // Check each position's P&L
+        for (const [orderId, position] of this.activePositions) {
+          try {
+            const currentPrice = await this.getCurrentPrice(position.symbol);
+            const pnl = this.calculatePnL(position, currentPrice);
+
+            console.log(`📊 ${position.symbol} ${position.side}: P&L = ${pnl.toFixed(4)} (${(pnl * 100).toFixed(2)}%)`);
+
+            // Check for stop-loss conditions
+            if (this.shouldStopLoss(position, currentPrice)) {
+              console.log(`🚨 Stop-loss triggered for ${position.symbol} position`);
+              await this.closePosition(orderId);
+            }
+
+          } catch (error) {
+            console.error(`❌ Error monitoring position ${orderId}:`, error.message);
+          }
+        }
+
+      } catch (error) {
+        console.error('❌ Position monitoring error:', error.message);
+      }
+    }, 60000); // Monitor every minute
   }
 
   async executeStrategy() {
@@ -784,34 +880,221 @@ class ViperTradingMCPServer {
 
     const { strategy, symbol } = this.tradingConfig;
 
-    // Get market data and analysis
-    const analysis = await this.analyzePair({ symbol });
+    console.log(`🎯 Executing ${strategy} strategy for ${symbol}...`);
 
-    // Execute strategy logic
-    if (strategy === 'viper') {
-      await this.executeViperStrategy(analysis);
-    } else if (strategy === 'momentum') {
-      await this.executeMomentumStrategy(analysis);
+    try {
+      // Get market data with timeout
+      const marketData = this.marketData.get(symbol);
+      if (!marketData) {
+        console.log(`⏳ Waiting for market data for ${symbol}...`);
+        return;
+      }
+
+      // Get analysis with timeout protection
+      const analysis = await this.analyzePair({ symbol });
+
+      if (analysis.content && analysis.content[0]) {
+        const signal = analysis.content[0].text;
+        console.log(`📊 Analysis: ${signal.split('\n')[0]}`);
+      }
+
+      // Execute strategy logic with timeout protection
+      if (strategy === 'viper') {
+        await this.executeViperStrategy(analysis);
+      } else if (strategy === 'momentum') {
+        await this.executeMomentumStrategy(analysis);
+      }
+
+      // Update last execution time
+      this.tradingConfig.lastExecutionTime = new Date();
+
+    } catch (error) {
+      console.error(`❌ Strategy execution failed:`, error.message);
+      // Don't rethrow - let the loop continue
+    }
+  }
+
+  async getCurrentPrice(symbol) {
+    try {
+      const marketData = this.marketData.get(symbol);
+      if (marketData && marketData.price) {
+        return marketData.price;
+      }
+
+      // Fallback to API call with timeout
+      const timeoutPromise = new Promise((_, reject) => {
+        setTimeout(() => reject(new Error('Price fetch timeout')), 10000);
+      });
+
+      const pricePromise = this.exchange.fetchTicker(symbol).then(ticker => ticker.last);
+
+      return await Promise.race([pricePromise, timeoutPromise]);
+    } catch (error) {
+      console.error(`❌ Failed to get current price for ${symbol}:`, error.message);
+      return null;
+    }
+  }
+
+  calculatePnL(position, currentPrice) {
+    if (!currentPrice || !position.price) return 0;
+
+    const priceDiff = currentPrice - position.price;
+    const pnl = position.side === 'buy'
+      ? (priceDiff / position.price) * position.amount
+      : (-priceDiff / position.price) * position.amount;
+
+    return pnl;
+  }
+
+  shouldStopLoss(position, currentPrice) {
+    if (!currentPrice) return false;
+
+    const pnl = this.calculatePnL(position, currentPrice);
+    const lossPercent = Math.abs(pnl) / position.amount;
+
+    // Stop loss at 5% loss
+    return lossPercent > 0.05;
+  }
+
+  async closePosition(orderId) {
+    try {
+      const position = this.activePositions.get(orderId);
+      if (!position) return;
+
+      console.log(`📈 Closing position for ${position.symbol}...`);
+
+      // Create opposite order to close position
+      const side = position.side === 'buy' ? 'sell' : 'buy';
+
+      const order = await this.executeTrade({
+        symbol: position.symbol,
+        side: side,
+        order_type: 'market',
+        amount: position.amount
+      });
+
+      if (order.content && order.content[0].text.includes('successfully')) {
+        this.activePositions.delete(orderId);
+        console.log(`✅ Position closed for ${position.symbol}`);
+      }
+
+    } catch (error) {
+      console.error(`❌ Failed to close position ${orderId}:`, error.message);
     }
   }
 
   async executeViperStrategy(analysis) {
     // VIPER strategy implementation
-    const signal = analysis.signal;
-    const confidence = analysis.confidence;
+    if (!analysis.content || !analysis.content[0]) {
+      console.log('⚠️  Insufficient analysis data for VIPER strategy');
+      return;
+    }
+
+    const analysisText = analysis.content[0].text;
+    const signal = analysisText.includes('BUY') ? 'BUY' :
+                  analysisText.includes('SELL') ? 'SELL' : 'HOLD';
+
+    // Extract confidence from analysis (simplified)
+    const confidenceMatch = analysisText.match(/Confidence:\s*(\d+)%/);
+    const confidence = confidenceMatch ? parseInt(confidenceMatch[1]) : 50;
+
+    console.log(`🎯 VIPER Strategy: ${signal} signal with ${confidence}% confidence`);
 
     if (signal === 'BUY' && confidence > 80) {
       console.log(`🟢 VIPER BUY SIGNAL - Confidence: ${confidence}%`);
-      // Execute buy order logic here
+      await this.executeViperTrade('buy', confidence);
     } else if (signal === 'SELL' && confidence > 80) {
       console.log(`🔴 VIPER SELL SIGNAL - Confidence: ${confidence}%`);
-      // Execute sell order logic here
+      await this.executeViperTrade('sell', confidence);
+    } else {
+      console.log(`⏸️  VIPER HOLD - Signal strength insufficient`);
+    }
+  }
+
+  async executeViperTrade(side, confidence) {
+    try {
+      const { symbol, risk_per_trade } = this.tradingConfig;
+
+      // Get current price
+      const currentPrice = await this.getCurrentPrice(symbol);
+      if (!currentPrice) {
+        console.log('❌ Cannot execute trade - no price data');
+        return;
+      }
+
+      // Calculate position size based on risk
+      const positionSize = this.calculatePositionSize(currentPrice, risk_per_trade);
+
+      console.log(`📈 Executing ${side.toUpperCase()} order: ${positionSize} at $${currentPrice}`);
+
+      // In test mode, just log the trade
+      console.log(`✅ TEST MODE: Would execute ${side.toUpperCase()} ${positionSize} ${symbol} at $${currentPrice}`);
+      console.log(`💰 Estimated value: $${(positionSize * currentPrice).toFixed(2)}`);
+
+      // Track the simulated trade
+      this.tradingConfig.totalTrades = (this.tradingConfig.totalTrades || 0) + 1;
+
+    } catch (error) {
+      console.error(`❌ VIPER trade execution failed:`, error.message);
     }
   }
 
   async executeMomentumStrategy(analysis) {
     // Momentum strategy implementation
-    console.log(`📈 Momentum strategy analysis: ${analysis.signal}`);
+    console.log(`📈 Momentum strategy analysis: ${analysis.signal || 'HOLD'}`);
+
+    if (!analysis.content || !analysis.content[0]) {
+      console.log('⚠️  Insufficient analysis data for Momentum strategy');
+      return;
+    }
+
+    const analysisText = analysis.content[0].text;
+
+    // Simple momentum logic based on RSI
+    if (analysisText.includes('RSI')) {
+      const rsiMatch = analysisText.match(/RSI:\s*([\d.]+)/);
+      if (rsiMatch) {
+        const rsi = parseFloat(rsiMatch[1]);
+
+        if (rsi < 30) {
+          console.log(`📈 MOMENTUM: RSI ${rsi.toFixed(2)} indicates OVERSOLD - BUY signal`);
+          await this.executeMomentumTrade('buy', rsi);
+        } else if (rsi > 70) {
+          console.log(`📉 MOMENTUM: RSI ${rsi.toFixed(2)} indicates OVERBOUGHT - SELL signal`);
+          await this.executeMomentumTrade('sell', rsi);
+        } else {
+          console.log(`⏸️  MOMENTUM: RSI ${rsi.toFixed(2)} indicates NEUTRAL`);
+        }
+      }
+    }
+  }
+
+  async executeMomentumTrade(side, rsi) {
+    try {
+      const { symbol } = this.tradingConfig;
+      const currentPrice = await this.getCurrentPrice(symbol);
+
+      if (!currentPrice) {
+        console.log('❌ Cannot execute momentum trade - no price data');
+        return;
+      }
+
+      // Smaller position size for momentum strategy
+      const positionSize = this.calculatePositionSize(currentPrice, 0.01); // 1% risk
+
+      console.log(`📈 Momentum ${side.toUpperCase()}: RSI ${rsi.toFixed(2)}`);
+      console.log(`✅ TEST MODE: Would execute ${side.toUpperCase()} ${positionSize} ${symbol} at $${currentPrice}`);
+
+    } catch (error) {
+      console.error(`❌ Momentum trade execution failed:`, error.message);
+    }
+  }
+
+  calculatePositionSize(currentPrice, riskPercent) {
+    // Simplified position size calculation
+    // In real trading, this would consider account balance and leverage
+    const baseAmount = 0.001; // Base amount in BTC for testing
+    return Math.max(baseAmount, baseAmount * (riskPercent / 0.02)); // Scale with risk
   }
 
   async getOpenPositions() {
@@ -899,6 +1182,65 @@ class ViperTradingMCPServer {
           text: `✅ All market scans stopped successfully`
         }]
       };
+    }
+  }
+
+  cleanup() {
+    """Clean up all resources and intervals to prevent hanging"""
+    try {
+      console.log('🧹 Cleaning up resources...');
+
+      // Clear all intervals
+      if (this.strategyInterval) {
+        clearInterval(this.strategyInterval);
+        this.strategyInterval = null;
+      }
+
+      if (this.marketDataInterval) {
+        clearInterval(this.marketDataInterval);
+        this.marketDataInterval = null;
+      }
+
+      if (this.positionInterval) {
+        clearInterval(this.positionInterval);
+        this.positionInterval = null;
+      }
+
+      // Stop market data streams
+      this.stopMarketDataStream();
+
+      // Clear scanning intervals
+      for (const [id, scan] of this.scanningIntervals) {
+        clearInterval(scan.intervalId);
+      }
+      this.scanningIntervals.clear();
+
+      // Shutdown executor
+      if (this.executor) {
+        this.executor.shutdown(wait=true);
+        this.executor = null;
+      }
+
+      // Close aiohttp session
+      if (this._session && !this._session.closed) {
+        try {
+          // Use a simple close without asyncio.run to avoid hanging
+          if (!this._session.closed) {
+            this._session._connector._close();
+          }
+        } catch (error) {
+          console.error('Error closing session:', error.message);
+        }
+        this._session = null;
+      }
+
+      // Reset trading config
+      this.tradingConfig = null;
+
+      console.log('✅ Resources cleaned up successfully');
+
+    } catch (error) {
+      console.error('❌ Error during cleanup:', error.message);
     }
   }
 

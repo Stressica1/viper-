@@ -258,12 +258,14 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
             threshold = risk_data.get('threshold', 0)
 
             if alert_type == 'daily_loss_limit':
-                message = ".2f"                severity = AlertSeverity.CRITICAL
+                message = f"Daily loss limit exceeded: ${current_value:.2f}"
+                severity = AlertSeverity.CRITICAL
             elif alert_type == 'position_limit':
                 message = f"Position limit exceeded: {current_value}/{self.risk_thresholds['max_open_positions']}"
                 severity = AlertSeverity.HIGH
             elif alert_type == 'capital_utilization':
-                message = ".1f"                severity = AlertSeverity.MEDIUM
+                message = f"Capital utilization high: {current_value:.1f}%"
+                severity = AlertSeverity.MEDIUM
             else:
                 message = f"Risk alert: {alert_type} - Current: {current_value}, Threshold: {threshold}"
                 severity = AlertSeverity.MEDIUM

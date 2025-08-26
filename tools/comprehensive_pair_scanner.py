@@ -6,6 +6,7 @@ MCP-style documentation and analysis of all Bitget trading pairs
 
 import ccxt
 import json
+import os
 import time
 from typing import Dict, List, Tuple
 from datetime import datetime
