@@ -7,18 +7,20 @@
 
 ## 🏆 World-Class Algorithmic Trading System
 
-The **VIPER Trading Bot** is a sophisticated, containerized algorithmic trading platform featuring:
+The **VIPER Trading Bot** is a sophisticated, containerized algorithmic trading platform where **ALL COMPONENTS ARE ACTIVE BY DEFAULT**:
 
-- **🧪 Ultra Badass Backtester** - Comprehensive strategy testing with predictive ranges
-- **🔥 Live Trading Engine** - High-performance automated trading with real-time execution
-- **📊 Professional Analytics** - Advanced performance metrics and risk management
-- **🌐 Web Dashboard** - Real-time monitoring and control interface
-- **🏗️ 17-Microservices Architecture** - Scalable, maintainable, production-ready system
-- **🤖 MCP Integration** - Full Model Context Protocol support for AI agents
-- **📡 Real-time Data Streaming** - Live market data with sub-second latency
-- **🚨 Advanced Risk Management** - Multi-layered position control and safety systems
-- **📝 Centralized Logging** - ELK stack with comprehensive audit trails
-- **🔐 Secure Credential Management** - Vault-based secrets with access tokens
+- **🧪 Ultra Badass Backtester** - Comprehensive strategy testing with predictive ranges ✅ **DEFAULT**
+- **🔥 Live Trading Engine** - High-performance automated trading with real-time execution ✅ **DEFAULT**
+- **📊 Professional Analytics** - Advanced performance metrics and risk management ✅ **DEFAULT**
+- **🌐 Web Dashboard** - Real-time monitoring and control interface ✅ **DEFAULT**
+- **🏗️ 17-Microservices Architecture** - Scalable, maintainable, production-ready system ✅ **DEFAULT**
+- **🤖 MCP Integration** - Full Model Context Protocol support for AI agents ✅ **DEFAULT**
+- **📡 Real-time Data Streaming** - Live market data with sub-second latency ✅ **DEFAULT**
+- **🚨 Advanced Risk Management** - Multi-layered position control and safety systems ✅ **DEFAULT**
+- **📝 Centralized Logging** - ELK stack with comprehensive audit trails ✅ **DEFAULT**
+- **🔐 Secure Credential Management** - Vault-based secrets with access tokens ✅ **DEFAULT**
+
+**🎯 ONE COMMAND STARTS EVERYTHING:** `python main.py`
 
 ---
 
@@ -140,12 +142,12 @@ risk = client.assess_risk({
 
 ---
 
-## 🚀 Quick Start (3 Minutes Setup)
+## 🚀 Quick Start (ONE COMMAND - ALL COMPONENTS ACTIVE!)
 
 ### **Prerequisites**
 - **Docker Desktop** (latest version)
 - **Git** (for cloning/updating)
-- **Python 3.11+** (optional, for development)
+- **Python 3.11+** (for main entry point)
 
 ### **1. Clone & Setup**
 ```bash
@@ -154,31 +156,36 @@ git clone https://github.com/your-org/viper-trading-bot.git
 cd viper-trading-bot
 
 # Copy environment template
-cp infrastructure/.env.template .env
-
-# 🚀 Interactive API setup wizard
-python scripts/configure_api.py
+cp .env.example .env
 ```
 
-### **2. Start the Complete System**
+### **2. START EVERYTHING - ONE COMMAND! 🎯**
 ```bash
-# 🚀 Launch all microservices
-python scripts/start_microservices.py start
+# 🚀 Start ALL components by default:
+# ✅ 17 Microservices Architecture
+# ✅ Centralized Logging System (ELK Stack)
+# ✅ MCP AI Integration
+# ✅ Real-time Monitoring & Alerting
+python main.py
 
-# 📊 Check system status
-python scripts/start_microservices.py status
-
-# 🌐 Open web dashboard
-# Visit: http://localhost:8000
+# OR alternatively:
+python run.py
+python viper_start.py
 ```
 
-### **3. Test MCP Integration**
-```bash
-# Test MCP server
-curl http://localhost:8015/health
+**That's it!** 🎉 All the built components are now ACTIVE BY DEFAULT:
+- **Web Dashboard**: http://localhost:8000
+- **Grafana Monitoring**: http://localhost:3000  
+- **Kibana Logs**: http://localhost:5601
+- **All 17 Microservices**: Running automatically
+- **Centralized Logging**: Active and collecting logs
+- **MCP AI Integration**: Ready for AI agents
 
-# Test with Python client
-python src/clients/viper_mcp_client.py
+### **3. Alternative: Manual Component Control**
+```bash
+# If you want manual control (advanced users):
+python scripts/start_microservices.py start    # Microservices only
+python start_mcp_servers.py                    # MCP servers only
 ```
 
 ---
@@ -354,12 +361,20 @@ docker run --rm \
 
 ## 🎉 Ready to Trade?
 
-### **🚀 Start Here**
-1. **Quick Setup**: `python scripts/start_microservices.py start`
+### **🚀 Start Here (ALL COMPONENTS ACTIVE!)**
+1. **ONE COMMAND START**: `python main.py` - Starts everything!
 2. **Open Dashboard**: Visit http://localhost:8000
-3. **Test MCP**: `python src/clients/viper_mcp_client.py`
-4. **Run Backtest**: Test with historical data
-5. **Configure Live**: Add API keys for live trading
+3. **View Monitoring**: Check http://localhost:3000 (Grafana)
+4. **Check Logs**: Browse http://localhost:5601 (Kibana)
+5. **Configure Live Trading**: Add your API keys to `.env`
+
+### **📊 What You Get Automatically**
+- ✅ **17 Microservices** - All running and connected
+- ✅ **Centralized Logging** - ELK stack collecting all logs
+- ✅ **Real-time Monitoring** - Grafana dashboards active
+- ✅ **MCP AI Integration** - Ready for AI agents
+- ✅ **Web Dashboard** - Full control interface
+- ✅ **Risk Management** - All safety systems active
 
 ### **📊 Next Steps**
 - **[Complete Setup Guide](docs/USER_GUIDE.md)** - Detailed configuration
