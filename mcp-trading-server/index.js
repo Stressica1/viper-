@@ -1186,7 +1186,7 @@ class ViperTradingMCPServer {
   }
 
   cleanup() {
-    """Clean up all resources and intervals to prevent hanging"""
+    // Clean up all resources and intervals to prevent hanging
     try {
       console.log('🧹 Cleaning up resources...');
 
