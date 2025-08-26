@@ -207,7 +207,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             
             # Pull base images
             print("Pulling Docker images (this may take a few minutes)...")
-            result = subprocess.run(['docker-compose', '-f', str(docker_compose), 'pull'], 
+            result = subprocess.run(['docker', 'compose', '-f', str(docker_compose), 'pull'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
                 print(f"Warning: Some images may not have been pulled: {result.stderr}")

@@ -59,7 +59,7 @@ git clone https://github.com/Stressica1/viper-.git
 cd viper-
 
 # Run the automated setup script
-python setup.py
+python install_viper.py
 ```
 
 The setup script will:

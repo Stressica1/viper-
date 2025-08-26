@@ -142,15 +142,16 @@ risk = client.assess_risk({
 
 ## 🚀 Quick Start (2 Minutes)
 
-**Get VIPER running in just 2 minutes:**
+**🎯 New User?** See [START_HERE.md](START_HERE.md) for the fastest setup
 
+### Option 1: Automated Installation (Recommended)
 ```bash
 # 1. Clone repository
 git clone https://github.com/Stressica1/viper-.git
 cd viper-
 
 # 2. Automated setup (installs everything)
-python setup.py
+python install_viper.py
 
 # 3. Start system
 python scripts/start_microservices.py start
@@ -158,12 +159,26 @@ python scripts/start_microservices.py start
 # 4. Open dashboard: http://localhost:8000
 ```
 
+### Option 2: Manual Installation
+```bash
+# 1. Clone and setup
+git clone https://github.com/Stressica1/viper-.git && cd viper-
+pip install -r requirements.txt && cp .env.template .env
+
+# 2. Start system
+python scripts/start_microservices.py start
+```
+
 **🔐 Add API Keys for Live Trading:**
 ```bash
 python scripts/configure_api.py
 ```
 
-**📖 Need help?** See [GET_STARTED.md](GET_STARTED.md) or [INSTALLATION.md](INSTALLATION.md)
+**📖 Need help?** 
+- [START_HERE.md](START_HERE.md) - 30-second setup
+- [GET_STARTED.md](GET_STARTED.md) - 2-minute guide  
+- [INSTALLATION.md](INSTALLATION.md) - Complete guide
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Fix issues
 
 ---
 

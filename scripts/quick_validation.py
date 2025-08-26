@@ -228,7 +228,7 @@ Comprehensive system health check and diagnostics
         
         # Check Docker Compose
         try:
-            result = subprocess.run(['docker-compose', '--version'], capture_output=True, text=True)
+            result = subprocess.run(['docker', 'compose', 'version'], capture_output=True, text=True)
             if result.returncode == 0:
                 print(f"✅ Docker Compose - {result.stdout.strip()}")
             else:

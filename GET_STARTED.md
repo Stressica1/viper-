@@ -10,7 +10,7 @@ git clone https://github.com/Stressica1/viper-.git
 cd viper-
 
 # 2. Run automated setup
-python setup.py
+python install_viper.py
 
 # 3. Start trading system  
 python scripts/start_microservices.py start

@@ -86,7 +86,7 @@ python scripts/configure_api.py
 **Solution:**
 ```bash
 # Check logs
-docker-compose -f infrastructure/docker-compose.yml logs
+docker compose -f infrastructure/docker-compose.yml logs
 
 # Reset everything
 python scripts/start_microservices.py stop
@@ -162,7 +162,7 @@ pip install -r requirements.txt
 python scripts/start_microservices.py stop
 
 # Or force stop
-docker-compose -f infrastructure/docker-compose.yml down --remove-orphans
+docker compose -f infrastructure/docker-compose.yml down --remove-orphans
 ```
 
 ### Check positions manually
@@ -191,7 +191,7 @@ docker-compose -f infrastructure/docker-compose.yml down --remove-orphans
 ls logs/
 
 # Docker logs
-docker-compose -f infrastructure/docker-compose.yml logs
+docker compose -f infrastructure/docker-compose.yml logs
 
 # Service-specific logs
 docker logs viper-api-server
