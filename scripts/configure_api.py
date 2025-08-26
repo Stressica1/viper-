@@ -112,7 +112,8 @@ def update_env_file(credentials):
 
     # Create backup
     backup_file = env_file.with_suffix('.backup')
-    env_file.copy(backup_file)
+    import shutil
+    shutil.copy2(str(env_file), str(backup_file))
     print(f"📋 Created backup: {backup_file}")
 
     # Read current content
