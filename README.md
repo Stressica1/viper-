@@ -140,46 +140,45 @@ risk = client.assess_risk({
 
 ---
 
-## 🚀 Quick Start (3 Minutes Setup)
+## 🚀 Quick Start (2 Minutes)
 
-### **Prerequisites**
-- **Docker Desktop** (latest version)
-- **Git** (for cloning/updating)
-- **Python 3.11+** (optional, for development)
+**🎯 New User?** See [START_HERE.md](START_HERE.md) for the fastest setup
 
-### **1. Clone & Setup**
+### Option 1: Automated Installation (Recommended)
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/viper-trading-bot.git
-cd viper-trading-bot
+# 1. Clone repository
+git clone https://github.com/Stressica1/viper-.git
+cd viper-
 
-# Copy environment template
-cp infrastructure/.env.template .env
+# 2. Automated setup (installs everything)
+python install_viper.py
 
-# 🚀 Interactive API setup wizard
+# 3. Start system
+python scripts/start_microservices.py start
+
+# 4. Open dashboard: http://localhost:8000
+```
+
+### Option 2: Manual Installation
+```bash
+# 1. Clone and setup
+git clone https://github.com/Stressica1/viper-.git && cd viper-
+pip install -r requirements.txt && cp .env.template .env
+
+# 2. Start system
+python scripts/start_microservices.py start
+```
+
+**🔐 Add API Keys for Live Trading:**
+```bash
 python scripts/configure_api.py
 ```
 
-### **2. Start the Complete System**
-```bash
-# 🚀 Launch all microservices
-python scripts/start_microservices.py start
-
-# 📊 Check system status
-python scripts/start_microservices.py status
-
-# 🌐 Open web dashboard
-# Visit: http://localhost:8000
-```
-
-### **3. Test MCP Integration**
-```bash
-# Test MCP server
-curl http://localhost:8015/health
-
-# Test with Python client
-python src/clients/viper_mcp_client.py
-```
+**📖 Need help?** 
+- [START_HERE.md](START_HERE.md) - 30-second setup
+- [GET_STARTED.md](GET_STARTED.md) - 2-minute guide  
+- [INSTALLATION.md](INSTALLATION.md) - Complete guide
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Fix issues
 
 ---
 

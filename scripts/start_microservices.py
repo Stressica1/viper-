@@ -95,7 +95,7 @@ class ViperMicroservicesManager:
 
         requirements = [
             ('docker', ['docker', '--version']),
-            ('docker-compose', ['docker-compose', '--version']),
+            ('docker-compose', ['docker', 'compose', 'version']),
         ]
 
         for name, cmd in requirements:
@@ -232,7 +232,7 @@ class ViperMicroservicesManager:
 
         print(f"🚀 Starting {service_name}...")
         cmd = [
-            'docker-compose',
+            'docker', 'compose',
             '--env-file', str(self.env_file),
             '-f', str(self.docker_compose_file),
             'up', '-d', service_name
@@ -255,7 +255,7 @@ class ViperMicroservicesManager:
 
         print(f"🛑 Stopping {service_name}...")
         cmd = [
-            'docker-compose',
+            'docker', 'compose',
             '--env-file', str(self.env_file),
             '-f', str(self.docker_compose_file),
             'stop', service_name
@@ -482,7 +482,7 @@ class ViperMicroservicesManager:
             print(f"🔨 Building {service_name}...")
             
             cmd = [
-                'docker-compose',
+                'docker', 'compose',
                 '--env-file', str(self.env_file),
                 '-f', str(self.docker_compose_file),
                 'build', service_name
