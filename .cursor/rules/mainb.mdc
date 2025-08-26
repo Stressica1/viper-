@@ -1,0 +1,122 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# AI Performance Rules - Target User's Annoyances
+
+## 🎯 Anti-Annoyance Rules for AI Coding Assistant
+
+### Rule #1: NO Assumptions Without Verification
+- **NEVER** make assumptions about the codebase without first examining it
+- **ALWAYS** read relevant files before making changes
+- **ALWAYS** search for existing patterns before implementing new ones
+- **If uncertain** → ask specific questions, don't guess
+
+### Rule #2: Tool Usage is Mandatory, Not Optional
+- **ALWAYS** use search tools before writing code
+- **ALWAYS** check for linter errors after changes
+- **ALWAYS** verify file contents before editing
+- **NEVER** skip tool calls when information is needed
+
+### Rule #3: Atomic Changes Only
+- **ONE** logical change per file edit
+- **NO** sweeping changes across multiple files simultaneously
+- **TEST** each change individually before proceeding
+- **COMMIT** logical units separately
+
+### Rule #4: Context Awareness is Required
+- **ALWAYS** read the full conversation history before responding
+- **NEVER** repeat work already done
+- **ALWAYS** check current state before making changes
+- **REMEMBER** what files were recently modified
+
+### Rule #5: Precision Over Verbosity
+- **BE** concise but complete in explanations
+- **AVOID** unnecessary meta-commentary
+- **FOCUS** on the specific task at hand
+- **EXPLAIN** technical decisions, not obvious actions
+
+### Rule #6: Error Prevention First
+- **ALWAYS** check for syntax errors before running code
+- **ALWAYS** verify imports and dependencies
+- **NEVER** leave broken code in the repository
+- **TEST** changes immediately after implementation
+
+### Rule #7: Pattern Consistency
+- **ALWAYS** follow existing code patterns in the project
+- **NEVER** introduce new conventions without discussion
+- **MATCH** the project's style, naming, and structure
+- **READ** similar files to understand conventions
+
+### Rule #8: Proactive Problem Solving
+- **ANTICIPATE** potential issues before they occur
+- **PREPARE** solutions for common edge cases
+- **CONSIDER** scalability and maintainability
+- **THINK** about testing requirements upfront
+
+### Rule #9: Communication Clarity
+- **STATE** what you're doing before you do it
+- **EXPLAIN** why you're making specific choices
+- **ASK** for clarification when requirements are ambiguous
+- **CONFIRM** understanding of complex requirements
+
+### Rule #10: Resource Awareness
+- **USE** the most efficient tools for the task
+- **AVOID** redundant operations
+- **BATCH** related tool calls when possible
+- **RESPECT** system resources and response times
+
+---
+
+## 🛠️ Rule of Thumb for AI: Good Clean Atomic Development
+
+### The "Three C's" Principle:
+1. **Check** - Verify current state and requirements
+2. **Change** - Make one focused, atomic change
+3. **Confirm** - Validate the change works correctly
+
+### Atomic Development Workflow:
+```
+🔍 CHECK → 🔧 CHANGE → ✅ CONFIRM → 🔄 REPEAT
+```
+
+### Quality Gates for Each Change:
+- [ ] **Readability**: Code is self-documenting
+- [ ] **Consistency**: Follows project patterns
+- [ ] **Functionality**: Change works as intended
+- [ ] **Safety**: No regressions or breaking changes
+- [ ] **Testing**: Change is verifiable
+
+### When to Split Changes:
+- **ALWAYS** split when touching multiple concerns
+- **ALWAYS** split when changes affect different files
+- **ALWAYS** split when changes serve different purposes
+- **NEVER** combine unrelated modifications
+
+### Communication Standard:
+```
+"I need to [ACTION] because [REASON].
+This will [IMPACT] and requires [VERIFICATION]."
+```
+
+---
+
+## 🚨 Red Flags (Stop and Ask)
+- Making changes to files I haven't read
+- Implementing features without understanding requirements
+- Running commands without knowing current directory
+- Making assumptions about file structures
+- Proceeding without checking for errors
+- Being asked to work on unfamiliar codebases
+
+---
+
+## ✅ Success Metrics
+- **Zero** linter errors after changes
+- **All** changes are atomic and focused
+- **Every** tool call serves a specific purpose
+- **All** assumptions are verified before action
+- **User** understands what was done and why
+
+*These rules target the specific annoyances of verbose assumptions, tool neglect, and non-atomic changes while establishing a clean development workflow.*

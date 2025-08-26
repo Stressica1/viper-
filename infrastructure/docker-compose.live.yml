@@ -1,0 +1,97 @@
+# 🚀 VIPER Trading Bot - Live Trading Configuration
+# Production-ready live trading setup with essential services
+
+services:
+  # 💾 Redis Cache - High-Performance Caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - viper-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+  # 🌐 API Server - FastAPI Web Dashboard
+  api-server:
+    build:
+      context: ./services/api-server
+      dockerfile: Dockerfile
+    ports:
+      - "${API_SERVER_PORT:-8000}:8000"
+    environment:
+      - DOCKER_MODE=true
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      - redis
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # 🔥 Live Trading Engine - PRODUCTION TRADING
+  live-trading-engine:
+    build:
+      context: ./services/live-trading-engine
+      dockerfile: Dockerfile
+    ports:
+      - "${LIVE_TRADING_ENGINE_PORT:-8007}:8000"
+    environment:
+      - BITGET_API_KEY=${BITGET_API_KEY}
+      - BITGET_API_SECRET=${BITGET_API_SECRET}
+      - BITGET_API_PASSWORD=${BITGET_API_PASSWORD}
+      - MAX_LEVERAGE=${MAX_LEVERAGE:-50}
+      - RISK_PER_TRADE=${RISK_PER_TRADE:-0.02}
+      - MAX_POSITIONS=${MAX_POSITIONS:-15}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
+      - redis
+    networks:
+      - viper-network
+    restart: unless-stopped
+
+  # 📊 Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - viper-network
+    restart: unless-stopped
+
+  # 📊 Grafana - Dashboard & Visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=viper_admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - viper-network
+    restart: unless-stopped
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  viper-network:
+    driver: bridge

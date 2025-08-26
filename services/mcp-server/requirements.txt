@@ -1,0 +1,30 @@
+# 🚀 VIPER MCP Server - Requirements
+# Model Context Protocol server dependencies
+
+# Core web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# HTTP client for service communication
+httpx==0.25.2
+
+# Data processing
+redis==5.0.1
+
+# Utilities
+python-multipart==0.0.6
+
+# Logging and monitoring
+structlog==23.2.0
+
+# Security and encryption
+cryptography==41.0.7
+
+# Date and time handling
+python-dateutil==2.8.2
+
+# JSON Web Tokens (for authentication)
+PyJWT==2.8.0
+
+# Environment variable management
+python-dotenv==1.0.0

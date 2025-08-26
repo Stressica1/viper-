@@ -1,0 +1,36 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'viper-api-server'
+    static_configs:
+      - targets: ['api-server:8000']
+
+  - job_name: 'viper-ultra-backtester'
+    static_configs:
+      - targets: ['ultra-backtester:8000']
+
+  - job_name: 'viper-risk-manager'
+    static_configs:
+      - targets: ['risk-manager:8000']
+
+  - job_name: 'viper-data-manager'
+    static_configs:
+      - targets: ['data-manager:8000']
+
+  - job_name: 'viper-exchange-connector'
+    static_configs:
+      - targets: ['exchange-connector:8000']
+
+  - job_name: 'viper-monitoring-service'
+    static_configs:
+      - targets: ['monitoring-service:8000']
