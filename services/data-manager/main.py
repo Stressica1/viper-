@@ -48,14 +48,67 @@ class DataManager:
         self.exchange = None
         self.is_running = False
 
-        # Configuration
+        # Configuration - Intelligent Cache TTL
         self.redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
-        self.cache_ttl = int(os.getenv('CACHE_TTL_SECONDS', '300'))
-        self.update_interval = int(os.getenv('UPDATE_INTERVAL_SECONDS', '60'))
 
-        # Supported symbols and timeframes
-        self.symbols = ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'BNB/USDT:USDT']
+        # Intelligent TTL configuration based on data volatility
+        self.cache_ttl = {
+            'ticker': int(os.getenv('CACHE_TTL_TICKER_SECONDS', '30')),
+            'orderbook': int(os.getenv('CACHE_TTL_ORDERBOOK_SECONDS', '10')),
+            'trades': int(os.getenv('CACHE_TTL_TRADES_SECONDS', '60')),
+            'ohlcv_1m': int(os.getenv('CACHE_TTL_OHLCV_1M_SECONDS', '300')),
+            'ohlcv_5m': int(os.getenv('CACHE_TTL_OHLCV_5M_SECONDS', '900')),
+            'ohlcv_1h': int(os.getenv('CACHE_TTL_OHLCV_1H_SECONDS', '3600')),
+            'ohlcv_4h': int(os.getenv('CACHE_TTL_OHLCV_4H_SECONDS', '14400')),
+            'market_info': int(os.getenv('CACHE_TTL_MARKET_INFO_SECONDS', '86400')),
+            'analytics': int(os.getenv('CACHE_TTL_ANALYTICS_SECONDS', '1800'))
+        }
+
+        # Cache management settings
+        self.update_interval = int(os.getenv('UPDATE_INTERVAL_SECONDS', '30'))
+        self.cache_cleanup_interval = int(os.getenv('CACHE_CLEANUP_INTERVAL_SECONDS', '300'))
+        self.max_cache_memory_percent = int(os.getenv('MAX_CACHE_MEMORY_PERCENT', '80'))
+
+        # Fallback TTL for backward compatibility
+        self.default_cache_ttl = int(os.getenv('CACHE_TTL_SECONDS', '300'))
+
+        # Fetch ALL supported symbols and timeframes
+        self.symbols = self.fetch_all_trading_pairs()
         self.timeframes = ['1m', '5m', '15m', '1h', '4h', '1d']
+
+    def fetch_all_trading_pairs(self):
+        """Fetch ALL available trading pairs from Bitget"""
+        try:
+            spot_instruments_url = f"{self.redis_url.replace('redis://', 'http://').replace(':6379', '')}/api/v2/spot/public/symbols"
+            # Actually use the exchange API directly
+            import ccxt
+            exchange = ccxt.bitget({
+                'options': {
+                    'defaultType': 'swap',
+                    'adjustForTimeDifference': True,
+                },
+            })
+
+            # Get all markets
+            markets = exchange.load_markets()
+            usdt_pairs = []
+
+            for symbol, market in markets.items():
+                if market['quote'] == 'USDT' and market['active']:
+                    usdt_pairs.append(symbol)
+
+            logger.info(f"📊 Data Manager monitoring {len(usdt_pairs)} USDT trading pairs")
+
+            # Limit to top 200 pairs for performance (can be adjusted)
+            if len(usdt_pairs) > 200:
+                logger.info(f"📊 Limiting to top 200 pairs (found {len(usdt_pairs)} total)")
+                usdt_pairs = usdt_pairs[:200]
+
+            return sorted(usdt_pairs)
+
+        except Exception as e:
+            logger.warning(f"❌ Error fetching trading pairs: {e}, using fallback")
+            return ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'BNB/USDT:USDT']  # Fallback
 
         logger.info("🏗️ Initializing Data Manager...")
 
@@ -138,13 +191,18 @@ class DataManager:
             return None
 
     def update_ticker_cache(self, symbol: str) -> bool:
-        """Update ticker data in cache"""
+        """Update ticker data in cache with intelligent TTL"""
         try:
             data = self.fetch_ticker_data(symbol)
             if data:
                 cache_key = self.cache_key(symbol, data_type="ticker")
-                self.redis_client.setex(cache_key, self.cache_ttl, json.dumps(data))
-                logger.debug(f"📊 Updated ticker cache for {symbol}")
+                ttl = self.cache_ttl.get('ticker', self.default_cache_ttl)
+                self.redis_client.setex(cache_key, ttl, json.dumps(data))
+
+                # Cache metadata for monitoring
+                self._update_cache_metadata(cache_key, 'ticker', ttl)
+
+                logger.debug(f"📊 Updated ticker cache for {symbol} (TTL: {ttl}s)")
                 return True
             return False
         except Exception as e:
@@ -152,13 +210,22 @@ class DataManager:
             return False
 
     def update_ohlcv_cache(self, symbol: str, timeframe: str) -> bool:
-        """Update OHLCV data in cache"""
+        """Update OHLCV data in cache with intelligent TTL"""
         try:
             data = self.fetch_ohlcv_data(symbol, timeframe)
             if data:
                 cache_key = self.cache_key(symbol, timeframe, "ohlcv")
-                self.redis_client.setex(cache_key, self.cache_ttl, json.dumps(data))
-                logger.debug(f"📊 Updated OHLCV cache for {symbol} {timeframe}")
+
+                # Select appropriate TTL based on timeframe
+                ttl_key = f'ohlcv_{timeframe}'
+                ttl = self.cache_ttl.get(ttl_key, self.default_cache_ttl)
+
+                self.redis_client.setex(cache_key, ttl, json.dumps(data))
+
+                # Cache metadata for monitoring
+                self._update_cache_metadata(cache_key, f'ohlcv_{timeframe}', ttl)
+
+                logger.debug(f"📊 Updated OHLCV cache for {symbol} {timeframe} (TTL: {ttl}s)")
                 return True
             return False
         except Exception as e:
@@ -166,24 +233,146 @@ class DataManager:
             return False
 
     def get_cached_data(self, cache_key: str) -> Optional[Any]:
-        """Get data from cache"""
+        """Get data from cache with hit/miss tracking"""
         try:
             data = self.redis_client.get(cache_key)
             if data:
+                # Track cache hit
+                self._increment_cache_metric('hits')
                 return json.loads(data)
-            return None
+            else:
+                # Track cache miss
+                self._increment_cache_metric('misses')
+                return None
         except Exception as e:
             logger.error(f"❌ Failed to get cached data for key {cache_key}: {e}")
+            self._increment_cache_metric('errors')
             return None
 
+    def _update_cache_metadata(self, cache_key: str, data_type: str, ttl: int):
+        """Update cache metadata for monitoring"""
+        try:
+            metadata_key = f"viper:metadata:{cache_key}"
+            metadata = {
+                'data_type': data_type,
+                'ttl': ttl,
+                'created_at': datetime.now().isoformat(),
+                'size_bytes': len(self.redis_client.get(cache_key) or ''),
+                'access_count': 0,
+                'last_accessed': datetime.now().isoformat()
+            }
+            self.redis_client.setex(metadata_key, ttl, json.dumps(metadata))
+        except Exception as e:
+            logger.debug(f"Failed to update cache metadata for {cache_key}: {e}")
+
+    def _increment_cache_metric(self, metric_type: str):
+        """Increment cache performance metrics"""
+        try:
+            metric_key = f"viper:metrics:cache:{metric_type}"
+            self.redis_client.incr(metric_key)
+            # Set expiry on metrics to prevent unbounded growth
+            self.redis_client.expire(metric_key, 86400)  # 24 hours
+        except Exception as e:
+            logger.debug(f"Failed to increment cache metric {metric_type}: {e}")
+
+    def get_cache_metrics(self) -> Dict[str, Any]:
+        """Get cache performance metrics"""
+        try:
+            metrics = {}
+            metric_types = ['hits', 'misses', 'errors']
+
+            for metric_type in metric_types:
+                key = f"viper:metrics:cache:{metric_type}"
+                value = self.redis_client.get(key)
+                metrics[metric_type] = int(value) if value else 0
+
+            # Calculate hit rate
+            total_requests = metrics['hits'] + metrics['misses']
+            if total_requests > 0:
+                metrics['hit_rate'] = round((metrics['hits'] / total_requests) * 100, 2)
+            else:
+                metrics['hit_rate'] = 0.0
+
+            # Memory usage
+            info = self.redis_client.info('memory')
+            metrics['memory_used_bytes'] = info.get('used_memory', 0)
+            metrics['memory_peak_bytes'] = info.get('used_memory_peak', 0)
+
+            return metrics
+        except Exception as e:
+            logger.error(f"Failed to get cache metrics: {e}")
+            return {}
+
+    def warmup_cache(self):
+        """Warm up cache with frequently accessed data"""
+        logger.info("🔥 Warming up cache with frequently accessed data...")
+
+        try:
+            # Warm up ticker data for all symbols
+            for symbol in self.symbols:
+                self.update_ticker_cache(symbol)
+                logger.debug(f"🔥 Warmed up ticker cache for {symbol}")
+
+            # Warm up recent OHLCV data (1m and 5m timeframes)
+            for symbol in self.symbols:
+                for timeframe in ['1m', '5m']:
+                    self.update_ohlcv_cache(symbol, timeframe)
+                    logger.debug(f"🔥 Warmed up OHLCV cache for {symbol} {timeframe}")
+
+            logger.info("✅ Cache warmup completed successfully")
+
+        except Exception as e:
+            logger.error(f"❌ Cache warmup failed: {e}")
+
+    def cleanup_expired_cache(self):
+        """Clean up expired cache entries and optimize memory"""
+        try:
+            logger.debug("🧹 Starting cache cleanup...")
+
+            # Redis automatically expires keys, but we can optimize by removing old metadata
+            metadata_keys = self.redis_client.keys("viper:metadata:*")
+            cleaned_count = 0
+
+            for key in metadata_keys:
+                # Check if the main key still exists
+                main_key = key.replace("viper:metadata:", "")
+                if not self.redis_client.exists(main_key):
+                    self.redis_client.delete(key)
+                    cleaned_count += 1
+
+            if cleaned_count > 0:
+                logger.debug(f"🧹 Cleaned up {cleaned_count} expired metadata entries")
+
+            # Log memory usage
+            info = self.redis_client.info('memory')
+            used_memory = info.get('used_memory_human', 'unknown')
+            logger.debug(f"📊 Redis memory usage: {used_memory}")
+
+        except Exception as e:
+            logger.error(f"❌ Cache cleanup failed: {e}")
+
     def start_data_collection(self):
-        """Start the data collection loop"""
-        logger.info("🚀 Starting data collection loop...")
+        """Start the data collection loop with cache optimization"""
+        logger.info("🚀 Starting optimized data collection loop...")
         self.is_running = True
+
+        # Initial cache warmup
+        self.warmup_cache()
 
         # Schedule data updates
         schedule.every(self.update_interval).seconds.do(self.update_all_data)
         schedule.every(30).seconds.do(self.update_all_tickers)
+
+        # Schedule cache maintenance
+        schedule.every(self.cache_cleanup_interval).seconds.do(self.cleanup_expired_cache)
+
+        # Schedule periodic cache warmup (every hour)
+        schedule.every(3600).seconds.do(self.warmup_cache)
+
+        logger.info("📊 Cache optimization enabled:")
+        logger.info(f"   • Cache warmup: Every 1 hour")
+        logger.info(f"   • Cache cleanup: Every {self.cache_cleanup_interval}s")
+        logger.info(f"   • Update interval: {self.update_interval}s")
 
         while self.is_running:
             schedule.run_pending()
@@ -258,6 +447,65 @@ async def health_check():
                 "status": "unhealthy",
                 "service": "data-manager",
                 "error": str(e)
+            }
+        )
+
+@app.get("/api/cache/metrics")
+async def get_cache_metrics():
+    """Get cache performance metrics"""
+    try:
+        metrics = data_manager.get_cache_metrics()
+        return {
+            "service": "data-manager",
+            "cache_performance": metrics,
+            "cache_configuration": {
+                "update_interval_seconds": data_manager.update_interval,
+                "cache_cleanup_interval_seconds": data_manager.cache_cleanup_interval,
+                "max_memory_percent": data_manager.max_cache_memory_percent,
+                "ttl_config": data_manager.cache_ttl
+            }
+        }
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": f"Failed to get cache metrics: {str(e)}"
+            }
+        )
+
+@app.post("/api/cache/warmup")
+async def warmup_cache():
+    """Manually trigger cache warmup"""
+    try:
+        data_manager.warmup_cache()
+        return {
+            "status": "success",
+            "message": "Cache warmup initiated",
+            "service": "data-manager"
+        }
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": f"Cache warmup failed: {str(e)}"
+            }
+        )
+
+@app.post("/api/cache/cleanup")
+async def cleanup_cache():
+    """Manually trigger cache cleanup"""
+    try:
+        data_manager.cleanup_expired_cache()
+        return {
+            "status": "success",
+            "message": "Cache cleanup completed",
+            "service": "data-manager"
+        }
+    except Exception as e:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "error": f"Cache cleanup failed: {str(e)}"
             }
         )
 

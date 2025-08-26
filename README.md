@@ -20,6 +20,8 @@ The **VIPER Trading Bot** is a sophisticated, containerized algorithmic trading 
 - **📝 Centralized Logging** - ELK stack with comprehensive audit trails
 - **🔐 Secure Credential Management** - Vault-based secrets with access tokens
 
+**🎯 ONE COMMAND STARTS EVERYTHING:** `python main.py`
+
 ---
 
 ## 📋 Repository Structure
@@ -140,45 +142,57 @@ risk = client.assess_risk({
 
 ---
 
-## 🚀 Quick Start (2 Minutes)
+## 🚀 Quick Start (3 Minutes Setup)
 
-**🎯 New User?** See [START_HERE.md](START_HERE.md) for the fastest setup
+### **Prerequisites**
+- **Docker Desktop** (latest version)
+- **Git** (for cloning/updating)
+- **Python 3.11+** (optional, for development)
 
-### Option 1: Automated Installation (Recommended)
+### **1. Clone & Setup**
 ```bash
-# 1. Clone repository
+# Clone the repository
 git clone https://github.com/Stressica1/viper-.git
 cd viper-
 
-# 2. Automated setup (installs everything)
-python install_viper.py
+# Copy environment template
+cp .env.example .env
 
-# 3. Start system
-python scripts/start_microservices.py start
-
-# 4. Open dashboard: http://localhost:8000
-```
-
-### Option 2: Manual Installation
-```bash
-# 1. Clone and setup
-git clone https://github.com/Stressica1/viper-.git && cd viper-
-pip install -r requirements.txt && cp .env.template .env
-
-# 2. Start system
-python scripts/start_microservices.py start
-```
-
-**🔐 Add API Keys for Live Trading:**
-```bash
+# 🚀 Interactive API setup wizard
 python scripts/configure_api.py
 ```
 
-**📖 Need help?** 
-- [START_HERE.md](START_HERE.md) - 30-second setup
-- [GET_STARTED.md](GET_STARTED.md) - 2-minute guide  
-- [INSTALLATION.md](INSTALLATION.md) - Complete guide
-- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) - Fix issues
+### **2. Start the Complete System**
+
+#### **🎯 OPTION A: ONE COMMAND STARTS EVERYTHING (Recommended)**
+```bash
+# 🚀 Launch ALL components automatically with validation and monitoring
+python main.py
+
+# That's it! Everything starts automatically:
+# ✅ 17 Microservices | ✅ Centralized Logging | ✅ MCP AI Integration
+# ✅ Web Dashboard | ✅ Real-time Monitoring | ✅ All Trading Engines
+```
+
+#### **🎛️ OPTION B: Manual Microservices Control**
+```bash
+# Start all microservices
+python scripts/start_microservices.py start
+
+# Check system status
+python scripts/start_microservices.py status
+
+# 🌐 Open web dashboard at: http://localhost:8000
+```
+
+### **3. Test MCP Integration**
+```bash
+# Test MCP server
+curl http://localhost:8015/health
+
+# Test with Python client
+python src/clients/viper_mcp_client.py
+```
 
 ---
 
