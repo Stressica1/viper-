@@ -396,3 +396,4 @@ The **VIPER (Volume, Price, External, Range)** scoring system evaluates trade op
 ---
 
 **⚠️ Trading Risk Disclaimer**: Trading involves substantial risk. Never trade with money you can't afford to lose. This software is provided as-is for educational and research purposes. Always test thoroughly before live trading.
+
