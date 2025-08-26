@@ -1,247 +1,490 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Quick Validation Script
-Tests core functionality without requiring full Docker deployment
+🚀 VIPER Trading Bot - System Validation Script
+
+This script validates that your VIPER installation is working correctly.
+Run this after installation or if you're experiencing issues.
+
+Usage: python scripts/quick_validation.py
 """
 
 import os
 import sys
-import json
 import subprocess
+import json
+import urllib.request
+import socket
 from pathlib import Path
+from typing import Dict, List, Tuple, Optional
+from datetime import datetime
 
-def print_header():
-    """Print validation header"""
-    print("""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🧪 VIPER TRADING SYSTEM - QUICK VALIDATION                                   ║
-║ Testing core components without full deployment                               ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+class Colors:
+    """ANSI color codes for terminal output"""
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+
+class VIPERValidator:
+    """VIPER system validation and diagnostics"""
+    
+    def __init__(self):
+        self.root_dir = Path(__file__).parent.parent
+        self.issues = []
+        self.warnings = []
+        self.info = []
+        
+    def print_header(self):
+        """Print validation header"""
+        print(f"""
+{Colors.HEADER}{Colors.BOLD}
+🔍 VIPER System Validation
+==========================
+Comprehensive system health check and diagnostics
+{Colors.ENDC}
+
+{Colors.OKBLUE}Validating your VIPER Trading Bot installation...{Colors.ENDC}
 """)
-
-def test_mcp_trading_server():
-    """Test MCP Trading Server syntax and basic functionality"""
-    print("🚀 Testing MCP Trading Server...")
     
-    mcp_path = Path(__file__).parent.parent / 'mcp-trading-server'
-    
-    try:
-        # Test syntax
-        result = subprocess.run(['node', '-c', 'index.js'], 
-                              cwd=mcp_path, capture_output=True, text=True)
-        if result.returncode == 0:
-            print("  ✅ MCP Trading Server syntax: PASS")
-        else:
-            print(f"  ❌ MCP Trading Server syntax: FAIL - {result.stderr}")
-            return False
-            
-        # Check if dependencies are installed
-        package_json = mcp_path / 'package.json'
-        node_modules = mcp_path / 'node_modules'
+    def check_python_environment(self) -> bool:
+        """Check Python version and virtual environment"""
+        print(f"{Colors.BOLD}🐍 Python Environment{Colors.ENDC}")
         
-        if package_json.exists() and node_modules.exists():
-            print("  ✅ MCP Trading Server dependencies: PASS")
+        # Check Python version
+        version = sys.version_info
+        if version >= (3, 11):
+            print(f"✅ Python {version.major}.{version.minor}.{version.micro} - OK")
         else:
-            print("  ❌ MCP Trading Server dependencies: FAIL")
+            print(f"❌ Python {version.major}.{version.minor}.{version.micro} - Need 3.11+")
+            self.issues.append("Python version too old")
             return False
-            
+        
+        # Check if in virtual environment
+        in_venv = hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix)
+        if in_venv:
+            print("✅ Virtual environment detected")
+            self.info.append("Running in virtual environment")
+        else:
+            print("⚠️ Not in virtual environment (recommended)")
+            self.warnings.append("Consider using virtual environment")
+        
         return True
+    
+    def check_dependencies(self) -> bool:
+        """Check if all required dependencies are installed"""
+        print(f"\n{Colors.BOLD}📦 Python Dependencies{Colors.ENDC}")
         
-    except Exception as e:
-        print(f"  ❌ MCP Trading Server test failed: {e}")
-        return False
-
-def test_python_services():
-    """Test Python service imports and basic functionality"""
-    print("🐍 Testing Python Microservices...")
-    
-    services_to_test = [
-        'api-server',
-        'signal-processor', 
-        'risk-manager',
-        'exchange-connector'
-    ]
-    
-    services_path = Path(__file__).parent.parent / 'services'
-    passed = 0
-    
-    for service_name in services_to_test:
-        service_path = services_path / service_name / 'main.py'
-        
-        if service_path.exists():
-            try:
-                # Test basic syntax
-                result = subprocess.run(['python', '-m', 'py_compile', str(service_path)], 
-                                      capture_output=True, text=True)
-                if result.returncode == 0:
-                    print(f"  ✅ {service_name}: Syntax PASS")
-                    passed += 1
-                else:
-                    print(f"  ❌ {service_name}: Syntax FAIL - {result.stderr}")
-            except Exception as e:
-                print(f"  ❌ {service_name}: Test failed - {e}")
-        else:
-            print(f"  ⚠️ {service_name}: main.py not found")
-    
-    print(f"  📊 Python Services: {passed}/{len(services_to_test)} passed")
-    return passed >= len(services_to_test) // 2  # At least 50% should pass
-
-def test_scoring_algorithm():
-    """Test the VIPER scoring algorithm"""
-    print("📊 Testing VIPER Scoring Algorithm...")
-    
-    try:
-        # Import and test the signal processor VIPER score function
-        sys.path.append(str(Path(__file__).parent.parent / 'services' / 'signal-processor'))
-        
-        # Create a mock test of the scoring functionality
-        mock_market_data = {
-            'ticker': {
-                'quoteVolume': 1000000,
-                'percentage': 5.0,
-                'high': 50000,
-                'low': 45000,
-                'last': 48000
-            },
-            'orderbook': {
-                'asks': [[48100]],
-                'bids': [[47900]]
-            }
+        required_packages = {
+            'fastapi': 'Web framework',
+            'uvicorn': 'ASGI server',
+            'redis': 'Redis client',
+            'ccxt': 'Exchange connector',
+            'pandas': 'Data processing',
+            'numpy': 'Numerical computing',
+            'requests': 'HTTP client',
+            'aiohttp': 'Async HTTP client',
+            'dotenv': 'Environment loader'
         }
         
-        # This would test the actual VIPER scoring - for now just validate structure
-        required_fields = ['ticker', 'orderbook']
-        if all(field in mock_market_data for field in required_fields):
-            print("  ✅ VIPER Score data structure: PASS")
-            print("  ✅ VIPER Score algorithm ready: PASS")
-            return True
-        else:
-            print("  ❌ VIPER Score data structure: FAIL")
-            return False
-            
-    except Exception as e:
-        print(f"  ❌ VIPER Score test failed: {e}")
-        return False
-
-def test_trading_workflow():
-    """Test the trading workflow components"""
-    print("💰 Testing Trading Workflow...")
-    
-    workflow_tests = [
-        ("Market Data Structure", test_market_data_structure),
-        ("Signal Generation", test_signal_generation),
-        ("Risk Management", test_risk_management),
-        ("Trade Execution Logic", test_trade_execution)
-    ]
-    
-    passed = 0
-    for test_name, test_func in workflow_tests:
-        try:
-            if test_func():
-                print(f"  ✅ {test_name}: PASS")
-                passed += 1
-            else:
-                print(f"  ❌ {test_name}: FAIL")
-        except Exception as e:
-            print(f"  ❌ {test_name}: ERROR - {e}")
-    
-    print(f"  📊 Trading Workflow: {passed}/{len(workflow_tests)} tests passed")
-    return passed >= len(workflow_tests) // 2
-
-def test_market_data_structure():
-    """Test market data structure validity"""
-    # Mock market data structure test
-    return True
-
-def test_signal_generation():
-    """Test signal generation logic"""
-    # Mock signal generation test
-    return True
-
-def test_risk_management():
-    """Test risk management rules"""
-    # Mock risk management test - check if 2% rule logic exists
-    return True
-
-def test_trade_execution():
-    """Test trade execution logic"""
-    # Mock trade execution test
-    return True
-
-def test_docker_environment():
-    """Test Docker environment readiness"""
-    print("🐳 Testing Docker Environment...")
-    
-    try:
-        # Test Docker
-        result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
-        if result.returncode == 0:
-            print("  ✅ Docker: PASS")
-        else:
-            print("  ❌ Docker: FAIL")
-            return False
-            
-        # Test Docker Compose
-        result = subprocess.run(['docker', 'compose', 'version'], capture_output=True, text=True)
-        if result.returncode == 0:
-            print("  ✅ Docker Compose: PASS")
-        else:
-            print("  ❌ Docker Compose: FAIL")
-            return False
-            
-        return True
+        optional_packages = {
+            'docker': 'Docker integration',
+            'cryptography': 'Encryption support',
+            'websockets': 'WebSocket support',
+            'click': 'CLI framework',
+            'rich': 'Rich terminal output',
+            'psutil': 'System monitoring'
+        }
         
-    except Exception as e:
-        print(f"  ❌ Docker environment test failed: {e}")
-        return False
+        missing_required = []
+        missing_optional = []
+        
+        # Check required packages
+        for package, description in required_packages.items():
+            try:
+                __import__(package)
+                print(f"✅ {package} - {description}")
+            except ImportError:
+                print(f"❌ {package} - {description} (MISSING)")
+                missing_required.append(package)
+        
+        # Check optional packages
+        for package, description in optional_packages.items():
+            try:
+                __import__(package)
+                print(f"✅ {package} - {description} (Optional)")
+            except ImportError:
+                print(f"⚠️ {package} - {description} (Optional - not installed)")
+                missing_optional.append(package)
+        
+        if missing_required:
+            self.issues.extend([f"Missing required package: {pkg}" for pkg in missing_required])
+            return False
+        
+        if missing_optional:
+            self.warnings.extend([f"Missing optional package: {pkg}" for pkg in missing_optional])
+        
+        return True
+    
+    def check_configuration_files(self) -> bool:
+        """Check if configuration files exist and are valid"""
+        print(f"\n{Colors.BOLD}⚙️ Configuration Files{Colors.ENDC}")
+        
+        config_files = [
+            ('.env.template', 'Environment template', True),
+            ('.env', 'Environment configuration', False),
+            ('pyproject.toml', 'Project configuration', True),
+            ('scripts/start_microservices.py', 'Service manager', True),
+            ('scripts/configure_api.py', 'API configurator', True),
+        ]
+        
+        all_good = True
+        
+        for file_path, description, required in config_files:
+            full_path = self.root_dir / file_path
+            if full_path.exists():
+                print(f"✅ {file_path} - {description}")
+            else:
+                if required:
+                    print(f"❌ {file_path} - {description} (MISSING)")
+                    self.issues.append(f"Missing required file: {file_path}")
+                    all_good = False
+                else:
+                    print(f"⚠️ {file_path} - {description} (Not configured)")
+                    self.warnings.append(f"File not found: {file_path}")
+        
+        return all_good
+    
+    def check_environment_configuration(self) -> bool:
+        """Check environment configuration"""
+        print(f"\n{Colors.BOLD}🔧 Environment Configuration{Colors.ENDC}")
+        
+        try:
+            from dotenv import load_dotenv
+            load_dotenv()
+            print("✅ Environment file loaded")
+        except Exception as e:
+            print(f"❌ Failed to load environment: {e}")
+            self.issues.append("Environment loading failed")
+            return False
+        
+        # Check key environment variables
+        env_vars = {
+            'BITGET_API_KEY': 'Bitget API Key',
+            'BITGET_API_SECRET': 'Bitget API Secret', 
+            'BITGET_API_PASSWORD': 'Bitget API Password',
+            'REDIS_URL': 'Redis connection URL',
+            'API_SERVER_PORT': 'API server port'
+        }
+        
+        for var, description in env_vars.items():
+            value = os.getenv(var)
+            if value:
+                if var.startswith('BITGET_') and value.startswith('your_'):
+                    print(f"⚠️ {var} - {description} (Placeholder value)")
+                    self.warnings.append(f"{var} is not configured with real credentials")
+                else:
+                    print(f"✅ {var} - {description}")
+            else:
+                print(f"⚠️ {var} - {description} (Not set)")
+                self.warnings.append(f"{var} not set")
+        
+        return True
+    
+    def check_docker(self) -> bool:
+        """Check Docker installation and status"""
+        print(f"\n{Colors.BOLD}🐳 Docker Environment{Colors.ENDC}")
+        
+        # Check Docker installation
+        try:
+            result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
+            if result.returncode == 0:
+                print(f"✅ Docker installed - {result.stdout.strip()}")
+            else:
+                print("❌ Docker not working properly")
+                self.issues.append("Docker installation issue")
+                return False
+        except FileNotFoundError:
+            print("❌ Docker not installed")
+            self.issues.append("Docker not installed")
+            return False
+        
+        # Check Docker daemon
+        try:
+            result = subprocess.run(['docker', 'ps'], capture_output=True, text=True)
+            if result.returncode == 0:
+                print("✅ Docker daemon running")
+            else:
+                print("❌ Docker daemon not running")
+                self.issues.append("Docker daemon not running")
+                return False
+        except:
+            print("❌ Docker daemon not accessible")
+            self.issues.append("Docker daemon not accessible")
+            return False
+        
+        # Check Docker Compose
+        try:
+            result = subprocess.run(['docker', 'compose', 'version'], capture_output=True, text=True)
+            if result.returncode == 0:
+                print(f"✅ Docker Compose - {result.stdout.strip()}")
+            else:
+                print("❌ Docker Compose not working")
+                self.issues.append("Docker Compose issue")
+                return False
+        except FileNotFoundError:
+            print("❌ Docker Compose not installed")
+            self.issues.append("Docker Compose not installed")
+            return False
+        
+        # Check compose file
+        compose_file = self.root_dir / 'infrastructure' / 'docker-compose.yml'
+        if compose_file.exists():
+            print("✅ Docker compose configuration found")
+        else:
+            print("❌ Docker compose configuration missing")
+            self.issues.append("Docker compose file missing")
+            return False
+        
+        return True
+    
+    def check_network_connectivity(self) -> bool:
+        """Check network connectivity and external services"""
+        print(f"\n{Colors.BOLD}🌐 Network Connectivity{Colors.ENDC}")
+        
+        # Check internet connectivity
+        try:
+            urllib.request.urlopen('https://google.com', timeout=5)
+            print("✅ Internet connectivity")
+        except:
+            print("❌ No internet connectivity")
+            self.issues.append("No internet connection")
+            return False
+        
+        # Check PyPI access (for package installation)
+        try:
+            urllib.request.urlopen('https://pypi.org', timeout=5)
+            print("✅ PyPI accessible")
+        except:
+            print("⚠️ PyPI not accessible")
+            self.warnings.append("PyPI not accessible - package installation may fail")
+        
+        # Check Bitget API accessibility (if configured)
+        try:
+            urllib.request.urlopen('https://api.bitget.com', timeout=5)
+            print("✅ Bitget API accessible")
+        except:
+            print("⚠️ Bitget API not accessible")
+            self.warnings.append("Bitget API not accessible - live trading may not work")
+        
+        return True
+    
+    def check_ports(self) -> bool:
+        """Check if required ports are available"""
+        print(f"\n{Colors.BOLD}🔌 Port Availability{Colors.ENDC}")
+        
+        required_ports = {
+            8000: 'API Server',
+            8001: 'Ultra Backtester',
+            8002: 'Risk Manager',
+            8003: 'Data Manager',
+            8004: 'Strategy Optimizer',
+            8005: 'Exchange Connector',
+            8006: 'Monitoring Service',
+            8007: 'Live Trading Engine',
+            6379: 'Redis',
+            9090: 'Prometheus'
+        }
+        
+        all_available = True
+        
+        for port, service in required_ports.items():
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            sock.settimeout(1)
+            result = sock.connect_ex(('localhost', port))
+            sock.close()
+            
+            if result == 0:
+                print(f"⚠️ Port {port} ({service}) - Already in use")
+                self.warnings.append(f"Port {port} already in use")
+            else:
+                print(f"✅ Port {port} ({service}) - Available")
+        
+        return all_available
+    
+    def check_disk_space(self) -> bool:
+        """Check available disk space"""
+        print(f"\n{Colors.BOLD}💾 Disk Space{Colors.ENDC}")
+        
+        try:
+            import shutil
+            total, used, free = shutil.disk_usage(self.root_dir)
+            
+            # Convert to GB
+            free_gb = free / (1024**3)
+            total_gb = total / (1024**3)
+            used_gb = used / (1024**3)
+            
+            print(f"📊 Disk usage: {used_gb:.1f}GB used, {free_gb:.1f}GB free of {total_gb:.1f}GB total")
+            
+            if free_gb < 2:
+                print(f"❌ Low disk space: {free_gb:.1f}GB free (need at least 2GB)")
+                self.issues.append("Insufficient disk space")
+                return False
+            elif free_gb < 5:
+                print(f"⚠️ Limited disk space: {free_gb:.1f}GB free (5GB+ recommended)")
+                self.warnings.append("Limited disk space")
+            else:
+                print(f"✅ Sufficient disk space: {free_gb:.1f}GB free")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Could not check disk space: {e}")
+            self.warnings.append("Could not check disk space")
+            return True  # Don't fail validation for this
+    
+    def test_api_connection(self) -> bool:
+        """Test API connection if credentials are configured"""
+        print(f"\n{Colors.BOLD}🔗 API Connection Test{Colors.ENDC}")
+        
+        # Load environment
+        try:
+            from dotenv import load_dotenv
+            load_dotenv()
+        except:
+            print("⚠️ Could not load environment for API test")
+            return True
+        
+        # Check if real API keys are configured
+        api_key = os.getenv('BITGET_API_KEY', '')
+        api_secret = os.getenv('BITGET_API_SECRET', '')
+        api_password = os.getenv('BITGET_API_PASSWORD', '')
+        
+        if not api_key or api_key.startswith('your_'):
+            print("⚠️ No real API keys configured - skipping API test")
+            self.info.append("API test skipped - no real credentials")
+            return True
+        
+        try:
+            import ccxt
+            
+            exchange = ccxt.bitget({
+                'apiKey': api_key,
+                'secret': api_secret,
+                'password': api_password,
+                'sandbox': True,  # Use sandbox for testing
+                'timeout': 10000
+            })
+            
+            # Test connection
+            exchange.fetch_markets()
+            print("✅ Bitget API connection successful (sandbox)")
+            return True
+            
+        except ImportError:
+            print("⚠️ ccxt not installed - skipping API test")
+            self.warnings.append("ccxt not available for API testing")
+            return True
+        except Exception as e:
+            print(f"❌ API connection failed: {e}")
+            self.issues.append(f"API connection failed: {e}")
+            return False
+    
+    def print_summary(self):
+        """Print validation summary"""
+        print(f"\n{Colors.HEADER}{Colors.BOLD}📊 Validation Summary{Colors.ENDC}")
+        print("=" * 50)
+        
+        if not self.issues:
+            print(f"{Colors.OKGREEN}✅ All critical checks passed!{Colors.ENDC}")
+            print(f"{Colors.OKGREEN}Your VIPER system appears to be properly configured.{Colors.ENDC}")
+        else:
+            print(f"{Colors.FAIL}❌ {len(self.issues)} critical issue(s) found:{Colors.ENDC}")
+            for issue in self.issues:
+                print(f"   • {issue}")
+        
+        if self.warnings:
+            print(f"\n{Colors.WARNING}⚠️ {len(self.warnings)} warning(s):{Colors.ENDC}")
+            for warning in self.warnings:
+                print(f"   • {warning}")
+        
+        if self.info:
+            print(f"\n{Colors.OKCYAN}ℹ️ Additional information:{Colors.ENDC}")
+            for info in self.info:
+                print(f"   • {info}")
+        
+        # Recommendations
+        print(f"\n{Colors.BOLD}💡 Recommendations:{Colors.ENDC}")
+        
+        if self.issues:
+            print(f"{Colors.FAIL}1. Fix the critical issues listed above before using VIPER{Colors.ENDC}")
+            print(f"{Colors.FAIL}2. Re-run this validation script after fixing issues{Colors.ENDC}")
+        else:
+            print(f"{Colors.OKGREEN}1. Your system is ready! Try starting VIPER:{Colors.ENDC}")
+            print(f"   python scripts/start_microservices.py start")
+            print(f"{Colors.OKGREEN}2. Access the dashboard at: http://localhost:8000{Colors.ENDC}")
+        
+        if 'API test skipped' in ' '.join(self.info):
+            print(f"{Colors.OKCYAN}3. Configure API keys when ready for live trading:{Colors.ENDC}")
+            print(f"   python scripts/configure_api.py")
+        
+        return len(self.issues) == 0
+    
+    def run_validation(self) -> bool:
+        """Run complete system validation"""
+        self.print_header()
+        
+        validation_steps = [
+            ("Python Environment", self.check_python_environment),
+            ("Dependencies", self.check_dependencies),
+            ("Configuration Files", self.check_configuration_files),
+            ("Environment Settings", self.check_environment_configuration),
+            ("Docker", self.check_docker),
+            ("Network Connectivity", self.check_network_connectivity),
+            ("Port Availability", self.check_ports),
+            ("Disk Space", self.check_disk_space),
+            ("API Connection", self.test_api_connection)
+        ]
+        
+        success = True
+        
+        for step_name, step_func in validation_steps:
+            try:
+                step_result = step_func()
+                if not step_result:
+                    success = False
+            except Exception as e:
+                print(f"❌ Error in {step_name}: {e}")
+                self.issues.append(f"{step_name} check failed: {e}")
+                success = False
+        
+        self.print_summary()
+        return success
 
 def main():
-    """Run all validation tests"""
-    print_header()
-    
-    tests = [
-        ("MCP Trading Server", test_mcp_trading_server),
-        ("Python Microservices", test_python_services),
-        ("VIPER Scoring Algorithm", test_scoring_algorithm),
-        ("Trading Workflow", test_trading_workflow),
-        ("Docker Environment", test_docker_environment)
-    ]
-    
-    results = {}
-    passed_tests = 0
-    
-    for test_name, test_func in tests:
-        print(f"\n{'='*60}")
-        try:
-            result = test_func()
-            results[test_name] = result
-            if result:
-                passed_tests += 1
-        except Exception as e:
-            print(f"❌ {test_name}: CRITICAL ERROR - {e}")
-            results[test_name] = False
-    
-    # Summary
-    print(f"\n{'='*60}")
-    print("📊 VALIDATION SUMMARY")
-    print(f"{'='*60}")
-    
-    for test_name, result in results.items():
-        status = "✅ PASS" if result else "❌ FAIL"
-        print(f"{test_name:30} {status}")
-    
-    success_rate = (passed_tests / len(tests)) * 100
-    print(f"\n🎯 Overall Success Rate: {success_rate:.1f}% ({passed_tests}/{len(tests)})")
-    
-    if success_rate >= 70:
-        print("🎉 System validation SUCCESSFUL! Ready for deployment testing.")
-    elif success_rate >= 40:
-        print("⚠️  System partially ready. Some components need attention.")
-    else:
-        print("❌ System needs significant work before deployment.")
-    
-    return success_rate >= 70
+    """Main validation function"""
+    try:
+        validator = VIPERValidator()
+        success = validator.run_validation()
+        
+        if success:
+            print(f"\n{Colors.OKGREEN}🎉 Validation completed successfully!{Colors.ENDC}")
+            sys.exit(0)
+        else:
+            print(f"\n{Colors.FAIL}❌ Validation found critical issues.{Colors.ENDC}")
+            print(f"{Colors.FAIL}Please fix the issues above and run validation again.{Colors.ENDC}")
+            sys.exit(1)
+            
+    except KeyboardInterrupt:
+        print(f"\n{Colors.WARNING}Validation interrupted by user.{Colors.ENDC}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"\n{Colors.FAIL}❌ Fatal validation error: {e}{Colors.ENDC}")
+        sys.exit(1)
 
-if __name__ == '__main__':
-    success = main()
-    sys.exit(0 if success else 1)
+if __name__ == "__main__":
+    main()
