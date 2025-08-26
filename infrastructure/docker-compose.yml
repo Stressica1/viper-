@@ -318,8 +318,9 @@ services:
     ports:
       - "${PROMETHEUS_PORT:-9090}:9090"
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus_data:/prometheus
+    command:
+      - '--storage.tsdb.path=/prometheus'
     networks:
       - viper-network
     restart: unless-stopped
@@ -353,8 +354,8 @@ services:
   # 📡 Market Data Streamer - Real-time Data Feed
   market-data-streamer:
     build:
-      context: ../services/market-data-streamer
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: services/market-data-streamer/Dockerfile
     ports:
       - "${MARKET_DATA_STREAMER_PORT:-8010}:8000"
     environment:
@@ -421,8 +422,8 @@ services:
   # 🚨 Alert System - Notification & Monitoring
   alert-system:
     build:
-      context: ../services/alert-system
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: services/alert-system/Dockerfile
     ports:
       - "${ALERT_SYSTEM_PORT:-8012}:8000"
     environment:
@@ -460,8 +461,8 @@ services:
   # 📋 Order Lifecycle Manager - Complete Order Management
   order-lifecycle-manager:
     build:
-      context: ../services/order-lifecycle-manager
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: services/order-lifecycle-manager/Dockerfile
     ports:
       - "${ORDER_LIFECYCLE_MANAGER_PORT:-8013}:8000"
     environment:
@@ -505,8 +506,8 @@ services:
   # 🔄 Position Synchronizer - Real-time Position Sync
   position-synchronizer:
     build:
-      context: ../services/position-synchronizer
-      dockerfile: Dockerfile
+      context: ..
+      dockerfile: services/position-synchronizer/Dockerfile
     ports:
       - "${POSITION_SYNCHRONIZER_PORT:-8014}:8000"
     environment:

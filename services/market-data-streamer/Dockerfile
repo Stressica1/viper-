@@ -10,14 +10,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+COPY services/market-data-streamer/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy shared utilities
-COPY ../services/shared ./shared
+COPY infrastructure/shared ./shared
 
 # Copy application code
-COPY main.py .
+COPY services/market-data-streamer/main.py .
 
 # Create logs directory
 RUN mkdir -p /app/logs

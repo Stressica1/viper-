@@ -31,10 +31,10 @@ def main():
     logger.info("=" * 50)
 
     # Use the provided credentials
-    bitget_api_key = "bg_d20a392139710bc38b8ab39e970114eb"
-    bitget_api_secret = "your_bitget_api_secret_here"
-    bitget_api_password = "your_bitget_api_password_here"
-    github_token = "your_github_token_here"
+    bitget_api_key = os.getenv('BITGET_API_KEY', '')
+    bitget_api_secret = os.getenv('BITGET_API_SECRET', '')
+    bitget_api_password = os.getenv('BITGET_API_PASSWORD', '')
+    github_token = os.getenv('GITHUB_PAT', '')
 
     logger.info("📝 Using provided API credentials...")
 

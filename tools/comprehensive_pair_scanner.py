@@ -19,9 +19,9 @@ class ComprehensivePairScanner:
     def __init__(self):
         """Initialize scanner with working API credentials"""
         self.exchange = ccxt.bitget({
-            'apiKey': 'bg_d20a392139710bc38b8ab39e970114eb',
-            'secret': '23ed4a7fe10b9c947d41a15223647f1b263f0d932b7d5e9e7bdfac01d3b84b36',
-            'password': '22672267',
+            'apiKey': os.getenv('BITGET_API_KEY', ''),
+            'secret': os.getenv('BITGET_API_SECRET', ''),
+            'password': os.getenv('BITGET_API_PASSWORD', ''),
             'options': {
                 'defaultType': 'swap',  # Focus on perpetual swaps for 50x leverage
                 'adjustForTimeDifference': True,

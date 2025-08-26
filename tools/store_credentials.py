@@ -8,12 +8,12 @@ import json
 
 # Your Bitget API credentials
 api_key = "bg_d20a392139710bc38b8ab39e970114eb"
-api_secret = "23ed4a7fe10b9c947d41a15223647f1b263f0d932b7d5e9e7bdfac01d3b84b36"
-api_password = "22672267"
+api_secret = "your_bitget_api_secret_here"
+api_password = "your_bitget_api_password_here"
 
 # Vault configuration
 vault_url = "http://localhost:8008"
-vault_token = "c0b25118b40ac34959df9ea2ffc04089eb8138932c1a44e8c920f01547b1e4a6"
+vault_token = "your_vault_access_token_here"
 
 headers = {
     'Authorization': f'Bearer {vault_token}',

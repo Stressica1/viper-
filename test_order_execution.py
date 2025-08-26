@@ -8,8 +8,8 @@ import os
 
 # Use same credentials as live trading engine
 api_key = os.getenv('BITGET_API_KEY', 'bg_d20a392139710bc38b8ab39e970114eb')
-api_secret = os.getenv('BITGET_API_SECRET', '23ed4a7fe10b9c947d41a15223647f1b263f0d932b7d5e9e7bdfac01d3b84b36')
-api_password = os.getenv('BITGET_API_PASSWORD', '22672267')
+api_secret = os.getenv('BITGET_API_SECRET', 'your_bitget_api_secret_here')
+api_password = os.getenv('BITGET_API_PASSWORD', 'your_bitget_api_password_here')
 
 print("🔍 Testing order execution with live trading engine credentials...")
 print(f"API Key: {api_key[:10]}...")

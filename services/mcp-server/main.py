@@ -9,6 +9,7 @@ Features:
 - Trading operations via MCP protocol
 - Real-time market data access
 - Risk management controls
+- GitHub Project Management Integration
 """
 
 import os
@@ -24,6 +25,7 @@ import uvicorn
 import redis
 import requests
 import httpx
+import base64
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -31,6 +33,11 @@ LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 SERVICE_NAME = os.getenv('SERVICE_NAME', 'mcp-server')
 VAULT_URL = os.getenv('VAULT_URL', 'http://credential-vault:8008')
 VAULT_ACCESS_TOKEN = os.getenv('VAULT_ACCESS_TOKEN', '')
+
+# GitHub Configuration
+GITHUB_PAT = os.getenv('GITHUB_PAT', '')
+GITHUB_OWNER = os.getenv('GITHUB_OWNER', 'user')  # Replace with actual GitHub username/org
+GITHUB_REPO = os.getenv('GITHUB_REPO', 'Bitget-New')  # Replace with actual repo name
 
 # Configure logging
 logging.basicConfig(level=getattr(logging, LOG_LEVEL.upper(), logging.INFO))
@@ -107,6 +114,24 @@ class MCPServer:
             """Assess trading risk via MCP"""
             data = await request.json()
             return await self.handle_risk_assessment(data)
+
+        # GitHub Integration Endpoints
+        @self.app.post("/github/create-task")
+        async def create_github_task(request: Request):
+            """Create a GitHub task/issue via MCP"""
+            data = await request.json()
+            return await self.create_github_issue(data)
+
+        @self.app.get("/github/tasks")
+        async def list_github_tasks(status: str = "open"):
+            """List GitHub tasks/issues via MCP"""
+            return await self.list_github_issues(status)
+
+        @self.app.post("/github/update-task")
+        async def update_github_task(request: Request):
+            """Update a GitHub task/issue via MCP"""
+            data = await request.json()
+            return await self.update_github_issue(data)
 
         @self.app.websocket("/ws")
         async def websocket_endpoint(websocket: WebSocket):
@@ -452,6 +477,142 @@ class MCPServer:
         except Exception as e:
             logger.error(f"Service call error for {service_name}: {e}")
             raise HTTPException(status_code=503, detail=f"Service {service_name} unavailable")
+
+    # GitHub Integration Methods
+    async def create_github_issue(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Create a GitHub issue via MCP"""
+        try:
+            if not GITHUB_PAT:
+                return {"error": "GitHub PAT not configured", "status": "error"}
+
+            headers = {
+                "Authorization": f"token {GITHUB_PAT}",
+                "Accept": "application/vnd.github.v3+json",
+                "Content-Type": "application/json"
+            }
+
+            issue_data = {
+                "title": data.get("title", "New Task"),
+                "body": data.get("body", ""),
+                "labels": data.get("labels", ["task"]),
+                "assignees": data.get("assignees", [])
+            }
+
+            url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/issues"
+            async with httpx.AsyncClient() as client:
+                response = await client.post(url, json=issue_data, headers=headers)
+
+            if response.status_code == 201:
+                issue = response.json()
+                logger.info(f"GitHub issue created: #{issue['number']} - {issue['title']}")
+                return {
+                    "status": "success",
+                    "operation": "create_github_issue",
+                    "issue": {
+                        "number": issue["number"],
+                        "title": issue["title"],
+                        "url": issue["html_url"],
+                        "state": issue["state"]
+                    }
+                }
+            else:
+                error_msg = response.text
+                logger.error(f"GitHub API error: {response.status_code} - {error_msg}")
+                return {"status": "error", "error": error_msg}
+
+        except Exception as e:
+            logger.error(f"GitHub issue creation error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def list_github_issues(self, status: str = "open") -> Dict[str, Any]:
+        """List GitHub issues via MCP"""
+        try:
+            if not GITHUB_PAT:
+                return {"error": "GitHub PAT not configured", "status": "error"}
+
+            headers = {
+                "Authorization": f"token {GITHUB_PAT}",
+                "Accept": "application/vnd.github.v3+json"
+            }
+
+            url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/issues"
+            params = {"state": status, "per_page": 10}
+
+            async with httpx.AsyncClient() as client:
+                response = await client.get(url, headers=headers, params=params)
+
+            if response.status_code == 200:
+                issues = response.json()
+                return {
+                    "status": "success",
+                    "operation": "list_github_issues",
+                    "issues": [
+                        {
+                            "number": issue["number"],
+                            "title": issue["title"],
+                            "state": issue["state"],
+                            "url": issue["html_url"],
+                            "created_at": issue["created_at"]
+                        }
+                        for issue in issues
+                    ]
+                }
+            else:
+                return {"status": "error", "error": response.text}
+
+        except Exception as e:
+            logger.error(f"GitHub issues listing error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def update_github_issue(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Update a GitHub issue via MCP"""
+        try:
+            if not GITHUB_PAT:
+                return {"error": "GitHub PAT not configured", "status": "error"}
+
+            issue_number = data.get("issue_number")
+            if not issue_number:
+                return {"error": "Issue number required", "status": "error"}
+
+            headers = {
+                "Authorization": f"token {GITHUB_PAT}",
+                "Accept": "application/vnd.github.v3+json",
+                "Content-Type": "application/json"
+            }
+
+            update_data = {}
+            if "title" in data:
+                update_data["title"] = data["title"]
+            if "body" in data:
+                update_data["body"] = data["body"]
+            if "state" in data:
+                update_data["state"] = data["state"]
+            if "labels" in data:
+                update_data["labels"] = data["labels"]
+
+            url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/issues/{issue_number}"
+            async with httpx.AsyncClient() as client:
+                response = await client.patch(url, json=update_data, headers=headers)
+
+            if response.status_code == 200:
+                issue = response.json()
+                logger.info(f"GitHub issue updated: #{issue['number']} - {issue['title']}")
+                return {
+                    "status": "success",
+                    "operation": "update_github_issue",
+                    "issue": {
+                        "number": issue["number"],
+                        "title": issue["title"],
+                        "url": issue["html_url"],
+                        "state": issue["state"]
+                    }
+                }
+            else:
+                return {"status": "error", "error": response.text}
+
+        except Exception as e:
+            logger.error(f"GitHub issue update error: {e}")
+            return {"status": "error", "error": str(e)}
 
 def main():
     """Main function to start MCP server"""
