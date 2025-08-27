@@ -286,14 +286,19 @@ class ComprehensiveMarketScanner:
 
     def run_comprehensive_scan(self):
         """Run comprehensive market scanning with batching"""
-        print("
-🚀 STARTING COMPREHENSIVE MARKET SCAN..."        print("🔍 Scanning ALL available trading pairs with intelligent batching..."
+        print("🚀 STARTING COMPREHENSIVE MARKET SCAN...")
+        print("🔍 Scanning ALL available trading pairs with intelligent batching...")
         # Fetch all available pairs
         self.all_symbols = self.fetch_all_trading_pairs()
         print(f"📊 Monitoring {len(self.all_symbols)} trading pairs")
 
-        print("
-🎯 VIPER Strategy Configuration:"        print("   • VIPER Threshold: 75+ (optimized for broader coverage)"        print("   • Risk per Trade: 2%"        print("   • Signal Types: LONG/SHORT based on momentum & VIPER score"        print("   • Update Interval: 15 seconds"        print("   • Batch Processing: 50 pairs per batch"        print("-" * 80)
+        print("🎯 VIPER Strategy Configuration:")
+        print("   • VIPER Threshold: 75+ (optimized for broader coverage)")
+        print("   • Risk per Trade: 2%")
+        print("   • Signal Types: LONG/SHORT based on momentum & VIPER score")
+        print("   • Update Interval: 15 seconds")
+        print("   • Batch Processing: 50 pairs per batch")
+        print("-" * 80)
 
         self.is_running = True
 
