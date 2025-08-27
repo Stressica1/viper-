@@ -20,6 +20,13 @@ import subprocess
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 
+# Load environment variables
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 # Configure logging to avoid interactive issues
 logging.basicConfig(
     level=logging.INFO,
@@ -181,13 +188,26 @@ class VIPERCompletionManager:
         """Check that all system dependencies are available"""
         logger.info("Checking system dependencies...")
 
-        dependencies = ['docker', 'docker-compose', 'python3', 'git']
+        # Check for Docker Compose v2 syntax first, fallback to v1
+        docker_compose_available = False
+        result_v2 = self.run_command_non_interactive("docker compose version")
+        if result_v2['success']:
+            docker_compose_available = True
+        else:
+            result_v1 = self.run_command_non_interactive("which docker-compose")
+            if result_v1['success']:
+                docker_compose_available = True
+
+        dependencies = ['docker', 'python3', 'git']
         missing_deps = []
 
         for dep in dependencies:
             result = self.run_command_non_interactive(f"which {dep}")
             if not result['success']:
                 missing_deps.append(dep)
+        
+        if not docker_compose_available:
+            missing_deps.append('docker-compose')
 
         if missing_deps:
             logger.error(f"❌ Missing system dependencies: {missing_deps}")
