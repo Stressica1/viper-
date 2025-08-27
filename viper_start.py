@@ -6,6 +6,10 @@ ONE-COMMAND startup that activates ALL built components by default:
 - Centralized Logging System
 - MCP Integration
 - Monitoring & Alerting
+- Advanced Trading Strategy Engine
+- Real-time Market Scanner
+- Multi-factor Scoring System
+- Full Force Trading Orchestration
 """
 
 import os
@@ -22,14 +26,25 @@ from concurrent.futures import ThreadPoolExecutor
 # Add project root to Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(project_root / 'src'))
 
 from scripts.start_microservices import ViperMicroservicesManager
 from start_mcp_servers import MCPServerManager
+
+# Import enhanced trading components
+try:
+    from src.core.trading_orchestrator import VIPERTradingOrchestrator, start_viper_full_force
+    from src.core.enhanced_logging import get_viper_logger, shutdown_all_loggers
+    ENHANCED_COMPONENTS_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ Enhanced components not available: {e}")
+    ENHANCED_COMPONENTS_AVAILABLE = False
 
 class VIPERUnifiedSystem:
     """
     Unified VIPER System Manager - Starts ALL components by default
     This is what users expect when they run the VIPER system!
+    NOW WITH ENHANCED TRADING COMPONENTS FOR FULL FORCE OPERATION
     """
     
     def __init__(self):
@@ -38,14 +53,20 @@ class VIPERUnifiedSystem:
         self.mcp_manager = MCPServerManager()
         self.running = False
         
+        # Enhanced trading components
+        self.trading_orchestrator = None
+        self.viper_logger = None
+        
         # Setup signal handlers for graceful shutdown
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
         
         print("🚀 VIPER Trading Bot - Unified System Startup")
         print("="*70)
-        print("🏗️  Microservices Architecture | 📝 Centralized Logging")
+        print("🏗️  Microservices Architecture | 📝 Enhanced Centralized Logging")
         print("🤖 MCP AI Integration | 📊 Real-time Monitoring")
+        print("🎯 Advanced Trading Strategy | 🔍 Market Scanner")
+        print("⭐ Multi-factor Scoring | ⚡ Full Force Trading Orchestration")
         print("⚡ ALL COMPONENTS ACTIVE BY DEFAULT")
         print("="*70)
     
@@ -146,7 +167,50 @@ class VIPERUnifiedSystem:
         print(f"📊 Microservices: {success_count}/{total_count} services started")
         return success_count >= (total_count * 0.7)  # Allow 30% failure rate
     
-    def start_mcp_integration(self) -> bool:
+    def start_enhanced_trading_system(self) -> bool:
+        """Start enhanced trading components for full force operation"""
+        if not ENHANCED_COMPONENTS_AVAILABLE:
+            print("⚠️ Enhanced trading components not available - using basic system")
+            return True
+        
+        try:
+            print("\n🎯 Starting Enhanced Trading System Components...")
+            
+            # Initialize enhanced logging
+            self.viper_logger = get_viper_logger("viper-system", "orchestrator")
+            self.viper_logger.info("Enhanced VIPER logging system activated")
+            
+            # Initialize trading orchestrator
+            self.trading_orchestrator = VIPERTradingOrchestrator()
+            
+            # Start trading orchestrator in background
+            def start_orchestrator():
+                try:
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    loop.run_until_complete(start_viper_full_force())
+                except Exception as e:
+                    print(f"❌ Trading orchestrator error: {e}")
+                    if self.viper_logger:
+                        self.viper_logger.error(f"Trading orchestrator error: {e}")
+            
+            orchestrator_thread = threading.Thread(
+                target=start_orchestrator,
+                daemon=True,
+                name="VIPERTradingOrchestrator"
+            )
+            orchestrator_thread.start()
+            
+            print("✅ Enhanced Trading System: FULLY OPERATIONAL")
+            self.viper_logger.info("VIPER Enhanced Trading System started successfully")
+            
+            return True
+            
+        except Exception as e:
+            print(f"❌ Enhanced trading system startup failed: {e}")
+            if self.viper_logger:
+                self.viper_logger.error(f"Enhanced trading system startup failed: {e}")
+            return False
         """Start MCP servers for AI integration"""
         print("\n🤖 Starting MCP AI Integration...")
         
@@ -161,7 +225,7 @@ class VIPERUnifiedSystem:
             print(f"⚠️  MCP Integration warning: {e} - continuing anyway")
             return True  # MCP is important but not critical for basic functionality
     
-    def start_logging_system(self) -> bool:
+    def start_mcp_integration(self) -> bool:
         """Ensure centralized logging is active"""
         print("\n📝 Activating Centralized Logging System...")
         
@@ -184,12 +248,37 @@ class VIPERUnifiedSystem:
     def print_system_status(self):
         """Print comprehensive system status"""
         print("\n" + "="*80)
-        print("🎯 VIPER TRADING BOT - SYSTEM STATUS")
+        print("🚀 VIPER TRADING BOT - SYSTEM STATUS")
+        print("="*80)
+        print("⚡ RUNNING IN FULL FORCE MODE")
+        print("🎯 Advanced Strategy Engine | 🔍 Real-time Scanner")
+        print("⭐ Multi-factor Scoring | 📊 Enhanced Monitoring")
         print("="*80)
         
         # Microservices status
         print("\n🏗️  MICROSERVICES ARCHITECTURE:")
         self.microservices_manager.print_service_status()
+        
+        # Enhanced Trading System Status
+        if ENHANCED_COMPONENTS_AVAILABLE and self.trading_orchestrator:
+            try:
+                print("\n🎯 ENHANCED TRADING SYSTEM:")
+                system_status = self.trading_orchestrator.get_system_status()
+                
+                print(f"   🔧 System Running: {'✅' if system_status['system']['is_running'] else '❌'}")
+                print(f"   ⚡ Trading Active: {'✅' if system_status['system']['trading_active'] else '❌'}")
+                print(f"   📊 Active Trades: {system_status['trading']['active_trades']}")
+                print(f"   🎯 Components: {system_status['system']['components_operational']}/8 operational")
+                
+                # Show active trading symbols
+                active_symbols = system_status['trading'].get('active_symbols', [])
+                if active_symbols:
+                    print(f"   💎 Active Symbols: {', '.join(active_symbols[:5])}")
+                    if len(active_symbols) > 5:
+                        print(f"       ... and {len(active_symbols) - 5} more")
+                
+            except Exception as e:
+                print(f"   ⚠️ Enhanced trading status error: {e}")
         
         # MCP status
         print("\n🤖 MCP AI INTEGRATION:")
@@ -202,9 +291,19 @@ class VIPERUnifiedSystem:
         print("   📊 Kibana:           http://localhost:5601")
         print("   🤖 MCP Health:       http://localhost:8000/health")
         print("   📊 Prometheus:       http://localhost:9090")
+        print("   🎯 Trading API:      http://localhost:8015")
+        print("   🔍 Scanner API:      http://localhost:8016")
+        print("   ⭐ Scoring API:      http://localhost:8017")
         
         print("\n" + "="*80)
         print("🚀 VIPER System is running with ALL components active!")
+        print("🎯 FULL FORCE TRADING MODE ENABLED")
+        print("   ⚡ Advanced Strategy Engine")
+        print("   🔍 Real-time Market Scanner") 
+        print("   ⭐ Multi-factor Scoring System")
+        print("   🛡️ Enhanced Risk Management")
+        print("   📝 Comprehensive Logging")
+        print("   🤖 AI-Powered Analysis")
         print("   Use Ctrl+C to gracefully shutdown all services")
         print("="*80)
     
@@ -256,11 +355,15 @@ class VIPERUnifiedSystem:
         print("⏳ Waiting for microservices to stabilize...")
         time.sleep(5)
         
-        # 4. Start logging system (ensure it's active)
-        self.start_logging_system()
-        
-        # 5. Start MCP integration
+        # 5. Start enhanced trading system (FULL FORCE MODE)
+        if not self.start_enhanced_trading_system():
+            print("⚠️ Enhanced trading system failed, but continuing with basic system...")
+
+        # 6. Start MCP integration
         self.start_mcp_integration()
+        
+        # 7. Ensure logging system is active
+        self.start_logging_system()
         
         print("\n✅ VIPER SYSTEM STARTUP COMPLETED!")
         self.running = True
@@ -270,6 +373,20 @@ class VIPERUnifiedSystem:
         """Graceful shutdown of all systems"""
         print("\n🔄 Starting graceful system shutdown...")
         self.running = False
+        
+        # Shutdown enhanced components first
+        if ENHANCED_COMPONENTS_AVAILABLE:
+            try:
+                if self.trading_orchestrator:
+                    print("🛑 Stopping enhanced trading system...")
+                    self.trading_orchestrator.stop_trading_system()
+                
+                if self.viper_logger:
+                    print("🛑 Stopping enhanced logging...")
+                    shutdown_all_loggers()
+                    
+            except Exception as e:
+                print(f"⚠️ Enhanced components shutdown warning: {e}")
         
         # Stop MCP servers
         try:
@@ -337,14 +454,20 @@ def main():
     print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                       🚀 VIPER TRADING BOT                                   ║
-║                    UNIFIED SYSTEM STARTUP                                    ║
+║                  UNIFIED SYSTEM STARTUP                                      ║
+║                    FULL FORCE MODE                                           ║
 ║                                                                              ║
 ║  🏗️  Microservices Architecture (17 Services)                               ║
-║  📝 Centralized Logging System                                               ║
+║  📝 Enhanced Centralized Logging                                             ║
 ║  🤖 MCP AI Integration                                                        ║
 ║  📊 Real-time Monitoring & Alerting                                          ║
+║  🎯 Advanced Trading Strategy Engine                                         ║
+║  🔍 Intelligent Market Scanner                                               ║
+║  ⭐ Multi-factor Scoring System                                              ║
+║  🛡️ Enhanced Risk Management                                                 ║
 ║                                                                              ║
 ║             ALL COMPONENTS ACTIVE BY DEFAULT                                 ║
+║           OPTIMIZED FOR MAXIMUM PERFORMANCE                                  ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
     """)
     
