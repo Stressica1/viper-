@@ -45,7 +45,7 @@ class MarketScanner:
         self.redis_client = redis_client or self._create_redis_client()
         self.strategy = AdvancedTradingStrategy(self.redis_client)
         
-        # Exchange configuration
+        # Exchange configuration (may be None in offline mode)
         self.exchange = self._initialize_exchange()
         
         # Scanning configuration
@@ -75,8 +75,8 @@ class MarketScanner:
         redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
         return redis.Redis.from_url(redis_url, decode_responses=True)
     
-    def _initialize_exchange(self) -> ccxt.Exchange:
-        """Initialize exchange connection"""
+    def _initialize_exchange(self) -> Optional[ccxt.Exchange]:
+        """Initialize exchange connection (graceful fallback for network issues)"""
         try:
             exchange = ccxt.bitget({
                 'apiKey': os.getenv('BITGET_API_KEY', ''),
@@ -89,14 +89,15 @@ class MarketScanner:
                 'sandbox': False,
             })
             
-            # Load markets
+            # Load markets with timeout and error handling
             exchange.load_markets()
             logger.info(f"✅ Exchange initialized with {len(exchange.symbols)} markets")
             return exchange
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
-            raise
+            logger.warning(f"⚠️ Exchange initialization failed, running in offline mode: {e}")
+            # Return None to indicate offline mode - scanner can still work with cached data
+            return None
     
     async def scan_single_pair(self, symbol: str) -> ScanResult:
         """Scan a single trading pair for opportunities"""
@@ -157,6 +158,10 @@ class MarketScanner:
     
     async def _fetch_ticker_async(self, symbol: str) -> Optional[Dict]:
         """Async wrapper for fetching ticker data"""
+        if self.exchange is None:
+            logger.warning(f"⚠️ Exchange not available, cannot fetch ticker for {symbol}")
+            return None
+            
         try:
             loop = asyncio.get_event_loop()
             return await loop.run_in_executor(None, self.exchange.fetch_ticker, symbol)
@@ -166,6 +171,10 @@ class MarketScanner:
     
     async def _fetch_ohlcv_async(self, symbol: str, timeframe: str, limit: int) -> Optional[List]:
         """Async wrapper for fetching OHLCV data"""
+        if self.exchange is None:
+            logger.warning(f"⚠️ Exchange not available, cannot fetch OHLCV for {symbol}")
+            return None
+            
         try:
             loop = asyncio.get_event_loop()
             return await loop.run_in_executor(None, self.exchange.fetch_ohlcv, symbol, timeframe, limit)
@@ -175,6 +184,9 @@ class MarketScanner:
     
     async def _check_leverage_async(self, symbol: str) -> bool:
         """Async check for leverage availability"""
+        if self.exchange is None:
+            return False
+            
         try:
             loop = asyncio.get_event_loop()
             market = await loop.run_in_executor(None, self.exchange.market, symbol)
@@ -227,8 +239,13 @@ class MarketScanner:
         try:
             logger.info("🔍 Starting comprehensive market scan...")
             
-            # Get all USDT perpetual swap pairs
-            symbols = [s for s in self.exchange.symbols if ':USDT' in s and s.endswith('T')]
+            # Handle offline mode
+            if self.exchange is None:
+                logger.warning("⚠️ Exchange not available, using priority symbols only")
+                symbols = self.priority_symbols
+            else:
+                # Get all USDT perpetual swap pairs
+                symbols = [s for s in self.exchange.symbols if ':USDT' in s and s.endswith('T')]
             
             # Prioritize scanning - priority symbols first
             priority_symbols = [s for s in symbols if s in self.priority_symbols]
@@ -662,9 +679,12 @@ class MarketScanner:
             logger.error(f"❌ Error generating market overview: {e}")
             return {'error': str(e)}
 
-# Global scanner instance
-market_scanner = MarketScanner()
+# Global scanner instance (lazy initialization)
+_market_scanner = None
 
 def get_scanner_instance() -> MarketScanner:
-    """Get the global scanner instance"""
-    return market_scanner
+    """Get the global scanner instance (lazy initialization)"""
+    global _market_scanner
+    if _market_scanner is None:
+        _market_scanner = MarketScanner()
+    return _market_scanner

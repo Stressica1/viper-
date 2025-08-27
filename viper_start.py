@@ -211,6 +211,8 @@ class VIPERUnifiedSystem:
             if self.viper_logger:
                 self.viper_logger.error(f"Enhanced trading system startup failed: {e}")
             return False
+    
+    def start_mcp_servers(self) -> bool:
         """Start MCP servers for AI integration"""
         print("\n🤖 Starting MCP AI Integration...")
         
@@ -225,7 +227,7 @@ class VIPERUnifiedSystem:
             print(f"⚠️  MCP Integration warning: {e} - continuing anyway")
             return True  # MCP is important but not critical for basic functionality
     
-    def start_mcp_integration(self) -> bool:
+    def start_logging_system(self) -> bool:
         """Ensure centralized logging is active"""
         print("\n📝 Activating Centralized Logging System...")
         
@@ -360,7 +362,7 @@ class VIPERUnifiedSystem:
             print("⚠️ Enhanced trading system failed, but continuing with basic system...")
 
         # 6. Start MCP integration
-        self.start_mcp_integration()
+        self.start_mcp_servers()
         
         # 7. Ensure logging system is active
         self.start_logging_system()

@@ -17,6 +17,9 @@ import redis
 import threading
 from queue import Queue, Empty
 
+# Module logger
+logger = logging.getLogger(__name__)
+
 class LogLevel(Enum):
     """Enhanced log levels for trading system"""
     CRITICAL = "CRITICAL"
@@ -76,10 +79,17 @@ class EnhancedVIPERLogger:
         
         logger.info(f"📝 Enhanced VIPER Logger initialized for {service_name}.{component_name}")
     
-    def _create_redis_client(self) -> redis.Redis:
-        """Create Redis client for log streaming"""
-        redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
-        return redis.Redis.from_url(redis_url, decode_responses=True)
+    def _create_redis_client(self) -> Optional[redis.Redis]:
+        """Create Redis client for log streaming (graceful fallback)"""
+        try:
+            redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
+            client = redis.Redis.from_url(redis_url, decode_responses=True)
+            # Test connection
+            client.ping()
+            return client
+        except Exception as e:
+            logger.warning(f"⚠️ Redis connection failed, logging will work in local-only mode: {e}")
+            return None
     
     def _setup_standard_logging(self):
         """Setup standard Python logging integration"""
@@ -149,33 +159,34 @@ class EnhancedVIPERLogger:
             if log_entry.symbol:
                 channels.append(f'viper:logs:symbol:{log_entry.symbol}')
             
-            # Publish to all relevant channels
-            for channel in channels:
-                self.redis_client.publish(channel, log_json)
-            
-            # Store in Redis with expiration (for recent log access)
-            log_key = f"viper:log:{int(time.time())}:{uuid.uuid4().hex[:8]}"
-            self.redis_client.setex(log_key, 3600, log_json)  # 1 hour expiry
+            # Publish to all relevant channels (only if Redis is available)
+            if self.redis_client:
+                for channel in channels:
+                    self.redis_client.publish(channel, log_json)
+                
+                # Store in Redis with expiration (for recent log access)
+                log_key = f"viper:log:{int(time.time())}:{uuid.uuid4().hex[:8]}"
+                self.redis_client.setex(log_key, 3600, log_json)  # 1 hour expiry
+                
+                # Update service statistics
+                stats = {
+                    'service': self.service_name,
+                    'component': self.component_name,
+                    'session_id': self.session_id,
+                    'total_logs': self.log_count,
+                    'error_count': self.error_count,
+                    'trade_count': self.trade_count,
+                    'last_activity': datetime.now().isoformat()
+                }
+                
+                self.redis_client.setex(
+                    f"viper:log_stats:{self.service_name}",
+                    300,  # 5 minutes
+                    json.dumps(stats)
+                )
             
             # Maintain log statistics
             self.log_count += 1
-            
-            # Update service statistics
-            stats = {
-                'service': self.service_name,
-                'component': self.component_name,
-                'session_id': self.session_id,
-                'total_logs': self.log_count,
-                'error_count': self.error_count,
-                'trade_count': self.trade_count,
-                'last_activity': datetime.now().isoformat()
-            }
-            
-            self.redis_client.setex(
-                f"viper:log_stats:{self.service_name}",
-                300,  # 5 minutes
-                json.dumps(stats)
-            )
             
         except Exception as e:
             print(f"❌ Error processing log entry: {e}")
@@ -400,7 +411,32 @@ class EnhancedVIPERLogger:
     def get_log_statistics(self) -> Dict:
         """Get comprehensive logging statistics"""
         try:
-            # Get service statistics
+            # Handle offline mode (no Redis)
+            if self.redis_client is None:
+                return {
+                    'overview': {
+                        'total_logs': self.log_count,
+                        'total_errors': self.error_count,
+                        'total_trades': self.trade_count,
+                        'error_rate': 0,
+                        'active_services': 1  # Just this service
+                    },
+                    'service_breakdown': {
+                        self.service_name: {
+                            'service': self.service_name,
+                            'component': self.component_name,
+                            'session_id': self.session_id,
+                            'total_logs': self.log_count,
+                            'error_count': self.error_count,
+                            'trade_count': self.trade_count,
+                            'last_activity': datetime.now().isoformat()
+                        }
+                    },
+                    'logging_health': 'local_mode',
+                    'timestamp': datetime.now().isoformat()
+                }
+            
+            # Get service statistics from Redis
             service_stats_keys = self.redis_client.keys("viper:log_stats:*")
             service_stats = {}
             
@@ -620,7 +656,7 @@ class EnhancedVIPERLogger:
                 except Empty:
                     break
             
-            # Store final statistics
+            # Store final statistics (only if Redis is available)
             final_stats = {
                 'service': self.service_name,
                 'session_id': self.session_id,
@@ -631,11 +667,12 @@ class EnhancedVIPERLogger:
                 'remaining_logs_processed': remaining_logs
             }
             
-            self.redis_client.setex(
-                f"viper:final_log_stats:{self.service_name}_{self.session_id}",
-                86400,  # 24 hours
-                json.dumps(final_stats)
-            )
+            if self.redis_client:
+                self.redis_client.setex(
+                    f"viper:final_log_stats:{self.service_name}_{self.session_id}",
+                    86400,  # 24 hours
+                    json.dumps(final_stats)
+                )
             
             logger.info("✅ Enhanced logging system shutdown complete")
             
