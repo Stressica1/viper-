@@ -252,27 +252,27 @@ async def dashboard():
 
                     // Update system status
                     document.getElementById('system-status').innerHTML = `
-                        <p>CPU: <span class="${health.system.cpu_usage > '70%' ? 'status-error' : 'status-healthy'}">${health.system.cpu_usage}</span></p>
-                        <p>Memory: <span class="${health.system.memory_usage > '80%' ? 'status-error' : 'status-healthy'}">${health.system.memory_usage}</span></p>
-                        <p>Status: <span class="status-healthy">${health.status.toUpperCase()}</span></p>
+                        <p>CPU: <span class="${{health.system.cpu_usage > '70%' ? 'status-error' : 'status-healthy'}}">${{health.system.cpu_usage}}</span></p>
+                        <p>Memory: <span class="${{health.system.memory_usage > '80%' ? 'status-error' : 'status-healthy'}}">${{health.system.memory_usage}}</span></p>
+                        <p>Status: <span class="status-healthy">${{health.status.toUpperCase()}}</span></p>
                     `;
 
                     // Update trading status
                     document.getElementById('trading-status').innerHTML = `
-                        <p>Active Positions: ${health.trading.active_positions}</p>
-                        <p>P&L: ${health.trading.pnl}</p>
-                        <p>Strategy: ${health.trading.active_strategy}</p>
+                        <p>Active Positions: ${{health.trading.active_positions}}</p>
+                        <p>P&L: ${{health.trading.pnl}}</p>
+                        <p>Strategy: ${{health.trading.active_strategy}}</p>
                     `;
 
                     // Update AI status
                     document.getElementById('ai-status').innerHTML = `
-                        <p>Cursor Integration: ${health.ai.cursor_integration ? 'ACTIVE' : 'INACTIVE'}</p>
-                        <p>Commands Processed: ${health.ai.commands_processed}</p>
-                        <p>Brain Active: ${health.system.brain_active ? 'YES' : 'NO'}</p>
+                        <p>Cursor Integration: ${{health.ai.cursor_integration ? 'ACTIVE' : 'INACTIVE'}}</p>
+                        <p>Commands Processed: ${{health.ai.commands_processed}}</p>
+                        <p>Brain Active: ${{health.system.brain_active ? 'YES' : 'NO'}}</p>
                     `;
 
                     // Update uptime
-                    document.getElementById('uptime').textContent = `${health.uptime_seconds}s`;
+                    document.getElementById('uptime').textContent = `${{health.uptime_seconds}}s`;
 
                 }} catch (error) {{
                     console.error('Health check failed:', error);
@@ -291,14 +291,14 @@ async def dashboard():
                     // Log the command
                     const log = document.getElementById('command-log');
                     const timestamp = new Date().toLocaleTimeString();
-                    log.innerHTML += `\\n[${timestamp}] ${command}: ${JSON.stringify(result)}`;
+                    log.innerHTML += `\\n[${{timestamp}}] ${{command}}: ${{JSON.stringify(result)}}`;
                     log.scrollTop = log.scrollHeight;
 
                     // Show result
-                    alert(`Command Result: ${JSON.stringify(result, null, 2)}`);
+                    alert(`Command Result: ${{JSON.stringify(result, null, 2)}}`);
 
                 }} catch (error) {{
-                    alert(`Command failed: ${error.message}`);
+                    alert(`Command failed: ${{error.message}}`);
                 }}
             }}
         </script>
