@@ -513,6 +513,53 @@ async def run_backtest(request: Request, background_tasks: BackgroundTasks):
         logger.error(f"❌ Error starting backtest: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+@app.post("/api/backtest/start")
+async def start_backtest(request: Request, background_tasks: BackgroundTasks):
+    """Start a backtest (compatibility endpoint for completion tests)"""
+    try:
+        data = await request.json()
+        
+        # Map completion test parameters to expected format
+        symbol = data.get('symbol', 'BTC/USDT:USDT')
+        timeframe = data.get('timeframe', '1h')
+        initial_balance = data.get('initial_balance', 10000.0)
+        
+        # Create backtest request compatible with our existing run_backtest endpoint
+        backtest_data = {
+            'symbol': symbol,
+            'timeframe': timeframe,
+            'initial_balance': initial_balance,
+            'limit': 1000
+        }
+        
+        # Use existing run_backtest logic
+        required_fields = ['symbol', 'timeframe']
+        for field in required_fields:
+            if field not in backtest_data:
+                raise HTTPException(status_code=400, detail=f"Missing required field: {field}")
+        
+        backtest_id = str(uuid.uuid4())
+        backtester.active_backtests[backtest_id] = {'status': 'running', 'progress': 0}
+        
+        # Run backtest in background
+        background_tasks.add_task(
+            backtester.run_backtest_async,
+            backtest_id, backtest_data['symbol'], backtest_data['timeframe'], 
+            backtest_data['initial_balance'], backtest_data['limit']
+        )
+        
+        return {
+            'backtest_id': backtest_id,
+            'status': 'started',
+            'message': 'Backtest started successfully'
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Error starting backtest: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 @app.get("/api/backtest/{backtest_id}")
 async def get_backtest_result(backtest_id: str):
     """Get backtest result"""
