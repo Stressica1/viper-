@@ -6,7 +6,7 @@ services:
   # 🌐 API Server - FastAPI Web Dashboard
   api-server:
     build:
-      context: services/api-server
+      context: /tmp/viper-trading-system/services/api-server
       dockerfile: Dockerfile
     ports:
       - "${API_SERVER_PORT:-8000}:8000"
@@ -16,8 +16,8 @@ services:
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
       - SERVICE_NAME=api-server
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -36,7 +36,7 @@ services:
   # 🧪 Ultra Backtester - Strategy Testing Engine
   ultra-backtester:
     build:
-      context: services/ultra-backtester
+      context: /tmp/viper-trading-system/services/ultra-backtester
       dockerfile: Dockerfile
     ports:
       - "${ULTRA_BACKTESTER_PORT:-8001}:8000"
@@ -48,9 +48,9 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=ultra-backtester
     volumes:
-      - ./backtest_results:/app/backtest_results
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/backtest_results:/app/backtest_results
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -71,7 +71,7 @@ services:
   # 🎯 Strategy Optimizer - Parameter Tuning
   strategy-optimizer:
     build:
-      context: services/strategy-optimizer
+      context: /tmp/viper-trading-system/services/strategy-optimizer
       dockerfile: Dockerfile
     ports:
       - "${STRATEGY_OPTIMIZER_PORT:-8004}:8000"
@@ -82,9 +82,9 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=strategy-optimizer
     volumes:
-      - ./backtest_results:/app/backtest_results
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/backtest_results:/app/backtest_results
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -103,7 +103,7 @@ services:
   # 🔥 Live Trading Engine - Production Trading
   live-trading-engine:
     build:
-      context: services/live-trading-engine
+      context: /tmp/viper-trading-system/services/live-trading-engine
       dockerfile: Dockerfile
     ports:
       - "${LIVE_TRADING_ENGINE_PORT:-8007}:8000"
@@ -120,8 +120,8 @@ services:
       - RISK_MANAGER_URL=http://risk-manager:8000
       - DATA_MANAGER_URL=http://data-manager:8000
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -146,7 +146,7 @@ services:
   # 💾 Data Manager - Market Data Synchronization
   data-manager:
     build:
-      context: services/data-manager
+      context: /tmp/viper-trading-system/services/data-manager
       dockerfile: Dockerfile
     ports:
       - "${DATA_MANAGER_PORT:-8003}:8000"
@@ -156,9 +156,9 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=data-manager
     volumes:
-      - ./data:/app/data
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/data:/app/data
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -175,7 +175,7 @@ services:
   # 🔗 Exchange Connector - Bitget API Client
   exchange-connector:
     build:
-      context: services/exchange-connector
+      context: /tmp/viper-trading-system/services/exchange-connector
       dockerfile: Dockerfile
     ports:
       - "${EXCHANGE_CONNECTOR_PORT:-8005}:8000"
@@ -187,8 +187,8 @@ services:
       - VAULT_URL=http://credential-vault:8008
       - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_EXCHANGE_CONNECTOR}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -207,7 +207,7 @@ services:
   # 🚨 Risk Manager - Position Control & Safety
   risk-manager:
     build:
-      context: services/risk-manager
+      context: /tmp/viper-trading-system/services/risk-manager
       dockerfile: Dockerfile
     ports:
       - "${RISK_MANAGER_PORT:-8002}:8000"
@@ -220,8 +220,8 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=risk-manager
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -240,7 +240,7 @@ services:
   # 📊 Monitoring Service - System Analytics
   monitoring-service:
     build:
-      context: services/monitoring-service
+      context: /tmp/viper-trading-system/services/monitoring-service
       dockerfile: Dockerfile
     ports:
       - "${MONITORING_SERVICE_PORT:-8006}:8000"
@@ -250,8 +250,8 @@ services:
       - SERVICE_NAME=monitoring-service
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -268,7 +268,7 @@ services:
   # 🔐 Credential Vault - Secure Secrets Management
   credential-vault:
     build:
-      context: services/credential-vault
+      context: /tmp/viper-trading-system/services/credential-vault
       dockerfile: Dockerfile
     ports:
       - "${CREDENTIAL_VAULT_PORT:-8008}:8008"
@@ -279,8 +279,8 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=credential-vault
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -340,7 +340,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=viper_admin
     volumes:
       - grafana_data:/var/lib/grafana
-      - ./config/grafana:/etc/grafana/provisioning
+      - /tmp/viper-trading-system/config/grafana:/etc/grafana/provisioning
     networks:
       - viper-network
     restart: unless-stopped
@@ -368,8 +368,8 @@ services:
       - MAX_RECONNECT_ATTEMPTS=${MAX_RECONNECT_ATTEMPTS:-5}
       - RECONNECT_DELAY=${RECONNECT_DELAY:-5.0}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -402,8 +402,8 @@ services:
       - SMA_PERIOD=${SMA_PERIOD:-20}
       - RSI_PERIOD=${RSI_PERIOD:-14}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -443,8 +443,8 @@ services:
       - MAX_OPEN_POSITIONS=${MAX_OPEN_POSITIONS:-15}
       - SIGNAL_COOLDOWN=${SIGNAL_COOLDOWN:-300}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -480,8 +480,8 @@ services:
       - VIPER_THRESHOLD=${VIPER_THRESHOLD:-85}
       - CONFIDENCE_THRESHOLD=${CONFIDENCE_THRESHOLD:-80}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -523,8 +523,8 @@ services:
       - RECONCILIATION_INTERVAL=${RECONCILIATION_INTERVAL:-300}
       - MAX_POSITION_DRIFT=${MAX_POSITION_DRIFT:-0.001}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -547,7 +547,7 @@ services:
   # 📊 Centralized Logger - Unified Log Aggregation
   centralized-logger:
     build:
-      context: services/centralized-logger
+      context: /tmp/viper-trading-system/services/centralized-logger
       dockerfile: Dockerfile
     ports:
       - "${CENTRALIZED_LOGGER_PORT:-8015}:8000"
@@ -559,8 +559,8 @@ services:
       - LOG_RETENTION_DAYS=${LOG_RETENTION_DAYS:-30}
       - MAX_LOGS_PER_SERVICE=${MAX_LOGS_PER_SERVICE:-1000}
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -603,7 +603,7 @@ services:
       - "${LOGSTASH_PORT:-5044}:5044"
       - "9600:9600"
     volumes:
-      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - /tmp/viper-trading-system/config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
@@ -645,7 +645,7 @@ services:
   # 🤖 MCP Server - Model Context Protocol Integration
   mcp-server:
     build:
-      context: services/mcp-server
+      context: /tmp/viper-trading-system/services/mcp-server
       dockerfile: Dockerfile
     ports:
       - "${MCP_SERVER_PORT:-8015}:8000"
@@ -665,8 +665,8 @@ services:
       - ORDER_LIFECYCLE_MANAGER_URL=http://order-lifecycle-manager:8000
       - POSITION_SYNCHRONIZER_URL=http://position-synchronizer:8000
     volumes:
-      - ./logs:/app/logs
-      - ./config:/app/config
+      - /tmp/viper-trading-system/logs:/app/logs
+      - /tmp/viper-trading-system/config:/app/config
     depends_on:
       redis:
         condition: service_healthy
@@ -685,7 +685,7 @@ services:
   # 🤖 GitHub Manager MCP Server - GitHub Integration
   github-manager:
     build:
-      context: services/github-manager
+      context: /tmp/viper-trading-system/services/github-manager
       dockerfile: Dockerfile
     ports:
       - "${GITHUB_MANAGER_PORT:-8001}:8000"
@@ -696,7 +696,7 @@ services:
       - GITHUB_REPO=${GITHUB_REPO}
       - SERVICE_NAME=github-manager
     volumes:
-      - ./logs:/app/logs
+      - /tmp/viper-trading-system/logs:/app/logs
     networks:
       - viper-network
     restart: unless-stopped
@@ -710,7 +710,7 @@ services:
   # 📊 Trading Optimizer MCP Server - Performance Analysis
   trading-optimizer:
     build:
-      context: services/trading-optimizer
+      context: /tmp/viper-trading-system/services/trading-optimizer
       dockerfile: Dockerfile
     ports:
       - "${TRADING_OPTIMIZER_PORT:-8002}:8000"
@@ -718,7 +718,7 @@ services:
       - DOCKER_MODE=true
       - SERVICE_NAME=trading-optimizer
     volumes:
-      - ./logs:/app/logs
+      - /tmp/viper-trading-system/logs:/app/logs
     networks:
       - viper-network
     restart: unless-stopped
