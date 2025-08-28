@@ -286,14 +286,19 @@ class ComprehensiveMarketScanner:
 
     def run_comprehensive_scan(self):
         """Run comprehensive market scanning with batching"""
-        print("
-🚀 STARTING COMPREHENSIVE MARKET SCAN..."        print("🔍 Scanning ALL available trading pairs with intelligent batching..."
+        print("\n🚀 STARTING COMPREHENSIVE MARKET SCAN...")
+        print("🔍 Scanning ALL available trading pairs with intelligent batching...")
         # Fetch all available pairs
         self.all_symbols = self.fetch_all_trading_pairs()
         print(f"📊 Monitoring {len(self.all_symbols)} trading pairs")
 
-        print("
-🎯 VIPER Strategy Configuration:"        print("   • VIPER Threshold: 75+ (optimized for broader coverage)"        print("   • Risk per Trade: 2%"        print("   • Signal Types: LONG/SHORT based on momentum & VIPER score"        print("   • Update Interval: 15 seconds"        print("   • Batch Processing: 50 pairs per batch"        print("-" * 80)
+        print("\n🎯 VIPER Strategy Configuration:")
+        print("   • VIPER Threshold: 75+ (optimized for broader coverage)")
+        print("   • Risk per Trade: 2%")
+        print("   • Signal Types: LONG/SHORT based on momentum & VIPER score")
+        print("   • Update Interval: 15 seconds")
+        print("   • Batch Processing: 50 pairs per batch")
+        print("-" * 80)
 
         self.is_running = True
 
@@ -347,8 +352,8 @@ class ComprehensiveMarketScanner:
                 scan_duration = time.time() - scan_start_time
                 pairs_per_second = len(self.all_symbols) / scan_duration if scan_duration > 0 else 0
 
-                print("
-📈 SCAN PERFORMANCE:"                print(f"   Pairs Scanned: {len(self.all_symbols)}")
+                print("\n📈 SCAN PERFORMANCE:")
+                print(f"   Pairs Scanned: {len(self.all_symbols)}")
                 print(f"   Signals Generated: {len(all_signals)}")
                 print(f"   Scan Duration: {scan_duration:.2f}s")
                 print(f"   Pairs/Second: {pairs_per_second:.1f}")
@@ -363,8 +368,8 @@ class ComprehensiveMarketScanner:
                     time.sleep(next_scan_in)
 
         except KeyboardInterrupt:
-            print("
-👋 Comprehensive scan stopped by user"        except Exception as e:
+            print("\n👋 Comprehensive scan stopped by user")
+        except Exception as e:
             print(f"\n❌ Scan error: {e}")
         finally:
             self.is_running = False
@@ -372,8 +377,8 @@ class ComprehensiveMarketScanner:
 
     def display_final_statistics(self):
         """Display final session statistics"""
-        print("
-📊 COMPREHENSIVE SCAN SESSION SUMMARY"        print("=" * 60)
+        print("\n📊 COMPREHENSIVE SCAN SESSION SUMMARY")
+        print("=" * 60)
         print(f"Total Scans Completed: {self.scan_count}")
         print(f"Trading Pairs Monitored: {len(self.all_symbols)}")
         print(f"Signals Generated: {self.signals_generated}")
@@ -388,8 +393,12 @@ class ComprehensiveMarketScanner:
             error_rate = (self.error_count / self.api_call_count) * 100
             print(f"API Error Rate: {error_rate:.2f}%")
 
-        print("
-🎯 VIPER Strategy Performance:"        print("   • Comprehensive market coverage across all pairs"        print("   • Intelligent signal generation with VIPER scoring"        print("   • Real-time market analysis with rate limiting"        print("   • Batch processing for optimal performance"        print("   • Risk-controlled position sizing and management"
+        print("\n🎯 VIPER Strategy Performance:")
+        print("   • Comprehensive market coverage across all pairs")
+        print("   • Intelligent signal generation with VIPER scoring")
+        print("   • Real-time market analysis with rate limiting")
+        print("   • Batch processing for optimal performance")
+        print("   • Risk-controlled position sizing and management")
 def main():
     """Main entry point"""
     print("""

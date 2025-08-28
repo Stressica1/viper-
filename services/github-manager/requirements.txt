@@ -1,0 +1,16 @@
+# 🚀 VIPER Trading Bot - GitHub Manager Service Dependencies
+
+# Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# HTTP Client
+httpx==0.25.2
+
+# Configuration
+python-dotenv==1.0.0
+pydantic==2.5.0
+
+# Utilities
+asyncio-mqtt==0.16.1
+rich==13.7.0

@@ -20,6 +20,7 @@ import threading
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from enum import Enum
+from dataclasses import dataclass
 import redis
 import requests
 import ccxt
@@ -49,6 +50,16 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+class PositionSide(Enum):
+    LONG = "LONG"
+    SHORT = "SHORT"
+
+class OrderType(Enum):
+    MARKET = "MARKET"
+    LIMIT = "LIMIT"
+    STOP = "STOP"
+    STOP_LIMIT = "STOP_LIMIT"
+
 class OrderStatus(Enum):
     PENDING = "PENDING"
     VALIDATING = "VALIDATING"
@@ -59,11 +70,25 @@ class OrderStatus(Enum):
     REJECTED = "REJECTED"
     EXPIRED = "EXPIRED"
 
-class OrderType(Enum):
-    MARKET = "MARKET"
-    LIMIT = "LIMIT"
-    STOP = "STOP"
-    STOP_LIMIT = "STOP_LIMIT"
+@dataclass
+class OrderWithTPSL:
+    """Order structure with TP/SL/TSL support"""
+    symbol: str
+    side: PositionSide
+    size: float
+    entry_price: float
+    order_type: OrderType
+    stop_loss: Optional[float] = None
+    take_profit: Optional[float] = None
+    trailing_stop: Optional[float] = None
+    trailing_activation: Optional[float] = None
+    order_id: Optional[str] = None
+    status: OrderStatus = OrderStatus.PENDING
+    timestamp: datetime = None
+
+    def __post_init__(self):
+        if self.timestamp is None:
+            self.timestamp = datetime.now()
 
 class OrderLifecycleManager:
     """Complete order lifecycle management service"""
@@ -74,6 +99,7 @@ class OrderLifecycleManager:
         self.active_orders = {}  # Track active orders
         self.order_history = []  # Store order history
         self.position_cache = {}  # Cache current positions
+        self.tp_sl_orders = {}  # Track TP/SL orders by symbol
 
         # Statistics
         self.stats = {
@@ -497,6 +523,310 @@ class OrderLifecycleManager:
 
         return self.stats.copy()
 
+    def create_order_with_tp_sl_tsl(self, symbol: str, side: str, size: float, entry_price: float,
+                                   stop_loss: Optional[float] = None, take_profit: Optional[float] = None,
+                                   trailing_stop: Optional[float] = None, trailing_activation: Optional[float] = None) -> OrderWithTPSL:
+        """Create an order with TP/SL/TSL parameters"""
+        side_enum = PositionSide.LONG if side.upper() == 'LONG' else PositionSide.SHORT
+
+        order = OrderWithTPSL(
+            symbol=symbol,
+            side=side_enum,
+            size=size,
+            entry_price=entry_price,
+            order_type=OrderType.MARKET,
+            stop_loss=stop_loss,
+            take_profit=take_profit,
+            trailing_stop=trailing_stop,
+            trailing_activation=trailing_activation
+        )
+
+        return order
+
+    def place_tp_sl_tsl_orders(self, order: OrderWithTPSL) -> Dict[str, Any]:
+        """Place the main order and associated TP/SL/TSL orders"""
+        try:
+            results = {
+                'main_order': None,
+                'stop_loss_order': None,
+                'take_profit_order': None,
+                'trailing_stop_order': None,
+                'success': False,
+                'errors': []
+            }
+
+            # Place main market order
+            main_order_data = {
+                'symbol': order.symbol,
+                'side': order.side.value,
+                'size': order.size,
+                'price': order.entry_price,
+                'type': 'market'
+            }
+
+            main_order_id = self.submit_market_order(main_order_data)
+            if main_order_id:
+                order.order_id = main_order_id
+                order.status = OrderStatus.SUBMITTED
+                results['main_order'] = main_order_id
+                self.active_orders[main_order_id] = order
+                results['success'] = True
+                logger.info(f"✅ Placed main order for {order.symbol}: {main_order_id}")
+            else:
+                results['errors'].append("Failed to place main order")
+                return results
+
+            # Place Stop Loss order if specified
+            if order.stop_loss:
+                sl_order_data = {
+                    'symbol': order.symbol,
+                    'side': 'sell' if order.side == PositionSide.LONG else 'buy',
+                    'size': order.size,
+                    'price': order.stop_loss,
+                    'type': 'stop',
+                    'stop_price': order.stop_loss
+                }
+
+                sl_order_id = self.submit_stop_order(sl_order_data)
+                if sl_order_id:
+                    results['stop_loss_order'] = sl_order_id
+                    logger.info(f"✅ Placed SL order for {order.symbol}: {sl_order_id}")
+                else:
+                    results['errors'].append("Failed to place stop loss order")
+
+            # Place Take Profit order if specified
+            if order.take_profit:
+                tp_order_data = {
+                    'symbol': order.symbol,
+                    'side': 'sell' if order.side == PositionSide.LONG else 'buy',
+                    'size': order.size,
+                    'price': order.take_profit,
+                    'type': 'limit'
+                }
+
+                tp_order_id = self.submit_limit_order(tp_order_data)
+                if tp_order_id:
+                    results['take_profit_order'] = tp_order_id
+                    logger.info(f"✅ Placed TP order for {order.symbol}: {tp_order_id}")
+                else:
+                    results['errors'].append("Failed to place take profit order")
+
+            # Store TP/SL orders for tracking
+            self.tp_sl_orders[order.symbol] = {
+                'main_order': main_order_id,
+                'stop_loss': results.get('stop_loss_order'),
+                'take_profit': results.get('take_profit_order'),
+                'trailing_stop': None,  # Will be managed dynamically
+                'order_details': order
+            }
+
+            return results
+
+        except Exception as e:
+            logger.error(f"❌ Error placing TP/SL/TSL orders: {e}")
+            return {
+                'success': False,
+                'errors': [str(e)]
+            }
+
+    def submit_market_order(self, order_data: Dict) -> Optional[str]:
+        """Submit a market order to the exchange"""
+        try:
+            response = requests.post(
+                f"{EXCHANGE_CONNECTOR_URL}/api/orders/market",
+                json=order_data,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                return result.get('order_id')
+            else:
+                logger.error(f"❌ Failed to submit market order: {response.text}")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ Error submitting market order: {e}")
+            return None
+
+    def submit_limit_order(self, order_data: Dict) -> Optional[str]:
+        """Submit a limit order to the exchange"""
+        try:
+            response = requests.post(
+                f"{EXCHANGE_CONNECTOR_URL}/api/orders/limit",
+                json=order_data,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                return result.get('order_id')
+            else:
+                logger.error(f"❌ Failed to submit limit order: {response.text}")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ Error submitting limit order: {e}")
+            return None
+
+    def submit_stop_order(self, order_data: Dict) -> Optional[str]:
+        """Submit a stop order to the exchange"""
+        try:
+            response = requests.post(
+                f"{EXCHANGE_CONNECTOR_URL}/api/orders/stop",
+                json=order_data,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                return result.get('order_id')
+            else:
+                logger.error(f"❌ Failed to submit stop order: {response.text}")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ Error submitting stop order: {e}")
+            return None
+
+    def update_trailing_stop(self, symbol: str, current_price: float) -> Optional[str]:
+        """Update trailing stop order for a symbol"""
+        if symbol not in self.tp_sl_orders:
+            return None
+
+        order_info = self.tp_sl_orders[symbol]
+        order_details = order_info['order_details']
+
+        if not order_details.trailing_stop or not order_details.trailing_activation:
+            return None
+
+        # Calculate new trailing stop price
+        if order_details.side == PositionSide.LONG:
+            if current_price >= order_details.trailing_activation:
+                new_stop = current_price * (1 - 0.01)  # 1% trailing stop
+                if new_stop > order_details.trailing_stop:
+                    order_details.trailing_stop = new_stop
+                    # Update the trailing stop order on exchange
+                    return self.update_stop_order(order_info.get('trailing_stop'), new_stop)
+        else:
+            if current_price <= order_details.trailing_activation:
+                new_stop = current_price * (1 + 0.01)  # 1% trailing stop for shorts
+                if new_stop < order_details.trailing_stop:
+                    order_details.trailing_stop = new_stop
+                    # Update the trailing stop order on exchange
+                    return self.update_stop_order(order_info.get('trailing_stop'), new_stop)
+
+        return None
+
+    def update_stop_order(self, order_id: str, new_price: float) -> Optional[str]:
+        """Update an existing stop order with new price"""
+        try:
+            update_data = {
+                'order_id': order_id,
+                'new_price': new_price
+            }
+
+            response = requests.put(
+                f"{EXCHANGE_CONNECTOR_URL}/api/orders/stop",
+                json=update_data,
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                result = response.json()
+                return result.get('order_id')
+            else:
+                logger.error(f"❌ Failed to update stop order: {response.text}")
+                return None
+
+        except Exception as e:
+            logger.error(f"❌ Error updating stop order: {e}")
+            return None
+
+    def cancel_tp_sl_orders(self, symbol: str) -> Dict[str, Any]:
+        """Cancel all TP/SL orders for a symbol"""
+        results = {
+            'cancelled': [],
+            'failed': [],
+            'success': True
+        }
+
+        if symbol not in self.tp_sl_orders:
+            return results
+
+        order_info = self.tp_sl_orders[symbol]
+
+        # Cancel stop loss order
+        if order_info.get('stop_loss'):
+            if self.cancel_order(order_info['stop_loss']):
+                results['cancelled'].append('stop_loss')
+            else:
+                results['failed'].append('stop_loss')
+
+        # Cancel take profit order
+        if order_info.get('take_profit'):
+            if self.cancel_order(order_info['take_profit']):
+                results['cancelled'].append('take_profit')
+            else:
+                results['failed'].append('take_profit')
+
+        # Cancel trailing stop order
+        if order_info.get('trailing_stop'):
+            if self.cancel_order(order_info['trailing_stop']):
+                results['cancelled'].append('trailing_stop')
+            else:
+                results['failed'].append('trailing_stop')
+
+        if results['failed']:
+            results['success'] = False
+
+        # Remove from tracking
+        del self.tp_sl_orders[symbol]
+
+        return results
+
+    def cancel_order(self, order_id: str) -> bool:
+        """Cancel a specific order"""
+        try:
+            response = requests.delete(
+                f"{EXCHANGE_CONNECTOR_URL}/api/orders/{order_id}",
+                timeout=10
+            )
+
+            if response.status_code == 200:
+                logger.info(f"✅ Cancelled order: {order_id}")
+                return True
+            else:
+                logger.error(f"❌ Failed to cancel order {order_id}: {response.text}")
+                return False
+
+        except Exception as e:
+            logger.error(f"❌ Error cancelling order {order_id}: {e}")
+            return False
+
+    def get_tp_sl_status(self, symbol: str) -> Optional[Dict]:
+        """Get TP/SL status for a symbol"""
+        if symbol not in self.tp_sl_orders:
+            return None
+
+        order_info = self.tp_sl_orders[symbol]
+        return {
+            'symbol': symbol,
+            'main_order': order_info.get('main_order'),
+            'stop_loss': order_info.get('stop_loss'),
+            'take_profit': order_info.get('take_profit'),
+            'trailing_stop': order_info.get('trailing_stop'),
+            'order_details': {
+                'side': order_info['order_details'].side.value,
+                'size': order_info['order_details'].size,
+                'entry_price': order_info['order_details'].entry_price,
+                'stop_loss': order_info['order_details'].stop_loss,
+                'take_profit': order_info['order_details'].take_profit,
+                'trailing_stop': order_info['order_details'].trailing_stop,
+                'trailing_activation': order_info['order_details'].trailing_activation
+            }
+        }
+
     def start(self):
         """Start the order lifecycle manager"""
         try:
@@ -567,6 +897,108 @@ def create_app():
     async def test_order(signal: Dict):
         processor.process_signal(signal)
         return {"message": "Signal queued for processing"}
+
+    # TP/SL/TSL Management Endpoints
+    @app.post("/api/tp-sl-tsl/create-order")
+    async def create_tp_sl_tsl_order(request: Dict):
+        """Create and place an order with TP/SL/TSL"""
+        try:
+            data = request
+            symbol = data['symbol']
+            side = data['side']
+            size = float(data['size'])
+            entry_price = float(data['entry_price'])
+            stop_loss = data.get('stop_loss')
+            take_profit = data.get('take_profit')
+            trailing_stop = data.get('trailing_stop')
+            trailing_activation = data.get('trailing_activation')
+
+            # Create order with TP/SL/TSL
+            order = processor.create_order_with_tp_sl_tsl(
+                symbol=symbol,
+                side=side,
+                size=size,
+                entry_price=entry_price,
+                stop_loss=float(stop_loss) if stop_loss else None,
+                take_profit=float(take_profit) if take_profit else None,
+                trailing_stop=float(trailing_stop) if trailing_stop else None,
+                trailing_activation=float(trailing_activation) if trailing_activation else None
+            )
+
+            # Place the orders
+            results = processor.place_tp_sl_tsl_orders(order)
+
+            return {
+                'order': {
+                    'symbol': order.symbol,
+                    'side': order.side.value,
+                    'size': order.size,
+                    'entry_price': order.entry_price,
+                    'stop_loss': order.stop_loss,
+                    'take_profit': order.take_profit,
+                    'trailing_stop': order.trailing_stop,
+                    'trailing_activation': order.trailing_activation,
+                    'order_id': order.order_id,
+                    'status': order.status.value
+                },
+                'placement_results': results
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Error creating TP/SL/TSL order: {e}")
+            return {"error": str(e)}, 500
+
+    @app.post("/api/tp-sl-tsl/update-price")
+    async def update_trailing_stop(request: Dict):
+        """Update trailing stop based on current price"""
+        try:
+            data = request
+            symbol = data['symbol']
+            current_price = float(data['current_price'])
+
+            update_result = processor.update_trailing_stop(symbol, current_price)
+
+            return {
+                'symbol': symbol,
+                'current_price': current_price,
+                'trailing_stop_updated': update_result is not None,
+                'new_order_id': update_result
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Error updating trailing stop: {e}")
+            return {"error": str(e)}, 500
+
+    @app.get("/api/tp-sl-tsl/status/{symbol}")
+    async def get_tp_sl_status(symbol: str):
+        """Get TP/SL status for a symbol"""
+        status = processor.get_tp_sl_status(symbol)
+        if status:
+            return status
+        return {"error": f"No TP/SL orders found for {symbol}"}, 404
+
+    @app.delete("/api/tp-sl-tsl/orders/{symbol}")
+    async def cancel_tp_sl_orders(symbol: str):
+        """Cancel all TP/SL orders for a symbol"""
+        results = processor.cancel_tp_sl_orders(symbol)
+        return {
+            'symbol': symbol,
+            'results': results
+        }
+
+    @app.get("/api/tp-sl-tsl/orders")
+    async def get_all_tp_sl_orders():
+        """Get all active TP/SL orders"""
+        all_orders = {}
+        for symbol in processor.tp_sl_orders.keys():
+            status = processor.get_tp_sl_status(symbol)
+            if status:
+                all_orders[symbol] = status
+
+        return {
+            'orders': all_orders,
+            'total_symbols': len(all_orders)
+        }
 
     return app
 
