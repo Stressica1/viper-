@@ -39,7 +39,7 @@ async def test_all_integrations():
     # Test 1: Mathematical Validator
     logger.info("🧪 Testing Mathematical Validator...")
     try:
-        from utils.mathematical_validator import MathematicalValidator
+        from src.viper.utils.mathematical_validator import MathematicalValidator
         validator = MathematicalValidator()
 
         # Test array validation

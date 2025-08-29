@@ -147,8 +147,8 @@ class BacktestingLauncher:
             results = await run_backtesting_analysis(symbols, timeframes, days)
             end_time = datetime.now()
 
-            print("
-📊 COMPREHENSIVE ANALYSIS RESULTS"            print("=" * 40)
+            print("\n📊 COMPREHENSIVE ANALYSIS RESULTS")
+            print("=" * 40)
             print(f"Status: {results['status']}")
             print(f"Duration: {(end_time - start_time).total_seconds():.1f} seconds")
             print(f"Symbols Analyzed: {results['symbols_analyzed']}")
@@ -181,8 +181,8 @@ class BacktestingLauncher:
                 print(f"   Max Drawdown: {recs['max_drawdown']:.3f}")
                 print(f"   Immediate Loss Rate: {recs['immediate_loss_rate']:.1f}%")
 
-                print("
-🔧 OPTIMIZATION RECOMMENDATIONS:"                recommendations = recs.get('recommendations', {})
+                print("\n🔧 OPTIMIZATION RECOMMENDATIONS:")
+                recommendations = recs.get('recommendations', {})
 
                 if recommendations:
                     if recommendations.get('min_confidence_threshold'):

@@ -80,10 +80,10 @@ class IntegratedSystemLauncher:
             success = demo.run_full_system_demo()
 
             if success:
-                print("✅ Demo completed successfully!")")
-            print("🎉 All system components are properly integrated!")
+                print("✅ Demo completed successfully!")
+                print("🎉 All system components are properly integrated!")
             else:
-                print("❌ Demo failed - check system logs for details")")
+                print("❌ Demo failed - check system logs for details")
             return success
 
         except ImportError as e:
@@ -107,7 +107,7 @@ class IntegratedSystemLauncher:
             scanner = MasterDiagnosticScanner()
             results = scanner.run_full_diagnostic()
 
-            print("📊 Diagnostic Results:")")
+            print("📊 Diagnostic Results:")
             print(f"   System Health: {results.get('overall_health', 'unknown')}")
             print(f"   Components Scanned: {len(results.get('component_results', {}))}")
             print(f"   Issues Found: {len(results.get('issues', []))}")

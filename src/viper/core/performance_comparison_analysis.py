@@ -672,16 +672,16 @@ def run_performance_analysis():
 
         # Print key metrics
         comparison = analysis_results.get("performance_comparison", {})
-        print("
-📊 KEY PERFORMANCE METRICS:"        print("-" * 40)
+        print("\n📊 KEY PERFORMANCE METRICS:")
+        print("-" * 40)
 
         for metric, data in comparison.items():
             improvement = data.get("improvement_pct", 0)
             status = "📈" if improvement > 0 else "📉"
             print(".1%")
 
-        print("
-📊 VISUALIZATIONS SAVED TO:"        print(f"   {analyzer.visualization_path}")
+        print("\n📊 VISUALIZATIONS SAVED TO:")
+        print(f"   {analyzer.visualization_path}")
 
         return True
 
