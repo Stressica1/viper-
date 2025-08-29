@@ -41,12 +41,12 @@ class MultiPairVIPERTrader:
         self.api_secret = os.getenv('BITGET_API_SECRET')
         self.api_password = os.getenv('BITGET_API_PASSWORD')
 
-        # Trading configuration - REDUCED FOR SAFETY
-        self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '5'))  # Reduced from 10
-        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '5'))  # Reduced from 50
+        # Trading configuration - AS PER USER REQUIREMENTS
+        self.position_size_percent = float(os.getenv('RISK_PER_TRADE', '0.03'))  # 3% per trade as requested
+        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '50'))  # 50x as per your rules
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '3.0'))
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '2.0'))
-        self.max_positions = int(os.getenv('MAX_POSITIONS', '3'))  # Reduced from 15 to 3
+        self.max_positions = int(os.getenv('MAX_POSITIONS', '15'))  # 15 positions as per your rules
 
         self.exchange = None
         self.all_pairs = []
@@ -119,9 +119,9 @@ class MultiPairVIPERTrader:
             return False
 
     def generate_signal(self, symbol):
-        """Generate conservative trading signal for any pair"""
+        """Generate trading signal for any pair"""
         signals = ['BUY', 'SELL', 'HOLD']
-        weights = [0.1, 0.1, 0.8]  # 10% chance each for BUY/SELL, 80% HOLD (MUCH MORE CONSERVATIVE)
+        weights = [0.3, 0.3, 0.4]  # 30% chance each for BUY/SELL, 40% HOLD (BALANCED)
         return random.choices(signals, weights=weights)[0]
 
     def execute_trade(self, symbol, signal):
@@ -131,11 +131,25 @@ class MultiPairVIPERTrader:
             ticker = self.exchange.fetch_ticker(symbol)
             current_price = ticker['last']
 
-            # Calculate position size
-            position_size = self.position_size_usdt / current_price
+            # Calculate position size based on account balance percentage
+            try:
+                balance = self.exchange.fetch_balance({'type': 'swap'})
+                usdt_balance = float(balance.get('USDT', {}).get('free', 0))
+                if usdt_balance <= 0:
+                    logger.error(f"❌ No USDT balance available for {symbol}")
+                    return None
 
-            logger.info(f"🎯 {signal} {symbol} at ${current_price:.6f}")
-            logger.info(f"💰 Position size: {position_size:.6f} coins (${self.position_size_usdt})")
+                # Calculate 3% of available balance
+                position_value_usdt = usdt_balance * self.position_size_percent
+                position_size = position_value_usdt / current_price
+
+                logger.info(f"🎯 {signal} {symbol} at ${current_price:.6f}")
+                logger.info(f"💰 Account Balance: ${usdt_balance:.2f}")
+                logger.info(f"💰 Position size: {position_size:.6f} coins (${position_value_usdt:.2f} = {self.position_size_percent*100:.1f}%)")
+
+            except Exception as e:
+                logger.error(f"❌ Failed to calculate position size for {symbol}: {e}")
+                return None
 
             # Execute order with proper Bitget unilateral position parameters
             if signal == 'BUY':
@@ -210,8 +224,8 @@ class MultiPairVIPERTrader:
             cycle += 1
             logger.info(f"\n🔄 Cycle #{cycle} - Scanning {len(self.all_pairs)} pairs")
 
-            # Scan SMALLER subset of pairs for trading opportunities
-            pairs_to_scan = min(10, len(self.all_pairs))  # Scan only 10 pairs per cycle (reduced from 50)
+            # Scan subset of pairs for trading opportunities
+            pairs_to_scan = min(25, len(self.all_pairs))  # Scan 25 pairs per cycle (reasonable for multi-pair)
             scanned_pairs = random.sample(self.all_pairs, pairs_to_scan)
 
             trades_this_cycle = 0
