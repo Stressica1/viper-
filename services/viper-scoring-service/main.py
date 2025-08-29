@@ -34,8 +34,8 @@ LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 SERVICE_NAME = os.getenv('SERVICE_NAME', 'viper-scoring-service')
 
 # VIPER Scoring Configuration
-VIPER_THRESHOLD_HIGH = float(os.getenv('VIPER_THRESHOLD_HIGH', '85'))
-VIPER_THRESHOLD_MEDIUM = float(os.getenv('VIPER_THRESHOLD_MEDIUM', '70'))
+VIPER_THRESHOLD_HIGH = float(os.getenv('VIPER_THRESHOLD_HIGH', '75'))  # Lowered from 85
+VIPER_THRESHOLD_MEDIUM = float(os.getenv('VIPER_THRESHOLD_MEDIUM', '60'))  # Lowered from 70
 SIGNAL_COOLDOWN = int(os.getenv('SIGNAL_COOLDOWN', '300'))  # 5 minutes
 MAX_SIGNALS_PER_SYMBOL = int(os.getenv('MAX_SIGNALS_PER_SYMBOL', '3'))
 
@@ -69,10 +69,10 @@ class VIPERScoringService:
         self.signal_history = {}  # Track signal history
         self.last_signal_time = {}  # Cooldown tracking
         self.scoring_weights = {
-            'volume_score': 0.30,      # Volume importance
-            'price_score': 0.30,       # Price momentum
-            'external_score': 0.20,    # Market microstructure
-            'range_score': 0.20        # Volatility/range
+            'volume_score': 0.25,      # Volume importance (reduced from 30%)
+            'price_score': 0.30,       # Price momentum (reduced from 35%)
+            'external_score': 0.30,    # Market microstructure (increased from 20%)
+            'range_score': 0.15        # Volatility/range (unchanged)
         }
 
         # Scoring parameters
@@ -166,36 +166,98 @@ class VIPERScoringService:
             logger.error(f"❌ Error calculating price score for {symbol}: {e}")
             return 50.0
 
+    def calculate_execution_cost(self, market_data: Dict, position_size_usd: float = 5000) -> float:
+        """Calculate enhanced execution cost including spread cost and market impact"""
+        try:
+            ticker = market_data.get('ticker', {})
+            orderbook = market_data.get('orderbook', {})
+            
+            # Get spread
+            bids = orderbook.get('bids', [])
+            asks = orderbook.get('asks', [])
+            
+            if not bids or not asks:
+                return 10.0  # High cost for no orderbook data
+                
+            best_bid = bids[0][0] if isinstance(bids[0], list) else bids[0]
+            best_ask = asks[0][0] if isinstance(asks[0], list) else asks[0]
+            spread = best_ask - best_bid
+            current_price = ticker.get('price', (best_bid + best_ask) / 2)
+            
+            if current_price <= 0:
+                return 10.0
+            
+            # Spread cost (half spread for market order)
+            spread_cost = position_size_usd * (spread / current_price) / 2
+            
+            # Market impact using square-root law
+            volume = ticker.get('volume', 0) or ticker.get('quoteVolume', 0)
+            if volume <= 0:
+                volume = 100_000  # Conservative fallback
+                
+            market_impact_rate = 0.0001 * (position_size_usd / max(volume, 100_000)) ** 0.5
+            market_impact_cost = position_size_usd * market_impact_rate
+            
+            total_execution_cost = spread_cost + market_impact_cost
+            
+            return max(0.01, total_execution_cost)  # Minimum 1 cent
+            
+        except Exception as e:
+            logger.error(f"❌ Error calculating execution cost: {e}")
+            return 5.0  # Conservative default
+
     def calculate_external_score(self, market_data: Dict, symbol: str) -> float:
-        """Calculate external factors score (market microstructure)"""
+        """Calculate execution cost-aware external factors score"""
         try:
             ticker = market_data.get('ticker', {})
             orderbook = market_data.get('orderbook', {})
 
-            external_score = 50.0  # Base neutral score
+            # Calculate execution cost first
+            execution_cost = self.calculate_execution_cost(market_data)
+            
+            # Execution Cost-Aware External Score (0-100)
+            if execution_cost >= 3.0:
+                external_score = 0      # Zero score for high execution cost
+            elif execution_cost >= 2.0:
+                external_score = 30     # Low score for moderate execution cost  
+            elif execution_cost >= 1.0:
+                external_score = 60     # Medium score
+            else:
+                # For low execution costs, apply improved sensitivity to spread
+                bids = orderbook.get('bids', [])
+                asks = orderbook.get('asks', [])
+                
+                if bids and asks and len(bids) > 0 and len(asks) > 0:
+                    best_bid = bids[0][0] if isinstance(bids[0], list) else bids[0]
+                    best_ask = asks[0][0] if isinstance(asks[0], list) else asks[0]
+                    current_price = ticker.get('price', (best_bid + best_ask) / 2)
 
-            # Spread analysis
-            bids = orderbook.get('bids', [])
-            asks = orderbook.get('asks', [])
+                    if current_price > 0:
+                        spread = (best_ask - best_bid) / current_price
+                        # Improved sensitivity formula
+                        external_score = max(100 - (spread * 5000), 50)
+                    else:
+                        external_score = 50
+                else:
+                    external_score = 50
 
-            if bids and asks and len(bids) > 0 and len(asks) > 0:
-                best_bid = bids[0][0] if isinstance(bids[0], list) else bids[0]
-                best_ask = asks[0][0] if isinstance(asks[0], list) else asks[0]
-                current_price = ticker.get('price', (best_bid + best_ask) / 2)
+            # Additional market microstructure analysis
+            if orderbook.get('bids') and orderbook.get('asks'):
+                bids = orderbook['bids']
+                asks = orderbook['asks']
+                
+                # Order book depth analysis
+                total_bid_volume = sum([bid[1] if isinstance(bid, list) else 0 for bid in bids[:5]])
+                total_ask_volume = sum([ask[1] if isinstance(ask, list) else 0 for ask in asks[:5]])
 
-                if current_price > 0:
-                    spread = (best_ask - best_bid) / current_price * 100  # Spread as percentage
-                    spread_score = max(0, 100 - spread * 1000)  # Lower spread = higher score
-                    external_score = spread_score * 0.6
-
-            # Order book depth analysis
-            total_bid_volume = sum([bid[1] if isinstance(bid, list) else 0 for bid in bids[:5]])
-            total_ask_volume = sum([ask[1] if isinstance(ask, list) else 0 for ask in asks[:5]])
-
-            if total_bid_volume + total_ask_volume > 0:
-                depth_balance = abs(total_bid_volume - total_ask_volume) / (total_bid_volume + total_ask_volume)
-                depth_score = 100 - (depth_balance * 100)  # Balanced order book = higher score
-                external_score += depth_score * 0.4
+                if total_bid_volume + total_ask_volume > 0:
+                    depth_balance = abs(total_bid_volume - total_ask_volume) / (total_bid_volume + total_ask_volume)
+                    depth_score = max(0, 100 - depth_balance * 100)  # Balanced book = higher score
+                    external_score = external_score * 0.8 + depth_score * 0.2
+            
+            # Store execution cost for signal generation
+            self._last_execution_costs = getattr(self, '_last_execution_costs', {})
+            self._last_execution_costs[symbol] = execution_cost
 
             return max(0, min(100, external_score))
 
@@ -203,13 +265,47 @@ class VIPERScoringService:
             logger.error(f"❌ Error calculating external score for {symbol}: {e}")
             return 50.0
 
+    def calculate_s1s2r1r2_levels(self, market_data: Dict, symbol: str) -> Dict[str, float]:
+        """Calculate S1S2R1R2 support and resistance levels"""
+        try:
+            ticker = market_data.get('ticker', {})
+            ohlcv_data = market_data.get('ohlcv', {}).get('ohlcv', [])
+            
+            high = ticker.get('high', 0)
+            low = ticker.get('low', 0)
+            close = ticker.get('close', 0) or ticker.get('price', 0)
+            
+            if not high or not low or not close:
+                return {'S2': 0, 'S1': 0, 'R1': 0, 'R2': 0, 'pivot': 0}
+            
+            # Calculate pivot point
+            pivot = (high + low + close) / 3
+            
+            # Calculate support and resistance levels
+            r1 = 2 * pivot - low    # First resistance
+            s1 = 2 * pivot - high   # First support
+            r2 = pivot + (high - low)  # Second resistance
+            s2 = pivot - (high - low)  # Second support
+            
+            return {
+                'S2': s2,
+                'S1': s1,
+                'pivot': pivot,
+                'R1': r1,
+                'R2': r2
+            }
+            
+        except Exception as e:
+            logger.error(f"❌ Error calculating S1S2R1R2 levels for {symbol}: {e}")
+            return {'S2': 0, 'S1': 0, 'R1': 0, 'R2': 0, 'pivot': 0}
+
     def calculate_range_score(self, market_data: Dict, symbol: str) -> float:
-        """Calculate range/volatility score component"""
+        """Calculate enhanced range/volatility score with S1S2R1R2 predictive ranges"""
         try:
             ticker = market_data.get('ticker', {})
             high = ticker.get('high', 0)
             low = ticker.get('low', 0)
-            current_price = ticker.get('price', 0)
+            current_price = ticker.get('price', 0) or ticker.get('close', 0)
 
             if current_price <= 0 or high <= 0 or low <= 0:
                 return 50.0
@@ -235,9 +331,64 @@ class VIPERScoringService:
                     range_score = 50 + (current_range_ratio - 1) * 25  # Center around 50
 
             # Incorporate current daily range
-            range_score = (range_score * 0.7) + (min(daily_range * 2, 100) * 0.3)
+            base_range_score = (range_score * 0.7) + (min(daily_range * 2, 100) * 0.3)
 
-            return max(0, min(100, range_score))
+            # S1S2R1R2 Predictive Ranges Strategy Enhancement
+            s1s2r1r2_levels = self.calculate_s1s2r1r2_levels(market_data, symbol)
+            predictive_score = 50.0  # Base score
+            
+            if all(level > 0 for level in s1s2r1r2_levels.values()):
+                pivot = s1s2r1r2_levels['pivot']
+                s1 = s1s2r1r2_levels['S1']
+                s2 = s1s2r1r2_levels['S2']
+                r1 = s1s2r1r2_levels['R1']
+                r2 = s1s2r1r2_levels['R2']
+                
+                # Determine position relative to key levels
+                if current_price <= s2:
+                    # Below S2 - oversold, potential bounce
+                    predictive_score = 85
+                elif current_price <= s1:
+                    # Between S2 and S1 - strong support zone
+                    predictive_score = 75
+                elif current_price <= pivot:
+                    # Between S1 and Pivot - mild support
+                    predictive_score = 60
+                elif current_price <= r1:
+                    # Between Pivot and R1 - mild resistance  
+                    predictive_score = 60
+                elif current_price <= r2:
+                    # Between R1 and R2 - strong resistance zone
+                    predictive_score = 75
+                else:
+                    # Above R2 - overbought, potential reversal
+                    predictive_score = 85
+                    
+                # Additional scoring based on proximity to key levels
+                level_distances = [
+                    abs(current_price - s2) / current_price,
+                    abs(current_price - s1) / current_price,
+                    abs(current_price - pivot) / current_price,
+                    abs(current_price - r1) / current_price,
+                    abs(current_price - r2) / current_price
+                ]
+                
+                min_distance = min(level_distances)
+                if min_distance < 0.01:  # Within 1% of key level
+                    predictive_score += 15  # Boost for being near key levels
+                elif min_distance < 0.02:  # Within 2% of key level
+                    predictive_score += 10
+                elif min_distance < 0.03:  # Within 3% of key level
+                    predictive_score += 5
+
+            # Combine base range score with predictive ranges score
+            final_range_score = (base_range_score * 0.6) + (predictive_score * 0.4)
+            
+            # Store S1S2R1R2 levels for signal generation
+            self._last_s1s2r1r2_levels = getattr(self, '_last_s1s2r1r2_levels', {})
+            self._last_s1s2r1r2_levels[symbol] = s1s2r1r2_levels
+
+            return max(0, min(100, final_range_score))
 
         except Exception as e:
             logger.error(f"❌ Error calculating range score for {symbol}: {e}")
@@ -270,6 +421,22 @@ class VIPERScoringService:
             else:
                 strength = SignalStrength.WEAK
 
+            # Get execution cost and S1S2R1R2 levels from stored calculations
+            execution_cost = getattr(self, '_last_execution_costs', {}).get(symbol, 0)
+            s1s2r1r2_levels = getattr(self, '_last_s1s2r1r2_levels', {}).get(symbol, {})
+            
+            # Hard execution cost limit - reject signals with high costs
+            if execution_cost >= 3.0:
+                logger.warning(f"🚫 Signal rejected for {symbol}: execution cost ${execution_cost:.2f} >= $3.00")
+                return {
+                    'overall_score': 0.0,
+                    'strength': SignalStrength.WEAK.value,
+                    'execution_cost': round(execution_cost, 2),
+                    'rejected_reason': f'High execution cost: ${execution_cost:.2f}',
+                    'timestamp': datetime.now().isoformat(),
+                    'symbol': symbol
+                }
+
             return {
                 'overall_score': round(overall_score, 2),
                 'strength': strength.value,
@@ -279,6 +446,8 @@ class VIPERScoringService:
                     'external_score': round(external_score, 2),
                     'range_score': round(range_score, 2)
                 },
+                'execution_cost': round(execution_cost, 2),
+                's1s2r1r2_levels': {k: round(v, 4) for k, v in s1s2r1r2_levels.items() if v > 0},
                 'weights': self.scoring_weights,
                 'timestamp': datetime.now().isoformat(),
                 'symbol': symbol
@@ -311,25 +480,54 @@ class VIPERScoringService:
             if len(symbol_signals) >= MAX_SIGNALS_PER_SYMBOL:
                 return None
 
-            # Calculate VIPER score
+            # Calculate VIPER score (includes execution cost check)
             viper_result = self.calculate_viper_score(market_data, symbol)
             overall_score = viper_result['overall_score']
+
+            # Check if signal was rejected due to high execution cost
+            if 'rejected_reason' in viper_result:
+                logger.info(f"🚫 Signal rejected for {symbol}: {viper_result['rejected_reason']}")
+                return None
 
             if overall_score < VIPER_THRESHOLD_MEDIUM:
                 return None
 
-            # Determine signal direction
+            # Get execution cost and S1S2R1R2 levels
+            execution_cost = viper_result.get('execution_cost', 0)
+            s1s2r1r2_levels = viper_result.get('s1s2r1r2_levels', {})
+
+            # Determine signal direction using enhanced logic
             ticker = market_data.get('ticker', {})
-            price_change = ticker.get('price_change', 0)
+            price_change = ticker.get('price_change', 0) or ticker.get('change', 0)
             current_price = ticker.get('price', 0)
 
             # Generate signal based on score and price action
             signal_type = None
             confidence = overall_score / 100.0
+            
+            # Enhanced signal direction with S1S2R1R2 strategy
+            s1s2r1r2_signal = None
+            if s1s2r1r2_levels and current_price > 0:
+                s1 = s1s2r1r2_levels.get('S1', 0)
+                s2 = s1s2r1r2_levels.get('S2', 0)
+                r1 = s1s2r1r2_levels.get('R1', 0)
+                r2 = s1s2r1r2_levels.get('R2', 0)
+                pivot = s1s2r1r2_levels.get('pivot', 0)
+                
+                if current_price <= s2 and current_price > s2 * 0.98:  # Near S2, potential bounce
+                    s1s2r1r2_signal = SignalType.LONG
+                elif current_price <= s1 and current_price > s1 * 0.99:  # Near S1, support
+                    s1s2r1r2_signal = SignalType.LONG
+                elif current_price >= r2 and current_price < r2 * 1.02:  # Near R2, potential reversal
+                    s1s2r1r2_signal = SignalType.SHORT
+                elif current_price >= r1 and current_price < r1 * 1.01:  # Near R1, resistance
+                    s1s2r1r2_signal = SignalType.SHORT
 
             if overall_score >= VIPER_THRESHOLD_HIGH:
-                # High confidence signal
-                if price_change > 0.3:
+                # High confidence signal - use S1S2R1R2 if available, otherwise price change
+                if s1s2r1r2_signal:
+                    signal_type = s1s2r1r2_signal
+                elif price_change > 0.3:
                     signal_type = SignalType.LONG
                 elif price_change < -0.3:
                     signal_type = SignalType.SHORT
@@ -341,7 +539,9 @@ class VIPERScoringService:
                         signal_type = SignalType.SHORT
             elif overall_score >= VIPER_THRESHOLD_MEDIUM:
                 # Medium confidence signal
-                if price_change > 0.5:
+                if s1s2r1r2_signal:
+                    signal_type = s1s2r1r2_signal
+                elif price_change > 0.5:
                     signal_type = SignalType.LONG
                 elif price_change < -0.5:
                     signal_type = SignalType.SHORT
@@ -349,15 +549,21 @@ class VIPERScoringService:
             if not signal_type:
                 return None
 
-            # Create signal
+            # Determine order type based on execution cost
+            order_type = "LIMIT" if execution_cost >= 1.5 else "MARKET"
+
+            # Create enhanced signal
             signal = {
                 'id': f"{symbol}_{int(current_time.timestamp())}",
                 'symbol': symbol,
                 'type': signal_type.value,
+                'order_type': order_type,
                 'viper_score': viper_result,
                 'confidence': round(confidence, 3),
                 'price': current_price,
                 'price_change': price_change,
+                'execution_cost': execution_cost,
+                's1s2r1r2_levels': s1s2r1r2_levels,
                 'market_data': market_data,
                 'timestamp': current_time.isoformat(),
                 'expires_at': (current_time + timedelta(minutes=30)).isoformat(),  # 30-minute expiry
