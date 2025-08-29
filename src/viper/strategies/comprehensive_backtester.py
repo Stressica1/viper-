@@ -15,23 +15,9 @@ Features:
 
 import numpy as np
 import pandas as pd
-import requests
-import json
-import time
-import sys
-import asyncio
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional, Any
 import logging
-import matplotlib.pyplot as plt
-import seaborn as sns
-from scipy import stats
 import warnings
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, asdict
 import multiprocessing as mp
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_squared_error, r2_score
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -259,7 +245,7 @@ class HighPerformanceBacktester:
         for _ in range(iterations):
             # Generate random walk with noise
             noise_factor = np.random.uniform(0.8, 1.2)
-            shuffled_returns = np.random.choice(returns, size=len(returns), replace=True)
+            shuffled_returns = np.secrets.choice(returns, size=len(returns), replace=True)
             simulated_prices = prices[0] * np.exp(np.cumsum(shuffled_returns * noise_factor))
 
             # Run backtest on simulated data

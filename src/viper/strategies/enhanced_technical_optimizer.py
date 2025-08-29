@@ -732,20 +732,14 @@ async def test_enhanced_optimizer():
     symbols = ['BTCUSDT', 'ETHUSDT']
 
     for symbol in symbols:
-        print(f"\n🧪 Testing Enhanced Technical Analysis for {symbol}")
-        print("-" * 50)
 
         signal = await optimizer.analyze_enhanced_trend(symbol)
 
         if signal:
-            print(f"Direction: {signal.direction.value}")
-            print(f"Strength: {signal.strength.value}/5")
-            print(f"Confidence: {signal.confidence:.3f}")
             print(f"Confluence Score: {signal.confluence_score:.3f}")
             print(f"Patterns Detected: {signal.pattern_signals}")
             print(f"Timeframe Alignment: {[(tf, d.value) for tf, d in signal.timeframe_alignment.items()]}")
         else:
-            print("❌ No signal generated")
 
 if __name__ == "__main__":
     asyncio.run(test_enhanced_optimizer())

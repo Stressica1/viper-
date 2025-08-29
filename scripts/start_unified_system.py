@@ -105,7 +105,7 @@ class UnifiedSystemStartup:
                 logger.error("❌ Docker not available")
                 return False
             logger.info("✅ Docker: AVAILABLE")
-        except:
+        except Exception:
             logger.error("❌ Docker not installed or not in PATH")
             return False
         
@@ -202,7 +202,7 @@ class UnifiedSystemStartup:
                     logger.info("✅ MCP Server: READY")
                 else:
                     logger.warning("⚠️ MCP Server: NOT RESPONDING")
-            except:
+            except Exception:
                 logger.warning("⚠️ MCP Server: CONNECTION FAILED")
             
             # Initialize GitHub MCP integration
@@ -278,7 +278,7 @@ class UnifiedSystemStartup:
                 lines = result.stdout.strip().split('\n')[1:]  # Skip header
                 running_count = sum(1 for line in lines if 'running' in line.lower())
                 logger.info(f"🐳 Docker Services: {running_count} running")
-        except:
+        except Exception:
             logger.info("🐳 Docker Services: STATUS UNKNOWN")
         
         logger.info("=" * 70)
@@ -286,7 +286,6 @@ class UnifiedSystemStartup:
 def main():
     """Main entry point for unified system startup"""
     print("🔒 VIPER UNIFIED SYSTEM WITH MANDATORY DOCKER & MCP")
-    print("=" * 70)
     
     startup = UnifiedSystemStartup()
     
@@ -306,22 +305,17 @@ def main():
         result = startup.execute_module(module_name, operation)
         
         if result is False:
-            print("💀 MODULE EXECUTION FAILED")
             sys.exit(1)
         else:
-            print("🎉 MODULE EXECUTION COMPLETED")
             
     else:
         # Interactive mode - start full system
         print("🔧 Starting full system in interactive mode...")
         
         if startup.start_complete_system():
-            print("\n🎉 SYSTEM READY!")
-            print("Available commands:")
             print("  • startup.show_system_status()        - Show system status")
             print("  • startup.execute_module('main')      - Start main trading bot")
             print("  • startup.get_available_modules()     - List available modules")
-            print("\nStarting interactive mode...")
             
             # Show status and available modules
             startup.show_system_status()
@@ -342,9 +336,7 @@ def main():
                         print("Available commands: status, run <module>, exit")
                         
             except KeyboardInterrupt:
-                print("\n👋 Shutting down system...")
         else:
-            print("💀 SYSTEM STARTUP FAILED")
             sys.exit(1)
 
 if __name__ == "__main__":

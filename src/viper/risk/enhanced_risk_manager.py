@@ -13,19 +13,11 @@ This enhanced version includes:
 """
 
 import os
-import json
-import time
-import math
 import logging
 import asyncio
 import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
-import threading
 import ccxt
 
 logging.basicConfig(level=logging.INFO)
@@ -602,8 +594,6 @@ async def test_enhanced_risk_manager():
         portfolio_value=10000
     )
 
-    print("🧪 Enhanced Risk Manager Test")
-    print("=" * 40)
     print(f"Position Size Calculation: {position_calc}")
 
     # Test portfolio risk assessment

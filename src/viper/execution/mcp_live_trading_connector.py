@@ -16,12 +16,8 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
 from pathlib import Path
-import httpx
 import websockets
-import requests
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -563,8 +559,6 @@ async def get_mcp_trading_status() -> Dict[str, Any]:
 # Main execution
 async def main():
     """Main MCP trading system execution"""
-    print("🔗 MCP LIVE TRADING CONNECTOR")
-    print("=" * 60)
 
     connector = MCPLiveTradingConnector()
 

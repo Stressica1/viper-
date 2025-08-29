@@ -496,8 +496,6 @@ class SystemSyncIntegrationTask:
 
 def main():
     """Main execution function"""
-    print("🔄 VIPER SYSTEM SYNC & INTEGRATION TASK")
-    print("=" * 60)
 
     task = SystemSyncIntegrationTask()
 
@@ -506,8 +504,6 @@ def main():
         import asyncio
         results = asyncio.run(task.run_complete_sync_task())
 
-        print("\n" + "=" * 60)
-        print("🎯 FINAL RESULT:")
 
         if "error" not in results:
             merged = len(results.get("merge_results", {}).get("merged_branches", []))
@@ -515,17 +511,11 @@ def main():
             working = results.get("working_components", 0)
             total = results.get("total_components", 0)
 
-            print(f"✅ Branches Merged: {merged}")
-            print(f"✅ Files Updated: {files}")
-            print(f"✅ Components Working: {working}/{total}")
-            print("🎉 SYSTEM SYNC & INTEGRATION COMPLETE!")
             return 0
         else:
-            print(f"❌ Error: {results['error']}")
             return 1
 
     except Exception as e:
-        print(f"❌ Fatal error: {e}")
         return 1
 
 if __name__ == "__main__":

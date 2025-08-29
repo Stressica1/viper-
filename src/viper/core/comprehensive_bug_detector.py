@@ -157,8 +157,6 @@ class ComprehensiveBugDetector:
 
     async def run_comprehensive_bug_scan(self) -> Dict[str, Any]:
         """Run complete bug detection scan"""
-        print("🔍 COMPREHENSIVE BUG DETECTION SCAN")
-        print("=" * 80)
 
         start_time = time.time()
         scan_results = {
@@ -173,33 +171,21 @@ class ComprehensiveBugDetector:
 
         try:
             # Phase 1: Static Code Analysis
-            print("\n📝 PHASE 1: STATIC CODE ANALYSIS")
-            print("-" * 50)
             await self._static_code_analysis()
 
             # Phase 2: Security Vulnerability Scan
-            print("\n🔒 PHASE 2: SECURITY VULNERABILITY SCAN")
-            print("-" * 50)
             await self._security_vulnerability_scan()
 
             # Phase 3: Performance Issue Detection
-            print("\n⚡ PHASE 3: PERFORMANCE ISSUE DETECTION")
-            print("-" * 50)
             await self._performance_issue_detection()
 
             # Phase 4: Logic Error Analysis
-            print("\n🧠 PHASE 4: LOGIC ERROR ANALYSIS")
-            print("-" * 50)
             await self._logic_error_analysis()
 
             # Phase 5: Integration Issue Detection
-            print("\n🔗 PHASE 5: INTEGRATION ISSUE DETECTION")
-            print("-" * 50)
             await self._integration_issue_detection()
 
             # Phase 6: Data Validation Analysis
-            print("\n📊 PHASE 6: DATA VALIDATION ANALYSIS")
-            print("-" * 50)
             await self._data_validation_analysis()
 
             # Generate comprehensive report
@@ -383,7 +369,6 @@ class ComprehensiveBugDetector:
             except Exception as e:
                 logger.warning(f"Error in security scan for {file_path}: {e}")
 
-        print("✅ Security vulnerability scan complete")
 
     async def _analyze_line_for_security(self, file_path: Path, line_num: int, line: str):
         """Analyze line for security vulnerabilities"""
@@ -461,7 +446,6 @@ class ComprehensiveBugDetector:
             except Exception as e:
                 logger.warning(f"Error in performance analysis for {file_path}: {e}")
 
-        print("✅ Performance issue detection complete")
 
     async def _analyze_line_for_performance(self, file_path: Path, line_num: int, line: str, context: str):
         """Analyze line for performance issues"""
@@ -535,7 +519,6 @@ class ComprehensiveBugDetector:
             except Exception as e:
                 logger.warning(f"Error in logic analysis for {file_path}: {e}")
 
-        print("✅ Logic error analysis complete")
 
     async def _analyze_file_logic(self, file_path: Path):
         """Analyze file for logical errors using AST"""
@@ -579,7 +562,6 @@ class ComprehensiveBugDetector:
         # Check for database integration issues
         await self._check_database_integration()
 
-        print("✅ Integration issue detection complete")
 
     async def _check_import_issues(self):
         """Check for import-related issues in Python files"""
@@ -708,7 +690,6 @@ class ComprehensiveBugDetector:
             except Exception as e:
                 logger.warning(f"Error in data validation analysis for {file_path}: {e}")
 
-        print("✅ Data validation analysis complete")
 
     async def _analyze_data_validation(self, file_path: Path, content: str):
         """Analyze file for data validation issues"""
@@ -835,9 +816,6 @@ class ComprehensiveBugDetector:
 
     def _display_scan_summary(self, scan_results: Dict[str, Any]):
         """Display scan summary to console"""
-        print("\\n" + "=" * 80)
-        print("🐛 COMPREHENSIVE BUG SCAN RESULTS")
-        print("=" * 80)
 
         stats = scan_results['scan_stats']
         severity = scan_results['severity_breakdown']
@@ -848,22 +826,15 @@ class ComprehensiveBugDetector:
         print(f"🐛 Bugs Found: {len(scan_results['bugs_found'])}")
         print(f"⏱️ Scan Duration: {stats['scan_duration']:.2f}s")
 
-        print("\\n🚨 SEVERITY BREAKDOWN:")
         for sev, count in severity.items():
             if count > 0:
                 icon = {'Critical': '🚨', 'High': '⚠️', 'Medium': '🟡', 'Low': 'ℹ️', 'Info': '📝'}.get(sev, '❓')
-                print(f"   {icon} {sev}: {count}")
 
-        print("\\n🔍 TOP BUG TYPES:")
         sorted_types = sorted(bug_types.items(), key=lambda x: x[1], reverse=True)
         for bug_type, count in sorted_types[:10]:  # Show top 10
-            print(f"   • {bug_type}: {count}")
 
-        print("\\n💡 KEY RECOMMENDATIONS:")
         for i, rec in enumerate(scan_results['recommendations'][:5], 1):  # Show top 5
-            print(f"   {i}. {rec}")
 
-        print("\\n" + "=" * 80)
 
         if severity['Critical'] > 0 or severity['High'] > 0:
             print("🚨 ACTION REQUIRED: Critical/High severity issues detected!")
@@ -951,8 +922,6 @@ class LogicErrorAnalyzer(ast.NodeVisitor):
 # Example usage and testing functions
 async def main():
     """Main bug detection function"""
-    print("🐛 COMPREHENSIVE BUG DETECTOR")
-    print("=" * 80)
 
     detector = ComprehensiveBugDetector()
     results = await detector.run_comprehensive_bug_scan()
@@ -961,9 +930,7 @@ async def main():
     severity_breakdown = results['severity_breakdown']
     total_bugs = sum(severity_breakdown.values())
 
-    print("\\n🎯 SCAN SUMMARY:")
     print(f"   Python Files Analyzed: {results['scan_stats']['files_scanned']}")
-    print(f"   Total Bugs Found: {total_bugs}")
     print(f"   Critical Issues: {severity_breakdown.get('Critical', 0)}")
     print(f"   High Priority: {severity_breakdown.get('High', 0)}")
     print(f"   Medium Priority: {severity_breakdown.get('Medium', 0)}")

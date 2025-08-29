@@ -359,11 +359,6 @@ async def main():
 
     args = parser.parse_args()
 
-    print("🔗 VIPER COMPLETE MCP TRADING INTEGRATION")
-    print("=" * 60)
-    print(f"Mode: {args.mode}")
-    print(f"Config: {args.config or 'default'}")
-    print("=" * 60)
 
     integration = CompleteMCPTradingIntegration()
 
@@ -381,7 +376,6 @@ async def main():
             # Get system status
             await integration.initialize_all_components()
             status = await integration.get_complete_system_status()
-            print(json.dumps(status, indent=2))
 
         elif args.mode == 'monitor':
             # Start monitoring mode
@@ -395,18 +389,14 @@ async def main():
             await integration.initialize_all_components()
             success = await integration.emergency_system_shutdown()
             if success:
-                print("✅ Emergency shutdown completed")
             else:
-                print("❌ Emergency shutdown failed")
                 return 1
 
     except KeyboardInterrupt:
-        print("\n🛑 Shutdown requested by user")
         if args.mode == 'start':
             await integration.emergency_system_shutdown()
     except Exception as e:
         logger.error(f"❌ Integration error: {e}")
-        print(f"❌ ERROR: {e}")
         return 1
 
     return 0

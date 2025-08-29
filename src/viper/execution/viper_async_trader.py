@@ -14,21 +14,15 @@ import asyncio
 import aiohttp
 import logging
 import ccxt.pro as ccxt
-import json
 import random
+import secrets
 import time
-import numpy as np
-import pandas as pd
 from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
 from dataclasses import dataclass
-from concurrent.futures import ThreadPoolExecutor
 # Import enhanced components with fallbacks
 try:
     from enhanced_system_integrator import get_integrator
-    from enhanced_technical_optimizer import EnhancedTechnicalOptimizer, EnhancedTrendDirection, EnhancedTrendStrength
-    from optimized_market_data_streamer import OptimizedMarketDataStreamer
-    from performance_monitoring_system import PerformanceMonitoringSystem
     ENHANCED_TECHNICAL_AVAILABLE = True
     OPTIMIZED_DATA_AVAILABLE = True
     PERFORMANCE_MONITORING_AVAILABLE = True
@@ -378,7 +372,7 @@ class ViperAsyncTrader:
 
     def create_job(self, job_type: str, **kwargs) -> TradingJob:
         """Create a new trading job"""
-        job_id = f"{job_type}_{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
+        job_id = f"{job_type}_{int(time.time() * 1000)}_{secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1000, 9999)}"
         
         job = TradingJob(
             job_id=job_id,
@@ -593,7 +587,7 @@ class ViperAsyncTrader:
             elif price_score < 40:  # Bearish momentum
                 recommended_side = 'sell'
             else:
-                recommended_side = random.choice(['buy', 'sell'])
+                recommended_side = secrets.choice(['buy', 'sell'])
                 confidence *= 0.8  # Reduce confidence for random direction
             
             # Enhanced threshold with trend consideration
@@ -710,6 +704,7 @@ class ViperAsyncTrader:
             
             # Add some randomness to simulate real market microstructure
             import random
+import secrets
             microstructure_factor = random.uniform(0.8, 1.2)
             base_score *= microstructure_factor
             

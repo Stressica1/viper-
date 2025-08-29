@@ -17,9 +17,6 @@ import os
 import sys
 import asyncio
 import logging
-from datetime import datetime, timedelta
-import json
-from typing import Dict, List, Any
 from pathlib import Path
 
 # Add project root to path
@@ -301,8 +298,6 @@ class MasterLiveTradingJob:
 
 async def main():
     """Main execution function"""
-    print("🎯 VIPER MASTER LIVE TRADING JOB")
-    print("=" * 60)
 
     job = MasterLiveTradingJob()
 
@@ -311,20 +306,12 @@ async def main():
 
         if success:
             print("🎉 SUCCESS: Complete VIPER system is now running!")
-            print("📊 Features Active:")
-            print("   • Mathematical Validation: ✅")
-            print("   • Balance Fetching: ✅")
-            print("   • TP/SL/TSL Management: ✅")
-            print("   • Scoring & Scanning: ✅")
-            print("   • Risk Management: ✅")
-            print("   • Live Trading: ✅")
         else:
             print("❌ FAILURE: System check failed - check logs for details")
             return 1
 
     except Exception as e:
         logger.error(f"❌ Master job failed: {e}")
-        print(f"❌ ERROR: {e}")
         return 1
 
     return 0

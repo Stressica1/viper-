@@ -1232,9 +1232,7 @@ def main():
         brain = MCPBrainController()
         brain.run()
     except KeyboardInterrupt:
-        print("\n🧠 Brain Controller shutting down...")
     except Exception as e:
-        print(f"❌ Brain Controller failed to start: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -29,12 +29,9 @@ import importlib
 import importlib.util
 import traceback
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from collections import defaultdict
-import subprocess
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import logging
 
@@ -391,7 +388,7 @@ class ComprehensiveSystemValidator:
             ]
             
             return any(pattern in content for pattern in port_patterns)
-        except:
+        except Exception:
             return False
     
     def _check_service_dependencies(self, service_dir: Path) -> bool:
@@ -631,28 +628,20 @@ class ComprehensiveSystemValidator:
 
 def main():
     """Main entry point"""
-    print("🔍 VIPER COMPREHENSIVE SYSTEM VALIDATOR")
-    print("=" * 80)
     print("Validating EVERY function and microservice in the system...")
-    print()
     
     try:
         validator = ComprehensiveSystemValidator()
         report = validator.run_comprehensive_validation()
         
-        print("\n" + "=" * 80)
-        print("📊 VALIDATION COMPLETE!")
-        print("=" * 80)
         print(f"✅ Files Validated: {report['validation_summary']['total_files']}")
         print(f"🔧 Functions Validated: {report['validation_summary']['total_functions']}")
         print(f"🏗️ Microservices Validated: {report['validation_summary']['total_microservices']}")
         print(f"🔨 Fixes Applied: {report['validation_summary']['fixes_applied']}")
-        print()
         print(f"📈 Syntax Success Rate: {report['syntax_validation']['success_rate']:.1f}%")
         print(f"📈 Import Success Rate: {report['import_validation']['success_rate']:.1f}%") 
         print(f"📈 Function Success Rate: {report['function_validation']['success_rate']:.1f}%")
         print(f"📈 Microservice Success Rate: {report['microservice_validation']['success_rate']:.1f}%")
-        print()
         
         if report['validation_summary']['fixes_applied'] > 0:
             print("🎯 System issues have been automatically fixed!")

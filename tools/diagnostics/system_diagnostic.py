@@ -102,8 +102,6 @@ class ViperDiagnostic:
     
     def run_comprehensive_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-        print("🔍 VIPER SYSTEM COMPREHENSIVE DIAGNOSTIC")
-        print("=" * 50)
         
         # Get system metrics
         metrics = self.get_system_metrics()
@@ -178,38 +176,30 @@ class ViperDiagnostic:
     def print_diagnostic_report(self, report: Dict[str, Any]):
         """Print formatted diagnostic report"""
         print(f"\n📊 DIAGNOSTIC REPORT - {report['diagnostic_time']}")
-        print("=" * 60)
         
         analysis = report['analysis']
         
         # Service Health
-        print("🏥 SERVICE HEALTH:")
         healthy = analysis['service_health']['healthy']
         total = analysis['service_health']['total']
         print(f"   Healthy: {healthy}/{total} ({healthy/max(1,total)*100:.1f}%)")
         
         if analysis['critical_issues']:
-            print("   🚨 Critical Issues:")
+            print("🚨 CRITICAL ISSUES:")
             for issue in analysis['critical_issues'][:5]:  # Show first 5
-                print(f"      • {issue}")
+                print(f"   • {issue}")
         
         # Trading Status
-        print("\n💰 TRADING STATUS:")
         operational = analysis['trading_status']['operational']
         total_trading = analysis['trading_status']['total']
         print(f"   Operational: {operational}/{total_trading} ({operational/max(1,total_trading)*100:.1f}%)")
         
         if analysis['warnings']:
-            print("   ⚠️  Warnings:")
             for warning in analysis['warnings'][:3]:  # Show first 3
-                print(f"      • {warning}")
         
         # Recommendations
-        print("\n🎯 RECOMMENDATIONS:")
         for rec in report['recommendations']:
-            print(f"   {rec}")
         
-        print("\n" + "=" * 60)
 
 if __name__ == "__main__":
     diagnostic = ViperDiagnostic()

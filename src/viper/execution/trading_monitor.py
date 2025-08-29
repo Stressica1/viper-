@@ -487,7 +487,7 @@ class TradingMonitor:
             import socket
             socket.create_connection(("8.8.8.8", 53), timeout=3)
             return {'status': 'connected', 'latency_ms': 50}
-        except:
+        except Exception:
             return {'status': 'disconnected'}
 
     async def _send_alert(self, severity: str, title: str, message: str, details: Optional[Dict] = None):
@@ -657,16 +657,12 @@ Details:
 
 def main():
     """Main entry point"""
-    print("🚀 VIPER Trading Monitor & Alert System")
-    print("=" * 50)
 
     # Initialize monitor
     monitor = TradingMonitor()
 
     # Display configuration
-    print("📊 Monitor Configuration:")
     for key, value in monitor.monitor_config.items():
-        print(f"   {key}: {value}")
 
     print(f"\n📧 Email Alerts: {'✅' if monitor.monitor_config['enable_email_alerts'] else '❌'}")
     print(f"📱 Telegram Alerts: {'✅' if monitor.monitor_config['enable_telegram_alerts'] else '❌'}")
@@ -674,17 +670,13 @@ def main():
     # Confirm start
     confirm = input("\n🚀 Start monitoring system? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Monitor cancelled")
         return
 
     # Start monitoring
-    print("\n📊 Starting monitoring...")
     try:
         monitor.start_monitoring()
     except KeyboardInterrupt:
-        print("\n🛑 Monitor stopped by user")
     except Exception as e:
-        print(f"\n❌ Monitor failed: {e}")
 
 if __name__ == "__main__":
     main()

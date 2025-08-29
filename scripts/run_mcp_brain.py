@@ -4,10 +4,7 @@
 This version actually works - no subprocess nonsense, just direct execution
 """
 
-import os
 import sys
-import json
-import time
 import logging
 from datetime import datetime
 from fastapi import FastAPI, Request

@@ -195,6 +195,7 @@ class RetryLogic:
         if self.jitter:
             # Add random jitter (±25%)
             import random
+import secrets
             jitter_amount = delay * 0.25
             delay += random.uniform(-jitter_amount, jitter_amount)
 
@@ -382,8 +383,6 @@ if __name__ == "__main__":
     async def main():
         try:
             result = await example_service_call()
-            print(f"Service call result: {result}")
         except Exception as e:
-            print(f"Service call failed: {e}")
 
     asyncio.run(main())

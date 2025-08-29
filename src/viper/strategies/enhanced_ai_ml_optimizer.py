@@ -14,17 +14,9 @@ This enhanced version includes:
 
 import numpy as np
 import pandas as pd
-import requests
-import json
-import time
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional, Any
 import logging
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, ExtraTreesRegressor
 from sklearn.ensemble import VotingRegressor, StackingRegressor
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.preprocessing import StandardScaler, RobustScaler
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.feature_selection import SelectKBest, f_regression
 import ta  # Technical Analysis library
 import warnings
@@ -506,12 +498,9 @@ class EnhancedAIMLOptimizer:
 
 def main():
     """Enhanced AI/ML optimization example"""
-    print("🚀 ENHANCED VIPER AI/ML OPTIMIZER")
-    print("=" * 60)
 
     optimizer = EnhancedAIMLOptimizer()
 
-    print("✅ Enhanced AI/ML Optimizer initialized")
     print("🎯 Features: Ensemble models, advanced features, market regime detection")
 
 if __name__ == "__main__":

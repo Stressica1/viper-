@@ -4,11 +4,7 @@
 Comprehensive file system analysis for the VIPER diagnostic system
 """
 
-import os
-import json
-import hashlib
 from pathlib import Path
-from typing import Dict, List, Any, Set
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,7 +19,6 @@ class DirectoryScanner:
 
     def scan_directory(self, root_path: Path) -> Dict[str, Any]:
         """Scan entire directory structure"""
-        print(f"🔍 Scanning directory: {root_path}")
 
         scan_results = {
             'scan_timestamp': datetime.now().isoformat(),

@@ -9,7 +9,6 @@ import sys
 import time
 import json
 import signal
-import psutil
 import logging
 import subprocess
 import threading
@@ -77,7 +76,7 @@ class WorkingMCPBrainLauncher:
             import requests
             response = requests.get("http://localhost:8080/health", timeout=5)
             return response.status_code == 200
-        except:
+        except Exception:
             return False
 
     def start_cursor_integration(self):
@@ -174,11 +173,11 @@ class WorkingMCPBrainLauncher:
                 os.killpg(os.getpgid(process.pid), signal.SIGTERM)
                 process.wait(timeout=10)
                 self.logger.info("✅ Brain controller stopped")
-            except:
+            except Exception:
                 try:
                     process.kill()
                     process.wait(timeout=5)
-                except:
+                except Exception:
                     self.logger.warning("⚠️  Force killed brain controller")
 
             del self.processes["brain_controller"]
@@ -192,12 +191,12 @@ class WorkingMCPBrainLauncher:
                 os.killpg(os.getpgid(process.pid), signal.SIGTERM)
                 process.wait(timeout=5)
                 self.logger.info(f"✅ {name} stopped")
-            except:
+            except Exception:
                 try:
                     process.kill()
                     process.wait(timeout=2)
                     self.logger.info(f"✅ {name} force killed")
-                except:
+                except Exception:
                     self.logger.warning(f"⚠️  Could not stop {name}")
 
         self.processes.clear()

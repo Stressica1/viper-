@@ -12,14 +12,10 @@ This analysis provides:
 - Deployment readiness assessment
 """
 
-import os
 import sys
 import json
 import logging
-import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -648,8 +644,6 @@ class PerformanceComparisonAnalysis:
 
 def run_performance_analysis():
     """Run comprehensive performance analysis"""
-    print("🚀 Performance Comparison Analysis")
-    print("=" * 80)
 
     analyzer = PerformanceComparisonAnalysis()
 
@@ -658,7 +652,6 @@ def run_performance_analysis():
         data_loaded = analyzer.load_performance_data()
         if not data_loaded:
             print("❌ No performance data available for analysis")
-            print("💡 Run backtesting validation first to generate performance data")
             return False
 
         # Generate comprehensive analysis
@@ -668,25 +661,18 @@ def run_performance_analysis():
         executive_summary = analyzer.generate_executive_summary(analysis_results)
 
         # Print executive summary
-        print(executive_summary)
 
         # Print key metrics
         comparison = analysis_results.get("performance_comparison", {})
-        print("\n📊 KEY PERFORMANCE METRICS:")
-        print("-" * 40)
 
         for metric, data in comparison.items():
             improvement = data.get("improvement_pct", 0)
             status = "📈" if improvement > 0 else "📉"
-            print(".1%")
 
-        print("\n📊 VISUALIZATIONS SAVED TO:")
-        print(f"   {analyzer.visualization_path}")
 
         return True
 
     except Exception as e:
-        print(f"❌ Performance analysis failed: {e}")
         return False
 
 if __name__ == "__main__":

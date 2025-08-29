@@ -186,7 +186,7 @@ class OptimizedMarketDataStreamer:
             for name, exchange in self.exchanges.items():
                 try:
                     await exchange.close()
-                except:
+                except Exception:
                     pass
 
             # Close HTTP sessions
@@ -628,12 +628,9 @@ async def test_optimized_streamer():
     symbols = ['BTCUSDT', 'ETHUSDT']
     timeframes = ['1h', '4h']
 
-    print("🧪 Testing Optimized Market Data Streamer")
-    print("=" * 50)
 
     for symbol in symbols:
         for timeframe in timeframes:
-            print(f"📊 Fetching {symbol} {timeframe}...")
 
             # First fetch (cache miss)
             start_time = time.time()
@@ -650,11 +647,9 @@ async def test_optimized_streamer():
                 print(f"   ✅ Second fetch: {second_fetch_time:.2f}s (cached)")
                 print(f"   📈 Price range: {data['close'].min():.2f} - {data['close'].max():.2f}")
             else:
-                print(f"   ❌ Failed to fetch data")
 
     # Get metrics
     metrics = await streamer.get_streaming_metrics()
-    print(f"\n📊 Final Metrics: {metrics}")
 
     await streamer.stop_streaming()
 

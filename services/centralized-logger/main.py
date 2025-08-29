@@ -19,12 +19,10 @@ import logging
 import asyncio
 import threading
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
 from collections import deque
 import redis
 import requests
 from fastapi import FastAPI, WebSocket, Query
-from fastapi.responses import HTMLResponse
 import uvicorn
 
 # Load environment variables

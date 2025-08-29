@@ -405,15 +405,11 @@ def start_system_with_enforcement() -> bool:
     return True
 
 if __name__ == "__main__":
-    print("🔒 MANDATORY DOCKER & MCP SYSTEM WRAPPER")
-    print("=" * 60)
     
     if len(sys.argv) < 2:
         print("Usage: python mandatory_docker_mcp_wrapper.py <module_name> [operation] [args...]")
-        print("\nAvailable modules:")
         wrapper = get_wrapper()
         for name, info in wrapper.get_available_modules().items():
-            print(f"  • {name}: {info['description']}")
         sys.exit(1)
     
     module_name = sys.argv[1]
@@ -425,7 +421,6 @@ if __name__ == "__main__":
         result = execute_module(module_name, operation, *args)
         print(f"✅ {module_name}.{operation} completed successfully!")
         if result:
-            print(f"Result: {result}")
     except SystemExit:
         print(f"💀 {module_name}.{operation} execution blocked by enforcement!")
         sys.exit(1)

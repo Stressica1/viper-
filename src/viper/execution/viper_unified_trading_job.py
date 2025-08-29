@@ -1445,13 +1445,11 @@ class VIPERUnifiedTradingJob:
 def main():
     """Main entry point for unified trading job"""
     print("🚀 VIPER Unified Trading Job - Complete Multi-Pair System")
-    print("=" * 70)
 
     # Initialize unified trading job
     unified_job = VIPERUnifiedTradingJob()
 
     # Display configuration
-    print("📊 Unified Trading Configuration:")
     print(f"   Total Pairs Available: {len(unified_job.all_pairs)}")
     print(f"   Active Pairs Filtered: {len(unified_job.active_pairs)}")
     print(f"   Risk per Trade: {unified_job.trading_config['risk_per_trade']*100:.1f}%")
@@ -1459,19 +1457,16 @@ def main():
     print(f"   Scan Interval: {unified_job.trading_config['scan_interval']} seconds")
     print(f"   Min VIPER Score: {unified_job.trading_config['min_viper_score']}")
 
-    print("\n🏆 Top 5 Pairs by Volume:")
     top_pairs = sorted(unified_job.active_pairs, key=lambda x: x.get('volume_24h', 0), reverse=True)[:5]
     for i, pair in enumerate(top_pairs, 1):
         print(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f}")
 
-    print("\n🚀 Trading Mode: LIVE UNIFIED TRADING")
     print("⚠️  This will execute REAL trades across ALL qualified pairs")
     print("🔧 FIXED: OHLCV async coroutine errors resolved")
 
     # Confirm start
     confirm = input("\n🚨 Execute REAL LIVE TRADES across ALL PAIRS? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Unified trading job cancelled")
         return
 
     # Start unified trading job
@@ -1479,8 +1474,6 @@ def main():
     try:
         unified_job.start()
     except KeyboardInterrupt:
-        print("\n🛑 Unified trading job stopped by user")
     except Exception as e:
-        print(f"\n❌ Unified trading job failed: {e}")
 if __name__ == "__main__":
     main()

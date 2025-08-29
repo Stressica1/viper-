@@ -18,14 +18,10 @@ import logging
 import asyncio
 import uuid
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 from fastapi import FastAPI, HTTPException, Request, WebSocket
 from fastapi.responses import StreamingResponse
 import uvicorn
-import redis
-import requests
 import httpx
-import base64
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')

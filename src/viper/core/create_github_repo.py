@@ -7,7 +7,6 @@ Uses GitHub MCP server to create a new repository and upload the complete system
 import os
 import asyncio
 import httpx
-import json
 import sys
 from pathlib import Path
 from typing import Dict, Any, List
@@ -37,7 +36,6 @@ class GitHubMCPCreator:
 
     async def create_repository(self) -> Dict[str, Any]:
         """Create a new GitHub repository using MCP server"""
-        print("🚀 Creating GitHub repository...")
         print(f"   Repository: {self.github_owner}/{self.github_repo}")
 
         try:
@@ -60,21 +58,17 @@ class GitHubMCPCreator:
 
                 if response.status_code == 200:
                     result = response.json()
-                    print("✅ Repository created successfully!")
                     print(f"   URL: https://github.com/{self.github_owner}/{self.github_repo}")
                     return resul
                 else:
                     print(f"❌ Failed to create repository: {response.status_code}")
-                    print(f"   Response: {response.text}")
                     return {"error": response.text}
 
         except Exception as e:
-            print(f"❌ Error creating repository: {e}")
             return {"error": str(e)}
 
     async def get_all_files(self, directory: str = ".") -> List[Dict[str, str]]:
         """Get all files in the project directory"""
-        print("📁 Scanning project files...")
 
         files_data = []
         project_root = Path(directory)
@@ -126,7 +120,6 @@ class GitHubMCPCreator:
     async def upload_files(self, files_data: List[Dict[str, str]]) -> Dict[str, Any]:
         """Upload all files to the GitHub repository"""
         print("📤 Uploading files to GitHub repository...")
-        print(f"   Total files: {len(files_data)}")
 
         try:
             async with httpx.AsyncClient(timeout=60.0) as client:
@@ -154,13 +147,10 @@ class GitHubMCPCreator:
 
                     if response.status_code == 200:
                         uploaded_count += len(batch)
-                        print(f"   ✅ Uploaded {len(batch)} files")
                     else:
                         print(f"❌ Failed to upload batch: {response.status_code}")
-                        print(f"   Response: {response.text}")
                         return {"error": response.text}
 
-                print("✅ All files uploaded successfully!")
                 return {
                     "status": "success",
                     "files_uploaded": uploaded_count,
@@ -168,12 +158,10 @@ class GitHubMCPCreator:
                 }
 
         except Exception as e:
-            print(f"❌ Error uploading files: {e}")
             return {"error": str(e)}
 
     async def create_readme_task(self) -> Dict[str, Any]:
         """Create a task/issue for repository setup"""
-        print("📝 Creating repository setup task...")
 
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
@@ -231,26 +219,22 @@ open http://localhost:8000
                 )
 
                 if response.status_code == 200:
-                    print("✅ Repository setup task created!")
                     return response.json()
                 else:
                     print(f"⚠️  Warning: Could not create task: {response.status_code}")
                     return {"warning": response.text}
 
         except Exception as e:
-            print(f"⚠️  Warning: Could not create task: {e}")
             return {"warning": str(e)}
 
 async def main():
     """Main function to create repository and upload codebase"""
     print("🚀 VIPER Trading Bot - GitHub Repository Creation & Upload")
-    print("=" * 60)
 
     # Initialize GitHub MCP creator
     creator = GitHubMCPCreator()
 
     # Step 1: Create repository
-    print("\n1️⃣  Creating GitHub repository...")
     repo_result = await creator.create_repository()
 
     if "error" in repo_result:
@@ -258,36 +242,24 @@ async def main():
         return
 
     # Step 2: Get all project files
-    print("\n2️⃣  Scanning project files...")
     files_data = await creator.get_all_files()
 
     if not files_data:
-        print("❌ No files found to upload!")
         return
 
     # Step 3: Upload files
-    print("\n3️⃣  Uploading files...")
     upload_result = await creator.upload_files(files_data)
 
     if "error" in upload_result:
-        print("❌ File upload failed!")
         return
 
     # Step 4: Create setup task
-    print("\n4️⃣  Creating repository setup task...")
     await creator.create_readme_task()
 
     # Success summary
-    print("\n" + "=" * 60)
     print("🎉 SUCCESS! VIPER Trading Bot repository created and uploaded!")
-    print("=" * 60)
     print(f"📁 Repository: https://github.com/{creator.github_owner}/{creator.github_repo}")
     print(f"📊 Files uploaded: {upload_result.get('files_uploaded', 0)}")
-    print("🚀 Ready for deployment and trading!")
-    print("\n📝 Next steps:")
-    print("   1. Review the repository on GitHub")
-    print("   2. Clone and test locally: git clone https://github.com/{creator.github_owner}/{creator.github_repo}.git")
-    print("   3. Start trading: python main.py")
     print("   4. Access dashboard: http://localhost:8000")
 
 if __name__ == "__main__":

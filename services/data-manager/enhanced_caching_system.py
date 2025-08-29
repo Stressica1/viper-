@@ -12,16 +12,11 @@ Features:
 - TTL management with smart expiration policies
 """
 
-import os
-import json
 import time
 import logging
 import asyncio
 import pickle
 import zlib
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union, Callable
-from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
 import hashlib
@@ -668,17 +663,13 @@ if __name__ == "__main__":
         # Test basic operations
         await set_cached("test", "key1", {"data": "test_value"})
         result = await get_cached("test", "key1")
-        print(f"✅ Basic test: {result}")
         
         # Test with parameters
         await set_cached("market_data", "BTCUSDT", {"price": 50000}, timeframe="1h")
         result = await get_cached("market_data", "BTCUSDT", timeframe="1h")
-        print(f"✅ Parameterized test: {result}")
         
         # Test statistics
         stats = await enhanced_cache.get_statistics()
-        print(f"📊 Cache Statistics: {stats['overview']}")
         
-        print("🎯 Enhanced caching system test completed!")
     
     asyncio.run(test_caching_system())

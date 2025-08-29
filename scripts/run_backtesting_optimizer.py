@@ -59,12 +59,9 @@ class BacktestingLauncher:
             if not timeframes:
                 timeframes = ['1h', '4h']
 
-            print("🔍 RUNNING QUICK ENTRY SIGNAL ANALYSIS")
-            print("=" * 50)
 
             for symbol in symbols:
                 for timeframe in timeframes:
-                    print(f"\n📊 Analyzing {symbol} {timeframe}...")
 
                     # Get entry signal recommendations
                     recs = await get_entry_signal_recommendations(symbol, timeframe)
@@ -75,9 +72,6 @@ class BacktestingLauncher:
                         max_drawdown = recs['max_drawdown']
                         immediate_loss = recs['immediate_loss_rate']
 
-                        print(f"   ✅ Success Rate: {success_rate:.1f}%")
-                        print(f"   📉 Avg Drawdown: {avg_drawdown:.3f}")
-                        print(f"   📉 Max Drawdown: {max_drawdown:.3f}")
                         print(f"   ⚠️ Immediate Loss Rate: {immediate_loss:.1f}%")
 
                         # Store results
@@ -87,14 +81,11 @@ class BacktestingLauncher:
                         if success_rate > 70:
                             print("   🟢 EXCELLENT: Entry signals performing well")
                         elif success_rate > 50:
-                            print("   🟡 GOOD: Entry signals acceptable")
                         else:
                             print("   🔴 POOR: Entry signals need improvement")
                     else:
                         print(f"   ❌ No data available for {symbol} {timeframe}")
 
-            print("\n📋 QUICK ANALYSIS SUMMARY")
-            print("=" * 30)
 
             if self.results:
                 success_rates = [r['success_rate'] for r in self.results.values()]
@@ -111,7 +102,6 @@ class BacktestingLauncher:
                 else:
                     print("🔴 Overall: Entry signals require significant improvement")
             else:
-                print("❌ No analysis results available")
 
         except Exception as e:
             logger.error(f"❌ Quick analysis failed: {e}")
@@ -124,12 +114,6 @@ class BacktestingLauncher:
             if not timeframes:
                 timeframes = ['1h', '4h']
 
-            print("🚀 RUNNING COMPREHENSIVE BACKTESTING")
-            print("=" * 50)
-            print(f"Symbols: {', '.join(symbols)}")
-            print(f"Timeframes: {', '.join(timeframes)}")
-            print(f"Historical Days: {days}")
-            print("=" * 50)
 
             # Create backtesting task
             task_config = {
@@ -140,24 +124,18 @@ class BacktestingLauncher:
             }
 
             task_id = await create_backtesting_task(task_config)
-            print(f"📋 Task Created: {task_id}")
 
             # Run comprehensive analysis
             start_time = datetime.now()
             results = await run_backtesting_analysis(symbols, timeframes, days)
             end_time = datetime.now()
 
-            print("\n📊 COMPREHENSIVE ANALYSIS RESULTS")
-            print("=" * 40)
-            print(f"Status: {results['status']}")
             print(f"Duration: {(end_time - start_time).total_seconds():.1f} seconds")
             print(f"Symbols Analyzed: {results['symbols_analyzed']}")
             print(f"Timeframes Analyzed: {results['timeframes_analyzed']}")
             print(f"Entry Analyses: {results['entry_analyses']}")
-            print(f"Backtest Results: {results['backtest_results']}")
 
             if results['status'] == 'completed':
-                print("✅ Analysis completed successfully!")
                 print("📄 Check the generated report files for detailed results")
             else:
                 print(f"❌ Analysis failed: {results.get('error', 'Unknown error')}")
@@ -169,19 +147,16 @@ class BacktestingLauncher:
         """Optimize entry signals for a specific symbol/timeframe"""
         try:
             print(f"🎯 OPTIMIZING ENTRY SIGNALS FOR {symbol} {timeframe}")
-            print("=" * 60)
 
             # Get current entry signal performance
             recs = await get_entry_signal_recommendations(symbol, timeframe)
 
             if recs.get('success_rate'):
-                print("📊 CURRENT PERFORMANCE:")
                 print(f"   Success Rate: {recs['success_rate']:.1f}%")
                 print(f"   Avg Drawdown: {recs['avg_drawdown']:.3f}")
                 print(f"   Max Drawdown: {recs['max_drawdown']:.3f}")
                 print(f"   Immediate Loss Rate: {recs['immediate_loss_rate']:.1f}%")
 
-                print("\n🔧 OPTIMIZATION RECOMMENDATIONS:")
                 recommendations = recs.get('recommendations', {})
 
                 if recommendations:
@@ -194,18 +169,11 @@ class BacktestingLauncher:
                 else:
                     print("   📋 No specific recommendations available")
 
-                print("
-💡 GENERAL IMPROVEMENT SUGGESTIONS:"                if recs['success_rate'] < 50:
-                    print("   • Consider stricter entry filters")
+                if recs['success_rate'] < 50:
                     print("   • Increase minimum confidence threshold")
                     print("   • Add additional technical confirmations")
                 elif recs['avg_drawdown'] < -0.05:
-                    print("   • Implement entry price validation")
-                    print("   • Consider reducing position sizes")
-                    print("   • Add immediate stop-loss protection")
                 elif recs['immediate_loss_rate'] > 30:
-                    print("   • Optimize entry timing")
-                    print("   • Add market condition filters")
                     print("   • Consider avoiding certain market hours")
 
             else:
@@ -217,11 +185,8 @@ class BacktestingLauncher:
     async def generate_optimization_report(self):
         """Generate comprehensive optimization report"""
         try:
-            print("📄 GENERATING OPTIMIZATION REPORT")
-            print("=" * 40)
 
             if not self.results:
-                print("❌ No analysis results available")
                 return
 
             # Create report
@@ -257,8 +222,6 @@ class BacktestingLauncher:
             with open(report_filename, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
 
-            print(f"✅ Report saved: {report_filename}")
-            print("📊 SUMMARY:")
             print(f"   Total Analyses: {report['summary']['total_analyses']}")
             print(f"   Average Success Rate: {report['summary']['avg_success_rate']:.1f}%")
             print(f"   Best Performer: {report['summary']['best_performer']}")
@@ -287,13 +250,7 @@ def main():
 
     args = parser.parse_args()
 
-    print("🎯 MCP BACKTESTING OPTIMIZER LAUNCHER")
-    print("=" * 50)
-    print(f"Mode: {args.mode}")
-    print(f"Symbols: {', '.join(args.symbols)}")
     print(f"Timeframes: {', '.join(args.timeframes)}")
-    print(f"Days: {args.days}")
-    print("=" * 50)
 
     async def run_launcher():
         launcher = BacktestingLauncher()
@@ -312,10 +269,8 @@ def main():
             elif args.mode == 'report':
                 await launcher.generate_optimization_report()
             else:
-                print("❌ Invalid mode specified")
                 return 1
 
-            print("✅ Backtesting optimizer completed successfully")
             return 0
 
         except Exception as e:
@@ -326,7 +281,6 @@ def main():
         exit_code = asyncio.run(run_launcher())
         return exit_code
     except KeyboardInterrupt:
-        print("\n🛑 Operation cancelled by user")
         return 0
 
 if __name__ == "__main__":

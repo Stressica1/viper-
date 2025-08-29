@@ -13,8 +13,6 @@ This provides exactly what the user requested:
 import asyncio
 import json
 import logging
-import os
-import sys
 from datetime import datetime, timedelta
 from pathlib import Path
 import warnings
@@ -23,14 +21,12 @@ warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
 from rich.console import Console
-from rich.table import Table, Column
 from rich.panel import Panel
 from rich.text import Text
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn
 from rich import box
 
 from dataclasses import dataclass, asdict
-from typing import Dict, List, Optional, Any, Tuple
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')

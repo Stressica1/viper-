@@ -10,7 +10,6 @@ This script:
 - Provides rollback capabilities
 """
 
-import os
 import json
 import argparse
 from datetime import datetime
@@ -271,8 +270,6 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 System Configuration Updater")
-    print("=" * 40)
 
     updater = SystemConfigUpdater(args.config_path)
 
@@ -285,7 +282,6 @@ def main():
         print("✅ Configuration update completed successfully!")
         print("🔄 Restart your trading system to apply the new parameters")
     else:
-        print("❌ Configuration update failed")
         print("🔧 Check the logs for detailed error information")
 
 if __name__ == "__main__":

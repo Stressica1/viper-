@@ -15,29 +15,13 @@ This optimizer provides:
 Target: Achieve 55%+ win rates with optimized TP/SL and technical parameters
 """
 
-import asyncio
-import json
 import logging
-import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
-from dataclasses import dataclass, asdict
 import warnings
 warnings.filterwarnings('ignore')
 
-from itertools import product
-from concurrent.futures import ProcessPoolExecutor, as_completed
-import multiprocessing as mp
 
 from rich.console import Console
-from rich.table import Table
-from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn
-from rich.text import Text
-from rich import box
-from rich.layout import Layout
 
 # Configure logging
 logging.basicConfig(

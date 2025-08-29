@@ -16,9 +16,7 @@ import os
 import sys
 import json
 import logging
-import subprocess
 import asyncio
-from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 import shutil
@@ -767,8 +765,6 @@ class DeploymentChecklist:
 
 def run_deployment_checklist():
     """Run the complete deployment checklist"""
-    print("🚀 Enhanced VIPER Deployment Checklist")
-    print("=" * 80)
 
     checklist = DeploymentChecklist()
 
@@ -778,7 +774,6 @@ def run_deployment_checklist():
 
         # Generate and display deployment report
         deployment_report = checklist.generate_deployment_report(results)
-        print(deployment_report)
 
         # Save detailed report
         checklist._save_checklist_results(results)
@@ -787,16 +782,12 @@ def run_deployment_checklist():
         overall_status = results.get("overall_status", "UNKNOWN")
 
         if overall_status == "DEPLOYMENT_READY":
-            print("\n🎉 DEPLOYMENT CHECKLIST PASSED!")
             print("🚀 System is ready for production deployment")
             return True
         elif overall_status == "CONDITIONAL_DEPLOYMENT_READY":
-            print("\n⚠️ CONDITIONAL DEPLOYMENT READY")
             print("⚠️ Address recommendations before full deployment")
             return True
         else:
-            print("\n❌ DEPLOYMENT CHECKLIST FAILED")
-            print("🔧 Address blockers before attempting deployment")
             return False
 
     except Exception as e:

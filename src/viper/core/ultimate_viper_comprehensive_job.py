@@ -88,7 +88,6 @@ class UltimateViperComprehensiveJob:
     def _initialize_all_components(self):
         """Initialize EVERY component in the system"""
         print("🚀 INITIALIZING ULTIMATE VIPER COMPREHENSIVE SYSTEM")
-        print("=" * 70)
 
         try:
             # 1. Core Trading Components
@@ -137,9 +136,7 @@ class UltimateViperComprehensiveJob:
                 from src.viper.execution.viper_async_trader import ViperAsyncTrader
                 from src.viper.execution.viper_async_trader import TrendDirection, TrendStrength
                 self.active_components['viper_async_trader'] = ViperAsyncTrader()
-                print("✅ ViperAsyncTrader initialized")
             except ImportError as e:
-                print(f"⚠️ ViperAsyncTrader import failed: {e}")
                 # Create placeholder
                 class ViperAsyncTrader:
                     def __init__(self):
@@ -153,7 +150,6 @@ class UltimateViperComprehensiveJob:
                 self.active_components['v2_risk_job'] = V2RiskOptimizedTradingJob()
                 print("✅ V2 Risk-Optimized Trading Job initialized")
             except ImportError as e:
-                print(f"⚠️ V2 Risk Job import failed: {e}")
                 class V2RiskOptimizedTradingJob:
                     def __init__(self):
                         self.initialized = True
@@ -164,7 +160,6 @@ class UltimateViperComprehensiveJob:
             try:
                 from src.viper.execution.viper_unified_trading_job import VIPERUnifiedTradingJob
                 self.active_components['unified_trading'] = VIPERUnifiedTradingJob()
-                print("✅ VIPER Unified Trading Job initialized")
             except ImportError as e:
                 print(f"⚠️ Unified Trading Job import failed: {e}")
                 class VIPERUnifiedTradingJob:
@@ -177,9 +172,7 @@ class UltimateViperComprehensiveJob:
             try:
                 from src.viper.analysis.advanced_trend_detector import AdvancedTrendDetector
                 self.active_components['trend_detector'] = AdvancedTrendDetector()
-                print("✅ Advanced Trend Detector initialized")
             except ImportError as e:
-                print(f"⚠️ Trend Detector import failed: {e}")
                 class AdvancedTrendDetector:
                     def __init__(self):
                         self.initialized = True
@@ -192,28 +185,23 @@ class UltimateViperComprehensiveJob:
 
     def _initialize_ai_ml_systems(self):
         """Initialize AI/ML components"""
-        print("🤖 Initializing AI/ML Systems...")
 
         try:
             # Import and initialize MCP Brain Controller
             from src.viper.ai.mcp_brain_controller import MCPBrainController
             self.active_components['mcp_brain'] = MCPBrainController()
-            print("✅ MCP Brain Controller initialized")
 
             # Import and initialize AI/ML Optimizer
             from src.viper.ai.ai_ml_optimizer import AIMLOptimizer
             self.active_components['ai_ml_optimizer'] = AIMLOptimizer()
-            print("✅ AI/ML Optimizer initialized")
 
             # Import and initialize MCP Brain Ruleset
             from mcp_brain_ruleset import MCPRulesEngine
             self.active_components['mcp_ruleset'] = MCPRulesEngine()
-            print("✅ MCP Brain Ruleset initialized")
 
             # Import and initialize MCP Brain Service
             from mcp_brain_service import MCPBrainService
             self.active_components['mcp_service'] = MCPBrainService()
-            print("✅ MCP Brain Service initialized")
 
         except Exception as e:
             logger.error(f"❌ AI/ML initialization failed: {e}")
@@ -221,7 +209,6 @@ class UltimateViperComprehensiveJob:
 
     def _initialize_optimization_systems(self):
         """Initialize optimization components"""
-        print("🔧 Initializing Optimization Systems...")
 
         try:
             # Import and initialize Optimal Entry Point Manager
@@ -232,17 +219,14 @@ class UltimateViperComprehensiveJob:
             # Import and initialize Master Diagnostic Scanner
             from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
             self.active_components['diagnostic_scanner'] = MasterDiagnosticScanner()
-            print("✅ Master Diagnostic Scanner initialized")
 
             # Import and initialize Live Trading Optimizer
             from live_trading_optimizer import LiveTradingOptimizer
             self.active_components['live_optimizer'] = LiveTradingOptimizer()
-            print("✅ Live Trading Optimizer initialized")
 
             # Import and initialize Mathematical Validator
             from utils.mathematical_validator import MathematicalValidator
             self.active_components['math_validator'] = MathematicalValidator()
-            print("✅ Mathematical Validator initialized")
 
         except Exception as e:
             logger.error(f"❌ Optimization systems initialization failed: {e}")
@@ -286,7 +270,6 @@ class UltimateViperComprehensiveJob:
                             'module': module,
                             'status': 'AVAILABLE'
                         }
-                        print(f"✅ {service_name} service available")
 
                 except Exception as service_error:
                     logger.warning(f"⚠️  {service_name} service initialization warning: {service_error}")
@@ -303,19 +286,16 @@ class UltimateViperComprehensiveJob:
 
     def _initialize_monitoring(self):
         """Initialize monitoring and analytics components"""
-        print("📊 Initializing Monitoring & Analytics...")
 
         try:
             # Import and initialize Comprehensive Debug
             from src.viper.debug.comprehensive_debug import ComprehensiveDebugger
             self.active_components['comprehensive_debug'] = ComprehensiveDebugger()
-            print("✅ Comprehensive Debug initialized")
 
             # Import and initialize System Diagnostic
             try:
                 from system_diagnostic import ViperDiagnostic
                 self.active_components['system_diagnostic'] = ViperDiagnostic()
-                print("✅ System Diagnostic initialized")
             except ImportError as e:
                 print(f"⚠️  System Diagnostic not available: {e}")
                 self.active_components['system_diagnostic'] = None
@@ -323,7 +303,6 @@ class UltimateViperComprehensiveJob:
             # Import and initialize Live Trading Monitor
             from live_trading_monitor import LiveTradingMonitor
             self.active_components['live_monitor'] = LiveTradingMonitor()
-            print("✅ Live Trading Monitor initialized")
 
         except Exception as e:
             logger.error(f"❌ Monitoring initialization failed: {e}")
@@ -331,7 +310,6 @@ class UltimateViperComprehensiveJob:
 
     def _initialize_infrastructure(self):
         """Initialize infrastructure components"""
-        print("🏭 Initializing Infrastructure...")
 
         try:
             # Check Docker services
@@ -341,7 +319,6 @@ class UltimateViperComprehensiveJob:
                 'api_endpoints': self._check_api_endpoints()
             }
 
-            print("✅ Infrastructure components initialized")
 
         except Exception as e:
             logger.error(f"❌ Infrastructure initialization failed: {e}")
@@ -349,13 +326,11 @@ class UltimateViperComprehensiveJob:
 
     def _initialize_github_mcp(self):
         """Initialize GitHub MCP integration"""
-        print("🔗 Initializing GitHub MCP Integration...")
 
         try:
             # Import GitHub MCP components
             from github_mcp_integration import GitHubMCPIntegration
             self.active_components['github_manager'] = GitHubMCPIntegration()
-            print("✅ GitHub Manager initialized")
 
             # Set up repository tracking
             self.active_components['repo_tracking'] = {
@@ -364,7 +339,6 @@ class UltimateViperComprehensiveJob:
                 'performance_logs': []
             }
 
-            print("✅ GitHub MCP integration initialized")
 
         except Exception as e:
             logger.warning(f"⚠️  GitHub MCP initialization warning: {e}")
@@ -406,7 +380,6 @@ class UltimateViperComprehensiveJob:
     async def start_comprehensive_trading(self):
         """Start the comprehensive trading system"""
         print("\n🚀 STARTING ULTIMATE VIPER COMPREHENSIVE TRADING")
-        print("=" * 70)
 
         try:
             # 1. System Health Check
@@ -430,7 +403,6 @@ class UltimateViperComprehensiveJob:
 
     async def _perform_system_health_check(self):
         """Perform comprehensive system health check"""
-        print("🏥 Performing System Health Check...")
 
         try:
             # Use comprehensive debug to check all systems
@@ -448,7 +420,6 @@ class UltimateViperComprehensiveJob:
                 brain_status = await self.active_components['mcp_brain'].get_system_status()
                 logger.info(f"🧠 MCP Brain Status: {brain_status}")
 
-            print("✅ System health check completed")
 
         except Exception as e:
             logger.error(f"❌ Health check failed: {e}")
@@ -456,7 +427,6 @@ class UltimateViperComprehensiveJob:
 
     async def _warm_up_ai_decision_engine(self):
         """Warm up AI decision engine"""
-        print("🤖 Warming up AI Decision Engine...")
 
         try:
             # Initialize AI models and decision frameworks
@@ -466,7 +436,6 @@ class UltimateViperComprehensiveJob:
             if 'mcp_ruleset' in self.active_components:
                 await self.active_components['mcp_ruleset'].load_all_rulesets()
 
-            print("✅ AI Decision Engine warmed up")
 
         except Exception as e:
             logger.error(f"❌ AI warm-up failed: {e}")
@@ -474,7 +443,6 @@ class UltimateViperComprehensiveJob:
 
     async def _start_microservices(self):
         """Start essential microservices"""
-        print("🏗️  Starting Microservices...")
 
         try:
             # Start services in dependency order
@@ -498,7 +466,6 @@ class UltimateViperComprehensiveJob:
                         logger.info(f"✅ {service_name} service started")
                         service_info['status'] = 'RUNNING'
 
-            print("✅ Microservices started successfully")
 
         except Exception as e:
             logger.error(f"❌ Microservices startup failed: {e}")
@@ -506,7 +473,6 @@ class UltimateViperComprehensiveJob:
 
     async def _initialize_market_scanning(self):
         """Initialize comprehensive market scanning"""
-        print("🔍 Initializing Market Scanning...")
 
         try:
             # Use unified trading job for market discovery
@@ -532,8 +498,6 @@ class UltimateViperComprehensiveJob:
 
     async def _start_continuous_trading_loop(self):
         """Start the continuous trading loop"""
-        print("🔄 Starting Continuous Trading Loop...")
-        print("Press Ctrl+C to stop")
 
         try:
             cycle_count = 0
@@ -589,7 +553,6 @@ class UltimateViperComprehensiveJob:
                     await asyncio.sleep(5)  # Brief pause before retry
 
         except KeyboardInterrupt:
-            print("\n🛑 Trading loop stopped by user")
             await self._graceful_shutdown()
 
         except Exception as e:
@@ -901,7 +864,6 @@ class UltimateViperComprehensiveJob:
 
     async def _graceful_shutdown(self):
         """Perform graceful shutdown of all systems"""
-        print("\n🛑 Initiating Graceful Shutdown...")
 
         try:
             # Stop all microservices
@@ -916,14 +878,12 @@ class UltimateViperComprehensiveJob:
             # Generate final report
             await self._generate_final_report()
 
-            print("✅ Graceful shutdown completed")
 
         except Exception as e:
             logger.error(f"❌ Graceful shutdown failed: {e}")
 
     async def _emergency_shutdown(self):
         """Perform emergency shutdown"""
-        print("\n🚨 EMERGENCY SHUTDOWN INITIATED!")
 
         try:
             # Immediate shutdown of all trading activities
@@ -935,14 +895,12 @@ class UltimateViperComprehensiveJob:
             # Alert all systems
             await self._send_emergency_alerts()
 
-            print("❌ Emergency shutdown completed")
 
         except Exception as e:
             logger.error(f"❌ Emergency shutdown failed: {e}")
 
     async def _stop_microservices(self):
         """Stop all microservices"""
-        print("🛑 Stopping microservices...")
 
         for service_name, service_info in self.active_components.get('microservices', {}).items():
             if service_info.get('status') == 'RUNNING':
@@ -951,7 +909,6 @@ class UltimateViperComprehensiveJob:
 
     async def _close_connections(self):
         """Close all connections"""
-        print("🔌 Closing connections...")
 
         # Close exchange connections
         for component_name in ['viper_async_trader', 'v2_risk_job', 'unified_trading']:
@@ -1018,16 +975,13 @@ class UltimateViperComprehensiveJob:
 async def main():
     """Main function to run the Ultimate VIPER Comprehensive Job"""
     print("🚀 STARTING ULTIMATE VIPER COMPREHENSIVE TRADING SYSTEM")
-    print("=" * 80)
     print("This system uses EVERY component and feature we've built:")
     print("✅ Core Trading Systems (ViperAsyncTrader, V2 Risk-Optimized, Unified)")
     print("✅ AI/ML Optimization (MCP Brain Controller, AI/ML Optimizer, Rules)")
     print("✅ Microservices Architecture (20+ Services)")
     print("✅ Advanced Analytics (Trend Detection, Entry Optimization, Scoring)")
-    print("✅ Monitoring & Diagnostics (Comprehensive Debug, Health Checks)")
     print("✅ Infrastructure (Docker, Monitoring, Logging, Alerts)")
     print("✅ GitHub MCP Integration (Version Control, Management)")
-    print("=" * 80)
 
     try:
         # Create and initialize the comprehensive job
@@ -1037,7 +991,6 @@ async def main():
         await comprehensive_job.start_comprehensive_trading()
 
     except KeyboardInterrupt:
-        print("\n🛑 System stopped by user")
     except Exception as e:
         logger.error(f"❌ Ultimate VIPER system failed: {e}")
         import traceback

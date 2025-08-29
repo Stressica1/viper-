@@ -17,8 +17,6 @@ import logging
 import asyncio
 import threading
 import smtplib
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import redis

@@ -4,12 +4,8 @@
 Maintains clean repository organization and prevents clutter
 """
 
-import os
-import sys
 from pathlib import Path
-from typing import List, Dict, Set
 import shutil
-import json
 from datetime import datetime
 
 class RepositoryOrganizer:
@@ -182,7 +178,6 @@ class RepositoryOrganizer:
                 full_path = self.repo_root / dir_path
                 if not full_path.exists():
                     full_path.mkdir(parents=True, exist_ok=True)
-                    print(f"📁 Created directory: {dir_path}")
         
         return {
             'violations_found': len(violations),
@@ -226,7 +221,6 @@ Repository Structure Validator
 Runs pre-commit checks to ensure clean repository organization
 """
 
-import sys
 from pathlib import Path
 from repo_organizer import RepositoryOrganizer
 
@@ -237,9 +231,7 @@ def main():
     violations = organizer.scan_violations()
     
     if violations:
-        print("❌ Repository structure violations found:")
         for violation in violations[:5]:  # Show first 5
-            print(f"  - {violation['message']}")
         
         if len(violations) > 5:
             print(f"  ... and {len(violations) - 5} more violations")
@@ -247,7 +239,6 @@ def main():
         print("\\nRun 'python tools/repo_organizer.py --fix' to resolve")
         sys.exit(1)
     else:
-        print("✅ Repository structure is clean!")
         sys.exit(0)
 
 if __name__ == "__main__":
@@ -285,7 +276,6 @@ def main():
         
         with open(report_path, 'w') as f:
             f.write(report)
-        print(f"📊 Report saved to: {report_path}")
     
     if args.create_validator:
         organizer.create_structure_validator()
@@ -293,7 +283,6 @@ def main():
     # Always show current state
     result = organizer.organize_files(dry_run=not args.fix)
     
-    print(f"\n📋 Organization Summary:")
     print(f"  - Violations found: {result['violations_found']}")
     print(f"  - Files to move: {result['files_moved']}")
     print(f"  - Mode: {'EXECUTED' if not result['dry_run'] else 'SIMULATION'}")

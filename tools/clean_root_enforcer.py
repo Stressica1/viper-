@@ -116,7 +116,6 @@ class CleanRootEnforcer:
         violations = self.scan_root_violations()
         
         if not violations:
-            print("✅ Root directory is already clean!")
             return
         
         print(f"🔍 Found {len(violations)} files in root directory")
@@ -137,7 +136,6 @@ class CleanRootEnforcer:
                     print(f"✅ Moved: {source.name} → {violation['suggested_location']}")
                     moves_executed += 1
                 except Exception as e:
-                    print(f"❌ Failed to move {source.name}: {e}")
         
         if dry_run:
             print(f"\n💡 This was a dry run. Use --execute to actually move files.")
@@ -160,8 +158,6 @@ def monitor_root():
     repo_root = Path.cwd()
     enforcer = CleanRootEnforcer(repo_root)
     
-    print("🔍 Starting root directory monitor...")
-    print("   Press Ctrl+C to stop")
     
     try:
         while True:
@@ -170,7 +166,6 @@ def monitor_root():
             if violations:
                 print(f"⚠️  Found {len(violations)} files in root directory:")
                 for violation in violations[:3]:  # Show first 3
-                    print(f"   - {violation['file'].name}")
                 
                 # Auto-clean if requested
                 if '--auto-clean' in sys.argv:
@@ -179,7 +174,6 @@ def monitor_root():
             time.sleep(10)  # Check every 10 seconds
     
     except KeyboardInterrupt:
-        print("\\n✅ Root monitor stopped")
 
 if __name__ == "__main__":
     monitor_root()
@@ -190,7 +184,6 @@ if __name__ == "__main__":
             f.write(monitor_script)
         
         monitor_path.chmod(0o755)
-        print(f"✅ Created root monitor: {monitor_path}")
 
 
 def main():

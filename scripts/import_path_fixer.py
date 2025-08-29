@@ -367,24 +367,16 @@ class MasterDiagnosticScanner:
 
 def main():
     """Main entry point"""
-    print("🔧 VIPER IMPORT PATH FIXER")
-    print("=" * 50)
     print("Fixing all import path issues in the system...")
-    print()
     
     try:
         fixer = ImportPathFixer()
         result = fixer.run_comprehensive_fix()
         
-        print("\n" + "=" * 50)
-        print("✅ IMPORT FIXING COMPLETE!")
-        print("=" * 50)
         print(f"🔧 Fixes Applied: {result['fixes_applied']}")
         
         if result['details']:
-            print("\n📋 Applied Fixes:")
             for fix in result['details'][:10]:  # Show first 10
-                print(f"   • {fix}")
             if len(result['details']) > 10:
                 print(f"   ... and {len(result['details']) - 10} more")
         

@@ -13,7 +13,6 @@ This script:
 
 import asyncio
 import sys
-import os
 from pathlib import Path
 import logging
 from datetime import datetime
@@ -32,7 +31,6 @@ try:
     from comprehensive_strategy_backtester import ComprehensiveStrategyBacktester
     from enhanced_strategy_dashboard import EnhancedStrategyDashboard, create_enhanced_summary_report
 except ImportError as e:
-    print(f"Import error: {e}")
     print("Please ensure all required dependencies are installed")
     sys.exit(1)
 
@@ -279,14 +277,8 @@ async def main():
 if __name__ == "__main__":
     # Ensure required dependencies
     try:
-        import numpy as np
-        import pandas as pd
-        import matplotlib.pyplot as plt
-        import plotly.graph_objects as go
-        import seaborn as sns
         from rich.console import Console
     except ImportError as e:
-        print(f"Missing required dependency: {e}")
         print("Please install with: pip install numpy pandas matplotlib plotly seaborn rich")
         sys.exit(1)
     

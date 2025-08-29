@@ -8,7 +8,6 @@ import os
 import sys
 import asyncio
 import logging
-from datetime import datetime
 
 # Add project root to path for imports
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -106,7 +105,6 @@ async def test_all_integrations():
     # Test 5: Enhanced ViperAsyncTrader
     logger.info("🧪 Testing Enhanced ViperAsyncTrader...")
     try:
-        from viper_async_trader import ViperAsyncTrader
 
         # Test position sizing without initializing full trader
         trader = type('MockTrader', (), {})()
@@ -202,14 +200,9 @@ async def test_all_integrations():
     return results
 
 if __name__ == "__main__":
-    print("🚀 VIPER COMPLETE INTEGRATION TEST")
-    print("Testing all newly integrated components...")
-    print()
 
     results = asyncio.run(test_all_integrations())
 
-    print("\n" + "="*60)
-    print("🎯 FINAL RESULT:")
     working = sum(results.values())
     total = len(results)
     print(f"✅ {working}/{total} components successfully integrated")

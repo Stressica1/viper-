@@ -98,48 +98,38 @@ class MasterDiagnosticScanner:
     
     def run_comprehensive_scan(self) -> Dict[str, Any]:
         """Run the complete comprehensive system scan"""
-        print("╔" + "═" * 78 + "╗")
         print("║" + " 🚀 VIPER MASTER DIAGNOSTIC SCANNER - COMPREHENSIVE ANALYSIS ".center(78) + "║")
         print("║" + " 🔍 Full System Scan | 🧮 Math Validation | 📊 Workflow Analysis ".center(78) + "║")
         print("║" + " ⚡ Optimal MCP Config | 🎯 Entry Point Analysis | 📈 Performance ".center(78) + "║")
-        print("╚" + "═" * 78 + "╝")
-        print()
         
         start_time = time.time()
         
         # Phase 1: System Services Diagnostic
         print("📊 PHASE 1: COMPREHENSIVE SYSTEM SERVICES DIAGNOSTIC")
-        print("=" * 80)
         self.scan_system_services()
         
         # Phase 2: MCP Server Optimization Analysis
         print("\n🤖 PHASE 2: MCP SERVER OPTIMIZATION ANALYSIS")
-        print("=" * 80)
         self.analyze_mcp_optimization()
         
         # Phase 3: Mathematical Component Validation
         print("\n🧮 PHASE 3: MATHEMATICAL COMPONENT VALIDATION")
-        print("=" * 80)
         self.validate_mathematical_components()
         
         # Phase 4: Workflow Analysis
         print("\n🔄 PHASE 4: WORKFLOW ANALYSIS & VALIDATION")
-        print("=" * 80)
         self.analyze_workflows()
         
         # Phase 5: Entry Point Optimization Analysis
         print("\n🎯 PHASE 5: ENTRY POINT OPTIMIZATION ANALYSIS")
-        print("=" * 80)
         self.analyze_entry_points()
         
         # Phase 6: Performance Metrics Collection
         print("\n📈 PHASE 6: PERFORMANCE METRICS COLLECTION")
-        print("=" * 80)
         self.collect_performance_metrics()
         
         # Phase 7: Generate Recommendations
         print("\n💡 PHASE 7: GENERATING ACTIONABLE RECOMMENDATIONS")
-        print("=" * 80)
         self.generate_recommendations()
         
         # Finalize results
@@ -161,7 +151,6 @@ class MasterDiagnosticScanner:
         services_down = 0
         
         for service_name, config in self.service_endpoints.items():
-            print(f"🔍 Scanning {service_name}...")
             
             service_result = self.diagnose_service_advanced(service_name, config)
             self.scan_results['services'][service_name] = service_result
@@ -223,7 +212,7 @@ class MasterDiagnosticScanner:
                     result['status'] = 'HEALTHY'
                     try:
                         result['details'] = response.json()
-                    except:
+                    except Exception:
                         result['details'] = {'message': 'Service responding'}
                 elif response.status_code >= 500:
                     result['status'] = 'DOWN'
@@ -277,7 +266,6 @@ class MasterDiagnosticScanner:
     
     def analyze_mcp_optimization(self):
         """Analyze MCP server configuration for optimization opportunities"""
-        print("🤖 Analyzing MCP Server Configuration...")
         
         mcp_analysis = {
             'current_config': self.optimal_mcp_config,
@@ -298,7 +286,6 @@ class MasterDiagnosticScanner:
         for mcp_file in mcp_files:
             file_path = self.project_root / mcp_file
             if file_path.exists():
-                print(f"📋 Analyzing {mcp_file}...")
                 mcp_files_analyzed += 1
                 
                 with open(file_path, 'r') as f:
@@ -346,7 +333,6 @@ class MasterDiagnosticScanner:
     
     def validate_mathematical_components(self):
         """Validate mathematical calculations in trading components"""
-        print("🧮 Validating Mathematical Components...")
         
         math_validation = {
             'components_checked': 0,
@@ -360,7 +346,6 @@ class MasterDiagnosticScanner:
             component_path = self.project_root / component
             
             if component_path.exists():
-                print(f"📊 Validating {component}...")
                 math_validation['components_checked'] += 1
                 
                 if component_path.is_file():
@@ -454,7 +439,6 @@ class MasterDiagnosticScanner:
     
     def analyze_workflows(self):
         """Analyze and validate all workflow files"""
-        print("🔄 Analyzing Workflows...")
         
         workflow_analysis = {
             'workflows_analyzed': 0,
@@ -469,7 +453,6 @@ class MasterDiagnosticScanner:
             workflow_path = self.project_root / workflow_file
             
             if workflow_path.exists():
-                print(f"📋 Analyzing {workflow_file}...")
                 workflow_analysis['workflows_analyzed'] += 1
                 
                 analysis_result = self.analyze_workflow_file(workflow_path)
@@ -602,7 +585,6 @@ class MasterDiagnosticScanner:
         for entry_file in entry_point_files:
             entry_path = self.project_root / entry_file
             if entry_path.exists():
-                print(f"🔍 Analyzing entry point: {entry_file}")
                 entry_analysis['entry_files_found'].append(entry_file)
                 
                 file_analysis = self.analyze_entry_point_file(entry_path)
@@ -694,7 +676,6 @@ class MasterDiagnosticScanner:
     
     def collect_performance_metrics(self):
         """Collect system performance metrics"""
-        print("📈 Collecting Performance Metrics...")
         
         import psutil
         
@@ -807,13 +788,10 @@ class MasterDiagnosticScanner:
                 json.dump(self.scan_results, f, indent=2, default=str)
             print(f"💾 Comprehensive report saved to: {report_file}")
         except Exception as e:
-            print(f"❌ Failed to save report: {e}")
     
     def display_scan_summary(self):
         """Display comprehensive scan summary"""
-        print("\n" + "=" * 80)
         print("📋 MASTER DIAGNOSTIC SCAN - COMPREHENSIVE SUMMARY")
-        print("=" * 80)
         
         # Overall status
         status_icon = {
@@ -826,7 +804,6 @@ class MasterDiagnosticScanner:
         
         print(f"🏥 Overall System Status: {status_icon} {self.scan_results['system_status']}")
         print(f"⚡ Scan Duration: {self.scan_results['scan_duration']} seconds")
-        print()
         
         # Services summary
         services = self.scan_results['services']
@@ -834,33 +811,20 @@ class MasterDiagnosticScanner:
         degraded = sum(1 for s in services.values() if s['status'] == 'DEGRADED')
         down = sum(1 for s in services.values() if s['status'] == 'DOWN')
         
-        print("📊 SERVICES SUMMARY:")
-        print(f"   ✅ Healthy: {healthy}")
-        print(f"   ⚠️ Degraded: {degraded}")
-        print(f"   ❌ Down: {down}")
-        print()
         
         # Key metrics
         mcp_score = self.scan_results['mcp_optimization'].get('optimization_score', 0)
         math_score = self.scan_results['mathematical_validation'].get('validation_score', 0)
         entry_score = self.scan_results['entry_point_analysis'].get('best_practices_score', 0)
         
-        print("🎯 OPTIMIZATION SCORES:")
-        print(f"   🤖 MCP Optimization: {mcp_score}/100")
         print(f"   🧮 Mathematical Validation: {math_score}/100")
         print(f"   🎯 Entry Point Quality: {entry_score}/100")
-        print()
         
         # Top recommendations
         recommendations = self.scan_results['recommendations']
         if recommendations:
-            print("💡 TOP RECOMMENDATIONS:")
             for rec in recommendations[:8]:  # Show first 8 recommendations
-                print(f"   {rec}")
         
-        print("=" * 80)
-        print("🎯 Master Diagnostic Scan Complete!")
-        print("=" * 80)
 
 
 def main():

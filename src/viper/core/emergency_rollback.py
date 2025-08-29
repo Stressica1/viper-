@@ -573,7 +573,7 @@ class EmergencyRollback:
                             )
                             if result.returncode == 0 and result.stdout.strip():
                                 critical_processes_running += 1
-                        except:
+                        except Exception:
                             pass
 
                     metrics["critical_processes_running"] = critical_processes_running
@@ -811,18 +811,14 @@ class EmergencyRollback:
             logger.info(f"📋 Rollback report saved to: {report_path}")
 
             # Display report
-            print(report_content)
 
         except Exception as e:
             logger.error(f"❌ Error generating rollback report: {e}")
 
 def execute_emergency_rollback():
     """Execute emergency rollback procedure"""
-    print("🚨 EMERGENCY ROLLBACK SYSTEM")
-    print("=" * 80)
     print("⚠️  WARNING: This will stop all enhanced processes and restore baseline system")
     print("⚠️  Make sure you have backups and understand the consequences")
-    print()
 
     # Get rollback reason
     reason = input("Enter rollback reason (or press Enter for 'Manual Emergency'): ").strip()
@@ -832,7 +828,6 @@ def execute_emergency_rollback():
     # Confirm execution
     confirm = input(f"Execute emergency rollback for reason: '{reason}'? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Rollback cancelled by user")
         return False
 
     # Execute rollback
@@ -846,7 +841,6 @@ def execute_emergency_rollback():
             print("📋 Check the rollback report for detailed information")
             return True
         else:
-            print("\n❌ EMERGENCY ROLLBACK FAILED!")
             print("🔧 Review the rollback report and manual intervention may be required")
             return False
 
@@ -856,8 +850,6 @@ def execute_emergency_rollback():
 
 def monitor_system_health():
     """Monitor system health and trigger rollback if needed"""
-    print("📊 System Health Monitor")
-    print("=" * 80)
 
     try:
         # Define health thresholds
@@ -885,7 +877,7 @@ def monitor_system_health():
                         )
                         if result.returncode == 0 and result.stdout.strip():
                             critical_processes += len(result.stdout.strip().split('\n'))
-                    except:
+                    except Exception:
                         pass
 
                 # Evaluate health
@@ -905,9 +897,7 @@ def monitor_system_health():
                 print(f"[{timestamp}] CPU: {cpu_percent:.1f}%, Memory: {memory_percent:.1f}%, Critical Processes: {critical_processes}")
 
                 if health_issues:
-                    print("⚠️ HEALTH ISSUES DETECTED:")
                     for issue in health_issues:
-                        print(f"   ❌ {issue}")
 
                     # Ask for rollback
                     rollback = input("Execute emergency rollback? (yes/no): ").lower().strip()
@@ -916,19 +906,15 @@ def monitor_system_health():
                         execute_emergency_rollback()
                         break
                 else:
-                    print("✅ System health OK")
 
                 time.sleep(30)  # Check every 30 seconds
 
             except KeyboardInterrupt:
-                print("\n🛑 Health monitoring stopped by user")
                 break
             except Exception as e:
-                print(f"❌ Health monitoring error: {e}")
                 time.sleep(30)
 
     except Exception as e:
-        print(f"❌ Health monitoring failed: {e}")
 
 if __name__ == "__main__":
     import argparse

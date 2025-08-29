@@ -23,19 +23,10 @@ import os
 import sys
 import json
 import time
-import asyncio
 import threading
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Callable, Union
 from dataclasses import dataclass, asdict
-from collections import defaultdict
-import hashlib
-import hmac
-import base64
-import requests
-import websockets
 import websocket
 
 # Import our exchange connectors

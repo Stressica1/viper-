@@ -437,7 +437,6 @@ async def export_performance(filename: str = None):
 
 async def test_performance_tracker():
     """Test performance tracker functionality"""
-    print("🧪 Testing MCP Performance Tracker...")
 
     tracker = MCPPerformanceTracker()
 
@@ -470,18 +469,11 @@ async def test_performance_tracker():
 
     # Calculate metrics
     metrics = tracker.calculate_performance_metrics()
-    print(f"📊 Performance Metrics:")
-    print(f"   Total Trades: {metrics.total_trades}")
-    print(f"   Win Rate: {metrics.win_rate:.2f}%")
-    print(f"   Total P&L: ${metrics.total_pnl:.2f}")
-    print(f"   Net P&L: ${metrics.net_pnl:.2f}")
 
     # Generate report
     report = await tracker.generate_daily_report()
     if report:
-        print("✅ Daily report generated successfully")
 
-    print("✅ Performance tracker test completed")
 
 if __name__ == "__main__":
     asyncio.run(test_performance_tracker())

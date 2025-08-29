@@ -796,8 +796,6 @@ async def test_performance_system():
 
     system = PerformanceMonitoringSystem()
 
-    print("🧪 Testing Performance Monitoring System")
-    print("=" * 50)
 
     # Simulate some performance data
     for i in range(20):
@@ -810,8 +808,8 @@ async def test_performance_system():
             sharpe_ratio=1.2 + np.random.normal(0, 0.2),
             max_drawdown=0.1 + abs(np.random.normal(0, 0.05)),
             volatility=0.15 + np.random.normal(0, 0.03),
-            trades_executed=np.random.randint(5, 15),
-            active_positions=np.random.randint(1, 5),
+            trades_executed=np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(5, 15),
+            active_positions=np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1, 5),
             system_metrics={
                 'cpu_percent': 50 + np.random.normal(0, 10),
                 'memory_percent': 60 + np.random.normal(0, 15),
@@ -824,22 +822,17 @@ async def test_performance_system():
     returns = pd.Series([s.total_pnl for s in list(system.performance_history)])
     metrics = system.calculate_advanced_metrics(returns.pct_change().dropna())
 
-    print(f"📊 Calculated Advanced Metrics:")
     for key, value in metrics.items():
-        print(f"   {key}: {value:.4f}")
 
     # Test optimization
-    print("\n🎯 Testing Parameter Optimization...")
     optimization_result = system.optimize_strategy_parameters(OptimizationTarget.BALANCED_OPTIMIZATION)
 
     if optimization_result:
-        print(f"✅ Optimization Result:")
         print(f"   Target: {optimization_result.target.value}")
         print(f"   Improvement: {optimization_result.improvement:.2%}")
         print(f"   Best Parameters: {optimization_result.parameters}")
 
     # Test performance report
-    print("\n📋 Generating Performance Report...")
     report = system.generate_performance_report()
 
     print(f"✅ Report Generated with {len(report.get('recommendations', []))} recommendations")

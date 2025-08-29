@@ -48,7 +48,6 @@ class VIPERSetup:
         
     def print_header(self):
         """Print welcome header"""
-        print(f"""
 {Colors.HEADER}{Colors.BOLD}
 🚀 VIPER Trading Bot - Automated Setup
 =====================================
@@ -83,48 +82,38 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
         try:
             result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
             if result.returncode == 0:
-                print(f"✅ Docker - {result.stdout.strip()}")
                 checks.append(True)
             else:
-                print("❌ Docker - Not found or not working")
                 checks.append(False)
         except FileNotFoundError:
-            print("❌ Docker - Not installed")
             checks.append(False)
         
         # Check Docker daemon
         try:
             result = subprocess.run(['docker', 'ps'], capture_output=True, text=True)
             if result.returncode == 0:
-                print("✅ Docker daemon - Running")
                 checks.append(True)
             else:
                 print("❌ Docker daemon - Not running (Start Docker Desktop)")
                 checks.append(False)
-        except:
-            print("❌ Docker daemon - Not accessible")
+        except Exception:
             checks.append(False)
         
         # Check Git
         try:
             result = subprocess.run(['git', '--version'], capture_output=True, text=True)
             if result.returncode == 0:
-                print(f"✅ Git - {result.stdout.strip()}")
                 checks.append(True)
             else:
-                print("❌ Git - Not found")
                 checks.append(False)
         except FileNotFoundError:
-            print("❌ Git - Not installed")
             checks.append(False)
         
         # Check internet connection
         try:
             urllib.request.urlopen('https://pypi.org', timeout=10)
-            print("✅ Internet connection - OK")
             checks.append(True)
-        except:
-            print("❌ Internet connection - Failed")
+        except Exception:
             checks.append(False)
         
         success = all(checks)
@@ -141,14 +130,12 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
         
         try:
             # Upgrade pip first
-            print("Upgrading pip...")
             result = subprocess.run([self.python_exe, '-m', 'pip', 'install', '--upgrade', 'pip'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
                 print(f"Warning: Failed to upgrade pip: {result.stderr}")
             
             # Install core dependencies
-            print("Installing core dependencies...")
             result = subprocess.run([self.python_exe, '-m', 'pip', 'install', '-e', '.'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
@@ -156,7 +143,6 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
                 return False
             
             # Install MCP dependencies
-            print("Installing MCP dependencies...")
             result = subprocess.run([self.python_exe, '-m', 'pip', 'install', '-e', '.[mcp]'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
@@ -166,7 +152,6 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             return True
             
         except Exception as e:
-            print(f"❌ Error installing dependencies: {e}")
             return False
     
     def setup_environment(self) -> bool:
@@ -178,20 +163,15 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             env_file = self.root_dir / '.env'
             
             if not env_template.exists():
-                print("❌ .env.template not found")
                 return False
             
             if not env_file.exists():
-                print("Copying .env.template to .env...")
                 shutil.copy2(env_template, env_file)
-                print("✅ Environment file created")
             else:
-                print("✅ Environment file already exists")
             
             return True
             
         except Exception as e:
-            print(f"❌ Error setting up environment: {e}")
             return False
     
     def setup_docker(self) -> bool:
@@ -202,7 +182,6 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             # Check if docker-compose.yml exists
             docker_compose = self.root_dir / 'infrastructure' / 'docker-compose.yml'
             if not docker_compose.exists():
-                print("❌ Docker compose file not found")
                 return False
             
             # Pull base images
@@ -216,14 +195,12 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             return True
             
         except Exception as e:
-            print(f"❌ Error setting up Docker: {e}")
             return False
     
     def configure_api_keys(self) -> bool:
         """Configure API keys interactively"""
         print(f"\n{Colors.BOLD}🔐 API Key Configuration{Colors.ENDC}")
         
-        print(f"""
 {Colors.OKCYAN}To use VIPER for live trading, you need Bitget API credentials.
 You can skip this step and configure later if you want to test with demo data first.{Colors.ENDC}
 
@@ -254,7 +231,6 @@ You can skip this step and configure later if you want to test with demo data fi
                     print(f"{Colors.FAIL}❌ API configuration script not found{Colors.ENDC}")
                     return False
             except Exception as e:
-                print(f"❌ Error configuring API keys: {e}")
                 return False
         else:
             print(f"{Colors.WARNING}⚠️ Skipping API configuration - demo mode only{Colors.ENDC}")
@@ -266,7 +242,6 @@ You can skip this step and configure later if you want to test with demo data fi
         
         try:
             # Test Python imports
-            print("Testing Python imports...")
             test_imports = [
                 'fastapi', 'uvicorn', 'redis', 'ccxt', 'pandas', 
                 'numpy', 'requests', 'dotenv', 'aiohttp'
@@ -275,31 +250,24 @@ You can skip this step and configure later if you want to test with demo data fi
             for module in test_imports:
                 try:
                     __import__(module)
-                    print(f"✅ {module}")
                 except ImportError:
-                    print(f"❌ {module} - Not installed")
                     return False
             
             # Test environment loading
-            print("Testing environment configuration...")
             try:
                 from dotenv import load_dotenv
                 load_dotenv()
-                print("✅ Environment configuration loaded")
             except Exception as e:
-                print(f"❌ Environment configuration failed: {e}")
                 return False
             
             print(f"{Colors.OKGREEN}✅ Installation validation passed!{Colors.ENDC}")
             return True
             
         except Exception as e:
-            print(f"❌ Validation error: {e}")
             return False
     
     def print_next_steps(self):
         """Print next steps for the user"""
-        print(f"""
 {Colors.HEADER}{Colors.BOLD}
 🎉 VIPER Setup Complete!
 ========================{Colors.ENDC}
@@ -359,12 +327,10 @@ You can skip this step and configure later if you want to test with demo data fi
         
         print(f"\n{Colors.BOLD}Setup Progress:{Colors.ENDC}")
         for i, (name, _) in enumerate(steps, 1):
-            print(f"{i}. {name}")
         
         # Execute setup steps
         for i, (step_name, step_func) in enumerate(steps, 1):
             print(f"\n{Colors.BOLD}Step {i}/{len(steps)}: {step_name}{Colors.ENDC}")
-            print("=" * 50)
             
             try:
                 success = step_func()

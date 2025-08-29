@@ -26,7 +26,6 @@ try:
         from . import core
         available_modules.append('core')
     except ImportError as e:
-        print(f"⚠️ Core module unavailable: {e}")
     
     try:
         from . import strategies

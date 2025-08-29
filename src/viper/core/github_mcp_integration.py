@@ -15,18 +15,13 @@ This module provides:
 
 import os
 import json
-import time
 import logging
-import subprocess
-from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 import requests
 
 # Optional imports (gracefully handle missing dependencies)
 try:
-    import git
-    from git import Repo
     GIT_AVAILABLE = True
 except ImportError:
     print("⚠️ GitPython not available - some GitHub features may be limited")
@@ -560,7 +555,6 @@ class GitHubMCPIntegration:
 # Example usage and testing functions
 async def test_github_integration():
     """Test GitHub MCP integration"""
-    print("🔗 Testing GitHub MCP Integration...")
 
     # Initialize integration
     github_mcp = GitHubMCPIntegration()
@@ -571,7 +565,6 @@ async def test_github_integration():
 
     # Test commit history
     commits = await github_mcp.get_commit_history(5)
-    print(f"📝 Recent Commits: {len(commits)} found")
 
     # Test performance logging
     test_performance = {
@@ -586,7 +579,6 @@ async def test_github_integration():
     success = await github_mcp.log_system_performance(test_performance)
     print(f"📈 Performance logging: {'SUCCESS' if success else 'FAILED'}")
 
-    print("✅ GitHub MCP integration test completed")
 
 if __name__ == "__main__":
     import asyncio

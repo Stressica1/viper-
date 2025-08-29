@@ -30,13 +30,9 @@ except ImportError:
     # Fallback to basic console
     class Console:
         def print(self, *args, **kwargs):
-            print(*args)
         
         def rule(self, title=""):
-            print(f"\n{'='*60}")
             if title:
-                print(f" {title} ")
-                print(f"{'='*60}")
 
 # Global console instance
 console = Console() if RICH_AVAILABLE else Console()
@@ -79,14 +75,11 @@ class ViperTerminal:
             )
             self.console.print(panel)
         else:
-            print(banner_text)
     
     def print_system_status(self, status_data: Dict[str, Any]):
         """Display comprehensive system status"""
         if not RICH_AVAILABLE:
-            print("\n=== SYSTEM STATUS ===")
             for key, value in status_data.items():
-                print(f"{key}: {value}")
             return
             
         # Create status table
@@ -110,9 +103,7 @@ class ViperTerminal:
     def print_trading_summary(self, summary: Dict[str, Any]):
         """Display trading performance summary"""
         if not RICH_AVAILABLE:
-            print("\n=== TRADING SUMMARY ===")
             for key, value in summary.items():
-                print(f"{key}: {value}")
             return
             
         # Create trading summary layout
@@ -173,9 +164,7 @@ class ViperTerminal:
     def show_progress(self, tasks: List[str], title: str = "Processing"):
         """Show progress for multiple tasks"""
         if not RICH_AVAILABLE:
-            print(f"\n{title}...")
             for i, task in enumerate(tasks, 1):
-                print(f"  {i}. {task}")
             return
             
         with Progress(
@@ -203,9 +192,7 @@ class ViperTerminal:
     def display_error(self, error_msg: str, details: Optional[str] = None):
         """Display error with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n❌ ERROR: {error_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
@@ -219,9 +206,7 @@ class ViperTerminal:
     def display_warning(self, warning_msg: str, details: Optional[str] = None):
         """Display warning with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n⚠️ WARNING: {warning_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
@@ -235,9 +220,7 @@ class ViperTerminal:
     def display_success(self, success_msg: str, details: Optional[str] = None):
         """Display success message with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n✅ SUCCESS: {success_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
@@ -251,11 +234,8 @@ class ViperTerminal:
     def display_config_summary(self, config: Dict[str, Any]):
         """Display configuration summary"""
         if not RICH_AVAILABLE:
-            print("\n=== CONFIGURATION ===")
             for section, values in config.items():
-                print(f"\n{section.upper()}:")
                 for key, value in values.items():
-                    print(f"  {key}: {value}")
             return
             
         tree = Tree("🔧 Configuration Summary")

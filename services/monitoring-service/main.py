@@ -19,16 +19,11 @@ import time
 import logging
 import asyncio
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
-from pathlib import Path
-import threading
 import httpx
 import psutil
-import socket
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -352,7 +347,7 @@ class MonitoringService:
             for alert in alerts:
                 try:
                     recent_alerts.append(json.loads(alert))
-                except:
+                except Exception:
                     recent_alerts.append({'raw': alert})
 
             # Get service status summary
@@ -405,7 +400,7 @@ class MonitoringService:
                 hours = uptime_timedelta.seconds // 3600
                 minutes = (uptime_timedelta.seconds % 3600) // 60
                 return f"{days}d {hours}h {minutes}m"
-        except:
+        except Exception:
             return "unknown"
 
     async def start_monitoring(self):
@@ -558,7 +553,7 @@ async def get_alerts(limit: int = Query(50, description="Number of alerts to ret
         for alert in alerts:
             try:
                 parsed_alerts.append(json.loads(alert))
-            except:
+            except Exception:
                 parsed_alerts.append({'raw': alert})
 
         return {'alerts': parsed_alerts, 'count': len(parsed_alerts)}
@@ -590,7 +585,7 @@ async def get_metrics_history(hours: int = Query(24, description="Hours of histo
                     data = monitor.redis_client.get(key)
                     if data:
                         history_data.append(json.loads(data))
-            except:
+            except Exception:
                 continue
 
         # Sort by timestamp

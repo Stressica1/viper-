@@ -24,8 +24,6 @@ try:
     from rich.panel import Panel
     from rich.text import Text
 except ImportError as e:
-    print(f"❌ Import error: {e}")
-    print("Installing required packages...")
     import subprocess
     subprocess.run([sys.executable, "-m", "pip", "install", "rich", "numpy", "pandas"], check=True)
     from strategy_optimizer_enhanced import SuperiorStrategyOptimizer

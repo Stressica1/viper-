@@ -17,17 +17,12 @@ import json
 import time
 import logging
 import asyncio
-import threading
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 import requests
 import psutil
-from concurrent.futures import ThreadPoolExecutor
-import numpy as np
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')

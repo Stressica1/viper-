@@ -451,7 +451,7 @@ class LiveTradingOptimizer:
                         if response.status_code != 200:
                             logger.critical(f"🚨 CRITICAL: {service_url} is unhealthy")
                             self.emergency_stop = True
-                    except:
+                    except Exception:
                         logger.critical(f"🚨 CRITICAL: {service_url} is unreachable")
                         self.emergency_stop = True
 
@@ -474,25 +474,10 @@ async def main():
     signal.signal(signal.SIGINT, optimizer.signal_handler)
     signal.signal(signal.SIGTERM, optimizer.signal_handler)
 
-    print("🚀 VIPER LIVE TRADING OPTIMIZER")
-    print("=" * 60)
-    print("⚠️  SAFETY FEATURES ENABLED:")
     print(f"   • Daily loss limit: {optimizer.daily_loss_limit*100}%")
     print(f"   • Risk per trade: {optimizer.risk_per_trade*100}%")
     print(f"   • Max positions: {optimizer.max_positions}")
-    print("   • Emergency stop: ENABLED")
-    print("   • Real-time optimization: ENABLED")
-    print("")
-    print("🛑 EMERGENCY COMMANDS:")
-    print("   Ctrl+C to stop gracefully")
     print("   'docker compose down' to force stop all services")
-    print("")
-    print("📊 MONITORING:")
-    print("   • Real-time P&L tracking")
-    print("   • Position monitoring")
-    print("   • Strategy optimization")
-    print("   • Emergency condition checks")
-    print("=" * 60)
 
     # Start emergency monitoring in background
     monitoring_task = asyncio.create_task(optimizer.start_emergency_monitoring())
@@ -501,22 +486,16 @@ async def main():
         # Start the main trading loop
         await optimizer.run_live_trading_loop()
     except KeyboardInterrupt:
-        print("\n⏹️ Shutting down gracefully...")
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}")
     finally:
         optimizer.is_running = False
         monitoring_task.cancel()
 
-        print("\n" + "=" * 60)
         print("🛑 LIVE TRADING OPTIMIZER SHUTDOWN COMPLETE")
-        print("=" * 60)
-        print("📊 FINAL STATISTICS:")
         print(f"   Total Trades: {optimizer.trades_executed}")
         print(f"   Successful Trades: {optimizer.successful_trades}")
         print(f"   Total P&L: ${optimizer.total_pnl:.2f}")
         print(f"   Final Balance: ${optimizer.start_balance + optimizer.daily_pnl:.2f}")
-        print("✅ System safely stopped")
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -5,14 +5,9 @@ Manages encrypted API credentials and secrets for the trading system
 """
 
 import os
-import sys
 import json
 import base64
-import hashlib
 import secrets
-from typing import Dict, Optional, Any
-from datetime import datetime, timedelta
-import asyncio
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from cryptography.fernet import Fernet

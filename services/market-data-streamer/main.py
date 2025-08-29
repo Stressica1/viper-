@@ -19,10 +19,8 @@ import logging
 import asyncio
 import threading
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 import redis
 import requests
-import websockets
 import ccxt
 
 # Load environment variables

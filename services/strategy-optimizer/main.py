@@ -19,24 +19,19 @@ import time
 import logging
 import asyncio
 import sys
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 import numpy as np
-import pandas as pd
 import random
-from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
+import secrets
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 from pathlib import Path
-import threading
 import httpx
 import uuid
 
 # Add shared directory to path for circuit breaker
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
-    from circuit_breaker import ServiceClient, call_service
     CIRCUIT_BREAKER_AVAILABLE = True
 except ImportError:
     # Fallback if shared module not available
@@ -233,8 +228,8 @@ class StrategyOptimizer:
 
                 while len(new_population) < population_size:
                     # Select parents
-                    parent1 = random.choice(selected)
-                    parent2 = random.choice(selected)
+                    parent1 = secrets.choice(selected)
+                    parent2 = secrets.choice(selected)
 
                     # Crossover
                     child = self.crossover(parent1, parent2, parameter_ranges)
@@ -273,13 +268,13 @@ class StrategyOptimizer:
             individual = {}
             for param_name, param_range in parameter_ranges.items():
                 if isinstance(param_range, list):
-                    individual[param_name] = random.choice(param_range)
+                    individual[param_name] = secrets.choice(param_range)
                 elif isinstance(param_range, dict):
                     min_val = param_range.get('min', 0)
                     max_val = param_range.get('max', 100)
                     step = param_range.get('step', 1)
                     if step == 1:
-                        individual[param_name] = random.randint(min_val, max_val)
+                        individual[param_name] = secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(min_val, max_val)
                     else:
                         individual[param_name] = round(random.uniform(min_val, max_val) / step) * step
                 else:
@@ -295,7 +290,7 @@ class StrategyOptimizer:
 
         for param_name in parameter_ranges.keys():
             # Randomly select from either parent
-            if random.random() < 0.5:
+            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < 0.5:
                 child[param_name] = parent1[param_name]
             else:
                 child[param_name] = parent2[param_name]
@@ -307,15 +302,15 @@ class StrategyOptimizer:
         mutated = individual.copy()
 
         for param_name, param_range in parameter_ranges.items():
-            if random.random() < mutation_rate:
+            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < mutation_rate:
                 if isinstance(param_range, list):
-                    mutated[param_name] = random.choice(param_range)
+                    mutated[param_name] = secrets.choice(param_range)
                 elif isinstance(param_range, dict):
                     min_val = param_range.get('min', 0)
                     max_val = param_range.get('max', 100)
                     step = param_range.get('step', 1)
                     if step == 1:
-                        mutated[param_name] = random.randint(min_val, max_val)
+                        mutated[param_name] = secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(min_val, max_val)
                     else:
                         mutated[param_name] = round(random.uniform(min_val, max_val) / step) * step
 

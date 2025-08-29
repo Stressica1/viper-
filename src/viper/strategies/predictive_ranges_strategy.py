@@ -14,7 +14,6 @@ This strategy implements:
 import numpy as np
 import pandas as pd
 import talib as ta
-from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 from datetime import datetime
 import logging
@@ -438,8 +437,6 @@ def get_predictive_strategy() -> PredictiveRangesStrategy:
 # Example usage and testing
 async def main():
     """Test predictive ranges strategy"""
-    print("🚀 PREDICTIVE RANGES STRATEGY TEST")
-    print("=" * 60)
 
     strategy = get_predictive_strategy()
 
@@ -462,7 +459,6 @@ async def main():
     # Find optimal entries
     current_price = 100.0
     signals = strategy.find_optimal_entries(symbol, current_price)
-    print(f"🎯 Found {len(signals)} entry signals")
 
     # Get forecast
     forecast = strategy.get_range_forecast(symbol)

@@ -323,7 +323,7 @@ class MCPBrainService:
             import requests
             response = requests.get("http://localhost:8080/health", timeout=3)
             return response.status_code == 200
-        except:
+        except Exception:
             return False
 
     def log_cleanup_loop(self):
@@ -493,9 +493,7 @@ def main():
         service = MCPBrainService()
         service.start_service()
     except KeyboardInterrupt:
-        print("\n🛑 Service interrupted by user")
     except Exception as e:
-        print(f"❌ Service failed: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

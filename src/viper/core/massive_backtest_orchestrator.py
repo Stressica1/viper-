@@ -12,16 +12,13 @@ This orchestrator provides:
 ✅ Distributed processing capabilities
 """
 
-import os
 import sys
 import json
 import asyncio
 import logging
 import math
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import psutil
 import gc
 from dataclasses import dataclass, asdict
@@ -33,7 +30,6 @@ project_root = Path(__file__).parent
 sys.path.append(str(project_root))
 
 # Import existing components
-from mcp_backtesting_optimizer import MCPBacktestingOptimizer, BacktestResult
 from github_mcp_integration import GitHubMCPIntegration
 
 # Configure logging
@@ -761,19 +757,14 @@ async def get_massive_backtest_status() -> Dict[str, Any]:
 # Main execution
 async def main():
     """Main massive backtesting execution"""
-    print("🎯 MASSIVE BACKTEST ORCHESTRATOR - 50 Pairs × 200 Configs")
-    print("=" * 80)
 
     try:
         # Create massive backtest task
-        print("📋 Creating massive backtest task...")
         task_id = await create_massive_backtest_task()
 
         if not task_id:
-            print("❌ Failed to create backtest task")
             return 1
 
-        print(f"✅ Task Created: {task_id}")
 
         # Get configuration info
         orchestrator = MassiveBacktestOrchestrator()
@@ -781,9 +772,6 @@ async def main():
         total_configs = orchestrator._calculate_total_configs()
         total_combinations = total_pairs * total_configs * len(orchestrator.config.timeframes)
 
-        print("\n📊 BACKTEST SCALE:")
-        print(f"   Trading Pairs: {total_pairs}")
-        print(f"   Configurations: {total_configs}")
         print(f"   Timeframes: {len(orchestrator.config.timeframes)}")
         print(f"   Total Combinations: {total_combinations:,}")
         print(f"   Estimated Duration: {(total_combinations * 30) / 3600:.1f} hours")
@@ -792,21 +780,14 @@ async def main():
         confirm = input(f"\n🚀 Execute massive backtest with {total_combinations:,} combinations? (yes/no): ").strip().lower()
 
         if confirm != 'yes':
-            print("❌ Operation cancelled by user")
             return 0
 
         # Run the massive backtest
-        print("\n🚀 EXECUTING MASSIVE BACKTEST...")
-        print("This may take several hours. Progress will be logged to massive_backtest.log")
-        print("=" * 80)
 
         start_time = datetime.now()
         results = await run_massive_backtest_operation(task_id)
         end_time = datetime.now()
 
-        print("\n" + "=" * 80)
-        print("✅ MASSIVE BACKTEST COMPLETED")
-        print("=" * 80)
         print(f"Duration: {(end_time - start_time).total_seconds() / 3600:.2f} hours")
 
         if results.get('status') == 'error':
@@ -817,7 +798,6 @@ async def main():
         summary = results
         overall_stats = summary.get('overall_stats', {})
 
-        print("\n📊 RESULTS SUMMARY:")
         print(f"   Total Results: {summary.get('total_results', 0):,}")
         print(f"   Failed Tasks: {summary.get('total_failed', 0)}")
         print(f"   Average Win Rate: {overall_stats.get('avg_win_rate', 0):.1f}%")
@@ -826,27 +806,19 @@ async def main():
 
         if summary.get('best_by_sharpe_ratio'):
             best_sharpe = summary['best_by_sharpe_ratio'][0]
-            print("\n🏆 BEST CONFIGURATION (Sharpe Ratio):")
             print(f"   Symbol: {best_sharpe.get('symbol', 'N/A')}")
             print(f"   Timeframe: {best_sharpe.get('timeframe', 'N/A')}")
             print(f"   Sharpe Ratio: {best_sharpe.get('sharpe_ratio', 0):.2f}")
             print(f"   Win Rate: {best_sharpe.get('win_rate', 0):.1f}%")
             print(f"   Total P&L: ${best_sharpe.get('total_pnl', 0):.2f}")
 
-        print("\n📄 Detailed results saved to:")
-        print("   - massive_backtest_results_*.json (comprehensive results)")
-        print("   - massive_backtest_results_*_summary.csv (summary CSV)")
-        print("   - massive_backtest_results_*_top_performers.json (top configs)")
 
-        print("\n✅ Massive backtesting operation completed successfully!")
         return 0
 
     except KeyboardInterrupt:
-        print("\n🛑 Operation cancelled by user")
         return 0
     except Exception as e:
         logger.error(f"❌ Execution failed: {e}")
-        print(f"❌ ERROR: {e}")
         return 1
 
 if __name__ == "__main__":
