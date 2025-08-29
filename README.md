@@ -23,37 +23,62 @@ A high-performance automated trading system with mandatory Docker and MCP (Model
 - Losses can occur - use proper risk management
 - Ensure you understand the risks before running
 
-## 🚀 Quick Start
+# 🚀 VIPER Live Trading Bot - Docker & MCP Enforced System
 
-### 1. Configure Environment
+**⚠️ LIVE TRADING SYSTEM ONLY - NO MOCK DATA OR DEMO MODE**
 
-```bash
-# Copy environment template
-cp .env.example .env
+A high-performance automated trading system with mandatory Docker and MCP (Model Context Protocol) enforcement for live cryptocurrency trading.
 
-# Edit .env with your REAL credentials
-# CRITICAL: Use real Bitget API credentials, not placeholders
-```
-
-### 2. Start with Mandatory Enforcement
+## 🎯 THE EASIEST SETUP EVER! (1 Command)
 
 ```bash
-# Start the system with full enforcement
-python start_live_trading_mandatory.py
+python viper.py
 ```
 
-Or use Docker directly:
+**This opens an interactive menu where you can setup and start trading in under 2 minutes!**
 
+---
+
+## 🚀 Quick Start - THE EASIEST SETUP EVER!
+
+### Super Simple Method (Recommended)
 ```bash
-# Start Docker services
-docker compose up -d
-
-# Verify MCP server is running
-curl http://localhost:8015/health
-
-# Start live trading
-python final_live_trading_launcher.py
+python viper.py
 ```
+Interactive menu that guides you through everything!
+
+### Direct Commands Method
+1. **Setup:** `python setup.py`
+2. **Add API keys** to `.env` file 
+3. **Start trading:** `python start_trading.py`
+
+### Want to Test First?
+```bash
+python demo.py
+```
+Safe demo mode with simulated data - no real money!
+
+---
+
+## ⚡ What You Get
+
+- **🤖 AI Trading**: VIPER algorithm makes smart trades 24/7
+- **🛡️ Risk Management**: Automatic stop-losses and limits
+- **📊 Real-time Monitoring**: Live dashboard and performance tracking
+- **💰 Multiple Markets**: Bitcoin, Ethereum, 500+ cryptocurrencies
+- **🔒 Secure**: Encrypted API keys and secure connections
+
+## 🎮 Demo Mode Available!
+
+Test everything safely before live trading:
+```bash
+python demo.py
+```
+- See exactly how the system works
+- No real money or API keys needed
+- Perfect for learning and testing
+
+---
 
 ## 🔧 System Architecture
 
