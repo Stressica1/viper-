@@ -39,6 +39,11 @@ TO_EMAILS = os.getenv('TO_EMAILS', '').split(',')
 # Telegram configuration
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', '')
 TELEGRAM_CHAT_IDS = os.getenv('TELEGRAM_CHAT_IDS', '').split(',')
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', '')  # Single chat ID for backward compatibility
+
+# Add single chat ID to the list if it exists and isn't already included
+if TELEGRAM_CHAT_ID and TELEGRAM_CHAT_ID not in TELEGRAM_CHAT_IDS:
+    TELEGRAM_CHAT_IDS.append(TELEGRAM_CHAT_ID)
 
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
