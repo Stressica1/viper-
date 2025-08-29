@@ -13,15 +13,35 @@ import logging
 from pathlib import Path
 from dotenv import load_dotenv
 
+# Add project paths for new structure
+project_root = Path(__file__).parent.parent
+sys.path.append(str(project_root))
+sys.path.append(str(project_root / "src"))
+
+# Enhanced terminal display
+try:
+    from src.viper.utils.terminal_display import (
+        terminal, display_error, display_success, display_warning, 
+        print_banner, print_status
+    )
+    ENHANCED_DISPLAY = True
+except ImportError:
+    ENHANCED_DISPLAY = False
+    def display_error(msg, details=None): print(f"❌ {msg}")
+    def display_success(msg, details=None): print(f"✅ {msg}")
+    def display_warning(msg, details=None): print(f"⚠️ {msg}")
+    def print_banner(): print("🚀 VIPER COMPLETE LIVE TRADING SYSTEM")
+    def print_status(status): print("Status:", status)
+
 # Load environment variables
 load_dotenv()
 
-# Configure logging
+# Configure logging with enhanced formatting
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('viper_live_system.log'),
+        logging.FileHandler('logs/viper_live_system.log'),
         logging.StreamHandler()
     ]
 )

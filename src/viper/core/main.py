@@ -13,27 +13,40 @@ import time
 import logging
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent
+# Add project root to path - Updated for new structure
+project_root = Path(__file__).parent.parent.parent.parent  # Navigate to viper-/ root
 sys.path.append(str(project_root))
+sys.path.append(str(project_root / "src"))
 
-# MANDATORY ENFORCEMENT IMPORT
+# MANDATORY ENFORCEMENT IMPORT - Updated paths
 try:
-    from mandatory_docker_mcp_wrapper import execute_module, start_system_with_enforcement
+    from src.viper.core.mandatory_docker_mcp_wrapper import execute_module, start_system_with_enforcement
     ENFORCEMENT_AVAILABLE = True
 except ImportError:
     print("⚠️ WARNING: Mandatory enforcement system not available - running in legacy mode")
     ENFORCEMENT_AVAILABLE = False
 
-# Legacy imports (for backward compatibility)
-import ccxt
-import asyncio
-from datetime import datetime
-from dotenv import load_dotenv
-from job_manager import ViperLiveJobManager
-
-# Load environment variables from .env file
-load_dotenv()
+# Core imports with error handling
+try:
+    import ccxt
+    import asyncio
+    from datetime import datetime
+    from dotenv import load_dotenv
+    from src.viper.core.job_manager import ViperLiveJobManager
+    
+    # Load environment variables from .env file
+    load_dotenv()
+    
+    IMPORTS_AVAILABLE = True
+except ImportError as e:
+    print(f"⚠️ WARNING: Some imports failed: {e}")
+    print("📦 Please ensure all dependencies are installed: pip install -r requirements.txt")
+    # Continue with available modules
+    IMPORTS_AVAILABLE = False
+    
+    # Create dummy load_dotenv if not available
+    def load_dotenv():
+        pass
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
