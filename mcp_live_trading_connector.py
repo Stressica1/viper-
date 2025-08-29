@@ -49,6 +49,14 @@ class MCPLiveTradingConnector:
     """
 
     def __init__(self):
+        # First, enforce Docker and MCP requirements
+        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+        
+        logger.info("🔒 Enforcing Docker & MCP requirements for live trading...")
+        if not enforce_docker_mcp_requirements():
+            logger.error("❌ Docker/MCP requirements not met")
+            raise Exception("MCP Live Trading requires Docker and MCP server")
+        
         self.trading_job = None
         self.github_mcp = None
         self.brain_controller = None
@@ -56,27 +64,36 @@ class MCPLiveTradingConnector:
         self.active_tasks = {}
         self.system_status = {}
 
-        # MCP Configuration
+        # Validate live trading environment
+        if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+            raise Exception("🚫 LIVE TRADING MODE: Mock data not allowed")
+        
+        if not os.getenv('FORCE_LIVE_TRADING', '').lower() == 'true':
+            raise Exception("🚫 LIVE TRADING MODE: Must set FORCE_LIVE_TRADING=true")
+
+        # MCP Configuration - Using Docker network URLs
         self.mcp_config = {
-            'server_url': 'http://localhost:8015',
-            'websocket_url': 'ws://localhost:8015/ws',
-            'github_token': os.getenv('GITHUB_TOKEN'),
-            'trading_active': False,
+            'server_url': os.getenv('MCP_SERVER_URL', 'http://mcp-server:8015'),
+            'websocket_url': os.getenv('MCP_WS_URL', 'ws://mcp-server:8015/ws'),
+            'github_token': os.getenv('GITHUB_PAT', os.getenv('GITHUB_TOKEN', '')),
+            'trading_active': True,  # Force active for live trading
             'auto_restart': True,
             'emergency_stop': False
         }
 
-        # Trading parameters
+        # Trading parameters - Live trading configuration
         self.trading_params = {
-            'max_positions': int(os.getenv('MAX_POSITIONS', '5')),
+            'max_positions': int(os.getenv('MAX_POSITIONS', '15')),
             'risk_per_trade': float(os.getenv('RISK_PER_TRADE', '0.02')),
-            'leverage': int(os.getenv('LEVERAGE', '25')),
-            'trading_pairs': os.getenv('TRADING_PAIRS', 'BTCUSDT,ETHUSDT').split(','),
+            'leverage': int(os.getenv('MAX_LEVERAGE', '50')),
+            'trading_pairs': os.getenv('TRADING_PAIRS', 'BTCUSDT,ETHUSDT,SOLUSDT,BNBUSDT,ADAUSDT').split(','),
             'min_balance_threshold': float(os.getenv('MIN_BALANCE_THRESHOLD', '100.0'))
         }
 
-        logger.info("🚀 INITIALIZING MCP LIVE TRADING CONNECTOR")
+        logger.info("🚀 INITIALIZING MCP LIVE TRADING CONNECTOR - LIVE MODE ONLY")
         logger.info("=" * 60)
+        logger.info("🚨 LIVE TRADING: Real trades will be executed")
+        logger.info("🔒 Docker and MCP enforcement: ACTIVE")
 
     async def initialize_components(self):
         """Initialize all MCP trading components"""

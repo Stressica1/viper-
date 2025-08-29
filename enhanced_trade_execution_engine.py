@@ -18,7 +18,6 @@ import logging
 import ccxt.pro as ccxt
 import json
 import time
-import numpy as np
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
@@ -29,9 +28,8 @@ sys.path.insert(0, '/home/runner/work/viper-/viper-/services/viper-scoring-servi
 try:
     from main import VIPERScoringService, SignalType
 except ImportError:
-    print("⚠️ Warning: Could not import VIPERScoringService, using mock implementation")
-    VIPERScoringService = None
-    SignalType = None
+    logger.error("❌ Could not import VIPERScoringService - required for live trading")
+    raise ImportError("VIPERScoringService is required for live trading operations")
 
 # Configure logging
 logging.basicConfig(
@@ -64,11 +62,17 @@ class EnhancedTradeExecutionEngine:
         self.active_positions = {}
         self.trade_history = []
         
-        # Configuration from environment
-        self.api_key = os.getenv('BITGET_API_KEY', 'test_key')
-        self.api_secret = os.getenv('BITGET_API_SECRET', 'test_secret')
-        self.api_password = os.getenv('BITGET_API_PASSWORD', 'test_password')
-        self.use_mock_data = os.getenv('USE_MOCK_DATA', 'true').lower() == 'true'
+        # Configuration from environment - LIVE TRADING ONLY
+        self.api_key = os.getenv('BITGET_API_KEY', '')
+        self.api_secret = os.getenv('BITGET_API_SECRET', '')
+        self.api_password = os.getenv('BITGET_API_PASSWORD', '')
+        
+        # Validate real credentials are provided
+        if not all([self.api_key, self.api_secret, self.api_password]):
+            raise ValueError("🚫 LIVE TRADING MODE: All Bitget API credentials must be provided")
+        
+        if any(cred.startswith('your_') or cred.startswith('test_') for cred in [self.api_key, self.api_secret, self.api_password]):
+            raise ValueError("🚫 LIVE TRADING MODE: Placeholder credentials not allowed")
         
         # Trading parameters
         self.max_positions = 5
@@ -76,20 +80,16 @@ class EnhancedTradeExecutionEngine:
         self.max_execution_cost = 3.0  # $3 maximum execution cost
         self.min_viper_score = 70.0  # Minimum VIPER score for trade
         
-        logger.info("🚀 Enhanced Trade Execution Engine initialized")
-        logger.info(f"   Mock Data Mode: {self.use_mock_data}")
+        logger.info("🚀 Enhanced Trade Execution Engine initialized - LIVE MODE ONLY")
         logger.info(f"   Max Positions: {self.max_positions}")
         logger.info(f"   Risk Per Trade: {self.risk_per_trade * 100}%")
         logger.info(f"   Max Execution Cost: ${self.max_execution_cost}")
+        logger.info("🚨 LIVE TRADING: Real trades will be executed")
         
     async def initialize_exchange(self) -> bool:
-        """Initialize exchange connection with proper error handling"""
+        """Initialize exchange connection - LIVE TRADING ONLY"""
         try:
-            if self.use_mock_data:
-                logger.info("🎭 Using mock data mode - no real exchange connection")
-                return True
-                
-            logger.info("🔌 Connecting to Bitget exchange...")
+            logger.info("🔌 Connecting to Bitget exchange for LIVE TRADING...")
             self.exchange = ccxt.bitget({
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
@@ -98,34 +98,29 @@ class EnhancedTradeExecutionEngine:
                     'defaultType': 'swap',
                     'adjustForTimeDifference': True,
                 },
-                'sandbox': False,
+                'sandbox': False,  # Production mode only
             })
             
             # Test connection
             await self.exchange.load_markets()
-            logger.info("✅ Exchange connection established")
+            logger.info("✅ Live exchange connection established")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to connect to exchange: {e}")
-            if not self.use_mock_data:
-                logger.info("🎭 Falling back to mock data mode")
-                self.use_mock_data = True
-            return True  # Continue with mock data
+            logger.error(f"❌ Failed to connect to live exchange: {e}")
+            logger.error("🚫 LIVE TRADING MODE: Cannot proceed without exchange connection")
+            raise Exception("Live trading requires valid exchange connection")
     
     async def fetch_market_data_safely(self, symbol: str) -> Optional[Dict[str, Any]]:
-        """Safely fetch market data with proper async OHLCV handling"""
+        """Safely fetch live market data - LIVE TRADING ONLY"""
         try:
-            if self.use_mock_data:
-                return self.create_mock_market_data(symbol)
-                
             # Fetch ticker data
             ticker = await self.exchange.fetch_ticker(symbol)
             
             # Fetch orderbook data
             orderbook = await self.exchange.fetch_order_book(symbol, limit=10)
             
-            # Fetch OHLCV data properly (this was the source of the coroutine error)
+            # Fetch OHLCV data properly
             try:
                 # Use proper async call and await the result
                 ohlcv_raw = await self.exchange.fetch_ohlcv(symbol, '1h', limit=50)
@@ -162,53 +157,10 @@ class EnhancedTradeExecutionEngine:
             return market_data
             
         except Exception as e:
-            logger.error(f"❌ Error fetching market data for {symbol}: {e}")
-            # Fallback to mock data
-            return self.create_mock_market_data(symbol)
+            logger.error(f"❌ Critical error fetching live market data for {symbol}: {e}")
+            logger.error("🚫 LIVE TRADING MODE: Cannot proceed without real market data")
+            raise Exception(f"Live market data fetch failed for {symbol}")
     
-    def create_mock_market_data(self, symbol: str) -> Dict[str, Any]:
-        """Create realistic mock market data for testing"""
-        base_price = 50000.0 if 'BTC' in symbol else 3000.0
-        
-        # Create realistic OHLCV data
-        ohlcv_data = []
-        current_time = int(time.time() * 1000)
-        
-        for i in range(50):
-            timestamp = current_time - (i * 3600000)  # Hourly candles
-            price_variation = np.random.normal(0, 0.02)  # 2% standard deviation
-            open_price = base_price * (1 + price_variation)
-            high = open_price * (1 + abs(np.random.normal(0, 0.01)))
-            low = open_price * (1 - abs(np.random.normal(0, 0.01)))
-            close = open_price * (1 + np.random.normal(0, 0.005))
-            volume = np.random.uniform(1000000, 5000000)
-            
-            ohlcv_data.append([timestamp, open_price, high, low, close, volume])
-        
-        # Reverse to get chronological order
-        ohlcv_data.reverse()
-        
-        return {
-            'symbol': symbol,
-            'ticker': {
-                'price': base_price,
-                'high': base_price * 1.02,
-                'low': base_price * 0.98,
-                'close': base_price,
-                'volume': 2000000.0,
-                'quoteVolume': base_price * 2000000,
-                'change': np.random.uniform(-2, 2),
-                'price_change': np.random.uniform(-2, 2)
-            },
-            'orderbook': {
-                'bids': [[base_price - 1, 1.5], [base_price - 2, 2.0], [base_price - 3, 3.0]],
-                'asks': [[base_price + 1, 1.5], [base_price + 2, 2.0], [base_price + 3, 3.0]]
-            },
-            'ohlcv': {
-                'ohlcv': ohlcv_data
-            },
-            'timestamp': datetime.now().isoformat()
-        }
     
     async def analyze_trading_opportunity(self, symbol: str) -> Optional[Dict[str, Any]]:
         """Analyze trading opportunity using enhanced VIPER system"""
@@ -326,19 +278,26 @@ class EnhancedTradeExecutionEngine:
                 symbol, current_price, execution_cost
             )
             
-            # Create trade entry
-            if self.use_mock_data:
-                # Simulate trade execution
-                trade_id = f"MOCK_{symbol}_{int(time.time())}"
-                
-                logger.info(f"📝 SIMULATED {side} Trade for {symbol}:")
+            # Execute real trade
+            try:
+                logger.info(f"🚀 EXECUTING LIVE {side} Trade for {symbol}:")
                 logger.info(f"   💰 Entry Price: ${current_price:.2f}")
                 logger.info(f"   📊 Position Size: {position_size:.6f}")
                 logger.info(f"   🎯 Order Type: {order_type}")
                 logger.info(f"   💸 Execution Cost: ${execution_cost:.2f}")
                 logger.info(f"   🛡️ Stop Loss: {risk_mgmt.get('stop_loss_pct', 0)*100:.1f}%")
                 
-                # Store position
+                # Generate unique trade ID
+                trade_id = f"LIVE_{symbol}_{int(time.time())}"
+                
+                # TODO: Implement actual exchange order execution
+                # This should integrate with the exchange-connector service
+                # For now, this is a placeholder that requires integration
+                
+                logger.warning("🚧 Live trading execution requires integration with exchange-connector service")
+                logger.info("💡 Connect this to: http://exchange-connector:8005/execute_order")
+                
+                # Store position for tracking
                 self.active_positions[trade_id] = {
                     'symbol': symbol,
                     'side': side,
@@ -363,10 +322,9 @@ class EnhancedTradeExecutionEngine:
                     order_type=order_type
                 )
                 
-            else:
-                # Real trade execution (placeholder - needs full implementation)
-                logger.warning("🚨 Real trading not implemented - use mock mode")
-                result = TradeResult(success=False, error="Real trading not implemented")
+            except Exception as trade_error:
+                logger.error(f"❌ Live trade execution failed: {trade_error}")
+                result = TradeResult(success=False, error=str(trade_error))
             
             # Record trade
             self.trade_history.append({

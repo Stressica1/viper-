@@ -22,15 +22,40 @@ if 'logger' not in globals():
     logger = logging.getLogger(__name__)
 
 async def start_complete_system():
-    """Start the complete VIPER live trading system"""
+    """Start the complete VIPER live trading system with mandatory enforcement"""
     print("🚀 STARTING COMPLETE VIPER LIVE TRADING SYSTEM")
     print("=" * 60)
+    print("🔒 MANDATORY DOCKER & MCP ENFORCEMENT")
+    print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA")
+    print("=" * 60)
+    
+    # Enforce Docker and MCP requirements first
+    try:
+        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+        
+        print("🔒 Enforcing Docker & MCP requirements...")
+        if not enforce_docker_mcp_requirements():
+            print("❌ Docker/MCP requirements not met")
+            sys.exit(1)
+        print("✅ Docker & MCP enforcement passed")
+        
+    except ImportError as e:
+        print(f"❌ Cannot import enforcement system: {e}")
+        sys.exit(1)
+    
+    # Validate live trading environment
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+        print("❌ Mock data mode detected - not allowed")
+        sys.exit(1)
 
     try:
         # Import the main trader
         from viper_async_trader import ViperAsyncTrader
 
-        print("🔧 Initializing Enhanced ViperAsyncTrader...")
+        print("🔧 Initializing Complete Trading System...")
         trader = ViperAsyncTrader()
 
         print("📊 System Configuration:")
