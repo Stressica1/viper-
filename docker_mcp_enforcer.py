@@ -265,10 +265,8 @@ class DockerMCPEnforcer:
         logger.error("🚫 ENFORCEMENT CANNOT BE DISABLED FOR LIVE TRADING")
         logger.error("This is a production live trading system - all safety measures are mandatory")
         logger.error("Docker and MCP enforcement cannot be bypassed")
-        # Do not actually disable enforcement
-        pass
-        self.enforcement_active = False
-        logger.warning("⚠️ ENFORCEMENT DISABLED - SYSTEM RUNNING WITHOUT VALIDATION")
+        # Do not actually disable enforcement - keep it active
+        # self.enforcement_active remains True
     
     def get_system_status(self) -> Dict[str, Any]:
         """Get current system validation status"""
