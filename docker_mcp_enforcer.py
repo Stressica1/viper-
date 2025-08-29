@@ -67,42 +67,42 @@ class DockerMCPEnforcer:
         """
         CRITICAL ENFORCEMENT: Validate all mandatory requirements
         System CANNOT proceed without all validations passing
+        NO BYPASSING ALLOWED FOR LIVE TRADING SYSTEM
         """
         logger.info("🔒 STARTING MANDATORY DOCKER & MCP ENFORCEMENT")
         logger.info("=" * 70)
         
-        if not self.enforcement_active:
-            logger.warning("⚠️ ENFORCEMENT DISABLED - PROCEEDING WITHOUT VALIDATION")
-            return True
-            
+        # FORCE enforcement to be active - no disabling allowed for live trading
+        self.enforcement_active = True
+        
         try:
-            # Step 1: Docker Infrastructure Validation
+            # Step 1: Docker Infrastructure Validation (MANDATORY)
             if not self._validate_docker_infrastructure():
                 logger.error("❌ DOCKER INFRASTRUCTURE VALIDATION FAILED")
                 self._block_execution("Docker infrastructure not available")
                 return False
             
-            # Step 2: MCP Server Validation
+            # Step 2: MCP Server Validation (MANDATORY)
             if not self._validate_mcp_server():
-                logger.warning("⚠️ MCP SERVER NOT FULLY VALIDATED")
-                # Allow system to proceed with MCP warnings in dev environment
-                pass
+                logger.error("❌ MCP SERVER VALIDATION FAILED")
+                self._block_execution("MCP server not available or not responding")
+                return False
                 
-            # Step 3: GitHub MCP Integration Validation
+            # Step 3: GitHub MCP Integration Validation (MANDATORY)
             if not self._validate_github_mcp_integration():
-                logger.warning("⚠️ GITHUB MCP INTEGRATION NOT FULLY VALIDATED")
-                # Allow system to proceed with GitHub warnings
-                pass
+                logger.error("❌ GITHUB MCP INTEGRATION VALIDATION FAILED")
+                self._block_execution("GitHub MCP integration not configured")
+                return False
                 
-            # Step 4: Required Services Validation
+            # Step 4: Required Services Validation (MANDATORY)
             if not self._validate_required_services():
-                logger.warning("⚠️ NOT ALL REQUIRED SERVICES VALIDATED")
-                # Allow system to proceed with service warnings
-                pass
+                logger.error("❌ REQUIRED SERVICES VALIDATION FAILED")
+                self._block_execution("Required Docker services not running")
+                return False
             
-            # Mark success (with warnings allowed)
+            # All validations must pass for live trading
             self._mark_validation_success()
-            logger.info("✅ DOCKER INFRASTRUCTURE VALIDATED - SYSTEM CLEARED FOR OPERATION")
+            logger.info("✅ ALL MANDATORY REQUIREMENTS VALIDATED - LIVE TRADING SYSTEM CLEARED")
             return True
             
         except Exception as e:
@@ -239,25 +239,34 @@ class DockerMCPEnforcer:
         }
     
     def _block_execution(self, reason: str):
-        """Block system execution due to failed validation"""
-        logger.error("🚫 SYSTEM EXECUTION BLOCKED!")
+        """Block system execution due to failed validation - NO BYPASSING ALLOWED"""
+        logger.error("🚫 LIVE TRADING SYSTEM EXECUTION BLOCKED!")
         logger.error(f"Reason: {reason}")
         logger.error("=" * 70)
         logger.error("MANDATORY REQUIREMENTS NOT MET:")
         logger.error("• Docker infrastructure must be operational")
+        logger.error("• MCP server must be running and responding")
+        logger.error("• GitHub MCP integration must be configured")
+        logger.error("• All required microservices must be running")
         logger.error("=" * 70)
         logger.error("🔧 TO RESOLVE:")
         logger.error("1. Start Docker services: docker compose up -d")
         logger.error("2. Verify MCP server: curl http://localhost:8015/health")
         logger.error("3. Validate services: docker compose ps")
+        logger.error("4. Check GitHub integration: export GITHUB_PAT=<token>")
         logger.error("=" * 70)
+        logger.error("💀 LIVE TRADING CANNOT PROCEED WITHOUT ALL REQUIREMENTS")
         
-        if self.enforcement_active:
-            logger.error("💀 TERMINATING EXECUTION DUE TO ENFORCEMENT POLICY")
-            sys.exit(1)
+        # Always terminate - no bypassing allowed for live trading
+        sys.exit(1)
     
     def disable_enforcement(self):
-        """Disable enforcement (for testing/development only)"""
+        """ENFORCEMENT CANNOT BE DISABLED FOR LIVE TRADING SYSTEM"""
+        logger.error("🚫 ENFORCEMENT CANNOT BE DISABLED FOR LIVE TRADING")
+        logger.error("This is a production live trading system - all safety measures are mandatory")
+        logger.error("Docker and MCP enforcement cannot be bypassed")
+        # Do not actually disable enforcement
+        pass
         self.enforcement_active = False
         logger.warning("⚠️ ENFORCEMENT DISABLED - SYSTEM RUNNING WITHOUT VALIDATION")
     

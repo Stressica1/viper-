@@ -440,43 +440,92 @@ class SimpleVIPERTrader:
 
 def main():
     """
-    MAIN ENTRY POINT WITH MANDATORY DOCKER & MCP ENFORCEMENT
+    MAIN ENTRY POINT - LIVE TRADING ONLY WITH MANDATORY DOCKER & MCP ENFORCEMENT
     
-    ⚠️  CRITICAL: All operations now require Docker services and MCP integration
-    The system will automatically validate and enforce requirements before proceeding
+    ⚠️ CRITICAL: This system only operates in live trading mode
+    All operations require Docker services and MCP integration - NO EXCEPTIONS
     """
     
-    if ENFORCEMENT_AVAILABLE:
-        print("🔒 VIPER TRADING BOT - MANDATORY DOCKER & MCP ENFORCEMENT ACTIVE")
-        print("=" * 70)
-        print("🚀 Starting system with mandatory Docker & MCP validation...")
-        
-        # Start system with enforcement
-        if not start_system_with_enforcement():
-            print("💀 SYSTEM STARTUP FAILED - ENFORCEMENT REQUIREMENTS NOT MET")
-            sys.exit(1)
-        
-        print("✅ Enforcement validation passed - starting trading bot...")
-        
-        # Execute through mandatory wrapper
-        try:
-            result = execute_module('main', 'run_legacy_trading')
-            print("🎉 Trading bot execution completed!")
-            return result
-        except SystemExit:
-            print("💀 Trading bot execution blocked by enforcement!")
-            sys.exit(1)
-    else:
-        print("⚠️ WARNING: Running in LEGACY MODE without enforcement")
-        print("🚀 VIPER LIVE TRADING BOT STARTING...")
-        return run_legacy_trading()
+    print("🔒 VIPER LIVE TRADING BOT - MANDATORY DOCKER & MCP ENFORCEMENT")
+    print("=" * 70)
+    print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO MODE")
+    print("=" * 70)
+    
+    # Force load environment with live trading settings
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    # Validate live trading environment
+    if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+        logger.error("❌ MOCK DATA MODE DETECTED - NOT ALLOWED IN LIVE TRADING")
+        logger.error("Set USE_MOCK_DATA=false in .env file")
+        sys.exit(1)
+    
+    if not ENFORCEMENT_AVAILABLE:
+        logger.error("❌ MANDATORY ENFORCEMENT SYSTEM NOT AVAILABLE")
+        logger.error("Docker and MCP enforcement is required for live trading")
+        sys.exit(1)
+    
+    print("🚀 Starting system with mandatory Docker & MCP validation...")
+    
+    # Start system with enforcement - no bypassing allowed
+    if not start_system_with_enforcement():
+        print("💀 SYSTEM STARTUP FAILED - ENFORCEMENT REQUIREMENTS NOT MET")
+        sys.exit(1)
+    
+    print("✅ Enforcement validation passed - starting live trading bot...")
+    
+    # Execute through mandatory wrapper only
+    try:
+        result = execute_module('main', 'run_live_trading')
+        print("🎉 Live trading bot execution completed!")
+        return result
+    except SystemExit:
+        print("💀 Live trading bot execution blocked by enforcement!")
+        sys.exit(1)
 
-def run_legacy_trading():
-    """Legacy trading function (used when enforcement is disabled or for fallback)"""
-    logger.info("🚀 VIPER ALL-PAIRS TRADING BOT STARTING...")
-    logger.info("📊 Scanning 50+ cryptocurrency pairs for opportunities")
+def run_live_trading():
+    """Live trading function - LIVE MODE ONLY"""
+    logger.info("🚀 VIPER LIVE TRADING BOT STARTING...")
+    logger.info("📊 Scanning cryptocurrency pairs for live trading opportunities")
+    logger.info("⚠️ LIVE MODE: Real trades will be executed with real money")
 
     trader = SimpleVIPERTrader()
+
+    if not trader.connect():
+        logger.error("❌ Failed to connect to Bitget exchange")
+        sys.exit(1)
+
+    logger.info("\n🎯 VIPER LIVE TRADING CONFIGURATION:")
+    logger.info(f"   📊 Total Pairs Available: {len(trader.all_symbols)}")
+    logger.info(f"   ✅ Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
+    logger.info(f"   🚫 Blacklisted Pairs (<{trader.min_leverage_required}x): {len(trader.blacklisted_symbols)}")
+    logger.info(f"   💰 Position Size: ${trader.position_size_usdt} per trade")
+    logger.info(f"   📈 Take Profit: {trader.take_profit_pct}%")
+    logger.info(f"   🛑 Stop Loss: {trader.stop_loss_pct}%")
+    logger.info(f"   🎯 Max Positions: {trader.max_positions} concurrent")
+    logger.info(f"   🔒 SINGLE POSITION PER PAIR: ENABLED")
+    logger.info(f"   🚫 CAPITAL STACKING: DISABLED")
+
+    if trader.blacklisted_symbols:
+        logger.info("   🚫 BLACKLISTED PAIRS:")
+        for symbol in trader.blacklisted_symbols[:5]:  # Show first 5
+            logger.info(f"      - {symbol}")
+        if len(trader.blacklisted_symbols) > 5:
+            logger.info(f"      ... and {len(trader.blacklisted_symbols) - 5} more")
+
+    logger.info("⏳ Starting live trading with real money in 5 seconds...")
+    logger.warning("⚠️ WARNING: This will execute real trades with real money!")
+    time.sleep(5)
+
+    try:
+        trader.run()
+    except KeyboardInterrupt:
+        logger.info("\n🛑 Live trading cancelled by user")
+    except Exception as e:
+        logger.error(f"\n❌ Fatal error in live trading: {e}")
+    finally:
+        logger.info("✅ Live trading bot shutdown complete")
 
     if not trader.connect():
         logger.error("❌ Failed to connect to Bitget")
