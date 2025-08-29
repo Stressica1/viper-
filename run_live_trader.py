@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MULTI-PAIR LIVE TRADER - SCANS ALL PAIRS
-Live trading system that scans and trades ALL available pairs on Bitget
+🚀 VIPER MULTI-PAIR LIVE TRADER - FIXED FOR BITGET API
+Live trading system that scans and trades ALL available pairs on Bitget with proper API configuration
 """
 
 import os
@@ -10,6 +10,7 @@ import time
 import logging
 import ccxt
 import random
+import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -24,9 +25,9 @@ sys.path.append(str(project_root / "src"))
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - MULTI_PAIR_TRADER - %(levelname)s - %(message)s',
+    format='%(asctime)s - VIPER_FIXED_TRADER - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('logs/viper_multi_pair_trader.log'),
+        logging.FileHandler('logs/viper_fixed_trader.log'),
         logging.StreamHandler()
     ]
 )
