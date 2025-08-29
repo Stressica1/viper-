@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-🚀 UNIFIED SYSTEM STARTUP WITH MANDATORY DOCKER & MCP
+# Rocket UNIFIED SYSTEM STARTUP WITH MANDATORY DOCKER & MCP
 Central entry point that enforces Docker and MCP requirements for ALL VIPER operations
 
 This script:
-✅ ENFORCES Docker services are running before any operation
-✅ VALIDATES MCP server connectivity and GitHub integration  
-✅ STARTS all required microservices through Docker Compose
-✅ CONNECTS all modules through unified MCP framework
-✅ PREVENTS execution if mandatory requirements not met
+# Check ENFORCES Docker services are running before any operation
+# Check VALIDATES MCP server connectivity and GitHub integration  
+# Check STARTS all required microservices through Docker Compose
+# Check CONNECTS all modules through unified MCP framework
+# Check PREVENTS execution if mandatory requirements not met
 
 USAGE:
   python start_unified_system.py [module] [operation]
@@ -66,7 +66,7 @@ class UnifiedSystemStartup:
         """Start the complete VIPER system with mandatory enforcement"""
         logger.info("🔒 UNIFIED VIPER SYSTEM STARTUP")
         logger.info("=" * 70)
-        logger.info("🚀 Starting comprehensive Docker & MCP enforcement...")
+        logger.info("# Rocket Starting comprehensive Docker & MCP enforcement...")
         
         try:
             # Phase 1: Infrastructure Validation
@@ -95,26 +95,26 @@ class UnifiedSystemStartup:
     
     def _validate_infrastructure(self) -> bool:
         """Validate basic infrastructure requirements"""
-        logger.info("🔧 Phase 1: Infrastructure Validation")
+        logger.info("# Tool Phase 1: Infrastructure Validation")
         
         # Check if Docker is available
         try:
             result = subprocess.run(['docker', '--version'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
-                logger.error("❌ Docker not available")
+                logger.error("# X Docker not available")
                 return False
-            logger.info("✅ Docker: AVAILABLE")
-        except:
-            logger.error("❌ Docker not installed or not in PATH")
+            logger.info("# Check Docker: AVAILABLE")
+        except Exception:
+            logger.error("# X Docker not installed or not in PATH")
             return False
         
         # Check if docker-compose.yml exists
         compose_file = Path('docker-compose.yml')
         if not compose_file.exists():
-            logger.error("❌ docker-compose.yml not found")
+            logger.error("# X docker-compose.yml not found")
             return False
-        logger.info("✅ docker-compose.yml: FOUND")
+        logger.info("# Check docker-compose.yml: FOUND")
         
         # Check enforcement system files
         enforcement_files = [
@@ -125,11 +125,11 @@ class UnifiedSystemStartup:
         
         for file in enforcement_files:
             if not Path(file).exists():
-                logger.error(f"❌ {file}: MISSING")
+                logger.error(f"# X {file}: MISSING")
                 return False
-            logger.info(f"✅ {file}: AVAILABLE")
+            logger.info(f"# Check {file}: AVAILABLE")
         
-        logger.info("🎉 Infrastructure validation complete!")
+        logger.info("# Party Infrastructure validation complete!")
         return True
     
     def _start_docker_services(self) -> bool:
@@ -145,10 +145,10 @@ class UnifiedSystemStartup:
             )
             
             if result.returncode != 0:
-                logger.error(f"❌ Docker services failed to start: {result.stderr}")
+                logger.error(f"# X Docker services failed to start: {result.stderr}")
                 return False
             
-            logger.info("✅ Docker services started successfully")
+            logger.info("# Check Docker services started successfully")
             
             # Wait for services to initialize
             logger.info("⏳ Waiting for services to initialize (30 seconds)...")
@@ -159,33 +159,33 @@ class UnifiedSystemStartup:
                                   capture_output=True, text=True)
             if result.returncode == 0:
                 running_services = result.stdout.count('running') if 'running' in result.stdout else 0
-                logger.info(f"📊 Services running: {running_services}")
+                logger.info(f"# Chart Services running: {running_services}")
                 
                 if running_services > 0:
                     self.docker_services_started = True
-                    logger.info("🎉 Docker services startup complete!")
+                    logger.info("# Party Docker services startup complete!")
                     return True
             
-            logger.warning("⚠️ Some services may not be fully ready")
+            logger.warning("# Warning Some services may not be fully ready")
             return True
             
         except subprocess.TimeoutExpired:
-            logger.error("❌ Docker services startup timed out")
+            logger.error("# X Docker services startup timed out")
             return False
         except Exception as e:
-            logger.error(f"❌ Docker services startup error: {e}")
+            logger.error(f"# X Docker services startup error: {e}")
             return False
     
     def _validate_system_components(self) -> bool:
         """Validate system components are operational"""
-        logger.info("🔍 Phase 3: System Components Validation")
+        logger.info("# Search Phase 3: System Components Validation")
         
         # Use enforcer to validate all components
         if enforce_docker_mcp_requirements():
-            logger.info("✅ All mandatory requirements validated")
+            logger.info("# Check All mandatory requirements validated")
             return True
         else:
-            logger.warning("⚠️ Some validation warnings - proceeding with caution")
+            logger.warning("# Warning Some validation warnings - proceeding with caution")
             return True
     
     def _initialize_mcp_integration(self) -> bool:
@@ -199,26 +199,26 @@ class UnifiedSystemStartup:
                 response = requests.get('http://localhost:8015/health', timeout=10)
                 if response.status_code == 200:
                     self.mcp_server_ready = True
-                    logger.info("✅ MCP Server: READY")
+                    logger.info("# Check MCP Server: READY")
                 else:
-                    logger.warning("⚠️ MCP Server: NOT RESPONDING")
-            except:
-                logger.warning("⚠️ MCP Server: CONNECTION FAILED")
+                    logger.warning("# Warning MCP Server: NOT RESPONDING")
+            except Exception:
+                logger.warning("# Warning MCP Server: CONNECTION FAILED")
             
             # Initialize GitHub MCP integration
             try:
                 import github_mcp_integration
                 github_mcp = github_mcp_integration.GitHubMCPIntegration()
                 self.github_integration_active = True
-                logger.info("✅ GitHub MCP Integration: INITIALIZED")
+                logger.info("# Check GitHub MCP Integration: INITIALIZED")
             except Exception as e:
-                logger.warning(f"⚠️ GitHub MCP Integration: {e}")
+                logger.warning(f"# Warning GitHub MCP Integration: {e}")
             
-            logger.info("🎉 MCP integration initialization complete!")
+            logger.info("# Party MCP integration initialization complete!")
             return True
             
         except Exception as e:
-            logger.error(f"❌ MCP initialization error: {e}")
+            logger.error(f"# X MCP initialization error: {e}")
             return False
     
     def _mark_system_ready(self):
@@ -226,16 +226,16 @@ class UnifiedSystemStartup:
         self.system_ready = True
         startup_duration = (datetime.now() - self.startup_time).total_seconds()
         
-        logger.info("🎉 SYSTEM STARTUP COMPLETE!")
+        logger.info("# Party SYSTEM STARTUP COMPLETE!")
         logger.info("=" * 70)
-        logger.info("✅ VIPER UNIFIED SYSTEM STATUS:")
+        logger.info("# Check VIPER UNIFIED SYSTEM STATUS:")
         logger.info(f"   🐳 Docker Services: {'STARTED' if self.docker_services_started else 'PARTIAL'}")
         logger.info(f"   🤖 MCP Server: {'READY' if self.mcp_server_ready else 'PARTIAL'}")
         logger.info(f"   🔗 GitHub Integration: {'ACTIVE' if self.github_integration_active else 'PARTIAL'}")
         logger.info(f"   🔒 Enforcement: ACTIVE")
         logger.info(f"   ⏱️  Startup Time: {startup_duration:.1f} seconds")
         logger.info("=" * 70)
-        logger.info("🚀 SYSTEM READY FOR ALL OPERATIONS!")
+        logger.info("# Rocket SYSTEM READY FOR ALL OPERATIONS!")
     
     def execute_module(self, module_name: str, operation: str = 'main') -> Any:
         """Execute a module through the mandatory wrapper system"""
@@ -243,7 +243,7 @@ class UnifiedSystemStartup:
             logger.error("💀 SYSTEM NOT READY - Cannot execute modules")
             return False
         
-        logger.info(f"🚀 EXECUTING MODULE: {module_name}.{operation}")
+        logger.info(f"# Rocket EXECUTING MODULE: {module_name}.{operation}")
         
         try:
             return execute_module(module_name, operation)
@@ -257,7 +257,7 @@ class UnifiedSystemStartup:
     
     def show_system_status(self):
         """Show comprehensive system status"""
-        logger.info("📊 VIPER UNIFIED SYSTEM STATUS REPORT")
+        logger.info("# Chart VIPER UNIFIED SYSTEM STATUS REPORT")
         logger.info("=" * 70)
         
         # System status
@@ -278,7 +278,7 @@ class UnifiedSystemStartup:
                 lines = result.stdout.strip().split('\n')[1:]  # Skip header
                 running_count = sum(1 for line in lines if 'running' in line.lower())
                 logger.info(f"🐳 Docker Services: {running_count} running")
-        except:
+        except Exception:
             logger.info("🐳 Docker Services: STATUS UNKNOWN")
         
         logger.info("=" * 70)
@@ -286,7 +286,6 @@ class UnifiedSystemStartup:
 def main():
     """Main entry point for unified system startup"""
     print("🔒 VIPER UNIFIED SYSTEM WITH MANDATORY DOCKER & MCP")
-    print("=" * 70)
     
     startup = UnifiedSystemStartup()
     
@@ -296,32 +295,27 @@ def main():
         operation = sys.argv[2] if len(sys.argv) > 2 else 'main'
         
         # Start system first
-        print("🚀 Starting system for module execution...")
+        print("# Rocket Starting system for module execution...")
         if not startup.start_complete_system():
             print("💀 SYSTEM STARTUP FAILED - CANNOT EXECUTE MODULE")
             sys.exit(1)
         
         # Execute specific module
-        print(f"🎯 Executing {module_name}.{operation}...")
+        print(f"# Target Executing {module_name}.{operation}...")
         result = startup.execute_module(module_name, operation)
         
         if result is False:
-            print("💀 MODULE EXECUTION FAILED")
             sys.exit(1)
         else:
-            print("🎉 MODULE EXECUTION COMPLETED")
             
     else:
         # Interactive mode - start full system
-        print("🔧 Starting full system in interactive mode...")
+        print("# Tool Starting full system in interactive mode...")
         
         if startup.start_complete_system():
-            print("\n🎉 SYSTEM READY!")
-            print("Available commands:")
             print("  • startup.show_system_status()        - Show system status")
             print("  • startup.execute_module('main')      - Start main trading bot")
             print("  • startup.get_available_modules()     - List available modules")
-            print("\nStarting interactive mode...")
             
             # Show status and available modules
             startup.show_system_status()
@@ -342,9 +336,7 @@ def main():
                         print("Available commands: status, run <module>, exit")
                         
             except KeyboardInterrupt:
-                print("\n👋 Shutting down system...")
         else:
-            print("💀 SYSTEM STARTUP FAILED")
             sys.exit(1)
 
 if __name__ == "__main__":

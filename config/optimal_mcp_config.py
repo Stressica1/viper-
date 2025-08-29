@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 OPTIMAL MCP SERVER CONFIGURATION
+# Rocket OPTIMAL MCP SERVER CONFIGURATION
 Advanced configuration settings for maximum performance and reliability
 """
 

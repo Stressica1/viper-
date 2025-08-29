@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-🚀 OPTIMIZED TRADE ENTRY SYSTEM
+# Rocket OPTIMIZED TRADE ENTRY SYSTEM
 Advanced entry optimization using Predictive Ranges + Multi-Factor Analysis
 
 This system combines:
-✅ Predictive Ranges Strategy - LuxAlgo-inspired S/R projections
-✅ Multi-Timeframe Confluence - Cross-timeframe signal validation
-✅ Volume Profile Analysis - Institutional order flow detection
-✅ Market Microstructure - Order book imbalance analysis
-✅ AI/ML Signal Enhancement - Machine learning confidence scoring
-✅ Risk-Adjusted Position Sizing - Dynamic sizing based on volatility
+# Check Predictive Ranges Strategy - LuxAlgo-inspired S/R projections
+# Check Multi-Timeframe Confluence - Cross-timeframe signal validation
+# Check Volume Profile Analysis - Institutional order flow detection
+# Check Market Microstructure - Order book imbalance analysis
+# Check AI/ML Signal Enhancement - Machine learning confidence scoring
+# Check Risk-Adjusted Position Sizing - Dynamic sizing based on volatility
 """
 
 import numpy as np
@@ -17,12 +17,10 @@ import pandas as pd
 import talib as ta
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
-from datetime import datetime, timedelta
 import asyncio
 import logging
 
 # Import predictive ranges strategy
-from predictive_ranges_strategy import get_predictive_strategy, PredictiveRangesStrategy
 
 # Configure logging
 logging.basicConfig(
@@ -79,7 +77,7 @@ class OptimizedTradeEntrySystem:
         # Performance tracking
         self.entry_performance: Dict[str, Dict[str, Any]] = {}
 
-        logger.info("🚀 Optimized Trade Entry System initialized")
+        logger.info("# Rocket Optimized Trade Entry System initialized")
 
     def _get_default_config(self) -> Dict[str, Any]:
         """Get default configuration for entry optimization"""
@@ -117,7 +115,7 @@ class OptimizedTradeEntrySystem:
         Returns:
             List of optimized entry signals
         """
-        logger.info(f"🔍 Analyzing optimal entries for {symbol}")
+        logger.info(f"# Search Analyzing optimal entries for {symbol}")
 
         signals = []
 
@@ -152,10 +150,10 @@ class OptimizedTradeEntrySystem:
                 )
                 signal.expected_profit = self._calculate_expected_profit(signal)
 
-            logger.info(f"✅ Generated {len(signals)} optimized entry signals for {symbol}")
+            logger.info(f"# Check Generated {len(signals)} optimized entry signals for {symbol}")
 
         except Exception as e:
-            logger.error(f"❌ Error analyzing entries for {symbol}: {e}")
+            logger.error(f"# X Error analyzing entries for {symbol}: {e}")
 
         return signals
 
@@ -655,8 +653,6 @@ def get_optimized_entry_system() -> OptimizedTradeEntrySystem:
 # Example usage
 async def main():
     """Test optimized entry system"""
-    print("🚀 OPTIMIZED TRADE ENTRY SYSTEM TEST")
-    print("=" * 60)
 
     system = get_optimized_entry_system()
 
@@ -681,17 +677,14 @@ async def main():
     # Analyze entries
     signals = await system.analyze_optimal_entries(symbol, market_data, current_price, account_balance)
 
-    print(f"🎯 Found {len(signals)} optimized entry signals")
+    print(f"# Target Found {len(signals)} optimized entry signals")
 
     for i, signal in enumerate(signals[:3], 1):  # Show top 3
-        print(f"\n📊 Signal {i}:")
         print(f"   Direction: {signal.direction.upper()}")
         print(f"   Entry Price: ${signal.entry_price:.2f}")
-        print(f"   Stop Loss: ${signal.stop_loss:.2f}")
         print(f"   Take Profit: ${signal.take_profit:.2f}")
         print(f"   Confidence: {signal.confidence_score:.1%}")
         print(f"   Risk/Reward: {signal.risk_reward_ratio:.2f}")
-        print(f"   Quality: {signal.entry_quality}")
         print(f"   Win Probability: {signal.win_probability:.1%}")
 
 if __name__ == "__main__":

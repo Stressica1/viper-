@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER TRADING SYSTEM - COMPREHENSIVE ISSUE FIXER
+# Rocket VIPER TRADING SYSTEM - COMPREHENSIVE ISSUE FIXER
 Fix all critical issues identified in the debug report
 
 This fixer will:
@@ -29,8 +29,7 @@ class ComprehensiveFixer:
 
     def run_comprehensive_fix(self):
         """Run all fixes"""
-        print("🔧 COMPREHENSIVE VIPER TRADING SYSTEM FIXER")
-        print("=" * 60)
+        print("# Tool COMPREHENSIVE VIPER TRADING SYSTEM FIXER")
 
         try:
             # Fix 1: Environment Variables
@@ -52,19 +51,15 @@ class ComprehensiveFixer:
             self.generate_fix_report()
 
         except Exception as e:
-            print(f"❌ Fix process failed: {e}")
             import traceback
             traceback.print_exc()
 
     def fix_environment_variables(self):
         """Fix environment variable loading"""
-        print("\n🔧 Fix 1: ENVIRONMENT VARIABLES")
-        print("-" * 40)
 
         # Check if .env file exists and has credentials
         env_file = self.project_root / '.env'
         if not env_file.exists():
-            print("❌ .env file missing - creating template")
             self.create_env_template()
             return
 
@@ -94,11 +89,10 @@ class ComprehensiveFixer:
                 credentials_missing.append(cred)
 
         if credentials_found:
-            print(f"✅ Found credentials: {', '.join(credentials_found)}")
+            print(f"# Check Found credentials: {', '.join(credentials_found)}")
 
         if credentials_missing:
-            print(f"❌ Missing credentials: {', '.join(credentials_missing)}")
-            print("   Please add these to your .env file")
+            print(f"# X Missing credentials: {', '.join(credentials_missing)}")
             self.issues_remaining.extend(credentials_missing)
 
         # Test environment loading
@@ -108,14 +102,12 @@ class ComprehensiveFixer:
 
             test_key = os.getenv('BITGET_API_KEY')
             if test_key:
-                print("✅ Environment variables load successfully")
+                print("# Check Environment variables load successfully")
                 self.fixes_applied.append("Environment variable loading")
             else:
-                print("❌ Environment variables not loading")
                 self.issues_remaining.append("Environment loading failed")
 
         except ImportError:
-            print("❌ python-dotenv not installed")
             self.issues_remaining.append("Missing python-dotenv dependency")
 
     def create_env_template(self):
@@ -132,7 +124,7 @@ BITGET_API_SECRET=your_bitget_api_secret_here
 BITGET_API_PASSWORD=your_bitget_api_password_here
 
 # =============================================================================
-# 🎯 TRADING PARAMETERS
+# # Target TRADING PARAMETERS
 # =============================================================================
 RISK_PER_TRADE=0.02
 MAX_POSITIONS=10
@@ -140,7 +132,7 @@ MIN_VIPER_SCORE=75.0
 SCAN_INTERVAL=30
 
 # =============================================================================
-# 📊 MONITORING
+# # Chart MONITORING
 # =============================================================================
 LOG_LEVEL=INFO
 ENABLE_DEBUG=true
@@ -149,13 +141,10 @@ ENABLE_DEBUG=true
         with open(self.project_root / '.env', 'w') as f:
             f.write(template)
 
-        print("📝 Created .env template file")
         print("   Please edit it with your actual API credentials")
 
     def fix_async_sync_issues(self):
         """Fix async/sync mismatches"""
-        print("\n🔧 Fix 2: ASYNC/SYNC ISSUES")
-        print("-" * 40)
 
         # Fix the advanced trend detector OHLCV issue
         trend_detector_file = self.project_root / 'advanced_trend_detector.py'
@@ -166,10 +155,8 @@ ENABLE_DEBUG=true
 
             # Check if the fix is already applied
             if 'await self.exchange.fetch_ohlcv' in content:
-                print("✅ OHLCV async fix already applied")
                 self.fixes_applied.append("OHLCV async fix")
             else:
-                print("❌ OHLCV async fix needed")
                 self.issues_remaining.append("OHLCV async fix needed")
 
         # Check other files for async issues
@@ -197,15 +184,13 @@ ENABLE_DEBUG=true
                     async_issues.append("run_full_scan() should be awaited")
 
                 if async_issues:
-                    print(f"⚠️  {file_name}: {', '.join(async_issues)}")
+                    print(f"# Warning  {file_name}: {', '.join(async_issues)}")
                     self.issues_remaining.extend(async_issues)
                 else:
-                    print(f"✅ {file_name}: No obvious async issues")
+                    print(f"# Check {file_name}: No obvious async issues")
 
     def fix_api_credential_loading(self):
         """Fix API credential loading issues"""
-        print("\n🔧 Fix 3: API CREDENTIAL LOADING")
-        print("-" * 40)
 
         # Test if credentials can be loaded properly
         try:
@@ -217,7 +202,6 @@ ENABLE_DEBUG=true
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if all([api_key, api_secret, api_password]):
-                print("✅ API credentials load successfully")
 
                 # Test API connection
                 try:
@@ -232,13 +216,11 @@ ENABLE_DEBUG=true
 
                     # Test connection
                     exchange.load_markets()
-                    print("✅ API connection test successful")
                     print(f"   Markets available: {len(exchange.markets)}")
 
                     self.fixes_applied.append("API credential loading")
 
                 except Exception as e:
-                    print(f"❌ API connection failed: {e}")
                     self.issues_remaining.append(f"API connection: {e}")
 
             else:
@@ -247,17 +229,15 @@ ENABLE_DEBUG=true
                 if not api_secret: missing.append('BITGET_API_SECRET')
                 if not api_password: missing.append('BITGET_API_PASSWORD')
 
-                print(f"❌ Missing credentials: {', '.join(missing)}")
+                print(f"# X Missing credentials: {', '.join(missing)}")
                 self.issues_remaining.extend(missing)
 
         except ImportError:
-            print("❌ Cannot import dotenv - install with: pip install python-dotenv")
+            print("# X Cannot import dotenv - install with: pip install python-dotenv")
             self.issues_remaining.append("python-dotenv missing")
 
     def fix_component_integration(self):
         """Fix component integration issues"""
-        print("\n🔧 Fix 4: COMPONENT INTEGRATION")
-        print("-" * 40)
 
         # Test importing all key components
         components_to_test = [
@@ -275,9 +255,7 @@ ENABLE_DEBUG=true
             try:
                 module = __import__(module_name, fromlist=[class_name])
                 getattr(module, class_name)
-                print(f"✅ {class_name}: Import successful")
             except Exception as e:
-                print(f"❌ {class_name}: Import failed - {e}")
                 self.issues_remaining.append(f"{class_name} import: {e}")
 
         # Test MasterDiagnosticScanner has run_full_scan_sync
@@ -286,23 +264,19 @@ ENABLE_DEBUG=true
             scanner = MasterDiagnosticScanner()
 
             if hasattr(scanner, 'run_full_scan_sync'):
-                print("✅ MasterDiagnosticScanner: Has run_full_scan_sync method")
+                print("# Check MasterDiagnosticScanner: Has run_full_scan_sync method")
                 self.fixes_applied.append("MasterDiagnosticScanner sync method")
             else:
-                print("❌ MasterDiagnosticScanner: Missing run_full_scan_sync method")
+                print("# X MasterDiagnosticScanner: Missing run_full_scan_sync method")
                 self.issues_remaining.append("Missing run_full_scan_sync method")
 
         except Exception as e:
-            print(f"❌ MasterDiagnosticScanner test failed: {e}")
             self.issues_remaining.append(f"MasterDiagnosticScanner: {e}")
 
     def test_complete_system(self):
         """Test the complete system integration"""
-        print("\n🔧 Fix 5: COMPLETE SYSTEM TEST")
-        print("-" * 40)
 
         # Test 1: Syntax check all Python files
-        print("📝 Checking syntax of all Python files...")
 
         python_files = []
         for file_path in self.project_root.rglob('*.py'):
@@ -321,16 +295,15 @@ ENABLE_DEBUG=true
                 syntax_errors.append(f"{file_path.name}: {e}")
 
         if syntax_errors:
-            print(f"❌ Found {len(syntax_errors)} syntax errors:")
+            print(f"# X Found {len(syntax_errors)} syntax errors:")
             for error in syntax_errors[:5]:  # Show first 5
                 print(f"   {error}")
             self.issues_remaining.extend(syntax_errors)
         else:
-            print("✅ All Python files have valid syntax")
+            print("# Check All Python files have valid syntax")
 
         # Test 2: Import test for main components
         print("📦 Testing component imports...")
-
         import_tests = [
             ('ccxt', 'Crypto exchange library'),
             ('numpy', 'Mathematical operations'),
@@ -342,13 +315,11 @@ ENABLE_DEBUG=true
         for module, description in import_tests:
             try:
                 __import__(module)
-                print(f"✅ {description}: Available")
             except ImportError:
-                print(f"❌ {description}: Missing - install with pip install {module}")
+                print(f"# X {description}: Missing - install with pip install {module}")
                 self.issues_remaining.append(f"Missing {module}")
 
         # Test 3: Environment variable loading
-        print("🔑 Testing environment variable loading...")
 
         from dotenv import load_dotenv
         load_dotenv()
@@ -361,15 +332,12 @@ ENABLE_DEBUG=true
                 env_loaded.append(var)
 
         if env_loaded:
-            print(f"✅ Environment variables loaded: {', '.join(env_loaded)}")
+            print(f"# Check Environment variables loaded: {', '.join(env_loaded)}")
         else:
-            print("❌ No environment variables loaded")
             self.issues_remaining.append("Environment variables not loaded")
 
     def generate_fix_report(self):
         """Generate comprehensive fix report"""
-        print("\n📊 FINAL FIX REPORT")
-        print("-" * 40)
 
         report = {
             'fix_timestamp': datetime.now().isoformat(),
@@ -394,31 +362,30 @@ ENABLE_DEBUG=true
             json.dump(report, f, indent=2, default=str)
 
         # Display summary
-        print("🎯 FIX SUMMARY:")
         print(f"   Fixes Applied: {len(self.fixes_applied)}")
         print(f"   Issues Remaining: {len(self.issues_remaining)}")
         print(f"   System Readiness: {report['system_readiness']}")
         print(f"   Report Saved: {report_path}")
 
         if self.fixes_applied:
-            print("\n✅ FIXES APPLIED:")
+            print("\n# Check FIXES APPLIED:")
             for fix in self.fixes_applied:
                 print(f"   ✓ {fix}")
 
         if self.issues_remaining:
-            print("\n⚠️  REMAINING ISSUES:")
+            print("\n# Warning  REMAINING ISSUES:")
             for issue in self.issues_remaining[:5]:  # Show first 5
                 print(f"   • {issue}")
 
         # Final assessment
         if report['system_readiness'] == 'READY':
-            print("\n🎉 SYSTEM STATUS: FULLY READY FOR LIVE TRADING!")
+            print("\n# Party SYSTEM STATUS: FULLY READY FOR LIVE TRADING!")
         elif report['system_readiness'] == 'READY_WITH_CREDENTIALS':
-            print("\n✅ SYSTEM STATUS: READY (Add API credentials to start trading)")
+            print("\n# Check SYSTEM STATUS: READY (Add API credentials to start trading)")
         else:
-            print("\n❌ SYSTEM STATUS: ISSUES REMAINING - Fix before trading")
+            print("\n# X SYSTEM STATUS: ISSUES REMAINING - Fix before trading")
 
-        print("\n🚀 Next Steps:")
+        print("\n# Rocket Next Steps:")
         if 'BITGET_API_KEY' in str(self.issues_remaining):
             print("   1. Add your Bitget API credentials to .env file")
         if 'OHLCV' in str(self.issues_remaining):

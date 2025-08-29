@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-🚀 START MCP LIVE TRADING
+# Rocket START MCP LIVE TRADING
 Simple launcher for MCP-powered live trading system
 
 This script provides:
-✅ Easy startup of MCP live trading connector
-✅ Task scheduling and management
-✅ Real-time monitoring dashboard
-✅ Emergency controls and safety features
+# Check Easy startup of MCP live trading connector
+# Check Task scheduling and management
+# Check Real-time monitoring dashboard
+# Check Emergency controls and safety features
 """
 
 import os
@@ -51,11 +51,11 @@ class MCPLiveTradingLauncher:
                 with open(config_path, 'r') as f:
                     config = json.load(f)
                     self.tasks_config = config.get('mcp_trading_tasks', {})
-                logger.info("✅ Task configuration loaded")
+                logger.info("# Check Task configuration loaded")
             else:
-                logger.warning("⚠️ Task configuration file not found")
+                logger.warning("# Warning Task configuration file not found")
         except Exception as e:
-            logger.error(f"❌ Failed to load task config: {e}")
+            logger.error(f"# X Failed to load task config: {e}")
 
     async def create_default_tasks(self):
         """Create default trading tasks from configuration"""
@@ -81,16 +81,16 @@ class MCPLiveTradingLauncher:
                     task_id = await create_live_trading_task(merged_config)
 
                     if task_id:
-                        logger.info(f"✅ Created task: {task_config['name']} ({task_id})")
+                        logger.info(f"# Check Created task: {task_config['name']} ({task_id})")
                     else:
-                        logger.error(f"❌ Failed to create task: {task_config['name']}")
+                        logger.error(f"# X Failed to create task: {task_config['name']}")
 
         except Exception as e:
-            logger.error(f"❌ Task creation failed: {e}")
+            logger.error(f"# X Task creation failed: {e}")
 
     async def start_trading_operations(self):
         """Start all active trading operations"""
-        logger.info("🚀 Starting trading operations...")
+        logger.info("# Rocket Starting trading operations...")
 
         try:
             # Initialize MCP connector
@@ -104,23 +104,13 @@ class MCPLiveTradingLauncher:
             await self.connector.run_mcp_trading_system()
 
         except Exception as e:
-            logger.error(f"❌ Failed to start trading operations: {e}")
+            logger.error(f"# X Failed to start trading operations: {e}")
             return False
 
         return True
 
     async def run_interactive_mode(self):
         """Run in interactive mode with command interface"""
-        print("🔗 MCP LIVE TRADING - INTERACTIVE MODE")
-        print("=" * 50)
-        print("Available commands:")
-        print("  status    - Show system status")
-        print("  create    - Create new trading task")
-        print("  start     - Start trading task")
-        print("  stop      - Stop trading task")
-        print("  emergency - Emergency stop all")
-        print("  exit      - Exit interactive mode")
-        print("=" * 50)
 
         while True:
             try:
@@ -131,32 +121,23 @@ class MCPLiveTradingLauncher:
                 elif command == 'status':
                     if self.connector:
                         status = await self.connector.get_trading_status()
-                        print(json.dumps(status, indent=2))
                     else:
-                        print("❌ Connector not initialized")
                 elif command == 'create':
-                    print("Creating new trading task...")
                     config = self.tasks_config.get('default_config', {})
                     task_id = await create_live_trading_task(config)
-                    print(f"✅ Task created: {task_id}")
                 elif command.startswith('start '):
                     task_id = command.split(' ', 1)[1]
                     success = await start_live_trading_task(task_id)
-                    print(f"✅ Task started: {success}")
                 elif command.startswith('stop '):
                     task_id = command.split(' ', 1)[1]
                     success = await self.connector.stop_trading_task(task_id)
-                    print(f"✅ Task stopped: {success}")
                 elif command == 'emergency':
                     success = await self.connector.emergency_stop_all()
-                    print(f"✅ Emergency stop: {success}")
                 else:
-                    print("❌ Unknown command")
 
             except KeyboardInterrupt:
                 break
             except Exception as e:
-                print(f"❌ Error: {e}")
 
 def main():
     """Main launcher function"""
@@ -168,11 +149,6 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 MCP LIVE TRADING LAUNCHER")
-    print("=" * 40)
-    print(f"Mode: {args.mode}")
-    print(f"Config: {args.config or 'default'}")
-    print("=" * 40)
 
     launcher = MCPLiveTradingLauncher()
 
@@ -182,9 +158,7 @@ def main():
             with open(args.config, 'r') as f:
                 custom_config = json.load(f)
                 launcher.tasks_config.update(custom_config.get('mcp_trading_tasks', {}))
-            print(f"✅ Custom config loaded: {args.config}")
         except Exception as e:
-            print(f"❌ Failed to load custom config: {e}")
 
     async def run_launcher():
         if args.mode == 'interactive':
@@ -200,16 +174,13 @@ def main():
     try:
         success = asyncio.run(run_launcher())
         if success:
-            print("✅ MCP Live Trading System completed successfully")
+            print("# Check MCP Live Trading System completed successfully")
             return 0
         else:
-            print("❌ MCP Live Trading System failed")
             return 1
     except KeyboardInterrupt:
-        print("\n🛑 Shutdown requested by user")
         return 0
     except Exception as e:
-        print(f"❌ Launcher error: {e}")
         return 1
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-📊 VIPER Live Trading Monitor
+# Chart VIPER Live Trading Monitor
 Real-time monitoring dashboard for live trading operations
 """
 
@@ -65,9 +65,9 @@ class LiveTradingMonitor:
             for name, url in services.items():
                 try:
                     response = requests.get(url, timeout=3)
-                    status['services'][name] = '✅' if response.status_code == 200 else '❌'
-                except:
-                    status['services'][name] = '❌'
+                    status['services'][name] = '# Check' if response.status_code == 200 else '# X'
+                except Exception:
+                    status['services'][name] = '# X'
 
             # Trading data
             try:
@@ -76,7 +76,7 @@ class LiveTradingMonitor:
                     positions_data = positions_response.json()
                     status['trading']['active_positions'] = len(positions_data.get('positions', {}))
                     status['trading']['total_exposure'] = positions_data.get('total_exposure', 0)
-            except:
+            except Exception:
                 status['trading']['active_positions'] = 0
                 status['trading']['total_exposure'] = 0
 
@@ -96,7 +96,7 @@ class LiveTradingMonitor:
                     status['performance']['daily_pnl'] = current_balance - self.initial_balance
                     status['performance']['peak_balance'] = self.peak_balance
                     status['performance']['drawdown'] = (self.peak_balance - current_balance) / max(self.peak_balance, 1) * 100
-            except:
+            except Exception:
                 status['performance']['current_balance'] = 0
                 status['performance']['daily_pnl'] = 0
 
@@ -108,7 +108,7 @@ class LiveTradingMonitor:
                     status['risk']['max_positions'] = config_data.get('max_positions', 15)
                     status['risk']['risk_per_trade'] = config_data.get('risk_per_trade', 0.02)
                     status['risk']['daily_loss_limit'] = config_data.get('daily_loss_limit', 0.03)
-            except:
+            except Exception:
                 status['risk']['max_positions'] = 15
                 status['risk']['risk_per_trade'] = 0.02
                 status['risk']['daily_loss_limit'] = 0.03
@@ -133,7 +133,7 @@ class LiveTradingMonitor:
         height, width = stdscr.getmaxyx()
 
         # Header
-        header = "🚀 VIPER LIVE TRADING MONITOR"
+        header = "# Rocket VIPER LIVE TRADING MONITOR"
         stdscr.addstr(0, (width - len(header)) // 2, header, curses.A_BOLD)
 
         # Timestamp
@@ -148,13 +148,13 @@ class LiveTradingMonitor:
         stdscr.addstr(3, 0, "🏥 SERVICE STATUS:", curses.A_BOLD)
         y_pos = 4
         for service, status in status.get('services', {}).items():
-            color = curses.color_pair(1) if status == '✅' else curses.color_pair(2)
+            color = curses.color_pair(1) if status == '# Check' else curses.color_pair(2)
             stdscr.addstr(y_pos, 2, f"{service}: {status}", color)
             y_pos += 1
 
         # Trading Status
         y_pos += 1
-        stdscr.addstr(y_pos, 0, "📊 TRADING STATUS:", curses.A_BOLD)
+        stdscr.addstr(y_pos, 0, "# Chart TRADING STATUS:", curses.A_BOLD)
         y_pos += 1
         trading = status.get('trading', {})
         stdscr.addstr(y_pos, 2, f"Active Positions: {trading.get('active_positions', 0)}", curses.color_pair(4))
@@ -220,7 +220,7 @@ class LiveTradingMonitor:
                     elif key == ord('r'):
                         # Force refresh
                         continue
-                except:
+                except Exception:
                     pass
 
                 # Wait for next update
@@ -235,16 +235,12 @@ class LiveTradingMonitor:
 
     def start_monitoring(self):
         """Start the monitoring dashboard"""
-        print("📊 Starting VIPER Live Trading Monitor...")
-        print("Controls: 'q' to quit, 'r' to refresh")
-        print("Emergency: Ctrl+C to stop monitoring")
 
         try:
             curses.wrapper(self.monitor_loop)
         except KeyboardInterrupt:
             pass
         finally:
-            print("\n📊 Monitoring stopped")
 
     def get_system_summary(self) -> Dict[str, Any]:
         """Get a summary of system status for logging"""
@@ -252,7 +248,7 @@ class LiveTradingMonitor:
 
         summary = {
             'timestamp': datetime.now().isoformat(),
-            'services_healthy': sum(1 for s in status.get('services', {}).values() if s == '✅'),
+            'services_healthy': sum(1 for s in status.get('services', {}).values() if s == '# Check'),
             'total_services': len(status.get('services', {})),
             'active_positions': status.get('trading', {}).get('active_positions', 0),
             'current_balance': status.get('performance', {}).get('current_balance', 0),
@@ -267,15 +263,9 @@ def print_system_summary():
     monitor = LiveTradingMonitor()
     summary = monitor.get_system_summary()
 
-    print("📊 VIPER SYSTEM SUMMARY")
-    print("=" * 50)
-    print(f"Timestamp: {summary['timestamp']}")
     print(f"Services: {summary['services_healthy']}/{summary['total_services']} healthy")
     print(f"Active Positions: {summary['active_positions']}")
     print(f"Current Balance: ${summary['current_balance']:.2f}")
-    print(f"Daily P&L: ${summary['daily_pnl']:.2f}")
-    print(f"Drawdown: {summary['drawdown']:.2f}%")
-    print("=" * 50)
 
 def main():
     """Main entry point"""

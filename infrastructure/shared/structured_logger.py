@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Structured Logger
+# Rocket VIPER Trading Bot - Structured Logger
 Unified logging utility for all microservices
 
 Features:
@@ -17,10 +17,8 @@ import json
 import logging
 import time
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 from collections import deque
 import redis
-import threading
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -58,7 +56,6 @@ class StructuredLogger:
             self.redis_client.ping()
             self.is_connected = True
         except Exception as e:
-            print(f"⚠️ Redis connection failed: {e}")
             self.is_connected = False
 
     def _setup_standard_logging(self):

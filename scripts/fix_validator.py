@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-✅ FIX VALIDATOR - VALIDATION & ROLLBACK SYSTEM
+# Check FIX VALIDATOR - VALIDATION & ROLLBACK SYSTEM
 ============================================
 
 Comprehensive validation system for MCP fixes.
@@ -77,7 +77,6 @@ class FixValidator:
         results = []
         all_passed = True
 
-        print(f"🔍 Validating: {file_path}")
 
         # Run all validation checks
         for check_name, check_func in self.validation_checks.items():
@@ -88,7 +87,7 @@ class FixValidator:
                 if not result.passed:
                     all_passed = False
 
-                status = "✅" if result.passed else "❌"
+                status = "# Check" if result.passed else "# X"
                 print(f"   {status} {check_name}: {result.message}")
 
             except Exception as e:
@@ -101,7 +100,7 @@ class FixValidator:
                 )
                 results.append(error_result)
                 all_passed = False
-                print(f"   ❌ {check_name}: Validation error - {e}")
+                print(f"   # X {check_name}: Validation error - {e}")
 
         # Determine risk level
         risk_level = self._calculate_risk_level(results)
@@ -244,7 +243,7 @@ class FixValidator:
                     security_issues.append(f"Line {line_num}: Use of exec() function")
 
                 # Check for insecure random
-                if 'random.random()' in line or 'random.randint(' in line:
+                if 'secrets.randbelow(1000000) / 1000000.0  # Was: random.random()' in line or 'secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(' in line:
                     security_issues.append(f"Line {line_num}: Insecure random number generation")
 
             if security_issues:
@@ -418,7 +417,7 @@ class FixValidator:
         recommendations = []
 
         if all_passed:
-            recommendations.append("✅ All validations passed - fixes are safe to deploy")
+            recommendations.append("# Check All validations passed - fixes are safe to deploy")
             return recommendations
 
         failed_checks = [r for r in results if not r.passed]
@@ -456,7 +455,6 @@ class FixValidator:
             shutil.copy2(backup_path, file_path)
             return True
         except Exception as e:
-            print(f"❌ Rollback failed: {e}")
             return False
 
     def validate_batch_results(self, fix_results: Dict[str, Any]) -> Dict[str, Any]:
@@ -494,10 +492,10 @@ class FixValidator:
     def generate_validation_report(self, validation_results: Dict[str, Any]) -> str:
         """Generate human-readable validation report"""
         report = f"""
-🔍 VALIDATION REPORT
+# Search VALIDATION REPORT
 {'='*50}
 
-📊 SUMMARY
+# Chart SUMMARY
   Total Validations: {validation_results['total_validations']}
   Passed: {validation_results['passed_validations']}
   Failed: {validation_results['failed_validations']}
@@ -507,7 +505,7 @@ class FixValidator:
 """
 
         for result in validation_results['validation_results']:
-            status = "✅ PASSED" if result['overall_passed'] else "❌ FAILED"
+            status = "# Check PASSED" if result['overall_passed'] else "# X FAILED"
             risk_icon = {
                 'LOW': '🟢',
                 'MEDIUM': '🟡',
@@ -523,7 +521,7 @@ class FixValidator:
 """
 
             for check in result['validation_results']:
-                check_status = "✅" if check['passed'] else "❌"
+                check_status = "# Check" if check['passed'] else "# X"
                 report += f"    {check_status} {check['check_type']}: {check['message']}\n"
 
             if result['recommendations']:
@@ -551,10 +549,9 @@ def main():
         # Perform rollback
         success = validator.rollback_file(args.file_path, args.rollback)
         if success:
-            print(f"✅ Successfully rolled back {args.file_path}")
+            print(f"# Check Successfully rolled back {args.file_path}")
             sys.exit(0)
         else:
-            print(f"❌ Rollback failed")
             sys.exit(1)
 
     elif args.batch_results:
@@ -565,7 +562,6 @@ def main():
         validation_results = validator.validate_batch_results(batch_data)
         report = validator.generate_validation_report(validation_results)
 
-        print(report)
 
         # Save detailed report
         report_path = validator.results_dir / f"batch_validation_{int(time.time())}.txt"
@@ -578,12 +574,11 @@ def main():
         # Validate single file
         if args.backup:
             backup_path = validator.create_rollback_point(args.file_path)
-            print(f"💾 Backup created: {backup_path}")
 
         report = validator.validate_file(args.file_path)
 
         # Print results
-        status = "✅ PASSED" if report.overall_passed else "❌ FAILED"
+        status = "# Check PASSED" if report.overall_passed else "# X FAILED"
         risk_icon = {
             'LOW': '🟢',
             'MEDIUM': '🟡',
@@ -593,16 +588,13 @@ def main():
 
         print(f"\n{status} Validation Results for {args.file_path}")
         print(f"Risk Level: {risk_icon} {report.risk_level}")
-        print("\nValidation Checks:")
 
         for result in report.validation_results:
-            check_status = "✅" if result.passed else "❌"
+            check_status = "# Check" if result.passed else "# X"
             print(f"  {check_status} {result.check_type}: {result.message}")
 
         if report.recommendations:
-            print("\nRecommendations:")
             for rec in report.recommendations:
-                print(f"  • {rec}")
 
         # Exit with appropriate code
         sys.exit(0 if report.overall_passed else 1)

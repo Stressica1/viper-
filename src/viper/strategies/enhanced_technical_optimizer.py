@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED TECHNICAL INDICATORS OPTIMIZER
+# Rocket ENHANCED TECHNICAL INDICATORS OPTIMIZER
 Advanced technical analysis with optimized calculations and multi-timeframe confluence
 
 This enhanced version includes:
@@ -101,8 +101,8 @@ class EnhancedTechnicalOptimizer:
         self.pattern_cache = {}  # Cache for pattern recognition
         self.volume_profiles = {}  # Cache for volume profiles
 
-        logger.info("🎯 Enhanced Technical Optimizer initialized")
-        logger.info(f"📊 Config optimized for performance and accuracy")
+        logger.info("# Target Enhanced Technical Optimizer initialized")
+        logger.info(f"# Chart Config optimized for performance and accuracy")
 
     async def initialize_exchange(self) -> bool:
         """Initialize exchange with optimized settings"""
@@ -117,11 +117,11 @@ class EnhancedTechnicalOptimizer:
             })
 
             self.exchange.load_markets()
-            logger.info("✅ Exchange connected for enhanced technical analysis")
+            logger.info("# Check Exchange connected for enhanced technical analysis")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect exchange: {e}")
+            logger.error(f"# X Failed to connect exchange: {e}")
             return False
 
     async def get_multi_timeframe_data(self, symbol: str, timeframes: List[str] = None) -> Dict[str, pd.DataFrame]:
@@ -178,7 +178,7 @@ class EnhancedTechnicalOptimizer:
             return df
 
         except Exception as e:
-            logger.error(f"❌ Error fetching OHLCV for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Error fetching OHLCV for {symbol} {timeframe}: {e}")
             return None
 
     def calculate_optimized_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -245,7 +245,7 @@ class EnhancedTechnicalOptimizer:
             return df
 
         except Exception as e:
-            logger.error(f"❌ Error calculating optimized indicators: {e}")
+            logger.error(f"# X Error calculating optimized indicators: {e}")
             return df
 
     def detect_advanced_patterns(self, df: pd.DataFrame) -> List[str]:
@@ -267,13 +267,13 @@ class EnhancedTechnicalOptimizer:
                 current_body = abs(df['close'].iloc[-1] - df['open'].iloc[-1])
                 prev_body = abs(df['close'].iloc[-2] - df['open'].iloc[-2])
 
-                if (df['close'].iloc[-1] > df['open'].iloc[-1] and  # Current bullish
+                if (df['close'].iloc[-1] > df['open'].iloc[-1] and  # Current bullish:
                     df['close'].iloc[-2] < df['open'].iloc[-2] and  # Previous bearish
                     df['close'].iloc[-1] > df['open'].iloc[-2] and  # Engulfs previous open
                     df['open'].iloc[-1] < df['close'].iloc[-2]):    # Engulfs previous close
                     patterns.append("BULLISH_ENGULFING")
 
-                elif (df['close'].iloc[-1] < df['open'].iloc[-1] and  # Current bearish
+                elif (df['close'].iloc[-1] < df['open'].iloc[-1] and  # Current bearish:
                       df['close'].iloc[-2] > df['open'].iloc[-2] and  # Previous bullish
                       df['close'].iloc[-1] < df['open'].iloc[-2] and  # Engulfs previous open
                       df['open'].iloc[-1] > df['close'].iloc[-2]):    # Engulfs previous close
@@ -310,7 +310,7 @@ class EnhancedTechnicalOptimizer:
                     patterns.append("ASCENDING_TRIANGLE")
 
         except Exception as e:
-            logger.warning(f"⚠️ Error in pattern detection: {e}")
+            logger.warning(f"# Warning Error in pattern detection: {e}")
 
         return patterns
 
@@ -321,7 +321,7 @@ class EnhancedTechnicalOptimizer:
 
         for i in range(2, len(data) - 2):
             # Check for peak
-            if (data.iloc[i] > data.iloc[i-1] and data.iloc[i] > data.iloc[i-2] and
+            if (data.iloc[i] > data.iloc[i-1] and data.iloc[i] > data.iloc[i-2] and:
                 data.iloc[i] > data.iloc[i+1] and data.iloc[i] > data.iloc[i+2]):
                 # Check prominence
                 left_min = min(data.iloc[i-2:i])
@@ -330,7 +330,7 @@ class EnhancedTechnicalOptimizer:
                     peaks.append(i)
 
             # Check for valley
-            if (data.iloc[i] < data.iloc[i-1] and data.iloc[i] < data.iloc[i-2] and
+            if (data.iloc[i] < data.iloc[i-1] and data.iloc[i] < data.iloc[i-2] and:
                 data.iloc[i] < data.iloc[i+1] and data.iloc[i] < data.iloc[i+2]):
                 # Check prominence
                 left_max = max(data.iloc[i-2:i])
@@ -372,7 +372,7 @@ class EnhancedTechnicalOptimizer:
             return high_volume_levels
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating volume profile: {e}")
+            logger.warning(f"# Warning Error calculating volume profile: {e}")
             return {}
 
     def calculate_fibonacci_levels_advanced(self, df: pd.DataFrame) -> Dict[str, float]:
@@ -434,7 +434,7 @@ class EnhancedTechnicalOptimizer:
             return fib_levels
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating advanced Fibonacci levels: {e}")
+            logger.warning(f"# Warning Error calculating advanced Fibonacci levels: {e}")
             return {}
 
     def _find_nearest_fib_level(self, price: float, fib_levels: Dict[str, float], tolerance: float = 0.01) -> Optional[str]:
@@ -501,7 +501,7 @@ class EnhancedTechnicalOptimizer:
             return float(confluence_score)
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating confluence score: {e}")
+            logger.warning(f"# Warning Error calculating confluence score: {e}")
             return 0.5
 
     async def analyze_enhanced_trend(self, symbol: str, primary_timeframe: str = '1h') -> Optional[EnhancedTrendSignal]:
@@ -577,7 +577,7 @@ class EnhancedTechnicalOptimizer:
                 timestamp=datetime.now()
             )
 
-            logger.info(f"🎯 Enhanced Trend Analysis for {symbol}:")
+            logger.info(f"# Target Enhanced Trend Analysis for {symbol}:")
             logger.info(f"   Direction: {consensus_direction.value}")
             logger.info(f"   Strength: {trend_strength.value}/5")
             logger.info(f"   Confidence: {confidence:.3f}")
@@ -587,7 +587,7 @@ class EnhancedTechnicalOptimizer:
             return signal
 
         except Exception as e:
-            logger.error(f"❌ Error in enhanced trend analysis for {symbol}: {e}")
+            logger.error(f"# X Error in enhanced trend analysis for {symbol}: {e}")
             return None
 
     def _analyze_single_timeframe_trend(self, df: pd.DataFrame) -> Tuple[EnhancedTrendDirection, float]:
@@ -634,7 +634,7 @@ class EnhancedTechnicalOptimizer:
             return direction, confidence
 
         except Exception as e:
-            logger.warning(f"⚠️ Error analyzing single timeframe trend: {e}")
+            logger.warning(f"# Warning Error analyzing single timeframe trend: {e}")
             return EnhancedTrendDirection.NEUTRAL, 0.5
 
     def _calculate_timeframe_consensus(self, directions: Dict[str, EnhancedTrendDirection],
@@ -671,7 +671,7 @@ class EnhancedTechnicalOptimizer:
             return dominant_direction
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating timeframe consensus: {e}")
+            logger.warning(f"# Warning Error calculating timeframe consensus: {e}")
             return EnhancedTrendDirection.NEUTRAL
 
     def _calculate_enhanced_trend_strength(self, df: pd.DataFrame,
@@ -698,7 +698,7 @@ class EnhancedTechnicalOptimizer:
 
             # Multi-timeframe agreement
             bullish_count = sum(1 for d in timeframe_directions.values()
-                              if d in [EnhancedTrendDirection.BULLISH, EnhancedTrendDirection.STRONG_BULLISH])
+                              if d in [EnhancedTrendDirection.BULLISH, EnhancedTrendDirection.STRONG_BULLISH]):
             total_tf = len(timeframe_directions)
             agreement_ratio = max(bullish_count, total_tf - bullish_count) / total_tf
             strength_factors.append(agreement_ratio)
@@ -718,7 +718,7 @@ class EnhancedTechnicalOptimizer:
                 return EnhancedTrendStrength.VERY_WEAK
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating enhanced trend strength: {e}")
+            logger.warning(f"# Warning Error calculating enhanced trend strength: {e}")
             return EnhancedTrendStrength.VERY_WEAK
 
 async def test_enhanced_optimizer():
@@ -732,20 +732,14 @@ async def test_enhanced_optimizer():
     symbols = ['BTCUSDT', 'ETHUSDT']
 
     for symbol in symbols:
-        print(f"\n🧪 Testing Enhanced Technical Analysis for {symbol}")
-        print("-" * 50)
 
         signal = await optimizer.analyze_enhanced_trend(symbol)
 
         if signal:
-            print(f"Direction: {signal.direction.value}")
-            print(f"Strength: {signal.strength.value}/5")
-            print(f"Confidence: {signal.confidence:.3f}")
             print(f"Confluence Score: {signal.confluence_score:.3f}")
             print(f"Patterns Detected: {signal.pattern_signals}")
             print(f"Timeframe Alignment: {[(tf, d.value) for tf, d in signal.timeframe_alignment.items()]}")
         else:
-            print("❌ No signal generated")
 
 if __name__ == "__main__":
     asyncio.run(test_enhanced_optimizer())

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER COMPLETE LIVE TRADING SYSTEM
+# Rocket VIPER COMPLETE LIVE TRADING SYSTEM
 One-command startup for the complete VIPER trading ecosystem
 """
 
@@ -27,10 +27,10 @@ try:
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
-    def display_error(msg, details=None): print(f"❌ {msg}")
-    def display_success(msg, details=None): print(f"✅ {msg}")
-    def display_warning(msg, details=None): print(f"⚠️ {msg}")
-    def print_banner(): print("🚀 VIPER COMPLETE LIVE TRADING SYSTEM")
+    def display_error(msg, details=None): print(f"# X {msg}")
+    def display_success(msg, details=None): print(f"# Check {msg}")
+    def display_warning(msg, details=None): print(f"# Warning {msg}")
+    def print_banner(): print("# Rocket VIPER COMPLETE LIVE TRADING SYSTEM")
     def print_status(status): print("Status:", status)
 
 # Load environment variables
@@ -53,7 +53,7 @@ class ViperLiveSystem:
     def __init__(self):
         # Validate live trading mode first
         if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
-            logger.error("❌ Mock data mode not allowed in live system")
+            logger.error("# X Mock data mode not allowed in live system")
             sys.exit(1)
         
         # Enforce Docker and MCP requirements
@@ -62,12 +62,12 @@ class ViperLiveSystem:
             
             logger.info("🔒 Enforcing Docker & MCP requirements...")
             if not enforce_docker_mcp_requirements():
-                logger.error("❌ Docker/MCP requirements not met")
+                logger.error("# X Docker/MCP requirements not met")
                 sys.exit(1)
-            logger.info("✅ Docker & MCP enforcement passed")
+            logger.info("# Check Docker & MCP enforcement passed")
             
         except ImportError as e:
-            logger.error(f"❌ Cannot import enforcement system: {e}")
+            logger.error(f"# X Cannot import enforcement system: {e}")
             sys.exit(1)
         
         self.project_root = Path(__file__).parent
@@ -78,28 +78,26 @@ class ViperLiveSystem:
         self.system_running = False
         self.monitoring_active = False
         
-        logger.info("✅ Live system initialized with mandatory enforcement")
+        logger.info("# Check Live system initialized with mandatory enforcement")
 
     def print_banner(self):
         """Print the VIPER Live System banner"""
-        print("""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER LIVE TRADING SYSTEM - LIVE MODE ONLY - DOCKER & MCP ENFORCED       ║
-║ 🔥 Real-Time Live Trading | 📊 Mandatory Risk Management                      ║
-║ 🎯 MCP-Powered Automation | 🛡️ Docker Infrastructure Required                 ║
-║ ⚡ Live Market Execution | 📈 Real-Time Performance Monitoring                ║
-╠══════════════════════════════════════════════════════════════════════════════╣
-║ 🚨 LIVE MONEY TRADING SYSTEM - NO SIMULATION MODE                            ║
-║ 🔒 DOCKER & MCP ENFORCEMENT ACTIVE                                           ║
-║ 🛑 EMERGENCY STOP: Ctrl+C or 'docker compose down'                          ║
-║ 📊 MONITORING: http://localhost:8000                                       ║
-║ 📈 MCP SERVER: http://localhost:8015                                       ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER LIVE TRADING SYSTEM - LIVE MODE ONLY - DOCKER & MCP ENFORCED       #
+# 🔥 Real-Time Live Trading | # Chart Mandatory Risk Management                      #
+# # Target MCP-Powered Automation | 🛡️ Docker Infrastructure Required                 #
+# ⚡ Live Market Execution | 📈 Real-Time Performance Monitoring                #
+╠==============================================================================╣
+# 🚨 LIVE MONEY TRADING SYSTEM - NO SIMULATION MODE                            #
+# 🔒 DOCKER & MCP ENFORCEMENT ACTIVE                                           #
+# 🛑 EMERGENCY STOP: Ctrl+C or 'docker compose down'                          #
+# # Chart MONITORING: http://localhost:8000                                       #
+# 📈 MCP SERVER: http://localhost:8015                                       #
+#==============================================================================#
         """)
 
     def validate_system(self) -> bool:
         """Validate system readiness for live trading"""
-        print("🔍 VALIDATING SYSTEM READINESS...")
 
         checks = {
             'Docker': self.check_docker(),
@@ -110,16 +108,15 @@ class ViperLiveSystem:
 
         all_passed = True
         for check, passed in checks.items():
-            status = "✅ PASSED" if passed else "❌ FAILED"
-            print(f"   {check}: {status}")
+            status = "# Check PASSED" if passed else "# X FAILED"
             if not passed:
                 all_passed = False
 
         if all_passed:
-            print("✅ System validation complete - Ready for live trading!")
+            print("# Check System validation complete - Ready for live trading!")
             return True
         else:
-            print("❌ System validation failed - Please fix issues above")
+            print("# X System validation failed - Please fix issues above")
             return False
 
     def check_docker(self) -> bool:
@@ -132,7 +129,7 @@ class ViperLiveSystem:
                 timeout=5
             )
             return result.returncode == 0
-        except:
+        except Exception:
             return False
 
     def validate_environment(self) -> bool:
@@ -174,19 +171,19 @@ class ViperLiveSystem:
 
             # Validate ranges
             if not real_data_only:
-                logger.warning("⚠️ REAL_DATA_ONLY not set to true - using simulated data")
+                logger.warning("# Warning REAL_DATA_ONLY not set to true - using simulated data")
             if risk_per_trade > 0.05:
-                logger.warning(f"⚠️ High risk per trade: {risk_per_trade*100}%")
+                logger.warning(f"# Warning High risk per trade: {risk_per_trade*100}%")
             if max_positions > 20:
-                logger.warning(f"⚠️ High max positions: {max_positions}")
+                logger.warning(f"# Warning High max positions: {max_positions}")
 
             return True
-        except:
+        except Exception:
             return False
 
     def start_system(self) -> bool:
         """Start the complete VIPER live trading system"""
-        print("\n🚀 STARTING VIPER LIVE TRADING SYSTEM...")
+        print("\n# Rocket STARTING VIPER LIVE TRADING SYSTEM...")
 
         try:
             # Start the system using the startup script
@@ -196,22 +193,20 @@ class ViperLiveSystem:
             ], cwd=self.project_root)
 
             if result.returncode == 0:
-                logger.info("✅ VIPER Live Trading System completed successfully")
+                logger.info("# Check VIPER Live Trading System completed successfully")
                 return True
             else:
-                logger.error(f"❌ System exited with code: {result.returncode}")
+                logger.error(f"# X System exited with code: {result.returncode}")
                 return False
 
         except KeyboardInterrupt:
-            print("\n⏹️ System interrupted by user")
             return True
         except Exception as e:
-            logger.error(f"❌ Error starting system: {e}")
+            logger.error(f"# X Error starting system: {e}")
             return False
 
     def signal_handler(self, signum, frame):
         """Handle shutdown signals"""
-        print(f"\n🛑 SHUTDOWN SIGNAL RECEIVED: {signum}")
         print("⏹️ Shutting down VIPER Live Trading System...")
 
         self.system_running = False
@@ -224,39 +219,24 @@ class ViperLiveSystem:
                 capture_output=True,
                 timeout=60
             )
-            print("✅ Docker services stopped")
         except Exception as e:
-            print(f"⚠️ Error stopping services: {e}")
 
         sys.exit(0)
 
     def show_post_startup_options(self):
         """Show options available after system startup"""
-        print("\n" + "=" * 70)
-        print("🎯 VIPER LIVE TRADING SYSTEM - POST-STARTUP OPTIONS")
-        print("=" * 70)
-        print("📊 MONITORING OPTIONS:")
+        print("# Target VIPER LIVE TRADING SYSTEM - POST-STARTUP OPTIONS")
         print("   1. Real-time Dashboard: python live_trading_monitor.py")
         print("   2. System Summary: python live_trading_monitor.py --summary")
         print("   3. Web Dashboard: http://localhost:8000")
         print("   4. Grafana Dashboard: http://localhost:3000")
-        print("")
-        print("🔧 MANAGEMENT OPTIONS:")
-        print("   • View Logs: docker compose logs -f")
-        print("   • Service Status: docker ps")
-        print("   • Stop System: docker compose down")
         print("   • Restart Services: docker compose restart")
-        print("")
-        print("📈 PERFORMANCE MONITORING:")
         print("   • API Server: http://localhost:8000/docs")
         print("   • Risk Manager: http://localhost:8002/docs")
         print("   • Order Lifecycle: http://localhost:8013/docs")
-        print("")
-        print("🛑 EMERGENCY CONTROLS:")
         print("   • Emergency Stop: docker compose down --volumes")
         print("   • Force Restart: docker compose down && docker compose up -d")
         print("   • System Reset: rm -rf logs/ && docker compose down --volumes")
-        print("=" * 70)
 
     def run_complete_system(self):
         """Run the complete VIPER live trading system"""
@@ -270,14 +250,11 @@ class ViperLiveSystem:
         try:
             # Step 1: System validation
             if not self.validate_system():
-                print("\n❌ System validation failed. Please fix the issues above.")
+                print("\n# X System validation failed. Please fix the issues above.")
                 return
 
             # Step 2: Show risk warning
-            print("\n⚠️  CRITICAL RISK WARNING:")
             print("   This system will execute REAL TRADES with REAL MONEY!")
-            print("   Ensure you understand the risks and have tested thoroughly.")
-            print("")
             input("   Press Enter to continue or Ctrl+C to abort...")
 
             # Step 3: Start the system
@@ -289,25 +266,16 @@ class ViperLiveSystem:
             if success:
                 self.show_post_startup_options()
 
-                print("\n🎉 VIPER LIVE TRADING SYSTEM STARTUP COMPLETE!")
-                print("   • System is running in live mode")
+                print("\n# Party VIPER LIVE TRADING SYSTEM STARTUP COMPLETE!")
                 print("   • Real-time trading with optimization active")
                 print("   • Risk management and emergency stops enabled")
-                print("   • Monitoring dashboards available")
 
             else:
-                print("\n❌ System startup failed!")
                 print("   Check the logs above for error details")
-                print("   Common issues:")
-                print("   • Docker services not starting")
-                print("   • API credentials invalid")
-                print("   • Network connectivity issues")
 
         except KeyboardInterrupt:
-            print("\n⏹️ System startup interrupted by user")
         except Exception as e:
-            logger.error(f"❌ Fatal system error: {e}")
-            print(f"\n❌ System error: {e}")
+            logger.error(f"# X Fatal system error: {e}")
         finally:
             self.system_running = False
 

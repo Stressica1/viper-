@@ -143,7 +143,7 @@ class EmergencyRollback:
             rollback_results["rollback_success"] = self._evaluate_rollback_success(rollback_results)
 
         except Exception as e:
-            logger.error(f"❌ Emergency rollback failed: {e}")
+            logger.error(f"# X Emergency rollback failed: {e}")
             rollback_results["error_details"] = str(e)
 
         # Save rollback results
@@ -154,15 +154,15 @@ class EmergencyRollback:
 
         logger.critical("=" * 80)
         if rollback_results["rollback_success"]:
-            logger.critical("✅ EMERGENCY ROLLBACK COMPLETED SUCCESSFULLY")
+            logger.critical("# Check EMERGENCY ROLLBACK COMPLETED SUCCESSFULLY")
         else:
-            logger.critical("❌ EMERGENCY ROLLBACK FAILED")
+            logger.critical("# X EMERGENCY ROLLBACK FAILED")
 
         return rollback_results
 
     def _validate_rollback_readiness(self) -> bool:
         """Validate rollback readiness"""
-        logger.info("🔍 Validating rollback readiness...")
+        logger.info("# Search Validating rollback readiness...")
 
         checks = []
 
@@ -170,36 +170,36 @@ class EmergencyRollback:
         for baseline_file, backup_file in self.rollback_config.get("baseline_files", {}).items():
             backup_path = project_root / backup_file
             if backup_path.exists():
-                checks.append(f"✅ {backup_file} backup available")
+                checks.append(f"# Check {backup_file} backup available")
             else:
-                checks.append(f"❌ {backup_file} backup missing")
+                checks.append(f"# X {backup_file} backup missing")
 
         # Check system resources
         try:
             memory_percent = psutil.virtual_memory().percent
             if memory_percent < 95:
-                checks.append("✅ System memory available")
+                checks.append("# Check System memory available")
             else:
-                checks.append("❌ System memory critically low")
+                checks.append("# X System memory critically low")
 
             cpu_percent = psutil.cpu_percent(interval=1)
             if cpu_percent < 90:
-                checks.append("✅ System CPU available")
+                checks.append("# Check System CPU available")
             else:
-                checks.append("❌ System CPU critically high")
+                checks.append("# X System CPU critically high")
 
         except Exception as e:
-            checks.append(f"❌ Resource check failed: {e}")
+            checks.append(f"# X Resource check failed: {e}")
 
         # Log validation results
         for check in checks:
             logger.info(f"   {check}")
 
         # Return overall validation status
-        critical_failures = sum(1 for check in checks if "❌" in check)
+        critical_failures = sum(1 for check in checks if "# X" in check)
         readiness_status = critical_failures == 0
 
-        logger.info(f"🔍 Rollback readiness: {'✅ READY' if readiness_status else '❌ NOT READY'}")
+        logger.info(f"# Search Rollback readiness: {'# Check READY' if readiness_status else '# X NOT READY'}")
         return readiness_status
 
     def _execute_step_1_emergency_stop(self) -> Dict[str, Any]:
@@ -253,21 +253,21 @@ class EmergencyRollback:
                                 logger.info(f"   🛑 Stopped process PID {pid} ({pattern})")
 
                             except Exception as e:
-                                logger.warning(f"   ⚠️ Could not stop PID {pid}: {e}")
+                                logger.warning(f"   # Warning Could not stop PID {pid}: {e}")
                                 step_result["errors"].append(f"Failed to stop PID {pid}: {e}")
 
                 except subprocess.TimeoutExpired:
-                    logger.warning(f"   ⚠️ Timeout finding processes for pattern: {pattern}")
+                    logger.warning(f"   # Warning Timeout finding processes for pattern: {pattern}")
                 except Exception as e:
-                    logger.warning(f"   ⚠️ Error stopping processes for pattern: {pattern}: {e}")
+                    logger.warning(f"   # Warning Error stopping processes for pattern: {pattern}: {e}")
                     step_result["errors"].append(f"Pattern {pattern}: {e}")
 
             step_result["processes_stopped"] = processes_stopped
             step_result["success"] = True
-            logger.info(f"✅ Step 1 complete: Stopped {len(processes_stopped)} processes")
+            logger.info(f"# Check Step 1 complete: Stopped {len(processes_stopped)} processes")
 
         except Exception as e:
-            logger.error(f"❌ Step 1 failed: {e}")
+            logger.error(f"# X Step 1 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -314,17 +314,17 @@ class EmergencyRollback:
                         logger.info(f"   🔄 Restored {current_file} from {backup_file}")
 
                     except Exception as e:
-                        logger.error(f"   ❌ Failed to restore {current_file}: {e}")
+                        logger.error(f"   # X Failed to restore {current_file}: {e}")
                         step_result["errors"].append(f"Restore {current_file}: {e}")
                 else:
-                    logger.warning(f"   ⚠️ Backup not found: {backup_file}")
+                    logger.warning(f"   # Warning Backup not found: {backup_file}")
 
             step_result["files_restored"] = files_restored
             step_result["success"] = len(files_restored) > 0
-            logger.info(f"✅ Step 2 complete: Restored {len(files_restored)} configuration files")
+            logger.info(f"# Check Step 2 complete: Restored {len(files_restored)} configuration files")
 
         except Exception as e:
-            logger.error(f"❌ Step 2 failed: {e}")
+            logger.error(f"# X Step 2 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -369,17 +369,17 @@ class EmergencyRollback:
                         logger.info(f"   🔄 Restored {current_file} from {backup_file}")
 
                     except Exception as e:
-                        logger.error(f"   ❌ Failed to restore {current_file}: {e}")
+                        logger.error(f"   # X Failed to restore {current_file}: {e}")
                         step_result["errors"].append(f"Restore {current_file}: {e}")
                 else:
-                    logger.warning(f"   ⚠️ Backup not found: {backup_file}")
+                    logger.warning(f"   # Warning Backup not found: {backup_file}")
 
             step_result["files_restored"] = files_restored
             step_result["success"] = len(files_restored) > 0
-            logger.info(f"✅ Step 3 complete: Restored {len(files_restored)} core files")
+            logger.info(f"# Check Step 3 complete: Restored {len(files_restored)} core files")
 
         except Exception as e:
-            logger.error(f"❌ Step 3 failed: {e}")
+            logger.error(f"# X Step 3 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -387,7 +387,7 @@ class EmergencyRollback:
 
     def _execute_step_4_restart_baseline_system(self) -> Dict[str, Any]:
         """Step 4: Restart baseline system"""
-        logger.info("🚀 Step 4: Restart baseline system")
+        logger.info("# Rocket Step 4: Restart baseline system")
 
         step_result = {
             "step": 4,
@@ -421,26 +421,26 @@ class EmergencyRollback:
 
                     if process.poll() is None:  # Process is still running
                         processes_started.append(f"PID {process.pid} ({process_name})")
-                        logger.info(f"   🚀 Started {process_name} (PID {process.pid})")
+                        logger.info(f"   # Rocket Started {process_name} (PID {process.pid})")
                     else:
                         # Process exited, check for errors
                         stdout, stderr = process.communicate()
                         if stderr:
-                            logger.error(f"   ❌ {process_name} failed to start: {stderr.decode()}")
+                            logger.error(f"   # X {process_name} failed to start: {stderr.decode()}")
                             step_result["errors"].append(f"{process_name} startup error: {stderr.decode()}")
                         else:
-                            logger.warning(f"   ⚠️ {process_name} exited immediately")
+                            logger.warning(f"   # Warning {process_name} exited immediately")
 
                 except Exception as e:
-                    logger.error(f"   ❌ Failed to start {process_name}: {e}")
+                    logger.error(f"   # X Failed to start {process_name}: {e}")
                     step_result["errors"].append(f"Start {process_name}: {e}")
 
             step_result["processes_started"] = processes_started
             step_result["success"] = len(processes_started) > 0
-            logger.info(f"✅ Step 4 complete: Started {len(processes_started)} processes")
+            logger.info(f"# Check Step 4 complete: Started {len(processes_started)} processes")
 
         except Exception as e:
-            logger.error(f"❌ Step 4 failed: {e}")
+            logger.error(f"# X Step 4 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -448,7 +448,7 @@ class EmergencyRollback:
 
     def _execute_step_5_validate_recovery(self) -> Dict[str, Any]:
         """Step 5: Validate system recovery"""
-        logger.info("🔍 Step 5: Validate system recovery")
+        logger.info("# Search Step 5: Validate system recovery")
 
         step_result = {
             "step": 5,
@@ -471,12 +471,12 @@ class EmergencyRollback:
                     timeout=10
                 )
                 if result.returncode == 0 and result.stdout.strip():
-                    validation_checks.append("✅ Baseline trading system running")
+                    validation_checks.append("# Check Baseline trading system running")
                 else:
-                    validation_checks.append("❌ Baseline trading system not running")
+                    validation_checks.append("# X Baseline trading system not running")
                     step_result["errors"].append("Baseline trading system not running")
             except Exception as e:
-                validation_checks.append(f"❌ Process check failed: {e}")
+                validation_checks.append(f"# X Process check failed: {e}")
                 step_result["errors"].append(f"Process check failed: {e}")
 
             # Check 2: Configuration files valid
@@ -487,12 +487,12 @@ class EmergencyRollback:
                     try:
                         with open(config_path, 'r') as f:
                             json.load(f)
-                        validation_checks.append(f"✅ {config_file} is valid JSON")
+                        validation_checks.append(f"# Check {config_file} is valid JSON")
                     except Exception as e:
-                        validation_checks.append(f"❌ {config_file} invalid: {e}")
+                        validation_checks.append(f"# X {config_file} invalid: {e}")
                         step_result["errors"].append(f"{config_file} invalid: {e}")
                 else:
-                    validation_checks.append(f"❌ {config_file} missing")
+                    validation_checks.append(f"# X {config_file} missing")
                     step_result["errors"].append(f"{config_file} missing")
 
             # Check 3: System resources stable
@@ -501,19 +501,19 @@ class EmergencyRollback:
                 cpu_percent = psutil.cpu_percent(interval=1)
 
                 if memory_percent < 85:
-                    validation_checks.append("✅ System memory stable")
+                    validation_checks.append("# Check System memory stable")
                 else:
-                    validation_checks.append("❌ System memory high")
+                    validation_checks.append("# X System memory high")
                     step_result["errors"].append(f"Memory usage: {memory_percent}%")
 
                 if cpu_percent < 80:
-                    validation_checks.append("✅ System CPU stable")
+                    validation_checks.append("# Check System CPU stable")
                 else:
-                    validation_checks.append("❌ System CPU high")
+                    validation_checks.append("# X System CPU high")
                     step_result["errors"].append(f"CPU usage: {cpu_percent}%")
 
             except Exception as e:
-                validation_checks.append(f"❌ Resource check failed: {e}")
+                validation_checks.append(f"# X Resource check failed: {e}")
                 step_result["errors"].append(f"Resource check failed: {e}")
 
             # Log validation results
@@ -522,10 +522,10 @@ class EmergencyRollback:
 
             step_result["validation_checks"] = validation_checks
             step_result["success"] = len(step_result["errors"]) == 0
-            logger.info(f"✅ Step 5 complete: {len(validation_checks)} validation checks performed")
+            logger.info(f"# Check Step 5 complete: {len(validation_checks)} validation checks performed")
 
         except Exception as e:
-            logger.error(f"❌ Step 5 failed: {e}")
+            logger.error(f"# X Step 5 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -533,7 +533,7 @@ class EmergencyRollback:
 
     def _execute_step_6_monitor_stability(self) -> Dict[str, Any]:
         """Step 6: Monitor system stability"""
-        logger.info("📊 Step 6: Monitor system stability")
+        logger.info("# Chart Step 6: Monitor system stability")
 
         step_result = {
             "step": 6,
@@ -549,7 +549,7 @@ class EmergencyRollback:
             monitoring_start = time.time()
             stability_metrics = []
 
-            logger.info(f"   📊 Monitoring system for {step_result['monitoring_period']} seconds...")
+            logger.info(f"   # Chart Monitoring system for {step_result['monitoring_period']} seconds...")
 
             while time.time() - monitoring_start < step_result["monitoring_period"]:
                 try:
@@ -573,7 +573,7 @@ class EmergencyRollback:
                             )
                             if result.returncode == 0 and result.stdout.strip():
                                 critical_processes_running += 1
-                        except:
+                        except Exception:
                             pass
 
                     metrics["critical_processes_running"] = critical_processes_running
@@ -590,7 +590,7 @@ class EmergencyRollback:
                     time.sleep(10)  # Check every 10 seconds
 
                 except Exception as e:
-                    logger.warning(f"   ⚠️ Monitoring error: {e}")
+                    logger.warning(f"   # Warning Monitoring error: {e}")
                     step_result["errors"].append(f"Monitoring error: {e}")
 
             step_result["stability_metrics"] = stability_metrics
@@ -600,12 +600,12 @@ class EmergencyRollback:
             if stability_metrics:
                 avg_cpu = sum(m["cpu_percent"] for m in stability_metrics) / len(stability_metrics)
                 avg_memory = sum(m["memory_percent"] for m in stability_metrics) / len(stability_metrics)
-                logger.info(f"   📊 Average CPU: {avg_cpu:.1f}%, Memory: {avg_memory:.1f}%")
+                logger.info(f"   # Chart Average CPU: {avg_cpu:.1f}%, Memory: {avg_memory:.1f}%")
 
-            logger.info(f"✅ Step 6 complete: Stability monitoring finished")
+            logger.info(f"# Check Step 6 complete: Stability monitoring finished")
 
         except Exception as e:
-            logger.error(f"❌ Step 6 failed: {e}")
+            logger.error(f"# X Step 6 failed: {e}")
             step_result["errors"].append(str(e))
 
         step_result["end_time"] = datetime.now().isoformat()
@@ -679,7 +679,7 @@ class EmergencyRollback:
             return system_state
 
         except Exception as e:
-            logger.error(f"❌ System state capture failed: {e}")
+            logger.error(f"# X System state capture failed: {e}")
             return {"error": str(e)}
 
     def _evaluate_rollback_success(self, rollback_results: Dict[str, Any]) -> bool:
@@ -692,7 +692,7 @@ class EmergencyRollback:
             for step in steps[:5]:  # Steps 1-5 are critical
                 if not step.get("success", False):
                     critical_steps_success = False
-                    logger.warning(f"   ❌ Critical step {step.get('step')} failed")
+                    logger.warning(f"   # X Critical step {step.get('step')} failed")
 
             # Check for errors in any step
             total_errors = sum(len(step.get("errors", [])) for step in steps)
@@ -708,7 +708,7 @@ class EmergencyRollback:
 
                 if post_memory > pre_memory + 10:  # Memory usage increased significantly
                     state_improved = False
-                    logger.warning("   ⚠️ System memory usage increased after rollback")
+                    logger.warning("   # Warning System memory usage increased after rollback")
 
             # Overall success criteria
             success = (
@@ -717,16 +717,16 @@ class EmergencyRollback:
                 state_improved
             )
 
-            logger.info(f"🔍 Rollback success evaluation:")
-            logger.info(f"   ✅ Critical steps success: {critical_steps_success}")
-            logger.info(f"   ✅ Total errors: {total_errors}")
-            logger.info(f"   ✅ System state improved: {state_improved}")
-            logger.info(f"   🎯 Overall success: {success}")
+            logger.info(f"# Search Rollback success evaluation:")
+            logger.info(f"   # Check Critical steps success: {critical_steps_success}")
+            logger.info(f"   # Check Total errors: {total_errors}")
+            logger.info(f"   # Check System state improved: {state_improved}")
+            logger.info(f"   # Target Overall success: {success}")
 
             return success
 
         except Exception as e:
-            logger.error(f"❌ Rollback evaluation failed: {e}")
+            logger.error(f"# X Rollback evaluation failed: {e}")
             return False
 
     def _save_rollback_results(self, results: Dict[str, Any]):
@@ -741,7 +741,7 @@ class EmergencyRollback:
             logger.info(f"📋 Rollback results saved to: {results_path}")
 
         except Exception as e:
-            logger.error(f"❌ Error saving rollback results: {e}")
+            logger.error(f"# X Error saving rollback results: {e}")
 
     def _generate_rollback_report(self, rollback_results: Dict[str, Any]):
         """Generate human-readable rollback report"""
@@ -759,9 +759,9 @@ class EmergencyRollback:
 
             success = rollback_results.get("rollback_success", False)
             if success:
-                report_lines.append("✅ ROLLBACK COMPLETED SUCCESSFULLY")
+                report_lines.append("# Check ROLLBACK COMPLETED SUCCESSFULLY")
             else:
-                report_lines.append("❌ ROLLBACK FAILED")
+                report_lines.append("# X ROLLBACK FAILED")
                 error_details = rollback_results.get("error_details")
                 if error_details:
                     report_lines.append(f"Error: {error_details}")
@@ -780,11 +780,11 @@ class EmergencyRollback:
                 step_success = step.get("success", False)
                 errors = len(step.get("errors", []))
 
-                status_icon = "✅" if step_success else "❌"
+                status_icon = "# Check" if step_success else "# X"
                 report_lines.append(f"{status_icon} Step {step_num}: {step_name}")
 
                 if errors > 0:
-                    report_lines.append(f"   ⚠️ {errors} errors occurred")
+                    report_lines.append(f"   # Warning {errors} errors occurred")
 
             # Recommendations
             report_lines.extend([
@@ -811,18 +811,14 @@ class EmergencyRollback:
             logger.info(f"📋 Rollback report saved to: {report_path}")
 
             # Display report
-            print(report_content)
 
         except Exception as e:
-            logger.error(f"❌ Error generating rollback report: {e}")
+            logger.error(f"# X Error generating rollback report: {e}")
 
 def execute_emergency_rollback():
     """Execute emergency rollback procedure"""
-    print("🚨 EMERGENCY ROLLBACK SYSTEM")
-    print("=" * 80)
-    print("⚠️  WARNING: This will stop all enhanced processes and restore baseline system")
-    print("⚠️  Make sure you have backups and understand the consequences")
-    print()
+    print("# Warning  WARNING: This will stop all enhanced processes and restore baseline system")
+    print("# Warning  Make sure you have backups and understand the consequences")
 
     # Get rollback reason
     reason = input("Enter rollback reason (or press Enter for 'Manual Emergency'): ").strip()
@@ -832,7 +828,6 @@ def execute_emergency_rollback():
     # Confirm execution
     confirm = input(f"Execute emergency rollback for reason: '{reason}'? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Rollback cancelled by user")
         return False
 
     # Execute rollback
@@ -842,22 +837,19 @@ def execute_emergency_rollback():
         results = rollback_system.execute_emergency_rollback(reason=reason)
 
         if results.get("rollback_success", False):
-            print("\n✅ EMERGENCY ROLLBACK COMPLETED SUCCESSFULLY!")
+            print("\n# Check EMERGENCY ROLLBACK COMPLETED SUCCESSFULLY!")
             print("📋 Check the rollback report for detailed information")
             return True
         else:
-            print("\n❌ EMERGENCY ROLLBACK FAILED!")
-            print("🔧 Review the rollback report and manual intervention may be required")
+            print("# Tool Review the rollback report and manual intervention may be required")
             return False
 
     except Exception as e:
-        print(f"\n❌ EMERGENCY ROLLBACK EXECUTION FAILED: {e}")
+        print(f"\n# X EMERGENCY ROLLBACK EXECUTION FAILED: {e}")
         return False
 
 def monitor_system_health():
     """Monitor system health and trigger rollback if needed"""
-    print("📊 System Health Monitor")
-    print("=" * 80)
 
     try:
         # Define health thresholds
@@ -885,7 +877,7 @@ def monitor_system_health():
                         )
                         if result.returncode == 0 and result.stdout.strip():
                             critical_processes += len(result.stdout.strip().split('\n'))
-                    except:
+                    except Exception:
                         pass
 
                 # Evaluate health
@@ -905,9 +897,7 @@ def monitor_system_health():
                 print(f"[{timestamp}] CPU: {cpu_percent:.1f}%, Memory: {memory_percent:.1f}%, Critical Processes: {critical_processes}")
 
                 if health_issues:
-                    print("⚠️ HEALTH ISSUES DETECTED:")
                     for issue in health_issues:
-                        print(f"   ❌ {issue}")
 
                     # Ask for rollback
                     rollback = input("Execute emergency rollback? (yes/no): ").lower().strip()
@@ -916,19 +906,15 @@ def monitor_system_health():
                         execute_emergency_rollback()
                         break
                 else:
-                    print("✅ System health OK")
 
                 time.sleep(30)  # Check every 30 seconds
 
             except KeyboardInterrupt:
-                print("\n🛑 Health monitoring stopped by user")
                 break
             except Exception as e:
-                print(f"❌ Health monitoring error: {e}")
                 time.sleep(30)
 
     except Exception as e:
-        print(f"❌ Health monitoring failed: {e}")
 
 if __name__ == "__main__":
     import argparse

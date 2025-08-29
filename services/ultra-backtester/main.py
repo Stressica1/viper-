@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Ultra Backtester Service
+# Rocket VIPER Trading Bot - Ultra Backtester Service
 High-performance backtesting engine for strategy validation and optimization
 
 Features:
@@ -14,19 +14,13 @@ Features:
 
 import os
 import json
-import time
 import logging
-import asyncio
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 from pathlib import Path
-import threading
 import httpx
 import uuid
 
@@ -65,17 +59,17 @@ class UltraBacktester:
         self.results_path = Path('/app/backtest_results')
         self.results_path.mkdir(exist_ok=True)
 
-        logger.info("🏗️ Initializing Ultra Backtester...")
+        logger.info("# Construction Initializing Ultra Backtester...")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     async def get_historical_data(self, symbol: str, timeframe: str, limit: int = 1000) -> Optional[List]:
@@ -89,10 +83,10 @@ class UltraBacktester:
                 if response.status_code == 200:
                     return response.json()
                 else:
-                    logger.warning(f"⚠️ Failed to get historical data: {response.status_code}")
+                    logger.warning(f"# Warning Failed to get historical data: {response.status_code}")
                     return None
         except Exception as e:
-            logger.error(f"❌ Error getting historical data: {e}")
+            logger.error(f"# X Error getting historical data: {e}")
             return None
 
     def calculate_viper_signal(self, ohlcv_data: List[Dict]) -> List[Dict]:
@@ -100,7 +94,7 @@ class UltraBacktester:
         signals = []
 
         if len(ohlcv_data) < 50:
-            logger.warning("⚠️ Insufficient data for signal calculation")
+            logger.warning("# Warning Insufficient data for signal calculation")
             return signals
 
         try:
@@ -159,7 +153,7 @@ class UltraBacktester:
                 })
 
         except Exception as e:
-            logger.error(f"❌ Error calculating VIPER signals: {e}")
+            logger.error(f"# X Error calculating VIPER signals: {e}")
 
         return signals
 
@@ -253,7 +247,7 @@ class UltraBacktester:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error running backtest: {e}")
+            logger.error(f"# X Error running backtest: {e}")
             return {'error': str(e)}
 
     def calculate_performance_metrics(self, trades: List, equity_curve: List, initial_balance: float) -> Dict:
@@ -334,7 +328,7 @@ class UltraBacktester:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error calculating performance metrics: {e}")
+            logger.error(f"# X Error calculating performance metrics: {e}")
             return {'error': str(e)}
 
     async def run_parameter_optimization(self, symbol: str, timeframe: str,
@@ -382,7 +376,7 @@ class UltraBacktester:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in parameter optimization: {e}")
+            logger.error(f"# X Error in parameter optimization: {e}")
             return {'error': str(e)}
 
     def calculate_viper_signal_custom(self, ohlcv_data: List, sma_20_period: int, sma_50_period: int) -> List:
@@ -433,7 +427,7 @@ class UltraBacktester:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in Monte Carlo simulation: {e}")
+            logger.error(f"# X Error in Monte Carlo simulation: {e}")
             return {'error': str(e)}
 
 # FastAPI application
@@ -449,10 +443,10 @@ backtester = UltraBacktester()
 async def startup_event():
     """Initialize services on startup"""
     if not backtester.initialize_redis():
-        logger.error("❌ Failed to initialize Redis. Exiting...")
+        logger.error("# X Failed to initialize Redis. Exiting...")
         return
 
-    logger.info("✅ Ultra Backtester started successfully")
+    logger.info("# Check Ultra Backtester started successfully")
 
 @app.get("/health")
 async def health_check():
@@ -510,7 +504,7 @@ async def run_backtest(request: Request, background_tasks: BackgroundTasks):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error starting backtest: {e}")
+        logger.error(f"# X Error starting backtest: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.post("/api/backtest/start")
@@ -557,7 +551,7 @@ async def start_backtest(request: Request, background_tasks: BackgroundTasks):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error starting backtest: {e}")
+        logger.error(f"# X Error starting backtest: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/api/backtest/{backtest_id}")
@@ -582,7 +576,7 @@ async def get_backtest_result(backtest_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error getting backtest result: {e}")
+        logger.error(f"# X Error getting backtest result: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.post("/api/optimization/run")
@@ -618,7 +612,7 @@ async def run_optimization(request: Request, background_tasks: BackgroundTasks):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error starting optimization: {e}")
+        logger.error(f"# X Error starting optimization: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.post("/api/monte-carlo/run")
@@ -654,7 +648,7 @@ async def run_monte_carlo(request: Request, background_tasks: BackgroundTasks):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error starting Monte Carlo simulation: {e}")
+        logger.error(f"# X Error starting Monte Carlo simulation: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/api/backtests")
@@ -727,10 +721,10 @@ async def run_backtest_async(self, backtest_id, symbol, timeframe, initial_balan
         self.active_backtests[backtest_id]['progress'] = 100
         self.active_backtests[backtest_id]['status'] = 'completed'
 
-        logger.info(f"✅ Backtest {backtest_id} completed successfully")
+        logger.info(f"# Check Backtest {backtest_id} completed successfully")
 
     except Exception as e:
-        logger.error(f"❌ Error in backtest {backtest_id}: {e}")
+        logger.error(f"# X Error in backtest {backtest_id}: {e}")
         self.active_backtests[backtest_id] = {'status': 'failed', 'error': str(e)}
 
 # Add background methods to class

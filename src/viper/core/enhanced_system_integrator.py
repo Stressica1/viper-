@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED VIPER SYSTEM INTEGRATOR
+# Rocket ENHANCED VIPER SYSTEM INTEGRATOR
 Central integration framework for all optimized trading modules
 
 This integrator provides:
@@ -12,21 +12,16 @@ This integrator provides:
 - Real-time system health monitoring
 """
 
-import os
 import sys
 import json
 import asyncio
 import logging
-import threading
-import time
 import inspect
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 import importlib
-import traceback
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -102,7 +97,7 @@ class EnhancedSystemIntegrator:
         self.event_queue = asyncio.Queue()
         self.event_processing_task = None
 
-        logger.info("🚀 Enhanced System Integrator initialized")
+        logger.info("# Rocket Enhanced System Integrator initialized")
 
     def _load_system_config(self) -> Dict[str, Any]:
         """Load system configuration from file"""
@@ -110,7 +105,7 @@ class EnhancedSystemIntegrator:
             if self.config_path.exists():
                 with open(self.config_path, 'r') as f:
                     config = json.load(f)
-                logger.info(f"✅ System configuration loaded from {self.config_path}")
+                logger.info(f"# Check System configuration loaded from {self.config_path}")
                 return config
             else:
                 # Create default configuration
@@ -119,7 +114,7 @@ class EnhancedSystemIntegrator:
                 return default_config
 
         except Exception as e:
-            logger.error(f"❌ Error loading system config: {e}")
+            logger.error(f"# X Error loading system config: {e}")
             return self._create_default_config()
 
     def _create_default_config(self) -> Dict[str, Any]:
@@ -203,7 +198,7 @@ class EnhancedSystemIntegrator:
                 json.dump(config, f, indent=2, default=str)
             logger.info(f"💾 System configuration saved to {self.config_path}")
         except Exception as e:
-            logger.error(f"❌ Error saving system config: {e}")
+            logger.error(f"# X Error saving system config: {e}")
 
     def register_module(self, name: str, module_class: Any,
                        config: Dict[str, Any] = None,
@@ -211,7 +206,7 @@ class EnhancedSystemIntegrator:
         """Register a module with the integrator"""
         try:
             if name in self.modules:
-                logger.warning(f"⚠️ Module {name} already registered")
+                logger.warning(f"# Warning Module {name} already registered")
                 return False
 
             module_info = ModuleInfo(
@@ -226,7 +221,7 @@ class EnhancedSystemIntegrator:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error registering module {name}: {e}")
+            logger.error(f"# X Error registering module {name}: {e}")
             return False
 
     def register_event_handler(self, event_type: IntegrationEvent, handler: Callable):
@@ -239,7 +234,7 @@ class EnhancedSystemIntegrator:
             logger.info(f"📡 Event handler registered for {event_type.value}")
 
         except Exception as e:
-            logger.error(f"❌ Error registering event handler: {e}")
+            logger.error(f"# X Error registering event handler: {e}")
 
     def emit_event(self, event_type: IntegrationEvent, module_name: str,
                   data: Dict[str, Any], severity: str = "INFO"):
@@ -260,7 +255,7 @@ class EnhancedSystemIntegrator:
             logger.info(f"📡 Event emitted: {event_type.value} from {module_name}")
 
         except Exception as e:
-            logger.error(f"❌ Error emitting event: {e}")
+            logger.error(f"# X Error emitting event: {e}")
 
     async def _process_events(self):
         """Process integration events"""
@@ -275,12 +270,12 @@ class EnhancedSystemIntegrator:
                         try:
                             await handler(event) if asyncio.iscoroutinefunction(handler) else handler(event)
                         except Exception as e:
-                            logger.error(f"❌ Error in event handler: {e}")
+                            logger.error(f"# X Error in event handler: {e}")
 
                 self.event_queue.task_done()
 
             except Exception as e:
-                logger.error(f"❌ Error processing events: {e}")
+                logger.error(f"# X Error processing events: {e}")
 
     def get_module(self, name: str) -> Optional[Any]:
         """Get a module instance by name"""
@@ -290,11 +285,11 @@ class EnhancedSystemIntegrator:
                 if module_info.status == ModuleStatus.READY and module_info.instance:
                     return module_info.instance
 
-            logger.warning(f"⚠️ Module {name} not available")
+            logger.warning(f"# Warning Module {name} not available")
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting module {name}: {e}")
+            logger.error(f"# X Error getting module {name}: {e}")
             return None
 
     def share_data(self, key: str, data: Any, source_module: str):
@@ -317,7 +312,7 @@ class EnhancedSystemIntegrator:
             logger.info(f"📤 Data shared: {key} from {source_module}")
 
         except Exception as e:
-            logger.error(f"❌ Error sharing data: {e}")
+            logger.error(f"# X Error sharing data: {e}")
 
     def get_shared_data(self, key: str, requesting_module: str) -> Optional[Any]:
         """Get shared data"""
@@ -330,17 +325,17 @@ class EnhancedSystemIntegrator:
                 logger.info(f"📥 Data accessed: {key} by {requesting_module}")
                 return data_entry['data']
 
-            logger.warning(f"⚠️ Shared data {key} not found")
+            logger.warning(f"# Warning Shared data {key} not found")
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting shared data {key}: {e}")
+            logger.error(f"# X Error getting shared data {key}: {e}")
             return None
 
     async def initialize_modules(self) -> bool:
         """Initialize all registered modules"""
         try:
-            logger.info("🏗️ Initializing enhanced system modules...")
+            logger.info("# Construction Initializing enhanced system modules...")
 
             # Sort modules by dependencies
             sorted_modules = self._sort_modules_by_dependencies()
@@ -354,14 +349,14 @@ class EnhancedSystemIntegrator:
 
                 # Check dependencies
                 if not self._check_dependencies(module_info):
-                    logger.error(f"❌ Dependencies not satisfied for {module_name}")
+                    logger.error(f"# X Dependencies not satisfied for {module_name}")
                     module_info.status = ModuleStatus.ERROR
                     continue
 
                 # Initialize module
                 try:
                     module_info.status = ModuleStatus.INITIALIZING
-                    logger.info(f"🔧 Initializing module: {module_name}")
+                    logger.info(f"# Tool Initializing module: {module_name}")
 
                     # Import module class if it's a string
                     if isinstance(module_info.module_class, str):
@@ -378,7 +373,7 @@ class EnhancedSystemIntegrator:
                     accepted_params = self._get_constructor_params(module_class)
                     filtered_config = {k: v for k, v in full_config.items() if k in accepted_params}
 
-                    logger.info(f"🔧 Creating {module_name} with config: {filtered_config}")
+                    logger.info(f"# Tool Creating {module_name} with config: {filtered_config}")
                     instance = module_class(**filtered_config)
 
                     module_info.instance = instance
@@ -392,10 +387,10 @@ class EnhancedSystemIntegrator:
                         {'status': 'success', 'config': filtered_config}
                     )
 
-                    logger.info(f"✅ Module {module_name} initialized successfully")
+                    logger.info(f"# Check Module {module_name} initialized successfully")
 
                 except Exception as e:
-                    logger.error(f"❌ Error initializing module {module_name}: {e}")
+                    logger.error(f"# X Error initializing module {module_name}: {e}")
                     module_info.status = ModuleStatus.ERROR
                     module_info.error_count += 1
 
@@ -405,12 +400,12 @@ class EnhancedSystemIntegrator:
 
             success_rate = ready_modules / total_modules if total_modules > 0 else 0
 
-            logger.info(f"🏗️ Module initialization complete: {ready_modules}/{total_modules} modules ready ({success_rate:.1%})")
+            logger.info(f"# Construction Module initialization complete: {ready_modules}/{total_modules} modules ready ({success_rate:.1%})")
 
             return success_rate >= 0.8  # Require 80% success rate
 
         except Exception as e:
-            logger.error(f"❌ Error in module initialization: {e}")
+            logger.error(f"# X Error in module initialization: {e}")
             return False
 
     def _sort_modules_by_dependencies(self) -> List[str]:
@@ -445,7 +440,7 @@ class EnhancedSystemIntegrator:
             return result
 
         except Exception as e:
-            logger.error(f"❌ Error sorting modules: {e}")
+            logger.error(f"# X Error sorting modules: {e}")
             return list(self.modules.keys())
 
     def _check_dependencies(self, module_info: ModuleInfo) -> bool:
@@ -453,18 +448,18 @@ class EnhancedSystemIntegrator:
         try:
             for dependency in module_info.dependencies:
                 if dependency not in self.modules:
-                    logger.error(f"❌ Dependency {dependency} not registered")
+                    logger.error(f"# X Dependency {dependency} not registered")
                     return False
 
                 dep_info = self.modules[dependency]
                 if dep_info.status != ModuleStatus.READY:
-                    logger.error(f"❌ Dependency {dependency} not ready (status: {dep_info.status.value})")
+                    logger.error(f"# X Dependency {dependency} not ready (status: {dep_info.status.value})")
                     return False
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error checking dependencies: {e}")
+            logger.error(f"# X Error checking dependencies: {e}")
             return False
 
     def _import_module_class(self, module_path: str) -> Optional[Any]:
@@ -482,7 +477,7 @@ class EnhancedSystemIntegrator:
             return module_class
 
         except Exception as e:
-            logger.error(f"❌ Error importing {module_path}: {e}")
+            logger.error(f"# X Error importing {module_path}: {e}")
             return None
 
     def _get_constructor_params(self, module_class: type) -> List[str]:
@@ -497,18 +492,18 @@ class EnhancedSystemIntegrator:
                 if param_name != 'self':
                     params.append(param_name)
 
-            logger.debug(f"🔍 Constructor params for {module_class.__name__}: {params}")
+            logger.debug(f"# Search Constructor params for {module_class.__name__}: {params}")
             return params
 
         except Exception as e:
-            logger.warning(f"⚠️ Could not inspect constructor for {module_class.__name__}: {e}")
+            logger.warning(f"# Warning Could not inspect constructor for {module_class.__name__}: {e}")
             # Return empty list as fallback - will cause constructor to be called with no arguments
             return []
 
     async def start_system(self) -> bool:
         """Start the integrated system"""
         try:
-            logger.info("🚀 Starting Enhanced VIPER Trading System...")
+            logger.info("# Rocket Starting Enhanced VIPER Trading System...")
 
             self.is_running = True
 
@@ -542,7 +537,7 @@ class EnhancedSystemIntegrator:
                         logger.info(f"▶️ Module {module_name} started")
 
                     except Exception as e:
-                        logger.error(f"❌ Error starting module {module_name}: {e}")
+                        logger.error(f"# X Error starting module {module_name}: {e}")
                         module_info.status = ModuleStatus.ERROR
                         module_info.error_count += 1
 
@@ -550,15 +545,15 @@ class EnhancedSystemIntegrator:
             system_healthy = await self._verify_system_health()
 
             if system_healthy:
-                logger.info("🎉 Enhanced VIPER Trading System started successfully!")
-                logger.info("📊 System Status: All modules operational")
+                logger.info("# Party Enhanced VIPER Trading System started successfully!")
+                logger.info("# Chart System Status: All modules operational")
                 return True
             else:
-                logger.error("❌ System health check failed")
+                logger.error("# X System health check failed")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error starting system: {e}")
+            logger.error(f"# X Error starting system: {e}")
             return False
 
     async def _start_health_monitoring(self):
@@ -569,13 +564,13 @@ class EnhancedSystemIntegrator:
                 perf_monitor = self.get_module('performance_monitoring_system')
                 if perf_monitor:
                     perf_monitor.start_monitoring()
-                    logger.info("📊 Performance monitoring enabled")
+                    logger.info("# Chart Performance monitoring enabled")
 
             # Start health check loop
             asyncio.create_task(self._health_check_loop())
 
         except Exception as e:
-            logger.error(f"❌ Error starting health monitoring: {e}")
+            logger.error(f"# X Error starting health monitoring: {e}")
 
     async def _health_check_loop(self):
         """Periodic health check loop"""
@@ -593,12 +588,12 @@ class EnhancedSystemIntegrator:
                 total_modules = len(health_status)
 
                 if healthy_modules < total_modules:
-                    logger.warning(f"⚠️ Health check: {healthy_modules}/{total_modules} modules healthy")
+                    logger.warning(f"# Warning Health check: {healthy_modules}/{total_modules} modules healthy")
                 else:
-                    logger.info(f"✅ Health check: All {total_modules} modules healthy")
+                    logger.info(f"# Check Health check: All {total_modules} modules healthy")
 
             except Exception as e:
-                logger.error(f"❌ Error in health check loop: {e}")
+                logger.error(f"# X Error in health check loop: {e}")
 
     async def _perform_health_checks(self) -> Dict[str, Dict[str, Any]]:
         """Perform health checks on all modules"""
@@ -648,7 +643,7 @@ class EnhancedSystemIntegrator:
             critical_healthy = all(
                 self.modules.get(name, ModuleInfo('', None, {})).status == ModuleStatus.RUNNING
                 for name in critical_modules
-                if name in self.modules
+                if name in self.modules:
             )
 
             # Check event processing
@@ -658,15 +653,15 @@ class EnhancedSystemIntegrator:
             # Overall health
             system_healthy = critical_healthy and event_queue_healthy
 
-            logger.info(f"🔍 System Health Check:")
-            logger.info(f"   Critical modules: {'✅' if critical_healthy else '❌'}")
-            logger.info(f"   Event queue: {'✅' if event_queue_healthy else '❌'} ({event_queue_size} events)")
-            logger.info(f"   Overall health: {'✅' if system_healthy else '❌'}")
+            logger.info(f"# Search System Health Check:")
+            logger.info(f"   Critical modules: {'# Check' if critical_healthy else '# X'}")
+            logger.info(f"   Event queue: {'# Check' if event_queue_healthy else '# X'} ({event_queue_size} events)")
+            logger.info(f"   Overall health: {'# Check' if system_healthy else '# X'}")
 
             return system_healthy
 
         except Exception as e:
-            logger.error(f"❌ Error verifying system health: {e}")
+            logger.error(f"# X Error verifying system health: {e}")
             return False
 
     def get_system_status(self) -> Dict[str, Any]:
@@ -692,7 +687,7 @@ class EnhancedSystemIntegrator:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error getting system status: {e}")
+            logger.error(f"# X Error getting system status: {e}")
             return {'error': str(e)}
 
     def _get_performance_metrics(self) -> Dict[str, Any]:
@@ -714,7 +709,7 @@ class EnhancedSystemIntegrator:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Error getting performance metrics: {e}")
+            logger.warning(f"# Warning Error getting performance metrics: {e}")
             return {}
 
     async def shutdown_system(self):
@@ -749,7 +744,7 @@ class EnhancedSystemIntegrator:
                         logger.info(f"⏹️ Module {module_name} stopped")
 
                     except Exception as e:
-                        logger.error(f"❌ Error stopping module {module_name}: {e}")
+                        logger.error(f"# X Error stopping module {module_name}: {e}")
 
             # Cancel event processing
             if self.event_processing_task:
@@ -759,10 +754,10 @@ class EnhancedSystemIntegrator:
                 except asyncio.CancelledError:
                     pass
 
-            logger.info("🎯 Enhanced VIPER Trading System shutdown complete")
+            logger.info("# Target Enhanced VIPER Trading System shutdown complete")
 
         except Exception as e:
-            logger.error(f"❌ Error during system shutdown: {e}")
+            logger.error(f"# X Error during system shutdown: {e}")
 
 # Global integrator instance
 _integrator_instance = None
@@ -821,14 +816,14 @@ async def initialize_enhanced_system(config_path: Optional[str] = None) -> bool:
         success = await integrator.initialize_modules()
 
         if success:
-            logger.info("🎉 Enhanced system initialization successful!")
+            logger.info("# Party Enhanced system initialization successful!")
             return True
         else:
-            logger.error("❌ Enhanced system initialization failed")
+            logger.error("# X Enhanced system initialization failed")
             return False
 
     except Exception as e:
-        logger.error(f"❌ Error initializing enhanced system: {e}")
+        logger.error(f"# X Error initializing enhanced system: {e}")
         return False
 
 async def start_enhanced_system() -> bool:
@@ -840,14 +835,14 @@ async def start_enhanced_system() -> bool:
         success = await integrator.start_system()
 
         if success:
-            logger.info("🚀 Enhanced VIPER Trading System is now running!")
+            logger.info("# Rocket Enhanced VIPER Trading System is now running!")
             return True
         else:
-            logger.error("❌ Failed to start enhanced system")
+            logger.error("# X Failed to start enhanced system")
             return False
 
     except Exception as e:
-        logger.error(f"❌ Error starting enhanced system: {e}")
+        logger.error(f"# X Error starting enhanced system: {e}")
         return False
 
 def get_system_status() -> Dict[str, Any]:
@@ -856,6 +851,5 @@ def get_system_status() -> Dict[str, Any]:
     return integrator.get_system_status()
 
 if __name__ == "__main__":
-    print("🚀 Enhanced VIPER System Integrator")
     print("Run this module to initialize and start the enhanced trading system")
     print("Use: python enhanced_system_integrator.py")

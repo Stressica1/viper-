@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - API Server
+# Rocket VIPER Trading Bot - API Server
 FastAPI web server providing dashboard and REST API endpoints
 
 Port: 8000
@@ -59,7 +59,7 @@ async def dashboard():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>🚀 VIPER Trading Bot Dashboard</title>
+        <title># Rocket VIPER Trading Bot Dashboard</title>
         <style>
             body {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -142,12 +142,12 @@ async def dashboard():
     <body>
         <div class="container">
             <div class="header">
-                <h1>🚀 VIPER Trading Bot</h1>
+                <h1># Rocket VIPER Trading Bot</h1>
                 <p>Ultra High-Performance Algorithmic Trading Platform</p>
             </div>
 
             <div class="metrics">
-                <h2>📊 System Metrics</h2>
+                <h2># Chart System Metrics</h2>
                 <div class="metric">
                     <div class="metric-value" id="uptime">Loading...</div>
                     <div class="metric-label">Uptime</div>
@@ -178,7 +178,7 @@ async def dashboard():
                 </div>
 
                 <div class="service-card">
-                    <h3>🎯 Strategy Optimizer</h3>
+                    <h3># Target Strategy Optimizer</h3>
                     <p>Parameter tuning & optimization</p>
                     <span class="status running">Running</span>
                     <br><small>Port: 8004</small>
@@ -213,7 +213,7 @@ async def dashboard():
                 </div>
 
                 <div class="service-card">
-                    <h3>📊 Monitoring Service</h3>
+                    <h3># Chart Monitoring Service</h3>
                     <p>System analytics & alerts</p>
                     <span class="status running">Running</span>
                     <br><small>Port: 8006</small>

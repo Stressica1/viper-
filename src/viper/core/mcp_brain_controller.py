@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MCP BRAIN CONTROLLER
+# Rocket VIPER MCP BRAIN CONTROLLER
 The Central Intelligence System for VIPER Trading Operations
 
 This is the MASTER CONTROL SYSTEM that orchestrates all MCP operations:
@@ -11,14 +11,14 @@ This is the MASTER CONTROL SYSTEM that orchestrates all MCP operations:
 - Real-time system monitoring and optimization
 
 FEATURES:
-✅ Master Control Dashboard
-✅ Continuous Operation Mode
-✅ AI-Powered Decision Making
-✅ Ruleset Enforcement Engine
-✅ Cursor Chat Integration
-✅ Emergency Control Systems
-✅ Performance Optimization
-✅ Unified Command Interface
+# Check Master Control Dashboard
+# Check Continuous Operation Mode
+# Check AI-Powered Decision Making
+# Check Ruleset Enforcement Engine
+# Check Cursor Chat Integration
+# Check Emergency Control Systems
+# Check Performance Optimization
+# Check Unified Command Interface
 """
 
 import os
@@ -161,7 +161,7 @@ class MCPBrainController:
             
             for host in redis_hosts:
                 try:
-                    self.logger.info(f"🔍 Attempting Redis connection to {host}:{redis_port}")
+                    self.logger.info(f"# Search Attempting Redis connection to {host}:{redis_port}")
                     self.redis_client = redis.Redis(
                         host=host,
                         port=redis_port,
@@ -173,15 +173,15 @@ class MCPBrainController:
                     self.logger.info(f"🔴 Redis connection established to {host}:{redis_port}")
                     return
                 except Exception as e:
-                    self.logger.warning(f"⚠️ Redis connection to {host}:{redis_port} failed: {e}")
+                    self.logger.warning(f"# Warning Redis connection to {host}:{redis_port} failed: {e}")
                     continue
             
             # If all connections fail, log error and continue without Redis
-            self.logger.error("❌ All Redis connection attempts failed. Continuing without Redis.")
+            self.logger.error("# X All Redis connection attempts failed. Continuing without Redis.")
             self.redis_client = None
             
         except Exception as e:
-            self.logger.error(f"❌ Redis initialization failed: {e}")
+            self.logger.error(f"# X Redis initialization failed: {e}")
             self.redis_client = None
             # Continue without Redis - use in-memory storage
 
@@ -451,7 +451,7 @@ class MCPBrainController:
         # Market Data Commands
         menu_html += """
         <div style="margin-bottom: 20px;">
-            <h4>📊 Market Data</h4>
+            <h4># Chart Market Data</h4>
             <button class="command-btn" onclick="executeCommand('get_market_data', {symbol: 'BTC/USDT:USDT', timeframe: '1h', limit: 100})">
                 Get Market Data
             </button>
@@ -548,7 +548,7 @@ class MCPBrainController:
                 }
             },
             "market_data": {
-                "title": "📊 Market Data",
+                "title": "# Chart Market Data",
                 "commands": {
                     "get_market_data": {
                         "description": "Retrieve real-time market data",
@@ -1232,9 +1232,7 @@ def main():
         brain = MCPBrainController()
         brain.run()
     except KeyboardInterrupt:
-        print("\n🧠 Brain Controller shutting down...")
     except Exception as e:
-        print(f"❌ Brain Controller failed to start: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

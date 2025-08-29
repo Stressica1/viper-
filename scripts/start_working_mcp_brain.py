@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 WORKING VIPER MCP BRAIN SYSTEM LAUNCHER
+# Rocket WORKING VIPER MCP BRAIN SYSTEM LAUNCHER
 This version actually works and starts the brain controller properly
 """
 
@@ -9,7 +9,6 @@ import sys
 import time
 import json
 import signal
-import psutil
 import logging
 import subprocess
 import threading
@@ -40,7 +39,7 @@ class WorkingMCPBrainLauncher:
             brain_script = self.working_dir / "mcp_brain_controller_simple.py"
 
             if not brain_script.exists():
-                self.logger.error(f"❌ Brain controller script not found: {brain_script}")
+                self.logger.error(f"# X Brain controller script not found: {brain_script}")
                 return False
 
             # Start the process
@@ -53,22 +52,22 @@ class WorkingMCPBrainLauncher:
             )
 
             self.processes["brain_controller"] = process
-            self.logger.info(f"✅ Brain controller started (PID: {process.pid})")
+            self.logger.info(f"# Check Brain controller started (PID: {process.pid})")
 
             # Wait a bit for startup
             time.sleep(3)
 
             # Test if it's responding
             if self.test_brain_health():
-                self.logger.info("✅ Brain controller health check passed")
+                self.logger.info("# Check Brain controller health check passed")
                 return True
             else:
-                self.logger.error("❌ Brain controller health check failed")
+                self.logger.error("# X Brain controller health check failed")
                 self.stop_brain_controller()
                 return False
 
         except Exception as e:
-            self.logger.error(f"❌ Failed to start brain controller: {e}")
+            self.logger.error(f"# X Failed to start brain controller: {e}")
             return False
 
     def test_brain_health(self):
@@ -77,7 +76,7 @@ class WorkingMCPBrainLauncher:
             import requests
             response = requests.get("http://localhost:8080/health", timeout=5)
             return response.status_code == 200
-        except:
+        except Exception:
             return False
 
     def start_cursor_integration(self):
@@ -88,7 +87,7 @@ class WorkingMCPBrainLauncher:
             cursor_script = self.working_dir / "mcp_cursor_integration.py"
 
             if not cursor_script.exists():
-                self.logger.warning("⚠️  Cursor integration script not found, skipping")
+                self.logger.warning("# Warning  Cursor integration script not found, skipping")
                 return True
 
             process = subprocess.Popen(
@@ -100,11 +99,11 @@ class WorkingMCPBrainLauncher:
             )
 
             self.processes["cursor_integration"] = process
-            self.logger.info(f"✅ Cursor integration started (PID: {process.pid})")
+            self.logger.info(f"# Check Cursor integration started (PID: {process.pid})")
             return True
 
         except Exception as e:
-            self.logger.warning(f"⚠️  Cursor integration failed: {e}")
+            self.logger.warning(f"# Warning  Cursor integration failed: {e}")
             return True  # Not critical
 
     def start_service_manager(self):
@@ -115,7 +114,7 @@ class WorkingMCPBrainLauncher:
             service_script = self.working_dir / "mcp_brain_service.py"
 
             if not service_script.exists():
-                self.logger.warning("⚠️  Service manager script not found, skipping")
+                self.logger.warning("# Warning  Service manager script not found, skipping")
                 return True
 
             process = subprocess.Popen(
@@ -127,16 +126,16 @@ class WorkingMCPBrainLauncher:
             )
 
             self.processes["service_manager"] = process
-            self.logger.info(f"✅ Service manager started (PID: {process.pid})")
+            self.logger.info(f"# Check Service manager started (PID: {process.pid})")
             return True
 
         except Exception as e:
-            self.logger.warning(f"⚠️  Service manager failed: {e}")
+            self.logger.warning(f"# Warning  Service manager failed: {e}")
             return True  # Not critical
 
     def monitor_system(self):
         """Monitor the running system"""
-        self.logger.info("📊 System monitoring started...")
+        self.logger.info("# Chart System monitoring started...")
 
         try:
             while True:
@@ -150,12 +149,12 @@ class WorkingMCPBrainLauncher:
 
                 # Check health
                 if not self.test_brain_health():
-                    self.logger.warning("⚠️  Brain controller health check failed")
+                    self.logger.warning("# Warning  Brain controller health check failed")
 
                 time.sleep(10)  # Check every 10 seconds
 
         except KeyboardInterrupt:
-            self.logger.info("📊 Monitoring stopped")
+            self.logger.info("# Chart Monitoring stopped")
 
     def restart_brain_controller(self):
         """Restart the brain controller"""
@@ -173,13 +172,13 @@ class WorkingMCPBrainLauncher:
                 # Kill the entire process group
                 os.killpg(os.getpgid(process.pid), signal.SIGTERM)
                 process.wait(timeout=10)
-                self.logger.info("✅ Brain controller stopped")
-            except:
+                self.logger.info("# Check Brain controller stopped")
+            except Exception:
                 try:
                     process.kill()
                     process.wait(timeout=5)
-                except:
-                    self.logger.warning("⚠️  Force killed brain controller")
+                except Exception:
+                    self.logger.warning("# Warning  Force killed brain controller")
 
             del self.processes["brain_controller"]
 
@@ -191,14 +190,14 @@ class WorkingMCPBrainLauncher:
             try:
                 os.killpg(os.getpgid(process.pid), signal.SIGTERM)
                 process.wait(timeout=5)
-                self.logger.info(f"✅ {name} stopped")
-            except:
+                self.logger.info(f"# Check {name} stopped")
+            except Exception:
                 try:
                     process.kill()
                     process.wait(timeout=2)
-                    self.logger.info(f"✅ {name} force killed")
-                except:
-                    self.logger.warning(f"⚠️  Could not stop {name}")
+                    self.logger.info(f"# Check {name} force killed")
+                except Exception:
+                    self.logger.warning(f"# Warning  Could not stop {name}")
 
         self.processes.clear()
 
@@ -215,7 +214,7 @@ class WorkingMCPBrainLauncher:
 
     def run(self):
         """Run the MCP Brain System"""
-        self.logger.info("🚀 VIPER MCP Brain System - WORKING VERSION")
+        self.logger.info("# Rocket VIPER MCP Brain System - WORKING VERSION")
         self.logger.info("=" * 60)
 
         try:
@@ -229,13 +228,13 @@ class WorkingMCPBrainLauncher:
             self.start_service_manager()    # Optional
 
             if not success:
-                self.logger.error("❌ Failed to start core components")
+                self.logger.error("# X Failed to start core components")
                 self.stop_all()
                 return False
 
-            self.logger.info("✅ MCP Brain System started successfully!")
-            self.logger.info("📊 Dashboard: http://localhost:8080")
-            self.logger.info("📊 Status: http://localhost:8080/health")
+            self.logger.info("# Check MCP Brain System started successfully!")
+            self.logger.info("# Chart Dashboard: http://localhost:8080")
+            self.logger.info("# Chart Status: http://localhost:8080/health")
 
             # Start monitoring in background thread
             monitor_thread = threading.Thread(target=self.monitor_system, daemon=True)
@@ -249,7 +248,7 @@ class WorkingMCPBrainLauncher:
                     # Print status every minute
                     if int(time.time()) % 60 == 0:
                         status = self.get_system_status()
-                        self.logger.info(f"📊 System Status: {json.dumps(status, indent=2)}")
+                        self.logger.info(f"# Chart System Status: {json.dumps(status, indent=2)}")
 
             except KeyboardInterrupt:
                 self.logger.info("🛑 Received shutdown signal")
@@ -257,7 +256,7 @@ class WorkingMCPBrainLauncher:
                 return True
 
         except Exception as e:
-            self.logger.error(f"❌ System failed: {e}")
+            self.logger.error(f"# X System failed: {e}")
             self.stop_all()
             return False
 
@@ -277,7 +276,7 @@ def main():
         success = launcher.run()
         sys.exit(0 if success else 1)
     except Exception as e:
-        launcher.logger.error(f"❌ Fatal error: {e}")
+        launcher.logger.error(f"# X Fatal error: {e}")
         launcher.stop_all()
         sys.exit(1)
 

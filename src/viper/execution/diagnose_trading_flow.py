@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER TRADING FLOW DIAGNOSTIC
+# Rocket VIPER TRADING FLOW DIAGNOSTIC
 Comprehensive diagnostic tool for scan/score/trade/TP/SL flow
 
 This diagnostic will:
-✅ Test pair discovery and filtering
-✅ Test market data fetching (OHLCV)
-✅ Test VIPER scoring system
-✅ Test trade execution simulation
-✅ Test TP/SL logic
-✅ Identify bottlenecks and issues
+# Check Test pair discovery and filtering
+# Check Test market data fetching (OHLCV)
+# Check Test VIPER scoring system
+# Check Test trade execution simulation
+# Check Test TP/SL logic
+# Check Identify bottlenecks and issues
 """
 
 import os
@@ -54,7 +54,7 @@ class TradingFlowDiagnostic:
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if not all([api_key, api_secret, api_password]):
-                logger.error("❌ Missing API credentials")
+                logger.error("# X Missing API credentials")
                 return False
 
             self.exchange = ccxt.bitget({
@@ -67,17 +67,15 @@ class TradingFlowDiagnostic:
 
             # Test connection
             self.exchange.load_markets()
-            logger.info(f"✅ Exchange connected: {len(self.exchange.markets)} markets")
+            logger.info(f"# Check Exchange connected: {len(self.exchange.markets)} markets")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Exchange setup failed: {e}")
+            logger.error(f"# X Exchange setup failed: {e}")
             return False
 
     async def run_complete_diagnostic(self):
         """Run complete trading flow diagnostic"""
-        print("🚀 VIPER TRADING FLOW DIAGNOSTIC")
-        print("=" * 50)
 
         try:
             # Step 1: Pair Discovery
@@ -102,23 +100,21 @@ class TradingFlowDiagnostic:
             self.generate_diagnostic_report()
 
         except Exception as e:
-            logger.error(f"❌ Diagnostic failed: {e}")
+            logger.error(f"# X Diagnostic failed: {e}")
             import traceback
             traceback.print_exc()
 
     async def diagnose_pair_discovery(self):
         """Diagnose pair discovery phase"""
-        print("\n🔍 Step 1: PAIR DISCOVERY")
-        print("-" * 30)
 
         try:
             # Discover all USDT swap pairs
             all_symbols = [symbol for symbol in self.exchange.markets.keys() if symbol.endswith('USDT:USDT')]
-            logger.info(f"📊 Found {len(all_symbols)} USDT swap pairs")
+            logger.info(f"# Chart Found {len(all_symbols)} USDT swap pairs")
 
             # Sample first 10 pairs for detailed analysis
             sample_pairs = all_symbols[:10]
-            logger.info(f"🔍 Analyzing first {len(sample_pairs)} pairs...")
+            logger.info(f"# Search Analyzing first {len(sample_pairs)} pairs...")
 
             for symbol in sample_pairs:
                 try:
@@ -134,20 +130,18 @@ class TradingFlowDiagnostic:
                     }
 
                     self.pairs_data.append(pair_data)
-                    logger.info(f"✅ {symbol}: Leverage={leverage}x, Active={pair_data['active']}")
+                    logger.info(f"# Check {symbol}: Leverage={leverage}x, Active={pair_data['active']}")
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not analyze {symbol}: {e}")
+                    logger.warning(f"# Warning Could not analyze {symbol}: {e}")
 
-            logger.info(f"✅ Pair discovery completed: {len(self.pairs_data)} pairs analyzed")
+            logger.info(f"# Check Pair discovery completed: {len(self.pairs_data)} pairs analyzed")
 
         except Exception as e:
-            logger.error(f"❌ Pair discovery failed: {e}")
+            logger.error(f"# X Pair discovery failed: {e}")
 
     async def diagnose_pair_filtering(self):
         """Diagnose pair filtering phase"""
-        print("\n🎯 Step 2: PAIR FILTERING")
-        print("-" * 30)
 
         try:
             # Filtering criteria
@@ -158,7 +152,7 @@ class TradingFlowDiagnostic:
                 'require_price': True
             }
 
-            logger.info(f"🎯 Filtering Criteria: {criteria}")
+            logger.info(f"# Target Filtering Criteria: {criteria}")
 
             qualified_count = 0
             rejected_reasons = {}
@@ -200,7 +194,7 @@ class TradingFlowDiagnostic:
                             'leverage': leverage,
                             'price': price
                         })
-                        logger.info(f"✅ QUALIFIED: {symbol} (Vol: ${volume_24h:,.0f}, Spread: {spread:.4f})")
+                        logger.info(f"# Check QUALIFIED: {symbol} (Vol: ${volume_24h:,.0f}, Spread: {spread:.4f})")
                     else:
                         # Track rejection reasons
                         for reason in reasons:
@@ -209,27 +203,25 @@ class TradingFlowDiagnostic:
                             rejected_reasons[reason] += 1
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not filter {pair_data['symbol']}: {e}")
+                    logger.warning(f"# Warning Could not filter {pair_data['symbol']}: {e}")
 
-            logger.info(f"🎯 Filtering Results: {qualified_count} qualified, {len(self.pairs_data) - qualified_count} rejected")
+            logger.info(f"# Target Filtering Results: {qualified_count} qualified, {len(self.pairs_data) - qualified_count} rejected")
 
             # Show top rejection reasons
             if rejected_reasons:
-                logger.info("📊 Top Rejection Reasons:")
+                logger.info("# Chart Top Rejection Reasons:")
                 for reason, count in sorted(rejected_reasons.items(), key=lambda x: x[1], reverse=True)[:5]:
                     logger.info(f"   • {reason}: {count} pairs")
 
         except Exception as e:
-            logger.error(f"❌ Pair filtering diagnostic failed: {e}")
+            logger.error(f"# X Pair filtering diagnostic failed: {e}")
 
     async def diagnose_market_data(self):
         """Diagnose market data fetching (OHLCV)"""
-        print("\n📊 Step 3: MARKET DATA FETCHING")
-        print("-" * 30)
 
         try:
             if not self.qualified_pairs:
-                logger.warning("⚠️ No qualified pairs to test market data")
+                logger.warning("# Warning No qualified pairs to test market data")
                 return
 
             # Test OHLCV fetching for qualified pairs
@@ -238,7 +230,7 @@ class TradingFlowDiagnostic:
 
             for pair_data in test_pairs:
                 symbol = pair_data['symbol']
-                logger.info(f"📊 Testing OHLCV for {symbol}")
+                logger.info(f"# Chart Testing OHLCV for {symbol}")
 
                 for timeframe in timeframes:
                     try:
@@ -248,24 +240,22 @@ class TradingFlowDiagnostic:
                         fetch_time = time.time() - start_time
 
                         if ohlcv and len(ohlcv) > 0:
-                            logger.info(f"   ✅ {timeframe}: {len(ohlcv)} candles in {fetch_time:.2f}s")
+                            logger.info(f"   # Check {timeframe}: {len(ohlcv)} candles in {fetch_time:.2f}s")
                         else:
-                            logger.warning(f"   ⚠️ {timeframe}: No data returned")
+                            logger.warning(f"   # Warning {timeframe}: No data returned")
 
                     except Exception as e:
-                        logger.error(f"   ❌ {timeframe}: Failed - {e}")
+                        logger.error(f"   # X {timeframe}: Failed - {e}")
 
         except Exception as e:
-            logger.error(f"❌ Market data diagnostic failed: {e}")
+            logger.error(f"# X Market data diagnostic failed: {e}")
 
     async def diagnose_viper_scoring(self):
         """Diagnose VIPER scoring system"""
-        print("\n🎯 Step 4: VIPER SCORING")
-        print("-" * 30)
 
         try:
             if not self.qualified_pairs:
-                logger.warning("⚠️ No qualified pairs to test scoring")
+                logger.warning("# Warning No qualified pairs to test scoring")
                 return
 
             # Import VIPER scorer
@@ -278,7 +268,7 @@ class TradingFlowDiagnostic:
             # Test scoring on qualified pairs
             for pair_data in self.qualified_pairs[:3]:  # Test first 3 pairs
                 symbol = pair_data['symbol']
-                logger.info(f"🎯 Testing VIPER scoring for {symbol}")
+                logger.info(f"# Target Testing VIPER scoring for {symbol}")
 
                 try:
                     # Create test data for scoring
@@ -295,10 +285,10 @@ class TradingFlowDiagnostic:
                     opportunities = await scorer.scan_opportunities()
 
                     if opportunities:
-                        logger.info(f"   📊 Found {len(opportunities)} total opportunities")
+                        logger.info(f"   # Chart Found {len(opportunities)} total opportunities")
                         # Show all opportunities found
                         for opp in opportunities[:5]:  # Show first 5
-                            logger.info(f"   🎯 {opp.symbol}: Score {opp.score:.2f}/100 ({opp.recommended_side})")
+                            logger.info(f"   # Target {opp.symbol}: Score {opp.score:.2f}/100 ({opp.recommended_side})")
 
                         # Find best opportunity for our symbol or similar
                         best_opp = None
@@ -318,26 +308,24 @@ class TradingFlowDiagnostic:
                                 'side': best_opp.recommended_side,
                                 'confidence': best_opp.confidence
                             })
-                            logger.info(f"   ✅ VIPER Score: {best_opp.score:.2f}/100 ({best_opp.recommended_side})")
+                            logger.info(f"   # Check VIPER Score: {best_opp.score:.2f}/100 ({best_opp.recommended_side})")
                         else:
-                            logger.info(f"   ⚠️ No opportunities available")
+                            logger.info(f"   # Warning No opportunities available")
                     else:
-                        logger.warning(f"   ⚠️ Scoring failed for {symbol}")
+                        logger.warning(f"   # Warning Scoring failed for {symbol}")
 
                 except Exception as e:
-                    logger.error(f"   ❌ Scoring failed for {symbol}: {e}")
+                    logger.error(f"   # X Scoring failed for {symbol}: {e}")
 
         except Exception as e:
-            logger.error(f"❌ VIPER scoring diagnostic failed: {e}")
+            logger.error(f"# X VIPER scoring diagnostic failed: {e}")
 
     async def diagnose_trade_execution(self):
         """Diagnose trade execution logic"""
-        print("\n💰 Step 5: TRADE EXECUTION")
-        print("-" * 30)
 
         try:
             if not self.scoring_results:
-                logger.warning("⚠️ No scoring results to test trade execution")
+                logger.warning("# Warning No scoring results to test trade execution")
                 return
 
             # Test trade execution simulation
@@ -382,27 +370,25 @@ class TradingFlowDiagnostic:
 
                         self.trade_simulations.append(trade_sim)
 
-                        logger.info(f"   ✅ Simulated {side} trade:")
+                        logger.info(f"   # Check Simulated {side} trade:")
                         logger.info(f"      Entry: ${price:.2f}, Size: {position_size:.6f}")
                         logger.info(f"      TP: ${tp_price:.2f}, SL: ${sl_price:.2f}")
                         logger.info(f"      Potential P&L: ${trade_sim['potential_pnl']:.2f}")
 
                     except Exception as e:
-                        logger.error(f"   ❌ Trade simulation failed for {symbol}: {e}")
+                        logger.error(f"   # X Trade simulation failed for {symbol}: {e}")
                 else:
                     logger.info(f"   ⏭️ Skipping {symbol} (Score: {score:.1f} < 75)")
 
         except Exception as e:
-            logger.error(f"❌ Trade execution diagnostic failed: {e}")
+            logger.error(f"# X Trade execution diagnostic failed: {e}")
 
     async def diagnose_tp_sl_logic(self):
         """Diagnose TP/SL logic"""
-        print("\n🎯 Step 6: TP/SL LOGIC")
-        print("-" * 30)
 
         try:
             if not self.trade_simulations:
-                logger.warning("⚠️ No trade simulations to test TP/SL")
+                logger.warning("# Warning No trade simulations to test TP/SL")
                 return
 
             # Test TP/SL logic for each simulated trade
@@ -413,7 +399,7 @@ class TradingFlowDiagnostic:
                 tp_price = trade['tp_price']
                 sl_price = trade['sl_price']
 
-                logger.info(f"🎯 Testing TP/SL for {symbol} {side}")
+                logger.info(f"# Target Testing TP/SL for {symbol} {side}")
 
                 # Simulate different price scenarios
                 scenarios = [
@@ -449,15 +435,13 @@ class TradingFlowDiagnostic:
                         logger.info(f"   Scenario {i}: ${test_price:.2f} → {result} (P&L: ${pnl:.2f})")
 
                     except Exception as e:
-                        logger.error(f"   ❌ TP/SL test failed for scenario {i}: {e}")
+                        logger.error(f"   # X TP/SL test failed for scenario {i}: {e}")
 
         except Exception as e:
-            logger.error(f"❌ TP/SL diagnostic failed: {e}")
+            logger.error(f"# X TP/SL diagnostic failed: {e}")
 
     def generate_diagnostic_report(self):
         """Generate comprehensive diagnostic report"""
-        print("\n📊 Step 7: DIAGNOSTIC REPORT")
-        print("-" * 30)
 
         report = {
             'diagnostic_timestamp': datetime.now().isoformat(),
@@ -493,30 +477,23 @@ class TradingFlowDiagnostic:
             }, f, indent=2, default=str)
 
         # Display summary
-        print("🎯 DIAGNOSTIC SUMMARY:")
         print(f"   Pairs Discovered: {len(self.pairs_data)}")
         print(f"   Pairs Qualified: {len(self.qualified_pairs)}")
-        print(f"   Scoring Tests: {len(self.scoring_results)}")
         print(f"   Trade Simulations: {len(self.trade_simulations)}")
         print(f"   Issues Found: {len(report['issues_found'])}")
 
         if report['issues_found']:
-            print("\n❌ ISSUES FOUND:")
             for issue in report['issues_found']:
-                print(f"   • {issue}")
 
         if report['recommendations']:
-            print("\n💡 RECOMMENDATIONS:")
             for rec in report['recommendations']:
-                print(f"   • {rec}")
 
         print(f"\n📄 Detailed report saved: trading_flow_diagnostic_report.json")
 
         # Overall assessment
         if len(report['issues_found']) == 0:
-            print("\n🎉 STATUS: TRADING FLOW IS HEALTHY!")
         else:
-            print(f"\n⚠️ STATUS: {len(report['issues_found'])} ISSUES NEED ATTENTION")
+            print(f"\n# Warning STATUS: {len(report['issues_found'])} ISSUES NEED ATTENTION")
 
 async def main():
     """Main diagnostic function"""
@@ -525,7 +502,7 @@ async def main():
     if diagnostic.exchange:
         await diagnostic.run_complete_diagnostic()
     else:
-        print("❌ Cannot run diagnostic - exchange connection failed")
+        print("# X Cannot run diagnostic - exchange connection failed")
         print("Please ensure BITGET_API_KEY, BITGET_API_SECRET, and BITGET_API_PASSWORD are set in .env")
 
 if __name__ == "__main__":

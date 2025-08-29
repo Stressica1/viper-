@@ -4,12 +4,12 @@
 Full integration of GitHub MCP with VIPER Live Trading System
 
 This integration provides:
-✅ Complete MCP task management for trading
-✅ Automated performance tracking and reporting
-✅ Real-time monitoring and control
-✅ GitHub integration for version control
-✅ Emergency controls and safety features
-✅ Comprehensive logging and analytics
+# Check Complete MCP task management for trading
+# Check Automated performance tracking and reporting
+# Check Real-time monitoring and control
+# Check GitHub integration for version control
+# Check Emergency controls and safety features
+# Check Comprehensive logging and analytics
 """
 
 import os
@@ -52,41 +52,41 @@ class CompleteMCPTradingIntegration:
         self.monitor = None
         self.system_status = {}
 
-        logger.info("🚀 INITIALIZING COMPLETE MCP TRADING INTEGRATION")
+        logger.info("# Rocket INITIALIZING COMPLETE MCP TRADING INTEGRATION")
         logger.info("=" * 60)
 
     async def initialize_all_components(self):
         """Initialize all MCP trading components"""
-        logger.info("🔧 Initializing all MCP components...")
+        logger.info("# Tool Initializing all MCP components...")
 
         try:
             # 1. Initialize MCP Live Trading Connector
             self.connector = MCPLiveTradingConnector()
             await self.connector.initialize_components()
-            logger.info("✅ MCP Live Trading Connector: INITIALIZED")
+            logger.info("# Check MCP Live Trading Connector: INITIALIZED")
 
             # 2. Initialize Performance Tracker
             self.performance_tracker = MCPPerformanceTracker()
-            logger.info("✅ Performance Tracker: INITIALIZED")
+            logger.info("# Check Performance Tracker: INITIALIZED")
 
             # 3. Initialize GitHub MCP Integration
             self.github_mcp = GitHubMCPIntegration()
-            logger.info("✅ GitHub MCP Integration: INITIALIZED")
+            logger.info("# Check GitHub MCP Integration: INITIALIZED")
 
             # 4. Initialize Trading Monitor
             self.monitor = MCPTradingMonitor()
-            logger.info("✅ Trading Monitor: INITIALIZED")
+            logger.info("# Check Trading Monitor: INITIALIZED")
 
             self.system_status['all_components_ready'] = True
-            logger.info("🎉 ALL MCP COMPONENTS SUCCESSFULLY INITIALIZED!")
+            logger.info("# Party ALL MCP COMPONENTS SUCCESSFULLY INITIALIZED!")
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             raise
 
     async def start_complete_trading_system(self):
         """Start the complete MCP trading system"""
-        logger.info("🚀 STARTING COMPLETE MCP TRADING SYSTEM")
+        logger.info("# Rocket STARTING COMPLETE MCP TRADING SYSTEM")
         logger.info("=" * 60)
 
         try:
@@ -113,7 +113,7 @@ class CompleteMCPTradingIntegration:
             )
 
         except Exception as e:
-            logger.error(f"❌ Complete system startup failed: {e}")
+            logger.error(f"# X Complete system startup failed: {e}")
             return False
 
     async def setup_default_trading_tasks(self):
@@ -141,12 +141,12 @@ class CompleteMCPTradingIntegration:
                         task_id = await self.connector.create_trading_task(merged_config)
 
                         if task_id:
-                            logger.info(f"✅ Created task: {task_config['name']} ({task_id})")
+                            logger.info(f"# Check Created task: {task_config['name']} ({task_id})")
                         else:
-                            logger.error(f"❌ Failed to create task: {task_config['name']}")
+                            logger.error(f"# X Failed to create task: {task_config['name']}")
 
         except Exception as e:
-            logger.error(f"❌ Task setup failed: {e}")
+            logger.error(f"# X Task setup failed: {e}")
 
     async def performance_monitoring_loop(self):
         """Continuous performance monitoring loop"""
@@ -180,12 +180,12 @@ class CompleteMCPTradingIntegration:
                 await asyncio.sleep(60)  # Check every minute
 
             except Exception as e:
-                logger.error(f"❌ Performance monitoring error: {e}")
+                logger.error(f"# X Performance monitoring error: {e}")
                 await asyncio.sleep(60)
 
     async def system_monitoring_loop(self):
         """Continuous system monitoring loop"""
-        logger.info("🔍 Starting system monitoring...")
+        logger.info("# Search Starting system monitoring...")
 
         while True:
             try:
@@ -206,7 +206,7 @@ class CompleteMCPTradingIntegration:
                 await asyncio.sleep(300)  # Check every 5 minutes
 
             except Exception as e:
-                logger.error(f"❌ System monitoring error: {e}")
+                logger.error(f"# X System monitoring error: {e}")
                 await asyncio.sleep(60)
 
     async def check_system_health(self, status: dict):
@@ -244,7 +244,7 @@ class CompleteMCPTradingIntegration:
                     await self.create_system_health_issue(issue)
 
         except Exception as e:
-            logger.error(f"❌ Health check failed: {e}")
+            logger.error(f"# X Health check failed: {e}")
 
     async def create_system_health_issue(self, issue: dict):
         """Create GitHub issue for system health problem"""
@@ -286,7 +286,7 @@ class CompleteMCPTradingIntegration:
             logger.warning(f"🚨 System health issue created: {issue['type']}")
 
         except Exception as e:
-            logger.error(f"❌ System health issue creation failed: {e}")
+            logger.error(f"# X System health issue creation failed: {e}")
 
     async def emergency_system_shutdown(self):
         """Emergency shutdown of all MCP trading operations"""
@@ -308,11 +308,11 @@ class CompleteMCPTradingIntegration:
                 'timestamp': datetime.now().isoformat()
             })
 
-            logger.info("✅ Emergency shutdown completed")
+            logger.info("# Check Emergency shutdown completed")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Emergency shutdown failed: {e}")
+            logger.error(f"# X Emergency shutdown failed: {e}")
             return False
 
     async def get_complete_system_status(self):
@@ -345,7 +345,7 @@ class CompleteMCPTradingIntegration:
             return status
 
         except Exception as e:
-            logger.error(f"❌ System status retrieval failed: {e}")
+            logger.error(f"# X System status retrieval failed: {e}")
             return {'error': str(e)}
 
 # Command-line interface
@@ -359,11 +359,6 @@ async def main():
 
     args = parser.parse_args()
 
-    print("🔗 VIPER COMPLETE MCP TRADING INTEGRATION")
-    print("=" * 60)
-    print(f"Mode: {args.mode}")
-    print(f"Config: {args.config or 'default'}")
-    print("=" * 60)
 
     integration = CompleteMCPTradingIntegration()
 
@@ -372,16 +367,15 @@ async def main():
             # Start the complete system
             success = await integration.start_complete_trading_system()
             if success:
-                print("✅ Complete MCP trading system started successfully")
+                print("# Check Complete MCP trading system started successfully")
             else:
-                print("❌ Failed to start complete MCP trading system")
+                print("# X Failed to start complete MCP trading system")
                 return 1
 
         elif args.mode == 'status':
             # Get system status
             await integration.initialize_all_components()
             status = await integration.get_complete_system_status()
-            print(json.dumps(status, indent=2))
 
         elif args.mode == 'monitor':
             # Start monitoring mode
@@ -395,18 +389,14 @@ async def main():
             await integration.initialize_all_components()
             success = await integration.emergency_system_shutdown()
             if success:
-                print("✅ Emergency shutdown completed")
             else:
-                print("❌ Emergency shutdown failed")
                 return 1
 
     except KeyboardInterrupt:
-        print("\n🛑 Shutdown requested by user")
         if args.mode == 'start':
             await integration.emergency_system_shutdown()
     except Exception as e:
-        logger.error(f"❌ Integration error: {e}")
-        print(f"❌ ERROR: {e}")
+        logger.error(f"# X Integration error: {e}")
         return 1
 
     return 0

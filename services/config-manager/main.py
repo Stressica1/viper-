@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Configuration Manager Service
+# Rocket VIPER Trading Bot - Configuration Manager Service
 Centralized configuration management for all trading parameters and settings
 
 Features:
@@ -14,17 +14,13 @@ Features:
 
 import os
 import json
-import time
 import logging
 import hashlib
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 from pathlib import Path
-from pydantic import BaseModel, Field, validator
 import yaml
 
 # Load environment variables
@@ -108,10 +104,10 @@ class ConfigurationManager:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def load_config_from_env(self) -> Dict[str, Any]:
@@ -190,11 +186,11 @@ class ConfigurationManager:
 
             config['services'] = {service['service_name']: service for service in services}
 
-            logger.info("✅ Configuration loaded from environment")
+            logger.info("# Check Configuration loaded from environment")
             return config
 
         except Exception as e:
-            logger.error(f"❌ Error loading configuration from environment: {e}")
+            logger.error(f"# X Error loading configuration from environment: {e}")
             return {}
 
     def validate_configuration(self, config: Dict[str, Any]) -> Dict[str, Any]:
@@ -210,7 +206,7 @@ class ConfigurationManager:
             if 'trading' in config:
                 try:
                     TradingConfig(**config['trading'])
-                    logger.info("✅ Trading configuration validated")
+                    logger.info("# Check Trading configuration validated")
                 except Exception as e:
                     validation_results['valid'] = False
                     validation_results['errors'].append(f"Trading config validation failed: {e}")
@@ -245,7 +241,7 @@ class ConfigurationManager:
             return validation_results
 
         except Exception as e:
-            logger.error(f"❌ Configuration validation error: {e}")
+            logger.error(f"# X Configuration validation error: {e}")
             return {'valid': False, 'errors': [str(e)], 'warnings': []}
 
     def save_configuration(self, config: Dict[str, Any], user: str = "system") -> bool:
@@ -254,7 +250,7 @@ class ConfigurationManager:
             # Validate configuration
             validation = self.validate_configuration(config)
             if not validation['valid']:
-                logger.error(f"❌ Configuration validation failed: {validation['errors']}")
+                logger.error(f"# X Configuration validation failed: {validation['errors']}")
                 return False
 
             # Create configuration snapshot
@@ -290,11 +286,11 @@ class ConfigurationManager:
 
             self.redis_client.publish('config_events', json.dumps(update_event))
 
-            logger.info(f"✅ Configuration saved (version {config_snapshot['version']})")
+            logger.info(f"# Check Configuration saved (version {config_snapshot['version']})")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error saving configuration: {e}")
+            logger.error(f"# X Error saving configuration: {e}")
             return False
 
     def load_configuration(self) -> Dict[str, Any]:
@@ -305,7 +301,7 @@ class ConfigurationManager:
             if config_data:
                 config = json.loads(config_data)
                 self.current_config = config
-                logger.info("✅ Configuration loaded from Redis")
+                logger.info("# Check Configuration loaded from Redis")
                 return config
 
             # Fallback to loading from environment
@@ -314,11 +310,11 @@ class ConfigurationManager:
                 self.save_configuration(config, "system")
                 return config
 
-            logger.error("❌ No configuration available")
+            logger.error("# X No configuration available")
             return {}
 
         except Exception as e:
-            logger.error(f"❌ Error loading configuration: {e}")
+            logger.error(f"# X Error loading configuration: {e}")
             return {}
 
     def get_service_config(self, service_name: str) -> Optional[Dict[str, Any]]:
@@ -336,7 +332,7 @@ class ConfigurationManager:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting service config for {service_name}: {e}")
+            logger.error(f"# X Error getting service config for {service_name}: {e}")
             return None
 
     def update_trading_parameter(self, parameter: str, value: Any, user: str = "system") -> bool:
@@ -348,7 +344,7 @@ class ConfigurationManager:
             # Validate the parameter exists in our schema
             temp_config = TradingConfig(**self.current_config['trading'])
             if not hasattr(temp_config, parameter):
-                logger.error(f"❌ Unknown trading parameter: {parameter}")
+                logger.error(f"# X Unknown trading parameter: {parameter}")
                 return False
 
             # Update the parameter
@@ -357,14 +353,14 @@ class ConfigurationManager:
             # Validate the updated configuration
             validation = self.validate_configuration(self.current_config)
             if not validation['valid']:
-                logger.error(f"❌ Parameter update validation failed: {validation['errors']}")
+                logger.error(f"# X Parameter update validation failed: {validation['errors']}")
                 return False
 
             # Save the updated configuration
             return self.save_configuration(self.current_config, user)
 
         except Exception as e:
-            logger.error(f"❌ Error updating trading parameter: {e}")
+            logger.error(f"# X Error updating trading parameter: {e}")
             return False
 
     def get_configuration_history(self, limit: int = 10) -> List[Dict]:
@@ -372,7 +368,7 @@ class ConfigurationManager:
         try:
             return self.config_history[-limit:] if self.config_history else []
         except Exception as e:
-            logger.error(f"❌ Error getting configuration history: {e}")
+            logger.error(f"# X Error getting configuration history: {e}")
             return []
 
     def export_configuration(self, format: str = "json") -> str:
@@ -383,7 +379,7 @@ class ConfigurationManager:
             else:
                 return json.dumps(self.current_config, indent=2)
         except Exception as e:
-            logger.error(f"❌ Error exporting configuration: {e}")
+            logger.error(f"# X Error exporting configuration: {e}")
             return ""
 
     def import_configuration(self, config_data: str, format: str = "json", user: str = "system") -> bool:
@@ -397,7 +393,7 @@ class ConfigurationManager:
             return self.save_configuration(config, user)
 
         except Exception as e:
-            logger.error(f"❌ Error importing configuration: {e}")
+            logger.error(f"# X Error importing configuration: {e}")
             return False
 
     def get_system_status(self) -> Dict[str, Any]:
@@ -412,7 +408,7 @@ class ConfigurationManager:
                 'redis_connected': self.redis_client is not None
             }
         except Exception as e:
-            logger.error(f"❌ Error getting system status: {e}")
+            logger.error(f"# X Error getting system status: {e}")
             return {'error': str(e)}
 
 # FastAPI application
@@ -428,13 +424,13 @@ config_manager = ConfigurationManager()
 async def startup_event():
     """Initialize services on startup"""
     if not config_manager.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     # Load initial configuration
     config_manager.load_configuration()
 
-    logger.info("✅ Configuration Manager started successfully")
+    logger.info("# Check Configuration Manager started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():

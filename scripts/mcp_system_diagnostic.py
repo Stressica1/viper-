@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - MCP System Diagnostic & Connection Tool
+# Rocket VIPER Trading System - MCP System Diagnostic & Connection Tool
 Comprehensive system scan, diagnosis, and component connection via MCP
 
 Features:
@@ -59,22 +59,19 @@ class MCPSystemDiagnostic:
             'redis': 'http://localhost:6379'
         }
 
-        print("🔧 VIPER MCP System Diagnostic Initialized")
-        print(f"🎯 MCP Server: {self.mcp_server_url}")
-        print(f"📊 Services to diagnose: {len(self.services)}")
-        print("=" * 80)
+        print("# Tool VIPER MCP System Diagnostic Initialized")
+        print(f"# Chart Services to diagnose: {len(self.services)}")
 
     def check_mcp_server(self) -> bool:
         """Check if MCP server is running and accessible"""
         try:
             response = requests.get(f"{self.mcp_server_url}/health", timeout=5)
             return response.status_code == 200
-        except:
+        except Exception:
             return False
 
     def diagnose_service(self, service_name: str, endpoint: str) -> Dict[str, Any]:
         """Diagnose individual service health and connectivity"""
-        print(f"🔍 Diagnosing {service_name}...")
 
         result = {
             'service': service_name,
@@ -96,7 +93,7 @@ class MCPSystemDiagnostic:
                 result['status'] = ComponentStatus.HEALTHY.value
                 try:
                     result['details'] = response.json()
-                except:
+                except Exception:
                     result['details'] = {'message': 'Service responding but no JSON data'}
             elif response.status_code >= 500:
                 result['status'] = ComponentStatus.DOWN.value
@@ -119,7 +116,6 @@ class MCPSystemDiagnostic:
 
     def test_service_connectivity(self, service_name: str, endpoint: str) -> Dict[str, Any]:
         """Test connectivity between services"""
-        print(f"🔗 Testing connectivity for {service_name}...")
 
         result = {
             'service': service_name,
@@ -165,9 +161,7 @@ class MCPSystemDiagnostic:
 
     def perform_full_system_scan(self) -> Dict[str, Any]:
         """Perform comprehensive system scan"""
-        print("\n🚀 STARTING COMPREHENSIVE SYSTEM SCAN...")
-        print("🔍 Scanning all services and testing connectivity")
-        print("=" * 80)
+        print("\n# Rocket STARTING COMPREHENSIVE SYSTEM SCAN...")
 
         scan_results = {
             'timestamp': datetime.now().isoformat(),
@@ -222,7 +216,7 @@ class MCPSystemDiagnostic:
         # Check for down services
         down_services = [
             service for service, result in scan_results['service_details'].items()
-            if result['connectivity_tests']['basic']['status'] == ComponentStatus.DOWN.value
+            if result['connectivity_tests']['basic']['status'] == ComponentStatus.DOWN.value:
         ]
 
         if down_services:
@@ -231,11 +225,11 @@ class MCPSystemDiagnostic:
         # Check for degraded services
         degraded_services = [
             service for service, result in scan_results['service_details'].items()
-            if result['connectivity_tests']['basic']['status'] == ComponentStatus.DEGRADED.value
+            if result['connectivity_tests']['basic']['status'] == ComponentStatus.DEGRADED.value:
         ]
 
         if degraded_services:
-            recommendations.append(f"⚠️ WARNING: Investigate these degraded services: {', '.join(degraded_services)}")
+            recommendations.append(f"# Warning WARNING: Investigate these degraded services: {', '.join(degraded_services)}")
 
         # Check MCP connectivity
         mcp_issues = []
@@ -244,7 +238,7 @@ class MCPSystemDiagnostic:
                 mcp_issues.append(service)
 
         if mcp_issues:
-            recommendations.append(f"🔧 MCP: Fix connectivity issues for: {', '.join(mcp_issues)}")
+            recommendations.append(f"# Tool MCP: Fix connectivity issues for: {', '.join(mcp_issues)}")
 
         # Check response times
         slow_services = []
@@ -258,7 +252,7 @@ class MCPSystemDiagnostic:
 
         # Overall recommendations
         if scan_results['overall_status'] == 'HEALTHY':
-            recommendations.append("✅ SYSTEM HEALTHY: All services operational and connected")
+            recommendations.append("# Check SYSTEM HEALTHY: All services operational and connected")
         elif scan_results['overall_status'] == 'PARTIAL':
             recommendations.append("🔄 PARTIAL: Most services working, minor issues detected")
         else:
@@ -268,9 +262,7 @@ class MCPSystemDiagnostic:
 
     def connect_remaining_components(self) -> Dict[str, Any]:
         """Connect any remaining unconnected components"""
-        print("\n🔗 CONNECTING REMAINING COMPONENTS...")
-        print("🚀 Using MCP to establish full system connectivity")
-        print("=" * 80)
+        print("# Rocket Using MCP to establish full system connectivity")
 
         connection_results = {
             'timestamp': datetime.now().isoformat(),
@@ -281,15 +273,14 @@ class MCPSystemDiagnostic:
         }
 
         if not self.check_mcp_server():
-            print("❌ MCP server not available for component connection")
+            print("# X MCP server not available for component connection")
             connection_results['mcp_integration_status'] = 'MCP_UNAVAILABLE'
             return connection_results
 
-        print("✅ MCP server available - proceeding with component connections")
+        print("# Check MCP server available - proceeding with component connections")
 
         # Connect each service via MCP
         for service_name, endpoint in self.services.items():
-            print(f"🔗 Connecting {service_name} via MCP...")
 
             try:
                 # Register service with MCP server
@@ -313,14 +304,14 @@ class MCPSystemDiagnostic:
                         'details': result
                     }
                     connection_results['components_connected'] += 1
-                    print(f"  ✅ {service_name} connected successfully")
+                    print(f"  # Check {service_name} connected successfully")
                 else:
                     connection_results['connection_details'][service_name] = {
                         'status': 'FAILED',
                         'error': f'HTTP {response.status_code}'
                     }
                     connection_results['components_failed'] += 1
-                    print(f"  ❌ {service_name} connection failed: HTTP {response.status_code}")
+                    print(f"  # X {service_name} connection failed: HTTP {response.status_code}")
 
             except Exception as e:
                 connection_results['connection_details'][service_name] = {
@@ -328,7 +319,7 @@ class MCPSystemDiagnostic:
                     'error': str(e)
                 }
                 connection_results['components_failed'] += 1
-                print(f"  ❌ {service_name} connection error: {e}")
+                print(f"  # X {service_name} connection error: {e}")
 
         # Set overall MCP integration status
         if connection_results['components_failed'] == 0:
@@ -342,12 +333,11 @@ class MCPSystemDiagnostic:
 
     def run_full_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-        print("""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER MCP SYSTEM DIAGNOSTIC - FULL SCAN & CONNECTION                      ║
-║ 🔍 Comprehensive System Analysis | 🔗 Component Connection | 📊 Health Report ║
-║ ⚡ Real-time Diagnostics | 🧠 MCP Integration | 📈 Performance Monitoring     ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER MCP SYSTEM DIAGNOSTIC - FULL SCAN & CONNECTION                      #
+# # Search Comprehensive System Analysis | 🔗 Component Connection | # Chart Health Report #
+# ⚡ Real-time Diagnostics | 🧠 MCP Integration | 📈 Performance Monitoring     #
+#==============================================================================#
         """)
 
         diagnostic_report = {
@@ -363,11 +353,9 @@ class MCPSystemDiagnostic:
 
         try:
             # Step 1: System Scan
-            print("\n📊 PHASE 1: SYSTEM SCAN")
             diagnostic_report['system_scan'] = self.perform_full_system_scan()
 
             # Step 2: Component Connection
-            print("\n🔗 PHASE 2: COMPONENT CONNECTION")
             diagnostic_report['component_connections'] = self.connect_remaining_components()
 
             # Step 3: MCP Status Check
@@ -388,7 +376,6 @@ class MCPSystemDiagnostic:
                 diagnostic_report['overall_health'] = 'CRITICAL'
 
         except Exception as e:
-            print(f"❌ Diagnostic error: {e}")
             diagnostic_report['overall_health'] = 'ERROR'
             diagnostic_report['error'] = str(e)
 
@@ -401,38 +388,34 @@ class MCPSystemDiagnostic:
 
     def print_diagnostic_summary(self, report: Dict[str, Any]) -> None:
         """Print diagnostic summary"""
-        print("\n" + "=" * 80)
-        print("📋 DIAGNOSTIC SUMMARY")
-        print("=" * 80)
 
         # Overall health
         health = report.get('overall_health', 'UNKNOWN')
         health_icon = {
             'EXCELLENT': '🌟',
-            'GOOD': '✅',
-            'FAIR': '⚠️',
+            'GOOD': '# Check',
+            'FAIR': '# Warning',
             'CRITICAL': '🚨',
-            'ERROR': '❌'
+            'ERROR': '# X'
         }.get(health, '❓')
 
         print(f"🏥 Overall Health: {health_icon} {health}")
 
         # System scan results
         scan = report.get('system_scan', {})
-        print(f"📊 Services Scanned: {scan.get('services_scanned', 0)}")
-        print(f"   ✅ Healthy: {scan.get('services_healthy', 0)}")
-        print(f"   ⚠️ Degraded: {scan.get('services_degraded', 0)}")
-        print(f"   ❌ Down: {scan.get('services_down', 0)}")
+        print(f"# Chart Services Scanned: {scan.get('services_scanned', 0)}")
+        print(f"   # Check Healthy: {scan.get('services_healthy', 0)}")
+        print(f"   # Warning Degraded: {scan.get('services_degraded', 0)}")
+        print(f"   # X Down: {scan.get('services_down', 0)}")
 
         # MCP status
         mcp_status = report.get('mcp_status', 'UNKNOWN')
-        mcp_icon = '✅' if mcp_status == 'AVAILABLE' else '❌'
-        print(f"🤖 MCP Status: {mcp_icon} {mcp_status}")
+        mcp_icon = '# Check' if mcp_status == 'AVAILABLE' else '# X'
 
         # Component connections
         connections = report.get('component_connections', {})
         print(f"🔗 Components Connected: {connections.get('components_connected', 0)}")
-        print(f"   ❌ Failed Connections: {connections.get('components_failed', 0)}")
+        print(f"   # X Failed Connections: {connections.get('components_failed', 0)}")
 
         # Execution time
         exec_time = report.get('execution_time', 0)
@@ -441,11 +424,8 @@ class MCPSystemDiagnostic:
         # Recommendations
         recommendations = scan.get('recommendations', [])
         if recommendations:
-            print("\n💡 RECOMMENDATIONS:")
             for rec in recommendations:
-                print(f"   {rec}")
 
-        print("=" * 80)
 
 def main():
     """Main entry point"""
@@ -464,7 +444,6 @@ def main():
     except KeyboardInterrupt:
         print("\n\n👋 MCP System Diagnostic terminated by user")
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

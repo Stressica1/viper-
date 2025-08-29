@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Standalone Trading Component
+# Rocket VIPER Trading System - Standalone Trading Component
 Complete Scan → Score → Trade → TP/SL Flow in One Script
 
 Features:
@@ -71,7 +71,7 @@ class StandaloneVIPERTrader:
     def __init__(self):
         """Initialize the trading system"""
         self.setup_logging()
-        self.logger.info("🚀 Initializing VIPER Standalone Trader...")
+        self.logger.info("# Rocket Initializing VIPER Standalone Trader...")
         
         # Configuration
         self.config = self.load_configuration()
@@ -150,10 +150,10 @@ class StandaloneVIPERTrader:
             # Test connection
             self.exchange.load_markets()
             balance = self.exchange.fetch_balance()
-            self.logger.info(f"✅ Exchange connected. Account balance: {balance.get('USDT', {}).get('free', 0)} USDT")
+            self.logger.info(f"# Check Exchange connected. Account balance: {balance.get('USDT', {}).get('free', 0)} USDT")
             
         except Exception as e:
-            self.logger.error(f"❌ Failed to initialize exchange: {e}")
+            self.logger.error(f"# X Failed to initialize exchange: {e}")
             raise
     
     def fetch_market_data(self, symbol: str) -> Optional[Dict]:
@@ -235,7 +235,7 @@ class StandaloneVIPERTrader:
             }
             
         except Exception as e:
-            self.logger.error(f"❌ Error fetching enhanced market data for {symbol}: {e}")
+            self.logger.error(f"# X Error fetching enhanced market data for {symbol}: {e}")
             return None
     
     def calculate_execution_cost(self, market_data: Dict, position_size_usd: float = 5000) -> float:
@@ -277,7 +277,7 @@ class StandaloneVIPERTrader:
             return total_execution_cost
             
         except Exception as e:
-            self.logger.error(f"❌ Error calculating execution cost: {e}")
+            self.logger.error(f"# X Error calculating execution cost: {e}")
             return 999.0  # High cost to avoid trading
 
     def optimize_position_size(self, market_data: Dict, base_position_size: float) -> Tuple[float, str]:
@@ -350,7 +350,7 @@ class StandaloneVIPERTrader:
             return optimized_size, reasoning
             
         except Exception as e:
-            self.logger.error(f"❌ Error optimizing position size: {e}")
+            self.logger.error(f"# X Error optimizing position size: {e}")
             return base_position_size, "Error in optimization - using base size"
 
     def optimize_entry_timing(self, symbol: str, signal, market_data: Dict) -> Dict:
@@ -484,7 +484,7 @@ class StandaloneVIPERTrader:
             }
             
         except Exception as e:
-            self.logger.error(f"❌ Error optimizing entry timing: {e}")
+            self.logger.error(f"# X Error optimizing entry timing: {e}")
             # Fallback to simple market order
             return {
                 'order_type': 'MARKET',
@@ -550,7 +550,7 @@ class StandaloneVIPERTrader:
             return min(max(viper_score, 0), 100)  # Clamp to 0-100 range
             
         except Exception as e:
-            self.logger.error(f"❌ Error calculating VIPER score: {e}")
+            self.logger.error(f"# X Error calculating VIPER score: {e}")
             return 0.0
     
     def generate_signal(self, symbol: str, market_data: Dict) -> Optional[VIPERSignal]:
@@ -694,7 +694,7 @@ class StandaloneVIPERTrader:
             }
             
             # Log optimization results
-            self.logger.info(f"📊 {symbol} Signal Optimized: "
+            self.logger.info(f"# Chart {symbol} Signal Optimized: "
                            f"Size ${base_position_size:,.0f} → ${optimized_size:,.0f} "
                            f"({optimized_signal.optimization_data['size_change_pct']:+.1f}%), "
                            f"Cost ${initial_execution_cost:.2f} → ${optimized_execution_cost:.2f} "
@@ -704,12 +704,12 @@ class StandaloneVIPERTrader:
             return optimized_signal
             
         except Exception as e:
-            self.logger.error(f"❌ Error generating optimized signal for {symbol}: {e}")
+            self.logger.error(f"# X Error generating optimized signal for {symbol}: {e}")
             return None
     
     def scan_markets(self) -> List[VIPERSignal]:
         """Scan all trading pairs for opportunities"""
-        self.logger.info(f"🔍 Scanning {len(self.trading_pairs)} trading pairs...")
+        self.logger.info(f"# Search Scanning {len(self.trading_pairs)} trading pairs...")
         
         signals = []
         for symbol in self.trading_pairs:
@@ -719,12 +719,12 @@ class StandaloneVIPERTrader:
                     signal = self.generate_signal(symbol, market_data)
                     if signal:
                         signals.append(signal)
-                        self.logger.info(f"📊 {symbol}: VIPER Score {signal.viper_score:.1f} → {signal.signal} Signal")
+                        self.logger.info(f"# Chart {symbol}: VIPER Score {signal.viper_score:.1f} → {signal.signal} Signal")
                         
             except Exception as e:
-                self.logger.error(f"❌ Error scanning {symbol}: {e}")
+                self.logger.error(f"# X Error scanning {symbol}: {e}")
                 
-        self.logger.info(f"🎯 Found {len(signals)} trading opportunities")
+        self.logger.info(f"# Target Found {len(signals)} trading opportunities")
         return signals
     
     def calculate_position_size(self, signal: VIPERSignal) -> float:
@@ -735,7 +735,7 @@ class StandaloneVIPERTrader:
             available_usdt = balance.get('USDT', {}).get('free', 0)
             
             if available_usdt <= 0:
-                self.logger.warning("⚠️ Insufficient USDT balance")
+                self.logger.warning("# Warning Insufficient USDT balance")
                 return 0
             
             # Risk amount per trade
@@ -757,7 +757,7 @@ class StandaloneVIPERTrader:
             return round(position_size, 6)
             
         except Exception as e:
-            self.logger.error(f"❌ Error calculating position size: {e}")
+            self.logger.error(f"# X Error calculating position size: {e}")
             return 0
     
     def execute_trade(self, signal: VIPERSignal) -> bool:
@@ -765,24 +765,24 @@ class StandaloneVIPERTrader:
         try:
             # Check position limits
             if len(self.active_positions) >= self.max_positions:
-                self.logger.warning(f"⚠️ Maximum positions ({self.max_positions}) reached")
+                self.logger.warning(f"# Warning Maximum positions ({self.max_positions}) reached")
                 return False
             
             # Check if already have position in this symbol
             if signal.symbol in self.active_positions:
-                self.logger.info(f"⚠️ Already have position in {signal.symbol}")
+                self.logger.info(f"# Warning Already have position in {signal.symbol}")
                 return False
             
             # Calculate position size
             position_size = self.calculate_position_size(signal)
             if position_size <= 0:
-                self.logger.warning(f"⚠️ Invalid position size for {signal.symbol}")
+                self.logger.warning(f"# Warning Invalid position size for {signal.symbol}")
                 return False
             
             # Determine order side
             side = 'buy' if signal.signal == 'LONG' else 'sell'
             
-            self.logger.info(f"🎯 Executing {signal.signal} trade for {signal.symbol}")
+            self.logger.info(f"# Target Executing {signal.signal} trade for {signal.symbol}")
             self.logger.info(f"   Size: {position_size}, Price: ${signal.price:.2f}")
             self.logger.info(f"   Stop Loss: ${signal.stop_loss:.2f}, Take Profit: ${signal.take_profit:.2f}")
             
@@ -810,16 +810,16 @@ class StandaloneVIPERTrader:
                 
                 self.active_positions[signal.symbol] = position
                 
-                self.logger.info(f"✅ Trade executed successfully for {signal.symbol}")
+                self.logger.info(f"# Check Trade executed successfully for {signal.symbol}")
                 self.logger.info(f"   Order ID: {order['id']}")
                 
                 return True
             else:
-                self.logger.error(f"❌ Trade execution failed for {signal.symbol}")
+                self.logger.error(f"# X Trade execution failed for {signal.symbol}")
                 return False
                 
         except Exception as e:
-            self.logger.error(f"❌ Error executing trade for {signal.symbol}: {e}")
+            self.logger.error(f"# X Error executing trade for {signal.symbol}: {e}")
             return False
     
     def monitor_positions(self):
@@ -827,7 +827,7 @@ class StandaloneVIPERTrader:
         if not self.active_positions:
             return
         
-        self.logger.info(f"📊 Monitoring {len(self.active_positions)} active positions...")
+        self.logger.info(f"# Chart Monitoring {len(self.active_positions)} active positions...")
         
         positions_to_close = []
         
@@ -867,11 +867,11 @@ class StandaloneVIPERTrader:
                     self.logger.info(f"🛑 Stop Loss triggered for {symbol}")
                     positions_to_close.append((symbol, 'stop_loss'))
                 elif take_profit_triggered:
-                    self.logger.info(f"🎯 Take Profit triggered for {symbol}")
+                    self.logger.info(f"# Target Take Profit triggered for {symbol}")
                     positions_to_close.append((symbol, 'take_profit'))
                     
             except Exception as e:
-                self.logger.error(f"❌ Error monitoring position {symbol}: {e}")
+                self.logger.error(f"# X Error monitoring position {symbol}: {e}")
         
         # Close positions that hit TP/SL
         for symbol, reason in positions_to_close:
@@ -881,7 +881,7 @@ class StandaloneVIPERTrader:
         """Close an active position"""
         try:
             if symbol not in self.active_positions:
-                self.logger.warning(f"⚠️ No active position found for {symbol}")
+                self.logger.warning(f"# Warning No active position found for {symbol}")
                 return False
             
             position = self.active_positions[symbol]
@@ -908,7 +908,7 @@ class StandaloneVIPERTrader:
                 else:
                     final_pnl = (position.entry_price - current_price) / position.entry_price
                 
-                self.logger.info(f"✅ Position closed for {symbol}")
+                self.logger.info(f"# Check Position closed for {symbol}")
                 self.logger.info(f"   Final P&L: {final_pnl*100:.2f}%")
                 self.logger.info(f"   Reason: {reason}")
                 
@@ -917,35 +917,28 @@ class StandaloneVIPERTrader:
                 
                 return True
             else:
-                self.logger.error(f"❌ Failed to close position for {symbol}")
+                self.logger.error(f"# X Failed to close position for {symbol}")
                 return False
                 
         except Exception as e:
-            self.logger.error(f"❌ Error closing position {symbol}: {e}")
+            self.logger.error(f"# X Error closing position {symbol}: {e}")
             return False
     
     def print_status(self):
         """Print current trading status"""
-        print("\n" + "="*80)
-        print("🚀 VIPER STANDALONE TRADER STATUS")
-        print("="*80)
         print(f"⏰ Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"📊 Active Positions: {len(self.active_positions)}/{self.max_positions}")
-        print(f"🎯 VIPER Threshold: {self.viper_threshold}")
+        print(f"# Chart Active Positions: {len(self.active_positions)}/{self.max_positions}")
+        print(f"# Target VIPER Threshold: {self.viper_threshold}")
         print(f"💰 Risk per Trade: {self.risk_per_trade*100:.1f}%")
         
         if self.active_positions:
-            print("\n📈 ACTIVE POSITIONS:")
-            print("-"*60)
             for symbol, position in self.active_positions.items():
                 pnl_pct = position.unrealized_pnl * 100 if position.unrealized_pnl else 0
                 pnl_icon = "🟢" if pnl_pct > 0 else "🔴" if pnl_pct < 0 else "⚪"
                 print(f"  {pnl_icon} {symbol} | {position.side.upper()} | "
                       f"P&L: {pnl_pct:.2f}% | Entry: ${position.entry_price:.2f}")
         else:
-            print("\n💤 No active positions")
         
-        print("="*80)
     
     def signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
@@ -954,8 +947,8 @@ class StandaloneVIPERTrader:
     
     def run(self):
         """Main trading loop"""
-        self.logger.info("🚀 Starting VIPER Standalone Trading System...")
-        self.logger.info(f"📊 Monitoring {len(self.trading_pairs)} trading pairs")
+        self.logger.info("# Rocket Starting VIPER Standalone Trading System...")
+        self.logger.info(f"# Chart Monitoring {len(self.trading_pairs)} trading pairs")
         self.logger.info(f"⏰ Scan interval: {self.scan_interval}s")
         
         try:
@@ -971,19 +964,19 @@ class StandaloneVIPERTrader:
                 # 2. SCORE & TRADE: Execute trades for high-scoring signals
                 for signal in signals:
                     if len(self.active_positions) >= self.max_positions:
-                        self.logger.info(f"⚠️ Position limit reached, skipping new trades")
+                        self.logger.info(f"# Warning Position limit reached, skipping new trades")
                         break
                     
-                    self.logger.info(f"🎯 Processing {signal.signal} signal for {signal.symbol}")
+                    self.logger.info(f"# Target Processing {signal.signal} signal for {signal.symbol}")
                     self.logger.info(f"   VIPER Score: {signal.viper_score:.1f}")
                     self.logger.info(f"   Confidence: {signal.confidence:.1%}")
                     
                     # Execute trade
                     success = self.execute_trade(signal)
                     if success:
-                        self.logger.info(f"✅ Trade executed successfully")
+                        self.logger.info(f"# Check Trade executed successfully")
                     else:
-                        self.logger.warning(f"⚠️ Trade execution failed")
+                        self.logger.warning(f"# Warning Trade execution failed")
                 
                 # 3. TP/SL: Monitor existing positions
                 self.monitor_positions()
@@ -999,7 +992,7 @@ class StandaloneVIPERTrader:
         except KeyboardInterrupt:
             self.logger.info("🛑 Received keyboard interrupt")
         except Exception as e:
-            self.logger.error(f"❌ Unexpected error in main loop: {e}")
+            self.logger.error(f"# X Unexpected error in main loop: {e}")
         finally:
             self.shutdown()
     
@@ -1012,16 +1005,15 @@ class StandaloneVIPERTrader:
         # for symbol in list(self.active_positions.keys()):
         #     self.close_position(symbol, 'shutdown')
         
-        self.logger.info("✅ Shutdown complete")
+        self.logger.info("# Check Shutdown complete")
 
 
 def main():
     """Main entry point"""
-    print("""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║                🚀 VIPER STANDALONE TRADING COMPONENT                         ║
-║                Complete Scan → Score → Trade → TP/SL Flow                    ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+#                # Rocket VIPER STANDALONE TRADING COMPONENT                         #
+#                Complete Scan → Score → Trade → TP/SL Flow                    #
+#==============================================================================#
     """)
     
     try:
@@ -1030,7 +1022,7 @@ def main():
         missing_vars = [var for var in required_vars if not os.getenv(var)]
         
         if missing_vars:
-            print(f"❌ Missing required environment variables: {', '.join(missing_vars)}")
+            print(f"# X Missing required environment variables: {', '.join(missing_vars)}")
             print("Please configure your .env file with Bitget API credentials")
             return 1
         
@@ -1041,7 +1033,6 @@ def main():
         return 0
         
     except Exception as e:
-        print(f"❌ Failed to start VIPER Trader: {e}")
         return 1
 
 

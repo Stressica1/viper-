@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 IMPORT PATH FIXER
+# Tool IMPORT PATH FIXER
 ===================
 
 Fixes all import path issues in the VIPER system by:
@@ -35,7 +35,7 @@ class ImportPathFixer:
         # Build comprehensive module map
         self._build_module_map()
         
-        logger.info("🔧 Import Path Fixer initialized")
+        logger.info("# Tool Import Path Fixer initialized")
     
     def _build_module_map(self):
         """Build a comprehensive map of modules to their file paths"""
@@ -66,7 +66,7 @@ class ImportPathFixer:
     
     def fix_ultimate_viper_comprehensive_job(self):
         """Fix the ultimate comprehensive job imports specifically"""
-        logger.info("🔧 Fixing Ultimate VIPER Comprehensive Job imports...")
+        logger.info("# Tool Fixing Ultimate VIPER Comprehensive Job imports...")
         
         file_path = self.project_root / "src/viper/core/ultimate_viper_comprehensive_job.py"
         if not file_path.exists():
@@ -125,7 +125,7 @@ class ImportPathFixer:
             if old_import in content:
                 content = content.replace(old_import, new_import)
                 self.fixes_applied.append(f"Fixed import: {old_import} -> {new_import}")
-                logger.info(f"✅ Fixed: {old_import}")
+                logger.info(f"# Check Fixed: {old_import}")
         
         # Handle missing modules by creating placeholder imports
         missing_modules = [
@@ -168,13 +168,13 @@ class {module}:
         if content != original_content:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            logger.info("✅ Ultimate VIPER Comprehensive Job imports fixed")
+            logger.info("# Check Ultimate VIPER Comprehensive Job imports fixed")
         else:
             logger.info("ℹ️ No changes needed for Ultimate VIPER Comprehensive Job")
     
     def fix_integration_test_imports(self):
         """Fix integration test imports"""
-        logger.info("🔧 Fixing integration test imports...")
+        logger.info("# Tool Fixing integration test imports...")
         
         file_path = self.project_root / "src/viper/core/integration_test_complete.py"
         if not file_path.exists():
@@ -204,11 +204,11 @@ class {module}:
         if content != original_content:
             with open(file_path, 'w', encoding='utf-8') as f:
                 f.write(content)
-            logger.info("✅ Integration test imports fixed")
+            logger.info("# Check Integration test imports fixed")
     
     def create_missing_modules(self):
         """Create placeholder modules for missing components"""
-        logger.info("🏗️ Creating missing modules...")
+        logger.info("# Construction Creating missing modules...")
         
         missing_modules = {
             'src/viper/utils/mathematical_validator.py': '''
@@ -335,13 +335,13 @@ class MasterDiagnosticScanner:
                     f.write(content.strip())
                 
                 self.fixes_applied.append(f"Created missing module: {file_path}")
-                logger.info(f"✅ Created: {file_path}")
+                logger.info(f"# Check Created: {file_path}")
         
-        logger.info(f"🏗️ Created {len(missing_modules)} missing modules")
+        logger.info(f"# Construction Created {len(missing_modules)} missing modules")
     
     def run_comprehensive_fix(self):
         """Run comprehensive import fixing"""
-        logger.info("🚀 Starting comprehensive import path fixing...")
+        logger.info("# Rocket Starting comprehensive import path fixing...")
         
         try:
             # Step 1: Create missing modules
@@ -353,7 +353,7 @@ class MasterDiagnosticScanner:
             # Step 3: Fix integration test
             self.fix_integration_test_imports()
             
-            logger.info(f"✅ Applied {len(self.fixes_applied)} import fixes")
+            logger.info(f"# Check Applied {len(self.fixes_applied)} import fixes")
             
             return {
                 'fixes_applied': len(self.fixes_applied),
@@ -361,37 +361,31 @@ class MasterDiagnosticScanner:
             }
             
         except Exception as e:
-            logger.error(f"❌ Import fixing failed: {e}")
+            logger.error(f"# X Import fixing failed: {e}")
             raise
 
 
 def main():
     """Main entry point"""
-    print("🔧 VIPER IMPORT PATH FIXER")
-    print("=" * 50)
     print("Fixing all import path issues in the system...")
-    print()
     
     try:
         fixer = ImportPathFixer()
         result = fixer.run_comprehensive_fix()
         
-        print("\n" + "=" * 50)
-        print("✅ IMPORT FIXING COMPLETE!")
-        print("=" * 50)
-        print(f"🔧 Fixes Applied: {result['fixes_applied']}")
+        print(f"# Tool Fixes Applied: {result['fixes_applied']}")
         
         if result['details']:
-            print("\n📋 Applied Fixes:")
+            print("# Tool FIXES APPLIED:")
             for fix in result['details'][:10]:  # Show first 10
-                print(f"   • {fix}")
+                print(f"   ✓ {fix}")
             if len(result['details']) > 10:
                 print(f"   ... and {len(result['details']) - 10} more")
         
         return 0
         
     except Exception as e:
-        logger.error(f"❌ Import fixing failed: {e}")
+        logger.error(f"# X Import fixing failed: {e}")
         return 1
 
 

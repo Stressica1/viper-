@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER TRADING MONITOR & ALERT SYSTEM
+# Rocket VIPER TRADING MONITOR & ALERT SYSTEM
 Comprehensive monitoring and alerting for trading jobs and TP/SL functions
 
 This monitor provides:
@@ -49,7 +49,7 @@ class TradingMonitor:
         # Initialize alert systems
         self._setup_alert_systems()
 
-        logger.info("✅ Trading Monitor initialized")
+        logger.info("# Check Trading Monitor initialized")
 
     def _load_monitor_config(self):
         """Load monitoring configuration"""
@@ -86,7 +86,7 @@ class TradingMonitor:
             logger.warning("Monitor already running")
             return
 
-        logger.info("📊 Starting Trading Monitor...")
+        logger.info("# Chart Starting Trading Monitor...")
         self.is_monitoring = True
 
         try:
@@ -96,7 +96,7 @@ class TradingMonitor:
         except KeyboardInterrupt:
             logger.info("🛑 Monitor stopped by user")
         except Exception as e:
-            logger.error(f"❌ Monitor error: {e}")
+            logger.error(f"# X Monitor error: {e}")
         finally:
             self.is_monitoring = False
 
@@ -487,7 +487,7 @@ class TradingMonitor:
             import socket
             socket.create_connection(("8.8.8.8", 53), timeout=3)
             return {'status': 'connected', 'latency_ms': 50}
-        except:
+        except Exception:
             return {'status': 'disconnected'}
 
     async def _send_alert(self, severity: str, title: str, message: str, details: Optional[Dict] = None):
@@ -523,7 +523,7 @@ class TradingMonitor:
             # Get recent alerts of same severity
             recent_alerts = [
                 alert for alert in self.alert_history
-                if alert['severity'] == severity and
+                if alert['severity'] == severity and:
                 (datetime.now() - datetime.fromisoformat(alert['timestamp'])).seconds < self.monitor_config['alert_cooldown']
             ]
 
@@ -639,7 +639,7 @@ Details:
             with open(report_path, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
 
-            logger.info(f"📊 Status report saved: {report_path}")
+            logger.info(f"# Chart Status report saved: {report_path}")
 
         except Exception as e:
             logger.error(f"Status report generation failed: {e}")
@@ -657,34 +657,26 @@ Details:
 
 def main():
     """Main entry point"""
-    print("🚀 VIPER Trading Monitor & Alert System")
-    print("=" * 50)
 
     # Initialize monitor
     monitor = TradingMonitor()
 
     # Display configuration
-    print("📊 Monitor Configuration:")
     for key, value in monitor.monitor_config.items():
-        print(f"   {key}: {value}")
 
-    print(f"\n📧 Email Alerts: {'✅' if monitor.monitor_config['enable_email_alerts'] else '❌'}")
-    print(f"📱 Telegram Alerts: {'✅' if monitor.monitor_config['enable_telegram_alerts'] else '❌'}")
+    print(f"\n📧 Email Alerts: {'# Check' if monitor.monitor_config['enable_email_alerts'] else '# X'}")
+    print(f"📱 Telegram Alerts: {'# Check' if monitor.monitor_config['enable_telegram_alerts'] else '# X'}")
 
     # Confirm start
-    confirm = input("\n🚀 Start monitoring system? (yes/no): ").lower().strip()
+    confirm = input("\n# Rocket Start monitoring system? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Monitor cancelled")
         return
 
     # Start monitoring
-    print("\n📊 Starting monitoring...")
     try:
         monitor.start_monitoring()
     except KeyboardInterrupt:
-        print("\n🛑 Monitor stopped by user")
     except Exception as e:
-        print(f"\n❌ Monitor failed: {e}")
 
 if __name__ == "__main__":
     main()

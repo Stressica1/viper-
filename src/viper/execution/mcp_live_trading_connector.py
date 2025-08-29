@@ -4,11 +4,11 @@
 GitHub MCP integration for automated live trading operations
 
 This connector provides:
-✅ Automated trading task scheduling via MCP
-✅ Real-time trading execution and monitoring
-✅ GitHub integration for performance tracking
-✅ Risk management and emergency controls
-✅ Automated position management and reporting
+# Check Automated trading task scheduling via MCP
+# Check Real-time trading execution and monitoring
+# Check GitHub integration for performance tracking
+# Check Risk management and emergency controls
+# Check Automated position management and reporting
 """
 
 import os
@@ -16,12 +16,8 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
 from pathlib import Path
-import httpx
 import websockets
-import requests
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -54,7 +50,7 @@ class MCPLiveTradingConnector:
         
         logger.info("🔒 Enforcing Docker & MCP requirements for live trading...")
         if not enforce_docker_mcp_requirements():
-            logger.error("❌ Docker/MCP requirements not met")
+            logger.error("# X Docker/MCP requirements not met")
             raise Exception("MCP Live Trading requires Docker and MCP server")
         
         self.trading_job = None
@@ -90,34 +86,34 @@ class MCPLiveTradingConnector:
             'min_balance_threshold': float(os.getenv('MIN_BALANCE_THRESHOLD', '100.0'))
         }
 
-        logger.info("🚀 INITIALIZING MCP LIVE TRADING CONNECTOR - LIVE MODE ONLY")
+        logger.info("# Rocket INITIALIZING MCP LIVE TRADING CONNECTOR - LIVE MODE ONLY")
         logger.info("=" * 60)
         logger.info("🚨 LIVE TRADING: Real trades will be executed")
         logger.info("🔒 Docker and MCP enforcement: ACTIVE")
 
     async def initialize_components(self):
         """Initialize all MCP trading components"""
-        logger.info("🔧 Initializing MCP Trading Components...")
+        logger.info("# Tool Initializing MCP Trading Components...")
 
         try:
             # 1. Initialize Master Live Trading Job
             self.trading_job = MasterLiveTradingJob()
             await self.trading_job.initialize_components()
-            logger.info("✅ Master Live Trading Job: INITIALIZED")
+            logger.info("# Check Master Live Trading Job: INITIALIZED")
 
             # 2. Initialize GitHub MCP Integration
             self.github_mcp = GitHubMCPIntegration()
-            logger.info("✅ GitHub MCP Integration: INITIALIZED")
+            logger.info("# Check GitHub MCP Integration: INITIALIZED")
 
             # 3. Initialize Brain Controller
             self.brain_controller = MCPBrainController()
-            logger.info("✅ MCP Brain Controller: INITIALIZED")
+            logger.info("# Check MCP Brain Controller: INITIALIZED")
 
             self.system_status['components_ready'] = True
-            logger.info("🎉 ALL MCP COMPONENTS SUCCESSFULLY INITIALIZED!")
+            logger.info("# Party ALL MCP COMPONENTS SUCCESSFULLY INITIALIZED!")
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             raise
 
     async def create_trading_task(self, task_config: Dict[str, Any]) -> str:
@@ -159,11 +155,11 @@ class MCPLiveTradingConnector:
                 'risk_parameters': task_data['risk_parameters']
             })
 
-            logger.info(f"✅ Trading task created: {task_id}")
+            logger.info(f"# Check Trading task created: {task_id}")
             return task_id
 
         except Exception as e:
-            logger.error(f"❌ Task creation failed: {e}")
+            logger.error(f"# X Task creation failed: {e}")
             return None
 
     async def start_trading_task(self, task_id: str) -> bool:
@@ -178,23 +174,23 @@ class MCPLiveTradingConnector:
         """
         try:
             if task_id not in self.active_tasks:
-                logger.error(f"❌ Task not found: {task_id}")
+                logger.error(f"# X Task not found: {task_id}")
                 return False
 
             task = self.active_tasks[task_id]
 
             # Check system readiness
             if not self.system_status.get('components_ready', False):
-                logger.error("❌ System not ready for trading")
+                logger.error("# X System not ready for trading")
                 return False
 
             # Check emergency stop
             if self.mcp_config['emergency_stop']:
-                logger.warning("⚠️ Emergency stop active - trading disabled")
+                logger.warning("# Warning Emergency stop active - trading disabled")
                 return False
 
             # Start the trading job
-            logger.info(f"🚀 Starting trading task: {task_id}")
+            logger.info(f"# Rocket Starting trading task: {task_id}")
             task['status'] = 'running'
             task['started_at'] = datetime.now().isoformat()
 
@@ -204,7 +200,7 @@ class MCPLiveTradingConnector:
             if success:
                 task['status'] = 'active'
                 self.mcp_config['trading_active'] = True
-                logger.info(f"✅ Trading task started successfully: {task_id}")
+                logger.info(f"# Check Trading task started successfully: {task_id}")
 
                 # Log to GitHub
                 await self.github_mcp.log_system_performance({
@@ -217,11 +213,11 @@ class MCPLiveTradingConnector:
                 return True
             else:
                 task['status'] = 'failed'
-                logger.error(f"❌ Failed to start trading task: {task_id}")
+                logger.error(f"# X Failed to start trading task: {task_id}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Trading task start failed: {e}")
+            logger.error(f"# X Trading task start failed: {e}")
             if task_id in self.active_tasks:
                 self.active_tasks[task_id]['status'] = 'error'
             return False
@@ -238,7 +234,7 @@ class MCPLiveTradingConnector:
         """
         try:
             if task_id not in self.active_tasks:
-                logger.error(f"❌ Task not found: {task_id}")
+                logger.error(f"# X Task not found: {task_id}")
                 return False
 
             task = self.active_tasks[task_id]
@@ -259,11 +255,11 @@ class MCPLiveTradingConnector:
             })
 
             task['status'] = 'stopped'
-            logger.info(f"✅ Trading task stopped: {task_id}")
+            logger.info(f"# Check Trading task stopped: {task_id}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Trading task stop failed: {e}")
+            logger.error(f"# X Trading task stop failed: {e}")
             return False
 
     async def get_trading_status(self) -> Dict[str, Any]:
@@ -299,7 +295,7 @@ class MCPLiveTradingConnector:
             return status
 
         except Exception as e:
-            logger.error(f"❌ Status retrieval failed: {e}")
+            logger.error(f"# X Status retrieval failed: {e}")
             return {'error': str(e)}
 
     async def emergency_stop_all(self) -> bool:
@@ -332,11 +328,11 @@ class MCPLiveTradingConnector:
                 'reason': 'emergency_stop_all'
             })
 
-            logger.info(f"✅ Emergency stop completed - {len(stopped_tasks)} tasks stopped")
+            logger.info(f"# Check Emergency stop completed - {len(stopped_tasks)} tasks stopped")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Emergency stop failed: {e}")
+            logger.error(f"# X Emergency stop failed: {e}")
             return False
 
     async def websocket_handler(self, websocket, path):
@@ -395,7 +391,7 @@ class MCPLiveTradingConnector:
                 logger.info("🔌 WebSocket client disconnected")
 
         except Exception as e:
-            logger.error(f"❌ WebSocket handler error: {e}")
+            logger.error(f"# X WebSocket handler error: {e}")
         finally:
             self.websocket_connections.discard(websocket)
 
@@ -410,7 +406,7 @@ class MCPLiveTradingConnector:
             logger.info("🔗 WebSocket server started on ws://localhost:8765")
             await server.wait_closed()
         except Exception as e:
-            logger.error(f"❌ WebSocket server failed: {e}")
+            logger.error(f"# X WebSocket server failed: {e}")
 
     async def run_monitoring_loop(self):
         """Continuous monitoring loop for trading operations"""
@@ -446,7 +442,7 @@ class MCPLiveTradingConnector:
                 await asyncio.sleep(30)  # Update every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Monitoring loop error: {e}")
+                logger.error(f"# X Monitoring loop error: {e}")
                 await asyncio.sleep(10)
 
     async def check_emergency_conditions(self):
@@ -458,7 +454,7 @@ class MCPLiveTradingConnector:
 
             # Check system health
             if not self.system_status.get('components_ready', False):
-                logger.warning("⚠️ System components not ready - emergency check")
+                logger.warning("# Warning System components not ready - emergency check")
                 await self.emergency_stop_all()
                 return
 
@@ -469,11 +465,11 @@ class MCPLiveTradingConnector:
             # This would be implemented with actual balance data
 
         except Exception as e:
-            logger.error(f"❌ Emergency condition check failed: {e}")
+            logger.error(f"# X Emergency condition check failed: {e}")
 
     async def run_mcp_trading_system(self):
         """Run the complete MCP trading system"""
-        logger.info("🚀 STARTING MCP LIVE TRADING SYSTEM")
+        logger.info("# Rocket STARTING MCP LIVE TRADING SYSTEM")
         logger.info("=" * 60)
 
         try:
@@ -488,22 +484,22 @@ class MCPLiveTradingConnector:
             success = await self.trading_job.run_complete_system_check()
 
             if success:
-                logger.info("🎉 MCP LIVE TRADING SYSTEM READY!")
+                logger.info("# Party MCP LIVE TRADING SYSTEM READY!")
                 logger.info("Features Active:")
-                logger.info("   • Automated Task Scheduling: ✅")
-                logger.info("   • Real-time Monitoring: ✅")
-                logger.info("   • GitHub Integration: ✅")
-                logger.info("   • WebSocket API: ✅")
-                logger.info("   • Emergency Controls: ✅")
+                logger.info("   • Automated Task Scheduling: # Check")
+                logger.info("   • Real-time Monitoring: # Check")
+                logger.info("   • GitHub Integration: # Check")
+                logger.info("   • WebSocket API: # Check")
+                logger.info("   • Emergency Controls: # Check")
 
                 # Keep the system running
                 await asyncio.gather(monitoring_task, websocket_task)
             else:
-                logger.error("❌ System check failed")
+                logger.error("# X System check failed")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ MCP trading system failed: {e}")
+            logger.error(f"# X MCP trading system failed: {e}")
             return False
 
 # MCP Task Functions for External Integration
@@ -563,8 +559,6 @@ async def get_mcp_trading_status() -> Dict[str, Any]:
 # Main execution
 async def main():
     """Main MCP trading system execution"""
-    print("🔗 MCP LIVE TRADING CONNECTOR")
-    print("=" * 60)
 
     connector = MCPLiveTradingConnector()
 
@@ -573,7 +567,7 @@ async def main():
     except KeyboardInterrupt:
         logger.info("🛑 Shutting down MCP trading system...")
     except Exception as e:
-        logger.error(f"❌ System error: {e}")
+        logger.error(f"# X System error: {e}")
         return 1
 
     return 0

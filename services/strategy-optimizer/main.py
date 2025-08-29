@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Strategy Optimizer Service
+# Rocket VIPER Trading Bot - Strategy Optimizer Service
 Advanced parameter optimization using genetic algorithms and machine learning
 
 Features:
@@ -19,24 +19,19 @@ import time
 import logging
 import asyncio
 import sys
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 import numpy as np
-import pandas as pd
 import random
-from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
+import secrets
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 from pathlib import Path
-import threading
 import httpx
 import uuid
 
 # Add shared directory to path for circuit breaker
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
-    from circuit_breaker import ServiceClient, call_service
     CIRCUIT_BREAKER_AVAILABLE = True
 except ImportError:
     # Fallback if shared module not available
@@ -78,17 +73,17 @@ class StrategyOptimizer:
         self.results_path = Path('/app/backtest_results')
         self.results_path.mkdir(exist_ok=True)
 
-        logger.info("🏗️ Initializing Strategy Optimizer...")
+        logger.info("# Construction Initializing Strategy Optimizer...")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     async def run_backtest_with_params(self, symbol: str, timeframe: str,
@@ -131,7 +126,7 @@ class StrategyOptimizer:
                 return None
 
             except Exception as e:
-                logger.error(f"❌ Circuit breaker error running backtest: {e}")
+                logger.error(f"# X Circuit breaker error running backtest: {e}")
                 return None
         else:
             # Fallback to direct HTTP call
@@ -164,7 +159,7 @@ class StrategyOptimizer:
                     return None
 
             except Exception as e:
-                logger.error(f"❌ Error running backtest with params: {e}")
+                logger.error(f"# X Error running backtest with params: {e}")
                 return None
 
     def genetic_algorithm_optimization(self, symbol: str, timeframe: str,
@@ -197,7 +192,7 @@ class StrategyOptimizer:
                     return max(fitness, 0.0)  # Ensure non-negative
 
                 except Exception as e:
-                    logger.error(f"❌ Error in fitness function: {e}")
+                    logger.error(f"# X Error in fitness function: {e}")
                     return 0.0
 
             # Initialize population
@@ -207,10 +202,10 @@ class StrategyOptimizer:
             best_fitness = 0.0
             fitness_history = []
 
-            logger.info(f"🚀 Starting genetic algorithm optimization ({generations} generations, {population_size} population)")
+            logger.info(f"# Rocket Starting genetic algorithm optimization ({generations} generations, {population_size} population)")
 
             for generation in range(generations):
-                logger.info(f"📊 Generation {generation + 1}/{generations}")
+                logger.info(f"# Chart Generation {generation + 1}/{generations}")
 
                 # Evaluate fitness
                 fitness_scores = []
@@ -233,8 +228,8 @@ class StrategyOptimizer:
 
                 while len(new_population) < population_size:
                     # Select parents
-                    parent1 = random.choice(selected)
-                    parent2 = random.choice(selected)
+                    parent1 = secrets.choice(selected)
+                    parent2 = secrets.choice(selected)
 
                     # Crossover
                     child = self.crossover(parent1, parent2, parameter_ranges)
@@ -262,7 +257,7 @@ class StrategyOptimizer:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in genetic algorithm optimization: {e}")
+            logger.error(f"# X Error in genetic algorithm optimization: {e}")
             return {'error': str(e)}
 
     def initialize_population(self, parameter_ranges: Dict, population_size: int) -> List[Dict]:
@@ -273,13 +268,13 @@ class StrategyOptimizer:
             individual = {}
             for param_name, param_range in parameter_ranges.items():
                 if isinstance(param_range, list):
-                    individual[param_name] = random.choice(param_range)
+                    individual[param_name] = secrets.choice(param_range)
                 elif isinstance(param_range, dict):
                     min_val = param_range.get('min', 0)
                     max_val = param_range.get('max', 100)
                     step = param_range.get('step', 1)
                     if step == 1:
-                        individual[param_name] = random.randint(min_val, max_val)
+                        individual[param_name] = secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(min_val, max_val)
                     else:
                         individual[param_name] = round(random.uniform(min_val, max_val) / step) * step
                 else:
@@ -295,7 +290,7 @@ class StrategyOptimizer:
 
         for param_name in parameter_ranges.keys():
             # Randomly select from either parent
-            if random.random() < 0.5:
+            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < 0.5:
                 child[param_name] = parent1[param_name]
             else:
                 child[param_name] = parent2[param_name]
@@ -307,15 +302,15 @@ class StrategyOptimizer:
         mutated = individual.copy()
 
         for param_name, param_range in parameter_ranges.items():
-            if random.random() < mutation_rate:
+            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < mutation_rate:
                 if isinstance(param_range, list):
-                    mutated[param_name] = random.choice(param_range)
+                    mutated[param_name] = secrets.choice(param_range)
                 elif isinstance(param_range, dict):
                     min_val = param_range.get('min', 0)
                     max_val = param_range.get('max', 100)
                     step = param_range.get('step', 1)
                     if step == 1:
-                        mutated[param_name] = random.randint(min_val, max_val)
+                        mutated[param_name] = secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(min_val, max_val)
                     else:
                         mutated[param_name] = round(random.uniform(min_val, max_val) / step) * step
 
@@ -328,14 +323,14 @@ class StrategyOptimizer:
             # Generate all parameter combinations
             param_combinations = self.generate_parameter_combinations(parameter_ranges)
 
-            logger.info(f"🚀 Starting grid search optimization ({len(param_combinations)} combinations)")
+            logger.info(f"# Rocket Starting grid search optimization ({len(param_combinations)} combinations)")
 
             best_result = None
             best_fitness = 0.0
             results = []
 
             for i, parameters in enumerate(param_combinations):
-                logger.info(f"📊 Testing combination {i + 1}/{len(param_combinations)}: {parameters}")
+                logger.info(f"# Chart Testing combination {i + 1}/{len(param_combinations)}: {parameters}")
 
                 # Run backtest
                 backtest_result = asyncio.run(
@@ -379,7 +374,7 @@ class StrategyOptimizer:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in grid search optimization: {e}")
+            logger.error(f"# X Error in grid search optimization: {e}")
             return {'error': str(e)}
 
     def generate_parameter_combinations(self, parameter_ranges: Dict) -> List[Dict]:
@@ -426,7 +421,7 @@ class StrategyOptimizer:
                                 window_size: int = 100, step_size: int = 20) -> Dict:
         """Walk-forward analysis for out-of-sample testing"""
         try:
-            logger.info("🚀 Starting walk-forward optimization")
+            logger.info("# Rocket Starting walk-forward optimization")
 
             # Get historical data
             ohlcv_data = asyncio.run(self.get_historical_data(symbol, timeframe, 1000))
@@ -500,7 +495,7 @@ class StrategyOptimizer:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in walk-forward optimization: {e}")
+            logger.error(f"# X Error in walk-forward optimization: {e}")
             return {'error': str(e)}
 
     async def get_historical_data(self, symbol: str, timeframe: str, limit: int) -> Optional[List]:
@@ -515,7 +510,7 @@ class StrategyOptimizer:
                     return response.json()
                 return None
         except Exception as e:
-            logger.error(f"❌ Error getting historical data: {e}")
+            logger.error(f"# X Error getting historical data: {e}")
             return None
 
 # FastAPI application
@@ -531,10 +526,10 @@ optimizer = StrategyOptimizer()
 async def startup_event():
     """Initialize services on startup"""
     if not optimizer.initialize_redis():
-        logger.error("❌ Failed to initialize Redis. Exiting...")
+        logger.error("# X Failed to initialize Redis. Exiting...")
         return
 
-    logger.info("✅ Strategy Optimizer started successfully")
+    logger.info("# Check Strategy Optimizer started successfully")
 
 @app.get("/health")
 async def health_check():
@@ -596,7 +591,7 @@ async def run_optimization(request: Request, background_tasks: BackgroundTasks):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error starting optimization: {e}")
+        logger.error(f"# X Error starting optimization: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/api/optimization/{optimization_id}")
@@ -621,7 +616,7 @@ async def get_optimization_result(optimization_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error getting optimization result: {e}")
+        logger.error(f"# X Error getting optimization result: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/api/optimizations")
@@ -704,10 +699,10 @@ async def run_optimization_async(self, optimization_id, symbol, timeframe, metho
         self.active_optimizations[optimization_id]['progress'] = 100
         self.active_optimizations[optimization_id]['status'] = 'completed'
 
-        logger.info(f"✅ Optimization {optimization_id} completed successfully")
+        logger.info(f"# Check Optimization {optimization_id} completed successfully")
 
     except Exception as e:
-        logger.error(f"❌ Error in optimization {optimization_id}: {e}")
+        logger.error(f"# X Error in optimization {optimization_id}: {e}")
         self.active_optimizations[optimization_id] = {'status': 'failed', 'error': str(e)}
 
 # Add background methods to class

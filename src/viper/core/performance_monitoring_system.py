@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 PERFORMANCE MONITORING AND OPTIMIZATION SYSTEM
+# Rocket PERFORMANCE MONITORING AND OPTIMIZATION SYSTEM
 Comprehensive monitoring, analytics, and automated optimization for trading systems
 
 This system includes:
@@ -129,7 +129,7 @@ class PerformanceMonitoringSystem:
         self.performance_predictor = None
         self.risk_predictor = None
 
-        logger.info("📊 Performance Monitoring System initialized")
+        logger.info("# Chart Performance Monitoring System initialized")
 
     def start_monitoring(self):
         """Start real-time performance monitoring"""
@@ -139,10 +139,10 @@ class PerformanceMonitoringSystem:
             self.monitoring_thread.daemon = True
             self.monitoring_thread.start()
 
-            logger.info("✅ Performance monitoring started")
+            logger.info("# Check Performance monitoring started")
 
         except Exception as e:
-            logger.error(f"❌ Error starting monitoring: {e}")
+            logger.error(f"# X Error starting monitoring: {e}")
 
     def stop_monitoring(self):
         """Stop performance monitoring"""
@@ -154,7 +154,7 @@ class PerformanceMonitoringSystem:
             logger.info("🛑 Performance monitoring stopped")
 
         except Exception as e:
-            logger.error(f"❌ Error stopping monitoring: {e}")
+            logger.error(f"# X Error stopping monitoring: {e}")
 
     def _monitoring_loop(self):
         """Main monitoring loop"""
@@ -176,7 +176,7 @@ class PerformanceMonitoringSystem:
                 time.sleep(60)  # 1 minute intervals
 
             except Exception as e:
-                logger.error(f"❌ Error in monitoring loop: {e}")
+                logger.error(f"# X Error in monitoring loop: {e}")
                 time.sleep(60)
 
     def _collect_performance_snapshot(self) -> Optional[PerformanceSnapshot]:
@@ -203,7 +203,7 @@ class PerformanceMonitoringSystem:
             return snapshot
 
         except Exception as e:
-            logger.error(f"❌ Error collecting performance snapshot: {e}")
+            logger.error(f"# X Error collecting performance snapshot: {e}")
             return None
 
     def _collect_system_metrics(self) -> Dict[str, Any]:
@@ -220,7 +220,7 @@ class PerformanceMonitoringSystem:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Error collecting system metrics: {e}")
+            logger.warning(f"# Warning Error collecting system metrics: {e}")
             return {}
 
     def _check_performance_alerts(self, snapshot: PerformanceSnapshot):
@@ -273,7 +273,7 @@ class PerformanceMonitoringSystem:
                 self.alerts = self.alerts[-100:]
 
         except Exception as e:
-            logger.error(f"❌ Error checking performance alerts: {e}")
+            logger.error(f"# X Error checking performance alerts: {e}")
 
     def calculate_advanced_metrics(self, returns: pd.Series) -> Dict[str, float]:
         """Calculate advanced performance metrics"""
@@ -335,16 +335,16 @@ class PerformanceMonitoringSystem:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error calculating advanced metrics: {e}")
+            logger.error(f"# X Error calculating advanced metrics: {e}")
             return {}
 
     def optimize_strategy_parameters(self, target: OptimizationTarget = OptimizationTarget.BALANCED_OPTIMIZATION) -> Optional[OptimizationResult]:
         """Optimize strategy parameters using historical performance"""
         try:
-            logger.info(f"🎯 Starting parameter optimization for target: {target.value}")
+            logger.info(f"# Target Starting parameter optimization for target: {target.value}")
 
             if len(self.performance_history) < 50:
-                logger.warning("⚠️ Insufficient performance history for optimization")
+                logger.warning("# Warning Insufficient performance history for optimization")
                 return None
 
             # Prepare optimization data
@@ -372,13 +372,13 @@ class PerformanceMonitoringSystem:
                 if len(self.optimization_results) > 20:
                     self.optimization_results = self.optimization_results[-20:]
 
-                logger.info(f"✅ Optimization completed: {result.improvement:.2%} improvement")
+                logger.info(f"# Check Optimization completed: {result.improvement:.2%} improvement")
                 return result
 
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error in parameter optimization: {e}")
+            logger.error(f"# X Error in parameter optimization: {e}")
             return None
 
     def _prepare_optimization_data(self) -> Optional[Dict[str, Any]]:
@@ -406,7 +406,7 @@ class PerformanceMonitoringSystem:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error preparing optimization data: {e}")
+            logger.error(f"# X Error preparing optimization data: {e}")
             return None
 
     def _optimize_for_sharpe(self, data: Dict[str, Any]) -> Optional[OptimizationResult]:
@@ -446,7 +446,7 @@ class PerformanceMonitoringSystem:
             )
 
         except Exception as e:
-            logger.error(f"❌ Error optimizing for Sharpe ratio: {e}")
+            logger.error(f"# X Error optimizing for Sharpe ratio: {e}")
             return None
 
     def _optimize_for_drawdown(self, data: Dict[str, Any]) -> Optional[OptimizationResult]:
@@ -483,7 +483,7 @@ class PerformanceMonitoringSystem:
             )
 
         except Exception as e:
-            logger.error(f"❌ Error optimizing for drawdown: {e}")
+            logger.error(f"# X Error optimizing for drawdown: {e}")
             return None
 
     def _optimize_balanced(self, data: Dict[str, Any]) -> Optional[OptimizationResult]:
@@ -522,7 +522,7 @@ class PerformanceMonitoringSystem:
             )
 
         except Exception as e:
-            logger.error(f"❌ Error in balanced optimization: {e}")
+            logger.error(f"# X Error in balanced optimization: {e}")
             return None
 
     def _simulate_performance_with_params(self, data: Dict[str, Any], risk_per_trade: float,
@@ -547,7 +547,7 @@ class PerformanceMonitoringSystem:
             return max(estimated_sharpe, 0.1)
 
         except Exception as e:
-            logger.warning(f"⚠️ Error simulating performance: {e}")
+            logger.warning(f"# Warning Error simulating performance: {e}")
             return 0.5
 
     def _simulate_drawdown_with_params(self, data: Dict[str, Any], risk_per_trade: float,
@@ -569,7 +569,7 @@ class PerformanceMonitoringSystem:
             return max(estimated_drawdown, 0.01)
 
         except Exception as e:
-            logger.warning(f"⚠️ Error simulating drawdown: {e}")
+            logger.warning(f"# Warning Error simulating drawdown: {e}")
             return 0.1
 
     def _calculate_composite_score(self, data: Dict[str, Any], risk_per_trade: float,
@@ -593,7 +593,7 @@ class PerformanceMonitoringSystem:
             return composite
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating composite score: {e}")
+            logger.warning(f"# Warning Error calculating composite score: {e}")
             return 0.5
 
     def _calculate_current_composite_score(self, data: Dict[str, Any]) -> float:
@@ -609,7 +609,7 @@ class PerformanceMonitoringSystem:
             return self._calculate_composite_score(data, risk_per_trade, take_profit_pct, min_score)
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating current composite score: {e}")
+            logger.warning(f"# Warning Error calculating current composite score: {e}")
             return 0.5
 
     def _update_predictive_models(self):
@@ -645,7 +645,7 @@ class PerformanceMonitoringSystem:
                 self.sharpe_trend_slope = model.coef_[0]
 
         except Exception as e:
-            logger.warning(f"⚠️ Error updating predictive models: {e}")
+            logger.warning(f"# Warning Error updating predictive models: {e}")
 
     def generate_performance_report(self) -> Dict[str, Any]:
         """Generate comprehensive performance report"""
@@ -685,7 +685,7 @@ class PerformanceMonitoringSystem:
             return report
 
         except Exception as e:
-            logger.error(f"❌ Error generating performance report: {e}")
+            logger.error(f"# X Error generating performance report: {e}")
             return {'error': str(e)}
 
     def _analyze_system_health(self) -> Dict[str, Any]:
@@ -723,7 +723,7 @@ class PerformanceMonitoringSystem:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error analyzing system health: {e}")
+            logger.error(f"# X Error analyzing system health: {e}")
             return {}
 
     def _summarize_optimizations(self) -> Dict[str, Any]:
@@ -749,7 +749,7 @@ class PerformanceMonitoringSystem:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Error summarizing optimizations: {e}")
+            logger.warning(f"# Warning Error summarizing optimizations: {e}")
             return {}
 
     def _generate_recommendations(self, metrics: Dict[str, Any], system_health: Dict[str, Any]) -> List[str]:
@@ -759,13 +759,13 @@ class PerformanceMonitoringSystem:
         try:
             # Performance-based recommendations
             if metrics.get('sharpe_ratio', 0) < 1.0:
-                recommendations.append("📊 Sharpe ratio below 1.0 - consider reducing risk or improving strategy")
+                recommendations.append("# Chart Sharpe ratio below 1.0 - consider reducing risk or improving strategy")
 
             if metrics.get('max_drawdown', 0) > 0.15:
-                recommendations.append("⚠️ High drawdown detected - implement stricter risk controls")
+                recommendations.append("# Warning High drawdown detected - implement stricter risk controls")
 
             if metrics.get('win_rate', 0) < 0.55:
-                recommendations.append("🎯 Win rate below 55% - review entry/exit criteria")
+                recommendations.append("# Target Win rate below 55% - review entry/exit criteria")
 
             # System health recommendations
             if system_health.get('avg_memory_percent', 0) > 85:
@@ -778,16 +778,16 @@ class PerformanceMonitoringSystem:
             if len(self.optimization_results) > 0:
                 last_optimization = self.optimization_results[-1]
                 if last_optimization.improvement < 0.01:
-                    recommendations.append("🔧 Recent optimization had minimal impact - try different parameters")
+                    recommendations.append("# Tool Recent optimization had minimal impact - try different parameters")
 
             # Default recommendations
             if not recommendations:
-                recommendations.append("✅ System performance within acceptable parameters")
+                recommendations.append("# Check System performance within acceptable parameters")
                 recommendations.append("📈 Continue monitoring and periodic optimization")
 
         except Exception as e:
-            logger.warning(f"⚠️ Error generating recommendations: {e}")
-            recommendations.append("🔧 System monitoring active - review logs for details")
+            logger.warning(f"# Warning Error generating recommendations: {e}")
+            recommendations.append("# Tool System monitoring active - review logs for details")
 
         return recommendations
 
@@ -796,8 +796,6 @@ async def test_performance_system():
 
     system = PerformanceMonitoringSystem()
 
-    print("🧪 Testing Performance Monitoring System")
-    print("=" * 50)
 
     # Simulate some performance data
     for i in range(20):
@@ -810,8 +808,8 @@ async def test_performance_system():
             sharpe_ratio=1.2 + np.random.normal(0, 0.2),
             max_drawdown=0.1 + abs(np.random.normal(0, 0.05)),
             volatility=0.15 + np.random.normal(0, 0.03),
-            trades_executed=np.random.randint(5, 15),
-            active_positions=np.random.randint(1, 5),
+            trades_executed=np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(5, 15),
+            active_positions=np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1, 5),
             system_metrics={
                 'cpu_percent': 50 + np.random.normal(0, 10),
                 'memory_percent': 60 + np.random.normal(0, 15),
@@ -824,25 +822,20 @@ async def test_performance_system():
     returns = pd.Series([s.total_pnl for s in list(system.performance_history)])
     metrics = system.calculate_advanced_metrics(returns.pct_change().dropna())
 
-    print(f"📊 Calculated Advanced Metrics:")
     for key, value in metrics.items():
-        print(f"   {key}: {value:.4f}")
 
     # Test optimization
-    print("\n🎯 Testing Parameter Optimization...")
     optimization_result = system.optimize_strategy_parameters(OptimizationTarget.BALANCED_OPTIMIZATION)
 
     if optimization_result:
-        print(f"✅ Optimization Result:")
         print(f"   Target: {optimization_result.target.value}")
         print(f"   Improvement: {optimization_result.improvement:.2%}")
         print(f"   Best Parameters: {optimization_result.parameters}")
 
     # Test performance report
-    print("\n📋 Generating Performance Report...")
     report = system.generate_performance_report()
 
-    print(f"✅ Report Generated with {len(report.get('recommendations', []))} recommendations")
+    print(f"# Check Report Generated with {len(report.get('recommendations', []))} recommendations")
 
 if __name__ == "__main__":
     asyncio.run(test_performance_system())

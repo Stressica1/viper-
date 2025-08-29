@@ -4,27 +4,22 @@
 Mandatory Docker and MCP validation for all VIPER system operations
 
 This enforcer ensures:
-✅ Docker services are running and healthy before any operations
-✅ MCP server is connected and functional 
-✅ GitHub MCP integration is active
-✅ All required microservices are operational
-✅ System blocks execution if requirements not met
+# Check Docker services are running and healthy before any operations
+# Check MCP server is connected and functional 
+# Check GitHub MCP integration is active
+# Check All required microservices are operational
+# Check System blocks execution if requirements not met
 
 NO SYSTEM OPERATION IS ALLOWED WITHOUT DOCKER & MCP!
 """
 
 import os
 import sys
-import time
-import json
 import logging
 import subprocess
 import requests
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 from pathlib import Path
-import socket
-import threading
 
 # Configure logging
 logging.basicConfig(
@@ -78,35 +73,35 @@ class DockerMCPEnforcer:
         try:
             # Step 1: Docker Infrastructure Validation (MANDATORY)
             if not self._validate_docker_infrastructure():
-                logger.error("❌ DOCKER INFRASTRUCTURE VALIDATION FAILED")
+                logger.error("# X DOCKER INFRASTRUCTURE VALIDATION FAILED")
                 self._block_execution("Docker infrastructure not available")
                 return False
             
             # Step 2: MCP Server Validation (MANDATORY)
             if not self._validate_mcp_server():
-                logger.error("❌ MCP SERVER VALIDATION FAILED")
+                logger.error("# X MCP SERVER VALIDATION FAILED")
                 self._block_execution("MCP server not available or not responding")
                 return False
                 
             # Step 3: GitHub MCP Integration Validation (MANDATORY)
             if not self._validate_github_mcp_integration():
-                logger.error("❌ GITHUB MCP INTEGRATION VALIDATION FAILED")
+                logger.error("# X GITHUB MCP INTEGRATION VALIDATION FAILED")
                 self._block_execution("GitHub MCP integration not configured")
                 return False
                 
             # Step 4: Required Services Validation (MANDATORY)
             if not self._validate_required_services():
-                logger.error("❌ REQUIRED SERVICES VALIDATION FAILED")
+                logger.error("# X REQUIRED SERVICES VALIDATION FAILED")
                 self._block_execution("Required Docker services not running")
                 return False
             
             # All validations must pass for live trading
             self._mark_validation_success()
-            logger.info("✅ ALL MANDATORY REQUIREMENTS VALIDATED - LIVE TRADING SYSTEM CLEARED")
+            logger.info("# Check ALL MANDATORY REQUIREMENTS VALIDATED - LIVE TRADING SYSTEM CLEARED")
             return True
             
         except Exception as e:
-            logger.error(f"❌ ENFORCEMENT VALIDATION ERROR: {e}")
+            logger.error(f"# X ENFORCEMENT VALIDATION ERROR: {e}")
             self._block_execution(f"Validation error: {e}")
             return False
     
@@ -118,30 +113,30 @@ class DockerMCPEnforcer:
             # Check Docker daemon
             result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
             if result.returncode != 0:
-                logger.error("❌ Docker not available")
+                logger.error("# X Docker not available")
                 return False
-            logger.info("✅ Docker daemon: AVAILABLE")
+            logger.info("# Check Docker daemon: AVAILABLE")
             
             # Check docker-compose availability
             result = subprocess.run(['docker', 'compose', 'version'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
-                logger.error("❌ Docker Compose not available")
+                logger.error("# X Docker Compose not available")
                 return False
-            logger.info("✅ Docker Compose: AVAILABLE")
+            logger.info("# Check Docker Compose: AVAILABLE")
             
             # Validate docker-compose.yml exists
             compose_file = Path('docker-compose.yml')
             if not compose_file.exists():
-                logger.error("❌ docker-compose.yml not found")
+                logger.error("# X docker-compose.yml not found")
                 return False
-            logger.info("✅ docker-compose.yml: FOUND")
+            logger.info("# Check docker-compose.yml: FOUND")
             
             self.docker_validated = True
             return True
             
         except Exception as e:
-            logger.error(f"❌ Docker infrastructure error: {e}")
+            logger.error(f"# X Docker infrastructure error: {e}")
             return False
     
     def _validate_mcp_server(self) -> bool:
@@ -152,24 +147,24 @@ class DockerMCPEnforcer:
             # Check MCP server health
             response = requests.get(f"{self.mcp_server_url}/health", timeout=5)
             if response.status_code == 200:
-                logger.info("✅ MCP Server: RESPONDING")
+                logger.info("# Check MCP Server: RESPONDING")
                 self.mcp_validated = True
                 return True
-        except:
-            logger.warning("⚠️ MCP server not responding")
+        except Exception:
+            logger.warning("# Warning MCP server not responding")
         
         # Check if MCP server container exists
         try:
             result = subprocess.run(['docker', 'ps', '--filter', 'name=mcp-server', '--format', '{{.Names}}'], 
                                   capture_output=True, text=True)
             if 'mcp-server' in result.stdout:
-                logger.info("✅ MCP Server container: RUNNING")
+                logger.info("# Check MCP Server container: RUNNING")
                 self.mcp_validated = True
                 return True
-        except:
+        except Exception:
             pass
                     
-        logger.warning("⚠️ MCP Server validation incomplete")
+        logger.warning("# Warning MCP Server validation incomplete")
         return False
     
     def _validate_github_mcp_integration(self) -> bool:
@@ -180,31 +175,31 @@ class DockerMCPEnforcer:
             # Check if github_mcp_integration module exists
             github_integration_file = Path('github_mcp_integration.py')
             if github_integration_file.exists():
-                logger.info("✅ GitHub MCP Integration Module: AVAILABLE")
+                logger.info("# Check GitHub MCP Integration Module: AVAILABLE")
                 self.github_mcp_validated = True
                 return True
             else:
-                logger.warning("⚠️ GitHub MCP Integration module not found")
+                logger.warning("# Warning GitHub MCP Integration module not found")
                 return False
                 
         except Exception as e:
-            logger.warning(f"⚠️ GitHub MCP integration validation warning: {e}")
+            logger.warning(f"# Warning GitHub MCP integration validation warning: {e}")
             return False
     
     def _validate_required_services(self) -> bool:
         """Validate required Docker services are accessible"""
-        logger.info("🔧 Validating Required Services...")
+        logger.info("# Tool Validating Required Services...")
         
         try:
             # Get running containers via docker ps
             result = subprocess.run(['docker', 'ps', '--format', '{{.Names}}'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
-                logger.warning("⚠️ Cannot list Docker containers")
+                logger.warning("# Warning Cannot list Docker containers")
                 return False
                 
             running_services = result.stdout.strip().split('\n') if result.stdout.strip() else []
-            logger.info(f"📊 Found {len(running_services)} running containers")
+            logger.info(f"# Chart Found {len(running_services)} running containers")
             
             # Check for any required services
             found_services = []
@@ -214,17 +209,17 @@ class DockerMCPEnforcer:
                         found_services.append(service)
                         break
             
-            logger.info(f"✅ Found {len(found_services)} required services: {found_services}")
+            logger.info(f"# Check Found {len(found_services)} required services: {found_services}")
             
             if found_services:
                 self.services_validated = True
                 return True
             else:
-                logger.warning("⚠️ No required services found running")
+                logger.warning("# Warning No required services found running")
                 return False
             
         except Exception as e:
-            logger.warning(f"⚠️ Service validation warning: {e}")
+            logger.warning(f"# Warning Service validation warning: {e}")
             return False
     
     def _mark_validation_success(self):
@@ -249,7 +244,7 @@ class DockerMCPEnforcer:
         logger.error("• GitHub MCP integration must be configured")
         logger.error("• All required microservices must be running")
         logger.error("=" * 70)
-        logger.error("🔧 TO RESOLVE:")
+        logger.error("# Tool TO RESOLVE:")
         logger.error("1. Start Docker services: docker compose up -d")
         logger.error("2. Verify MCP server: curl http://localhost:8015/health")
         logger.error("3. Validate services: docker compose ps")
@@ -298,13 +293,10 @@ def enforce_docker_mcp_requirements() -> bool:
 
 if __name__ == "__main__":
     # Test enforcement system
-    print("🔒 Testing Docker & MCP Enforcement System...")
     enforcer = DockerMCPEnforcer()
     
     if enforcer.enforce_mandatory_requirements():
-        print("✅ All requirements validated successfully!")
+        print("# Check All requirements validated successfully!")
         status = enforcer.get_system_status()
-        print(json.dumps(status, indent=2))
     else:
-        print("❌ Validation failed!")
         sys.exit(1)

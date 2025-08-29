@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 ENHANCED TRADE EXECUTION ENGINE
+# Tool ENHANCED TRADE EXECUTION ENGINE
 Fixed trade execution with proper OHLCV handling, execution cost awareness, and S1S2R1R2 strategy
 
 Key Fixes:
@@ -13,12 +13,9 @@ Key Fixes:
 
 import os
 import asyncio
-import aiohttp
 import logging
 import ccxt.pro as ccxt
-import json
 import time
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 
@@ -26,9 +23,9 @@ from dataclasses import dataclass
 import sys
 sys.path.insert(0, '/home/runner/work/viper-/viper-/services/viper-scoring-service')
 try:
-    from main import VIPERScoringService, SignalType
+    pass
 except ImportError:
-    logger.error("❌ Could not import VIPERScoringService - required for live trading")
+    logger.error("# X Could not import VIPERScoringService - required for live trading")
     raise ImportError("VIPERScoringService is required for live trading operations")
 
 # Configure logging
@@ -80,7 +77,7 @@ class EnhancedTradeExecutionEngine:
         self.max_execution_cost = 3.0  # $3 maximum execution cost
         self.min_viper_score = 70.0  # Minimum VIPER score for trade
         
-        logger.info("🚀 Enhanced Trade Execution Engine initialized - LIVE MODE ONLY")
+        logger.info("# Rocket Enhanced Trade Execution Engine initialized - LIVE MODE ONLY")
         logger.info(f"   Max Positions: {self.max_positions}")
         logger.info(f"   Risk Per Trade: {self.risk_per_trade * 100}%")
         logger.info(f"   Max Execution Cost: ${self.max_execution_cost}")
@@ -103,11 +100,11 @@ class EnhancedTradeExecutionEngine:
             
             # Test connection
             await self.exchange.load_markets()
-            logger.info("✅ Live exchange connection established")
+            logger.info("# Check Live exchange connection established")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to connect to live exchange: {e}")
+            logger.error(f"# X Failed to connect to live exchange: {e}")
             logger.error("🚫 LIVE TRADING MODE: Cannot proceed without exchange connection")
             raise Exception("Live trading requires valid exchange connection")
     
@@ -129,11 +126,11 @@ class EnhancedTradeExecutionEngine:
                 if ohlcv_raw and len(ohlcv_raw) > 0:
                     ohlcv_data = {'ohlcv': ohlcv_raw}
                 else:
-                    logger.warning(f"⚠️ No OHLCV data received for {symbol}")
+                    logger.warning(f"# Warning No OHLCV data received for {symbol}")
                     ohlcv_data = {'ohlcv': []}
                     
             except Exception as ohlcv_error:
-                logger.error(f"❌ OHLCV fetch error for {symbol}: {ohlcv_error}")
+                logger.error(f"# X OHLCV fetch error for {symbol}: {ohlcv_error}")
                 ohlcv_data = {'ohlcv': []}
             
             # Combine all market data
@@ -157,7 +154,7 @@ class EnhancedTradeExecutionEngine:
             return market_data
             
         except Exception as e:
-            logger.error(f"❌ Critical error fetching live market data for {symbol}: {e}")
+            logger.error(f"# X Critical error fetching live market data for {symbol}: {e}")
             logger.error("🚫 LIVE TRADING MODE: Cannot proceed without real market data")
             raise Exception(f"Live market data fetch failed for {symbol}")
     
@@ -165,12 +162,12 @@ class EnhancedTradeExecutionEngine:
     async def analyze_trading_opportunity(self, symbol: str) -> Optional[Dict[str, Any]]:
         """Analyze trading opportunity using enhanced VIPER system"""
         try:
-            logger.info(f"🔍 Analyzing trading opportunity for {symbol}...")
+            logger.info(f"# Search Analyzing trading opportunity for {symbol}...")
             
             # Fetch market data safely
             market_data = await self.fetch_market_data_safely(symbol)
             if not market_data:
-                logger.error(f"❌ Could not fetch market data for {symbol}")
+                logger.error(f"# X Could not fetch market data for {symbol}")
                 return None
             
             # Use VIPER scoring service if available
@@ -204,17 +201,17 @@ class EnhancedTradeExecutionEngine:
                     'recommended_order_type': signal.get('order_type', 'MARKET') if signal else 'MARKET'
                 }
                 
-                logger.info(f"✅ {symbol} opportunity found: Score {viper_result['overall_score']:.1f}, "
+                logger.info(f"# Check {symbol} opportunity found: Score {viper_result['overall_score']:.1f}, "
                           f"Cost ${execution_cost:.2f}, "
                           f"Signal: {signal['type'] if signal else 'None'}")
                 
                 return opportunity
             else:
-                logger.warning("⚠️ VIPER service not available, using basic analysis")
+                logger.warning("# Warning VIPER service not available, using basic analysis")
                 return None
                 
         except Exception as e:
-            logger.error(f"❌ Error analyzing opportunity for {symbol}: {e}")
+            logger.error(f"# X Error analyzing opportunity for {symbol}: {e}")
             return None
     
     def calculate_position_size(self, symbol: str, price: float, execution_cost: float, 
@@ -255,7 +252,7 @@ class EnhancedTradeExecutionEngine:
             return position_size, risk_management
             
         except Exception as e:
-            logger.error(f"❌ Error calculating position size: {e}")
+            logger.error(f"# X Error calculating position size: {e}")
             return 0.001, {}  # Fallback minimum size
     
     async def execute_trade(self, opportunity: Dict[str, Any]) -> TradeResult:
@@ -280,10 +277,10 @@ class EnhancedTradeExecutionEngine:
             
             # Execute real trade
             try:
-                logger.info(f"🚀 EXECUTING LIVE {side} Trade for {symbol}:")
+                logger.info(f"# Rocket EXECUTING LIVE {side} Trade for {symbol}:")
                 logger.info(f"   💰 Entry Price: ${current_price:.2f}")
-                logger.info(f"   📊 Position Size: {position_size:.6f}")
-                logger.info(f"   🎯 Order Type: {order_type}")
+                logger.info(f"   # Chart Position Size: {position_size:.6f}")
+                logger.info(f"   # Target Order Type: {order_type}")
                 logger.info(f"   💸 Execution Cost: ${execution_cost:.2f}")
                 logger.info(f"   🛡️ Stop Loss: {risk_mgmt.get('stop_loss_pct', 0)*100:.1f}%")
                 
@@ -295,7 +292,7 @@ class EnhancedTradeExecutionEngine:
                 # For now, this is a placeholder that requires integration
                 
                 logger.warning("🚧 Live trading execution requires integration with exchange-connector service")
-                logger.info("💡 Connect this to: http://exchange-connector:8005/execute_order")
+                logger.info("# Idea Connect this to: http://exchange-connector:8005/execute_order")
                 
                 # Store position for tracking
                 self.active_positions[trade_id] = {
@@ -323,7 +320,7 @@ class EnhancedTradeExecutionEngine:
                 )
                 
             except Exception as trade_error:
-                logger.error(f"❌ Live trade execution failed: {trade_error}")
+                logger.error(f"# X Live trade execution failed: {trade_error}")
                 result = TradeResult(success=False, error=str(trade_error))
             
             # Record trade
@@ -336,12 +333,12 @@ class EnhancedTradeExecutionEngine:
             return result
             
         except Exception as e:
-            logger.error(f"❌ Trade execution failed: {e}")
+            logger.error(f"# X Trade execution failed: {e}")
             return TradeResult(success=False, error=str(e))
     
     async def scan_and_trade(self, symbols: List[str]) -> Dict[str, Any]:
         """Scan symbols and execute trades based on VIPER analysis"""
-        logger.info(f"🔍 Scanning {len(symbols)} symbols for trading opportunities...")
+        logger.info(f"# Search Scanning {len(symbols)} symbols for trading opportunities...")
         
         results = {
             'scanned': len(symbols),
@@ -371,10 +368,10 @@ class EnhancedTradeExecutionEngine:
                     if trade_result.success:
                         results['trades_executed'] += 1
                         results['total_execution_cost'] += trade_result.execution_cost or 0
-                        logger.info(f"✅ Trade executed for {symbol}: {trade_result.side} at ${trade_result.price:.2f}")
+                        logger.info(f"# Check Trade executed for {symbol}: {trade_result.side} at ${trade_result.price:.2f}")
                     else:
                         results['trades_rejected'] += 1
-                        logger.warning(f"❌ Trade rejected for {symbol}: {trade_result.error}")
+                        logger.warning(f"# X Trade rejected for {symbol}: {trade_result.error}")
                     
                     results['details'].append({
                         'symbol': symbol,
@@ -386,14 +383,14 @@ class EnhancedTradeExecutionEngine:
                 await asyncio.sleep(0.1)
                 
             except Exception as e:
-                logger.error(f"❌ Error processing {symbol}: {e}")
+                logger.error(f"# X Error processing {symbol}: {e}")
                 results['trades_rejected'] += 1
         
         return results
     
     async def run_trading_session(self, symbols: List[str]) -> None:
         """Run a complete trading session"""
-        logger.info("🚀 Starting Enhanced Trading Session")
+        logger.info("# Rocket Starting Enhanced Trading Session")
         logger.info("=" * 80)
         
         try:
@@ -405,22 +402,22 @@ class EnhancedTradeExecutionEngine:
             
             # Print results
             logger.info("=" * 80)
-            logger.info("📊 TRADING SESSION RESULTS")
+            logger.info("# Chart TRADING SESSION RESULTS")
             logger.info("=" * 80)
-            logger.info(f"   🔍 Symbols Scanned: {session_results['scanned']}")
-            logger.info(f"   🎯 Opportunities Found: {session_results['opportunities_found']}")
-            logger.info(f"   ✅ Trades Executed: {session_results['trades_executed']}")
-            logger.info(f"   ❌ Trades Rejected: {session_results['trades_rejected']}")
+            logger.info(f"   # Search Symbols Scanned: {session_results['scanned']}")
+            logger.info(f"   # Target Opportunities Found: {session_results['opportunities_found']}")
+            logger.info(f"   # Check Trades Executed: {session_results['trades_executed']}")
+            logger.info(f"   # X Trades Rejected: {session_results['trades_rejected']}")
             logger.info(f"   💸 Total Execution Cost: ${session_results['total_execution_cost']:.2f}")
             
             if session_results['trades_executed'] > 0:
                 avg_cost = session_results['total_execution_cost'] / session_results['trades_executed']
-                logger.info(f"   📊 Average Execution Cost: ${avg_cost:.2f}")
+                logger.info(f"   # Chart Average Execution Cost: ${avg_cost:.2f}")
                 
                 if avg_cost < 3.0:
-                    logger.info("🎉 SUCCESS: All trades executed with acceptable costs!")
+                    logger.info("# Party SUCCESS: All trades executed with acceptable costs!")
                 else:
-                    logger.warning("⚠️ WARNING: High average execution costs detected")
+                    logger.warning("# Warning WARNING: High average execution costs detected")
             
             # Show active positions
             if self.active_positions:
@@ -431,7 +428,7 @@ class EnhancedTradeExecutionEngine:
                               f"Cost: ${position['execution_cost']:.2f}")
             
         except Exception as e:
-            logger.error(f"❌ Trading session failed: {e}")
+            logger.error(f"# X Trading session failed: {e}")
             import traceback
             logger.error(traceback.format_exc())
         

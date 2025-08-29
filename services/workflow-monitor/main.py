@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Workflow Monitor Service
+# Rocket VIPER Trading Bot - Workflow Monitor Service
 Comprehensive workflow validation and health monitoring for the entire trading system
 
 Features:
@@ -17,17 +17,12 @@ import json
 import time
 import logging
 import asyncio
-import threading
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 import requests
 import psutil
-from concurrent.futures import ThreadPoolExecutor
-import numpy as np
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -193,17 +188,17 @@ class WorkflowMonitor:
         # Initialize service configurations
         self.initialize_services()
 
-        logger.info("📊 Workflow Monitor initialized")
+        logger.info("# Chart Workflow Monitor initialized")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def initialize_services(self):
@@ -307,7 +302,7 @@ class WorkflowMonitor:
                 await asyncio.sleep(HEALTH_CHECK_INTERVAL)
 
             except Exception as e:
-                logger.error(f"❌ Error in health check loop: {e}")
+                logger.error(f"# X Error in health check loop: {e}")
                 await asyncio.sleep(10)
 
     def validate_workflow(self, workflow_name: str) -> Dict[str, Any]:
@@ -357,7 +352,7 @@ class WorkflowMonitor:
             return workflow_result
 
         except Exception as e:
-            logger.error(f"❌ Error validating workflow {workflow_name}: {e}")
+            logger.error(f"# X Error validating workflow {workflow_name}: {e}")
             return {'error': str(e)}
 
     async def run_workflow_validations(self):
@@ -365,7 +360,7 @@ class WorkflowMonitor:
         while self.is_running:
             try:
                 for workflow_name in self.workflows.keys():
-                    logger.info(f"🔍 Validating workflow: {workflow_name}")
+                    logger.info(f"# Search Validating workflow: {workflow_name}")
                     result = self.validate_workflow(workflow_name)
 
                     # Store result in Redis
@@ -383,7 +378,7 @@ class WorkflowMonitor:
                 await asyncio.sleep(WORKFLOW_VALIDATION_INTERVAL)
 
             except Exception as e:
-                logger.error(f"❌ Error in workflow validation loop: {e}")
+                logger.error(f"# X Error in workflow validation loop: {e}")
                 await asyncio.sleep(60)
 
     async def collect_performance_metrics(self):
@@ -434,7 +429,7 @@ class WorkflowMonitor:
                 await asyncio.sleep(PERFORMANCE_MONITORING_INTERVAL)
 
             except Exception as e:
-                logger.error(f"❌ Error collecting performance metrics: {e}")
+                logger.error(f"# X Error collecting performance metrics: {e}")
                 await asyncio.sleep(60)
 
     def get_redis_metrics(self) -> Dict[str, Any]:
@@ -449,7 +444,7 @@ class WorkflowMonitor:
                 'keyspace_misses': info.get('keyspace_misses', 0)
             }
         except Exception as e:
-            logger.error(f"❌ Error getting Redis metrics: {e}")
+            logger.error(f"# X Error getting Redis metrics: {e}")
             return {}
 
     def generate_alert(self, alert: Dict[str, Any]):
@@ -465,7 +460,7 @@ class WorkflowMonitor:
             # Keep only recent alerts
             cutoff_time = datetime.now() - timedelta(hours=24)
             self.alerts = [a for a in self.alerts
-                          if datetime.fromisoformat(a['timestamp']) > cutoff_time]
+                          if datetime.fromisoformat(a['timestamp']) > cutoff_time]:
 
             # Publish alert
             self.redis_client.publish('system_alerts', json.dumps(alert))
@@ -475,7 +470,7 @@ class WorkflowMonitor:
             logger.warning(f"🚨 ALERT [{alert['severity'].upper()}]: {alert['message']}")
 
         except Exception as e:
-            logger.error(f"❌ Error generating alert: {e}")
+            logger.error(f"# X Error generating alert: {e}")
 
     def get_system_overview(self) -> Dict[str, Any]:
         """Get comprehensive system overview"""
@@ -502,7 +497,7 @@ class WorkflowMonitor:
             health_score = (healthy_services / total_services) * 100 if total_services > 0 else 0
 
             successful_workflows = sum(1 for w in workflow_status.values()
-                                     if w.get('status') == 'success')
+                                     if w.get('status') == 'success'):
             total_workflows = len(workflow_status)
             workflow_score = (successful_workflows / total_workflows) * 100 if total_workflows > 0 else 0
 
@@ -530,11 +525,11 @@ class WorkflowMonitor:
                 },
                 'performance': performance,
                 'active_alerts': len([a for a in self.alerts
-                                    if (datetime.now() - datetime.fromisoformat(a['timestamp'])).seconds < 3600])
+                                    if (datetime.now() - datetime.fromisoformat(a['timestamp'])).seconds < 3600]):
             }
 
         except Exception as e:
-            logger.error(f"❌ Error getting system overview: {e}")
+            logger.error(f"# X Error getting system overview: {e}")
             return {'error': str(e)}
 
     def start_background_tasks(self):
@@ -548,12 +543,12 @@ class WorkflowMonitor:
         # Start performance monitoring
         asyncio.create_task(self.collect_performance_metrics())
 
-        logger.info("🎯 Background monitoring tasks started")
+        logger.info("# Target Background monitoring tasks started")
 
     def start(self):
         """Start the workflow monitor service"""
         try:
-            logger.info("🚀 Starting Workflow Monitor Service...")
+            logger.info("# Rocket Starting Workflow Monitor Service...")
 
             # Connect to Redis
             if not self.initialize_redis():
@@ -578,7 +573,7 @@ class WorkflowMonitor:
             logger.info("⏹️ Stopping Workflow Monitor Service...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Workflow Monitor Service error: {e}")
+            logger.error(f"# X Workflow Monitor Service error: {e}")
             self.stop()
 
     def check_alert_escalation(self):
@@ -591,7 +586,7 @@ class WorkflowMonitor:
                 time_since_alert = (current_time - alert_time).seconds
 
                 # Escalate if alert is older than escalation time and not already escalated
-                if (time_since_alert > ALERT_ESCALATION_TIME and
+                if (time_since_alert > ALERT_ESCALATION_TIME and:
                     alert.get('escalation_level', 1) < 3):
 
                     alert['escalation_level'] = alert.get('escalation_level', 1) + 1
@@ -603,12 +598,12 @@ class WorkflowMonitor:
                     logger.error(f"🚨 ESCALATED ALERT [{alert['severity'].upper()}]: {alert['message']}")
 
         except Exception as e:
-            logger.error(f"❌ Error checking alert escalation: {e}")
+            logger.error(f"# X Error checking alert escalation: {e}")
 
     def stop(self):
         """Stop the workflow monitor service"""
         self.is_running = False
-        logger.info("✅ Workflow Monitor Service stopped")
+        logger.info("# Check Workflow Monitor Service stopped")
 
 # FastAPI application
 app = FastAPI(
@@ -623,12 +618,12 @@ workflow_monitor = WorkflowMonitor()
 async def startup_event():
     """Initialize services on startup"""
     if not workflow_monitor.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     # Start background tasks
     asyncio.create_task(asyncio.to_thread(workflow_monitor.start_background_tasks))
-    logger.info("✅ Workflow Monitor Service started successfully")
+    logger.info("# Check Workflow Monitor Service started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -704,7 +699,7 @@ async def get_alerts(hours: int = Query(24, description="Hours of alert history"
     try:
         cutoff_time = datetime.now() - timedelta(hours=hours)
         recent_alerts = [alert for alert in workflow_monitor.alerts
-                        if datetime.fromisoformat(alert['timestamp']) > cutoff_time]
+                        if datetime.fromisoformat(alert['timestamp']) > cutoff_time]:
 
         return {
             "alerts": recent_alerts,

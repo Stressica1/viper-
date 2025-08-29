@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-🎯 MCP BACKTESTING & ENTRY SIGNAL OPTIMIZER
+# Target MCP BACKTESTING & ENTRY SIGNAL OPTIMIZER
 Comprehensive backtesting and entry signal optimization for VIPER trading system
 
 This optimizer provides:
-✅ Historical backtesting of trading strategies
-✅ Entry signal analysis to avoid initial drawdowns
-✅ Performance metrics optimization
-✅ Risk-adjusted strategy improvement
-✅ GitHub MCP integration for results tracking
-✅ Automated parameter optimization
+# Check Historical backtesting of trading strategies
+# Check Entry signal analysis to avoid initial drawdowns
+# Check Performance metrics optimization
+# Check Risk-adjusted strategy improvement
+# Check GitHub MCP integration for results tracking
+# Check Automated parameter optimization
 """
 
 import os
@@ -17,13 +17,10 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass, asdict
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import ccxt
 
 # Add project root to path
@@ -130,7 +127,7 @@ class MCPBacktestingOptimizer:
             'max_trade_size': 1000.0
         }
 
-        logger.info("🎯 MCP Backtesting Optimizer initialized")
+        logger.info("# Target MCP Backtesting Optimizer initialized")
 
     def _generate_optimization_configs(self) -> List[OptimizationParameters]:
         """Generate parameter combinations for optimization"""
@@ -171,7 +168,7 @@ class MCPBacktestingOptimizer:
                     )
                     configs.append(config)
 
-        logger.info(f"📊 Generated {len(configs)} optimization configurations")
+        logger.info(f"# Chart Generated {len(configs)} optimization configurations")
         return configs
 
     async def initialize_exchange(self):
@@ -190,11 +187,11 @@ class MCPBacktestingOptimizer:
             })
 
             self.exchange.load_markets()
-            logger.info("✅ Exchange connected for backtesting")
+            logger.info("# Check Exchange connected for backtesting")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Exchange connection failed: {e}")
+            logger.error(f"# X Exchange connection failed: {e}")
             return False
 
     async def fetch_historical_data(self, symbol: str, timeframe: str, days: int = 90) -> Optional[pd.DataFrame]:
@@ -236,11 +233,11 @@ class MCPBacktestingOptimizer:
             cache_key = f"{symbol}_{timeframe}"
             self.historical_data[cache_key] = df
 
-            logger.info(f"✅ Fetched {len(df)} candles for {symbol} {timeframe}")
+            logger.info(f"# Check Fetched {len(df)} candles for {symbol} {timeframe}")
             return df
 
         except Exception as e:
-            logger.error(f"❌ Failed to fetch historical data for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Failed to fetch historical data for {symbol} {timeframe}: {e}")
             return None
 
     def _timeframe_to_minutes(self, timeframe: str) -> int:
@@ -331,11 +328,11 @@ class MCPBacktestingOptimizer:
                 )
 
                 self.entry_analyses.append(analysis)
-                logger.info(f"✅ Entry signal analysis completed for {symbol} {timeframe}")
+                logger.info(f"# Check Entry signal analysis completed for {symbol} {timeframe}")
                 return analysis
 
         except Exception as e:
-            logger.error(f"❌ Entry signal analysis failed: {e}")
+            logger.error(f"# X Entry signal analysis failed: {e}")
             return None
 
     async def _get_trend_signal(self, detector: AdvancedTrendDetector, symbol: str, timeframe: str, df: pd.DataFrame) -> Optional[TrendSignal]:
@@ -619,11 +616,11 @@ class MCPBacktestingOptimizer:
                 )
 
                 self.backtest_results.append(result)
-                logger.info(f"✅ Backtest completed for {symbol} {timeframe}: {win_rate:.1f}% win rate, ${total_pnl:.2f} P&L")
+                logger.info(f"# Check Backtest completed for {symbol} {timeframe}: {win_rate:.1f}% win rate, ${total_pnl:.2f} P&L")
                 return result
 
         except Exception as e:
-            logger.error(f"❌ Backtest failed for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Backtest failed for {symbol} {timeframe}: {e}")
             return None
 
     async def _generate_entry_signal(self, df: pd.DataFrame, config: OptimizationParameters) -> Optional[Dict[str, Any]]:
@@ -640,7 +637,7 @@ class MCPBacktestingOptimizer:
             slow_ma = df['close'].rolling(config.slow_ma_length).mean()
 
             # Bullish signal: fast MA crosses above slow MA
-            if (fast_ma.iloc[-1] > slow_ma.iloc[-1] and
+            if (fast_ma.iloc[-1] > slow_ma.iloc[-1] and:
                 fast_ma.iloc[-2] <= slow_ma.iloc[-2]):
                 return {
                     'direction': 'BUY',
@@ -649,7 +646,7 @@ class MCPBacktestingOptimizer:
                 }
 
             # Bearish signal: fast MA crosses below slow MA
-            elif (fast_ma.iloc[-1] < slow_ma.iloc[-1] and
+            elif (fast_ma.iloc[-1] < slow_ma.iloc[-1] and:
                   fast_ma.iloc[-2] >= slow_ma.iloc[-2]):
                 return {
                     'direction': 'SELL',
@@ -675,7 +672,7 @@ class MCPBacktestingOptimizer:
             Optimal parameters
         """
         try:
-            logger.info(f"🎯 Starting strategy optimization for {symbol} {timeframe}")
+            logger.info(f"# Target Starting strategy optimization for {symbol} {timeframe}")
 
             # Run backtests for all parameter combinations
             results = []
@@ -686,19 +683,19 @@ class MCPBacktestingOptimizer:
                     results.append((config, result))
 
             if not results:
-                logger.error("❌ No valid backtest results")
+                logger.error("# X No valid backtest results")
                 return None
 
             # Find best configuration based on Sharpe ratio
             best_config = max(results, key=lambda x: x[1].sharpe_ratio)[0]
 
-            logger.info(f"✅ Optimization completed. Best config: MA({best_config.fast_ma_length},{best_config.slow_ma_length}) "
+            logger.info(f"# Check Optimization completed. Best config: MA({best_config.fast_ma_length},{best_config.slow_ma_length}) "
                        f"TP/SL({best_config.take_profit_pct:.1f}%,{best_config.stop_loss_pct:.1f}%)")
 
             return best_config
 
         except Exception as e:
-            logger.error(f"❌ Strategy optimization failed: {e}")
+            logger.error(f"# X Strategy optimization failed: {e}")
             return None
 
     async def run_comprehensive_analysis(self, symbols: List[str], timeframes: List[str], days: int = 30):
@@ -711,13 +708,13 @@ class MCPBacktestingOptimizer:
             days: Historical period
         """
         try:
-            logger.info("🚀 Starting comprehensive analysis...")
-            logger.info(f"📊 Analyzing {len(symbols)} symbols across {len(timeframes)} timeframes")
+            logger.info("# Rocket Starting comprehensive analysis...")
+            logger.info(f"# Chart Analyzing {len(symbols)} symbols across {len(timeframes)} timeframes")
 
             # Analyze entry signals for all combinations
             for symbol in symbols:
                 for timeframe in timeframes:
-                    logger.info(f"🔍 Analyzing {symbol} {timeframe}...")
+                    logger.info(f"# Search Analyzing {symbol} {timeframe}...")
 
                     # Entry signal analysis
                     entry_analysis = await self.analyze_entry_signals(symbol, timeframe, days)
@@ -731,10 +728,10 @@ class MCPBacktestingOptimizer:
             # Generate comprehensive summary
             await self.generate_comprehensive_summary()
 
-            logger.info("✅ Comprehensive analysis completed")
+            logger.info("# Check Comprehensive analysis completed")
 
         except Exception as e:
-            logger.error(f"❌ Comprehensive analysis failed: {e}")
+            logger.error(f"# X Comprehensive analysis failed: {e}")
 
     async def generate_analysis_report(self, symbol: str, timeframe: str, entry_analysis: EntrySignalAnalysis, optimal_config: OptimizationParameters):
         """Generate detailed analysis report"""
@@ -763,10 +760,10 @@ class MCPBacktestingOptimizer:
                 'report_file': report_file
             })
 
-            logger.info(f"✅ Analysis report generated: {report_file}")
+            logger.info(f"# Check Analysis report generated: {report_file}")
 
         except Exception as e:
-            logger.error(f"❌ Report generation failed: {e}")
+            logger.error(f"# X Report generation failed: {e}")
 
     def _generate_recommendations(self, entry_analysis: EntrySignalAnalysis, optimal_config: OptimizationParameters) -> List[str]:
         """Generate trading recommendations based on analysis"""
@@ -774,18 +771,18 @@ class MCPBacktestingOptimizer:
 
         if entry_analysis:
             if entry_analysis.entry_success_rate > 70:
-                recommendations.append("✅ Entry signals show high success rate - consider increasing position sizes")
+                recommendations.append("# Check Entry signals show high success rate - consider increasing position sizes")
             elif entry_analysis.entry_success_rate < 40:
-                recommendations.append("⚠️ Entry signals show low success rate - consider stricter entry filters")
+                recommendations.append("# Warning Entry signals show low success rate - consider stricter entry filters")
 
             if entry_analysis.avg_entry_drawdown < -0.05:
                 recommendations.append("🚨 High initial drawdowns detected - implement entry price validation")
             elif entry_analysis.immediate_loss_rate > 30:
-                recommendations.append("⚠️ High immediate loss rate - optimize entry timing")
+                recommendations.append("# Warning High immediate loss rate - optimize entry timing")
 
         if optimal_config:
-            recommendations.append(f"📊 Optimal parameters found: MA({optimal_config.fast_ma_length},{optimal_config.slow_ma_length})")
-            recommendations.append(f"🎯 Risk settings: TP {optimal_config.take_profit_pct}%, SL {optimal_config.stop_loss_pct}%")
+            recommendations.append(f"# Chart Optimal parameters found: MA({optimal_config.fast_ma_length},{optimal_config.slow_ma_length})")
+            recommendations.append(f"# Target Risk settings: TP {optimal_config.take_profit_pct}%, SL {optimal_config.stop_loss_pct}%")
 
         return recommendations
 
@@ -837,10 +834,10 @@ class MCPBacktestingOptimizer:
                 'profitable_strategies': len(profitable_strategies) if 'profitable_strategies' in summary.get('backtest_insights', {}) else 0
             })
 
-            logger.info(f"✅ Comprehensive summary generated: {summary_file}")
+            logger.info(f"# Check Comprehensive summary generated: {summary_file}")
 
         except Exception as e:
-            logger.error(f"❌ Summary generation failed: {e}")
+            logger.error(f"# X Summary generation failed: {e}")
 
     def _generate_overall_recommendations(self) -> List[str]:
         """Generate overall optimization recommendations"""
@@ -850,17 +847,17 @@ class MCPBacktestingOptimizer:
         if self.entry_analyses:
             avg_success = np.mean([a.entry_success_rate for a in self.entry_analyses])
             if avg_success > 65:
-                recommendations.append("✅ Overall entry signals are performing well - maintain current filters")
+                recommendations.append("# Check Overall entry signals are performing well - maintain current filters")
             else:
-                recommendations.append("⚠️ Entry signal performance needs improvement - consider additional filters")
+                recommendations.append("# Warning Entry signal performance needs improvement - consider additional filters")
 
         # Strategy recommendations
         if self.backtest_results:
             profitable_count = len([r for r in self.backtest_results if r.net_pnl > 0])
             if profitable_count > len(self.backtest_results) * 0.6:
-                recommendations.append("✅ Majority of strategies are profitable - focus on position sizing")
+                recommendations.append("# Check Majority of strategies are profitable - focus on position sizing")
             else:
-                recommendations.append("🔧 Strategy optimization needed - review parameter combinations")
+                recommendations.append("# Tool Strategy optimization needed - review parameter combinations")
 
         return recommendations
 
@@ -889,11 +886,11 @@ async def create_backtesting_task(config: Dict[str, Any]) -> str:
             'days': config.get('days', 30)
         })
 
-        logger.info(f"✅ Backtesting task created: {task_id}")
+        logger.info(f"# Check Backtesting task created: {task_id}")
         return task_id
 
     except Exception as e:
-        logger.error(f"❌ Task creation failed: {e}")
+        logger.error(f"# X Task creation failed: {e}")
         return None
 
 async def run_backtesting_analysis(symbols: List[str], timeframes: List[str], days: int = 30) -> Dict[str, Any]:
@@ -921,7 +918,7 @@ async def run_backtesting_analysis(symbols: List[str], timeframes: List[str], da
         }
 
     except Exception as e:
-        logger.error(f"❌ Analysis failed: {e}")
+        logger.error(f"# X Analysis failed: {e}")
         return {'status': 'failed', 'error': str(e)}
 
 async def get_entry_signal_recommendations(symbol: str, timeframe: str) -> Dict[str, Any]:
@@ -954,14 +951,12 @@ async def get_entry_signal_recommendations(symbol: str, timeframe: str) -> Dict[
             return {'status': 'no_data'}
 
     except Exception as e:
-        logger.error(f"❌ Recommendations failed: {e}")
+        logger.error(f"# X Recommendations failed: {e}")
         return {'status': 'error', 'error': str(e)}
 
 # Main execution
 async def main():
     """Main backtesting and optimization execution"""
-    print("🎯 MCP BACKTESTING & ENTRY SIGNAL OPTIMIZER")
-    print("=" * 60)
 
     # Default analysis parameters
     symbols = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
@@ -978,31 +973,23 @@ async def main():
         }
 
         task_id = await create_backtesting_task(task_config)
-        print(f"📋 Task Created: {task_id}")
 
         # Run comprehensive analysis
-        print("🚀 Running comprehensive analysis...")
         results = await run_backtesting_analysis(symbols, timeframes, days)
 
-        print("📊 Analysis Results:")
-        print(f"   Status: {results['status']}")
         print(f"   Symbols Analyzed: {results['symbols_analyzed']}")
         print(f"   Entry Analyses: {results['entry_analyses']}")
-        print(f"   Backtest Results: {results['backtest_results']}")
 
         # Get entry signal recommendations
-        print("\n🎯 Entry Signal Recommendations:")
         for symbol in symbols:
             for timeframe in timeframes:
                 recs = await get_entry_signal_recommendations(symbol, timeframe)
                 if recs.get('success_rate'):
                     print(f"   {symbol} {timeframe}: {recs['success_rate']:.1f}% success rate")
 
-        print("✅ Backtesting and optimization completed!")
 
     except Exception as e:
-        logger.error(f"❌ Execution failed: {e}")
-        print(f"❌ ERROR: {e}")
+        logger.error(f"# X Execution failed: {e}")
         return 1
 
     return 0

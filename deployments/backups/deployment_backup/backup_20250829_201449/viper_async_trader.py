@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER ASYNC TRADING SYSTEM WITH JOBS & TASKS
+# Rocket VIPER ASYNC TRADING SYSTEM WITH JOBS & TASKS
 Advanced concurrent trading with asyncio job management
 Features:
 - Concurrent scan/score/trade operations
@@ -14,34 +14,28 @@ import asyncio
 import aiohttp
 import logging
 import ccxt.pro as ccxt
-import json
 import random
+import secrets
 import time
-import numpy as np
-import pandas as pd
 from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
 from dataclasses import dataclass
-from concurrent.futures import ThreadPoolExecutor
 # Import enhanced components with fallbacks
 try:
     from enhanced_system_integrator import get_integrator
-    from enhanced_technical_optimizer import EnhancedTechnicalOptimizer, EnhancedTrendDirection, EnhancedTrendStrength
-    from optimized_market_data_streamer import OptimizedMarketDataStreamer
-    from performance_monitoring_system import PerformanceMonitoringSystem
     ENHANCED_TECHNICAL_AVAILABLE = True
     OPTIMIZED_DATA_AVAILABLE = True
     PERFORMANCE_MONITORING_AVAILABLE = True
 except ImportError as e:
     # Fallback to basic components
-    logger.warning(f"⚠️ Enhanced components not available: {e}")
+    logger.warning(f"# Warning Enhanced components not available: {e}")
     try:
         from advanced_trend_detector import AdvancedTrendDetector, TrendConfig, TrendDirection, TrendStrength
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
     except ImportError:
-        logger.error("❌ Neither enhanced nor basic components available")
+        logger.error("# X Neither enhanced nor basic components available")
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
@@ -127,19 +121,19 @@ class ViperAsyncTrader:
                 if hasattr(integrator, 'modules') and 'optimized_market_data_streamer' in integrator.modules:
                     self.optimized_data_streamer = integrator.get_module('optimized_market_data_streamer')
                     if self.optimized_data_streamer:
-                        logger.info("✅ Optimized Market Data Streamer integrated")
+                        logger.info("# Check Optimized Market Data Streamer integrated")
                     else:
-                        logger.warning("⚠️ Optimized Data Streamer not available from integrator")
+                        logger.warning("# Warning Optimized Data Streamer not available from integrator")
                         self.use_optimized_data = False
                 else:
-                    logger.warning("⚠️ Enhanced system not initialized, using basic data fetching")
+                    logger.warning("# Warning Enhanced system not initialized, using basic data fetching")
                     self.use_optimized_data = False
             except Exception as e:
-                logger.error(f"❌ Error getting optimized data streamer: {e}")
+                logger.error(f"# X Error getting optimized data streamer: {e}")
                 self.use_optimized_data = False
         else:
             self.use_optimized_data = False
-            logger.info("📊 Using basic data fetching (optimized not available)")
+            logger.info("# Chart Using basic data fetching (optimized not available)")
 
         # Initialize Performance Monitoring
         if PERFORMANCE_MONITORING_AVAILABLE:
@@ -151,21 +145,21 @@ class ViperAsyncTrader:
                 if hasattr(integrator, 'modules') and 'performance_monitoring_system' in integrator.modules:
                     self.performance_monitor = integrator.get_module('performance_monitoring_system')
                     if self.performance_monitor:
-                        logger.info("✅ Performance Monitoring System integrated")
+                        logger.info("# Check Performance Monitoring System integrated")
                         # Start monitoring for this component
                         self.performance_monitor.start_monitoring()
                     else:
-                        logger.warning("⚠️ Performance Monitoring not available from integrator")
+                        logger.warning("# Warning Performance Monitoring not available from integrator")
                         self.use_performance_monitoring = False
                 else:
-                    logger.warning("⚠️ Enhanced system not initialized, performance monitoring disabled")
+                    logger.warning("# Warning Enhanced system not initialized, performance monitoring disabled")
                     self.use_performance_monitoring = False
             except Exception as e:
-                logger.error(f"❌ Error getting performance monitor: {e}")
+                logger.error(f"# X Error getting performance monitor: {e}")
                 self.use_performance_monitoring = False
         else:
             self.use_performance_monitoring = False
-            logger.info("📊 Performance monitoring not available")
+            logger.info("# Chart Performance monitoring not available")
 
         # Initialize Technical Analysis with Enhanced Support
         if ENHANCED_TECHNICAL_AVAILABLE:
@@ -179,15 +173,15 @@ class ViperAsyncTrader:
                 if hasattr(integrator, 'modules') and 'enhanced_technical_optimizer' in integrator.modules:
                     self.enhanced_technical = integrator.get_module('enhanced_technical_optimizer')
                     if self.enhanced_technical:
-                        logger.info("✅ Enhanced Technical Optimizer integrated")
+                        logger.info("# Check Enhanced Technical Optimizer integrated")
                     else:
-                        logger.warning("⚠️ Enhanced Technical Optimizer not available from integrator")
+                        logger.warning("# Warning Enhanced Technical Optimizer not available from integrator")
                         self.use_enhanced_technical = False
                 else:
-                    logger.warning("⚠️ Enhanced system not initialized, using basic technical analysis")
+                    logger.warning("# Warning Enhanced system not initialized, using basic technical analysis")
                     self.use_enhanced_technical = False
             except Exception as e:
-                logger.error(f"❌ Error getting enhanced technical optimizer: {e}")
+                logger.error(f"# X Error getting enhanced technical optimizer: {e}")
                 self.use_enhanced_technical = False
 
             if not self.use_enhanced_technical:
@@ -212,12 +206,12 @@ class ViperAsyncTrader:
             trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
         )
         self.trend_detector = AdvancedTrendDetector(self.trend_config)
-        logger.info("📊 Using basic trend detector (enhanced not available)")
+        logger.info("# Chart Using basic trend detector (enhanced not available)")
         
-        logger.info("🚀 VIPER ASYNC TRADER INITIALIZED")
+        logger.info("# Rocket VIPER ASYNC TRADER INITIALIZED")
         logger.info(f"💼 Max Concurrent Jobs: {self.max_concurrent_jobs}")
-        logger.info(f"📊 Max Positions: {self.max_positions}")
-        logger.info(f"🎯 Trend Config: MA({self.trend_config.fast_ma_length},{self.trend_config.slow_ma_length},{self.trend_config.trend_ma_length}) "
+        logger.info(f"# Chart Max Positions: {self.max_positions}")
+        logger.info(f"# Target Trend Config: MA({self.trend_config.fast_ma_length},{self.trend_config.slow_ma_length},{self.trend_config.trend_ma_length}) "
                    f"ATR({self.trend_config.atr_length}x{self.trend_config.atr_multiplier})")
 
     async def get_account_balance(self) -> float:
@@ -230,10 +224,10 @@ class ViperAsyncTrader:
                 logger.info(f"💰 Swap Wallet Balance: ${usdt_balance:.2f} USDT (available)")
                 return usdt_balance
             else:
-                logger.error("❌ USDT balance not found in swap wallet")
+                logger.error("# X USDT balance not found in swap wallet")
                 return 0.0
         except Exception as e:
-            logger.error(f"❌ Failed to fetch swap wallet balance: {e}")
+            logger.error(f"# X Failed to fetch swap wallet balance: {e}")
             # Check if it's an API key issue
             if "Apikey does not exist" in str(e):
                 logger.error("🚫 REAL DATA ONLY: Invalid API key - cannot proceed with real trading")
@@ -242,7 +236,7 @@ class ViperAsyncTrader:
                 logger.error("   2. Create a new API key with trading permissions")
                 logger.error("   3. Update BITGET_API_KEY, BITGET_API_SECRET, and BITGET_API_PASSWORD in .env")
                 logger.error("   4. Restart the live trading engine")
-                logger.error("❌ System will not operate with invalid API credentials")
+                logger.error("# X System will not operate with invalid API credentials")
                 raise Exception("REAL DATA ONLY: Invalid API credentials - exiting")
             return 0.0
 
@@ -267,7 +261,7 @@ class ViperAsyncTrader:
             min_contract_size = 0.001  # 0.001 BTC minimum
             position_size = max(leveraged_position_size, min_contract_size)
 
-            logger.info(f"🎯 Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
                        f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
                        f"({leverage}x leverage) → Final Size={position_size:.6f}")
@@ -275,7 +269,7 @@ class ViperAsyncTrader:
             return position_size
 
         except Exception as e:
-            logger.error(f"❌ Error calculating position size: {e}")
+            logger.error(f"# X Error calculating position size: {e}")
             # Fallback to minimum size
             return 0.001
 
@@ -301,25 +295,25 @@ class ViperAsyncTrader:
             
             # Load markets
             await self.exchange.load_markets()
-            logger.info(f"✅ Connected to Bitget Pro - {len(self.exchange.markets)} markets")
+            logger.info(f"# Check Connected to Bitget Pro - {len(self.exchange.markets)} markets")
             
             # Initialize trend detector with same exchange
             self.trend_detector.exchange = self.exchange
             
             # Get available pairs
             swap_pairs = [symbol for symbol, market in self.exchange.markets.items() 
-                         if market.get('type') == 'swap' and 'USDT' in symbol]
-            logger.info(f"📊 Found {len(swap_pairs)} USDT swap pairs")
+                         if market.get('type') == 'swap' and 'USDT' in symbol]:
+            logger.info(f"# Chart Found {len(swap_pairs)} USDT swap pairs")
             
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to connect to exchange: {e}")
+            logger.error(f"# X Failed to connect to exchange: {e}")
             return False
 
     def create_job(self, job_type: str, **kwargs) -> TradingJob:
         """Create a new trading job"""
-        job_id = f"{job_type}_{int(time.time() * 1000)}_{random.randint(1000, 9999)}"
+        job_id = f"{job_type}_{int(time.time() * 1000)}_{secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1000, 9999)}"
         
         job = TradingJob(
             job_id=job_id,
@@ -356,7 +350,7 @@ class ViperAsyncTrader:
             job.result = result
             self.completed_jobs += 1
             
-            logger.debug(f"✅ Job {job.job_id} completed")
+            logger.debug(f"# Check Job {job.job_id} completed")
             return result
             
         except Exception as e:
@@ -365,7 +359,7 @@ class ViperAsyncTrader:
             job.completed_at = datetime.now()
             self.failed_jobs += 1
             
-            logger.error(f"❌ Job {job.job_id} failed: {e}")
+            logger.error(f"# X Job {job.job_id} failed: {e}")
             return {}
 
     async def scan_opportunities(self) -> List[TradingOpportunity]:
@@ -401,10 +395,10 @@ class ViperAsyncTrader:
             # Sort by score
             opportunities.sort(key=lambda x: x.score, reverse=True)
             
-            logger.info(f"🔍 Scanned {len(scan_symbols)} symbols, found {len(opportunities)} opportunities")
+            logger.info(f"# Search Scanned {len(scan_symbols)} symbols, found {len(opportunities)} opportunities")
             
         except Exception as e:
-            logger.error(f"❌ Error in scan_opportunities: {e}")
+            logger.error(f"# X Error in scan_opportunities: {e}")
         
         return opportunities
 
@@ -431,10 +425,10 @@ class ViperAsyncTrader:
                             'low': latest['low']
                         }
                     else:
-                        logger.debug(f"⚠️ Optimized streamer returned no data for {symbol}, falling back to exchange")
+                        logger.debug(f"# Warning Optimized streamer returned no data for {symbol}, falling back to exchange")
 
                 except Exception as e:
-                    logger.debug(f"⚠️ Optimized data fetch failed for {symbol}: {e}, falling back to exchange")
+                    logger.debug(f"# Warning Optimized data fetch failed for {symbol}: {e}, falling back to exchange")
 
             # Fallback to direct exchange call
             ticker = self.exchange.fetch_ticker(symbol)  # Synchronous call
@@ -461,7 +455,7 @@ class ViperAsyncTrader:
             return opportunity.score if opportunity else 0.0
             
         except Exception as e:
-            logger.error(f"❌ Error scoring {symbol}: {e}")
+            logger.error(f"# X Error scoring {symbol}: {e}")
             return 0.0
 
     async def score_opportunity_data(self, ticker_data: Dict) -> Optional[TradingOpportunity]:
@@ -534,14 +528,14 @@ class ViperAsyncTrader:
             elif price_score < 40:  # Bearish momentum
                 recommended_side = 'sell'
             else:
-                recommended_side = random.choice(['buy', 'sell'])
+                recommended_side = secrets.choice(['buy', 'sell'])
                 confidence *= 0.8  # Reduce confidence for random direction
             
             # Enhanced threshold with trend consideration
             min_score = 0.6 if trend_score >= 70 else 0.65
             
             if enhanced_viper_score > min_score:
-                logger.info(f"🎯 Enhanced VIPER Score for {symbol}: {enhanced_viper_score:.3f} ({strength}) - "
+                logger.info(f"# Target Enhanced VIPER Score for {symbol}: {enhanced_viper_score:.3f} ({strength}) - "
                            f"V:{volume_score:.1f} P:{price_score:.1f} E:{external_score:.1f} "
                            f"R:{range_score:.1f} T:{trend_score:.1f} ({trend_direction.value if trend_direction else 'N/A'})")
                 
@@ -558,7 +552,7 @@ class ViperAsyncTrader:
             return None
             
         except Exception as e:
-            logger.error(f"❌ Error scoring opportunity data: {e}")
+            logger.error(f"# X Error scoring opportunity data: {e}")
             return None
 
     async def calculate_volume_score(self, symbol: str, current_volume: float) -> float:
@@ -587,7 +581,7 @@ class ViperAsyncTrader:
             return min(100.0, max(0.0, base_score))
             
         except Exception as e:
-            logger.error(f"❌ Error calculating volume score for {symbol}: {e}")
+            logger.error(f"# X Error calculating volume score for {symbol}: {e}")
             return 50.0
 
     async def calculate_price_score(self, symbol: str, price: float, change_24h: float) -> float:
@@ -623,7 +617,7 @@ class ViperAsyncTrader:
             return min(100.0, max(0.0, base_score))
             
         except Exception as e:
-            logger.error(f"❌ Error calculating price score for {symbol}: {e}")
+            logger.error(f"# X Error calculating price score for {symbol}: {e}")
             return 50.0
 
     async def calculate_external_score(self, symbol: str, price: float) -> float:
@@ -651,13 +645,14 @@ class ViperAsyncTrader:
             
             # Add some randomness to simulate real market microstructure
             import random
+import secrets
             microstructure_factor = random.uniform(0.8, 1.2)
             base_score *= microstructure_factor
             
             return min(100.0, max(0.0, base_score))
             
         except Exception as e:
-            logger.error(f"❌ Error calculating external score for {symbol}: {e}")
+            logger.error(f"# X Error calculating external score for {symbol}: {e}")
             return 50.0
 
     async def calculate_range_score(self, symbol: str, price: float, high: float, low: float) -> float:
@@ -693,7 +688,7 @@ class ViperAsyncTrader:
             return min(100.0, max(0.0, range_score))
             
         except Exception as e:
-            logger.error(f"❌ Error calculating range score for {symbol}: {e}")
+            logger.error(f"# X Error calculating range score for {symbol}: {e}")
             return 50.0
 
     async def calculate_advanced_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
@@ -707,7 +702,7 @@ class ViperAsyncTrader:
                 return await self._calculate_basic_trend_score(symbol)
 
         except Exception as e:
-            logger.error(f"❌ Error in advanced trend score calculation: {e}")
+            logger.error(f"# X Error in advanced trend score calculation: {e}")
             return 50.0, TrendDirection.NEUTRAL if not ENHANCED_TECHNICAL_AVAILABLE else EnhancedTrendDirection.NEUTRAL
 
     async def _calculate_enhanced_trend_score(self, symbol: str) -> Tuple[float, Optional[EnhancedTrendDirection]]:
@@ -717,7 +712,7 @@ class ViperAsyncTrader:
             trend_analysis = await self.enhanced_technical.analyze_enhanced_trend(symbol)
 
             if not trend_analysis:
-                logger.warning(f"⚠️ No enhanced trend analysis for {symbol}")
+                logger.warning(f"# Warning No enhanced trend analysis for {symbol}")
                 return 50.0, EnhancedTrendDirection.NEUTRAL
 
             # Convert trend direction to score
@@ -737,7 +732,7 @@ class ViperAsyncTrader:
 
             final_score = min(100.0, base_score * confidence_multiplier + confluence_bonus)
 
-            logger.info(f"🎯 Enhanced trend score for {symbol}: {final_score:.1f} "
+            logger.info(f"# Target Enhanced trend score for {symbol}: {final_score:.1f} "
                        f"(Direction: {trend_analysis.direction.value}, "
                        f"Confidence: {trend_analysis.confidence:.2f}, "
                        f"Confluence: {trend_analysis.confluence_score:.2f})")
@@ -745,7 +740,7 @@ class ViperAsyncTrader:
             return final_score, trend_analysis.direction
 
         except Exception as e:
-            logger.error(f"❌ Error in enhanced trend score calculation: {e}")
+            logger.error(f"# X Error in enhanced trend score calculation: {e}")
             return 50.0, EnhancedTrendDirection.NEUTRAL
 
     async def _calculate_basic_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
@@ -795,7 +790,7 @@ class ViperAsyncTrader:
             final_score = (base_score * multiplier) + confidence_boost + ma_boost
             final_score = min(100.0, max(0.0, final_score))
 
-            logger.debug(f"📊 Basic trend score for {symbol}: {final_score:.1f} "
+            logger.debug(f"# Chart Basic trend score for {symbol}: {final_score:.1f} "
                         f"(Direction: {consensus_signal.direction.value}, "
                         f"Strength: {consensus_signal.strength.value}, "
                         f"Confidence: {consensus_signal.confidence:.2f})")
@@ -803,7 +798,7 @@ class ViperAsyncTrader:
             return final_score, consensus_signal.direction
 
         except Exception as e:
-            logger.error(f"❌ Error in basic trend score calculation: {e}")
+            logger.error(f"# X Error in basic trend score calculation: {e}")
             return 50.0, TrendDirection.NEUTRAL
 
     async def execute_trade_job(self, symbol: str, side: str) -> Dict:
@@ -812,7 +807,7 @@ class ViperAsyncTrader:
             # Get current balance
             balance = await self.get_account_balance()
             if balance <= 0:
-                logger.error(f"❌ Insufficient balance for {symbol}: ${balance:.2f}")
+                logger.error(f"# X Insufficient balance for {symbol}: ${balance:.2f}")
                 return {}
 
             # Get current price
@@ -831,7 +826,7 @@ class ViperAsyncTrader:
             max_safe_margin = balance * 0.9
 
             if required_margin > max_safe_margin:
-                logger.warning(f"⚠️ Required margin (${required_margin:.2f}) exceeds safe limit (${max_safe_margin:.2f}) for {symbol}")
+                logger.warning(f"# Warning Required margin (${required_margin:.2f}) exceeds safe limit (${max_safe_margin:.2f}) for {symbol}")
                 logger.info(f"   Adjusting position size for safety...")
 
                 # Calculate safe position size
@@ -847,14 +842,14 @@ class ViperAsyncTrader:
                 logger.info(f"   Position adjusted: {original_size:.6f} → {position_size:.6f}")
                 logger.info(f"   Final margin requirement: ${required_margin:.2f} (safe limit: ${max_safe_margin:.2f})")
             else:
-                logger.info(f"   ✅ Margin check passed: ${required_margin:.2f} <= ${max_safe_margin:.2f}")
+                logger.info(f"   # Check Margin check passed: ${required_margin:.2f} <= ${max_safe_margin:.2f}")
 
             # Enhanced minimum position size check
             market_info = self.exchange.market(symbol)
             min_contract_size = market_info.get('limits', {}).get('amount', {}).get('min', 0.001)
 
             if position_size < min_contract_size:
-                logger.warning(f"⚠️ Position size ({position_size:.6f}) below exchange minimum ({min_contract_size:.6f}) for {symbol}")
+                logger.warning(f"# Warning Position size ({position_size:.6f}) below exchange minimum ({min_contract_size:.6f}) for {symbol}")
                 logger.info("   Skipping this trade opportunity due to size constraints")
                 return {}  # Skip this trade opportunity
 
@@ -904,7 +899,7 @@ class ViperAsyncTrader:
             
             self.total_trades += 1
             
-            logger.info(f"✅ Trade executed: {symbol} {side} {position_size:.6f} @ ${price:.6f}")
+            logger.info(f"# Check Trade executed: {symbol} {side} {position_size:.6f} @ ${price:.6f}")
             
             return {
                 'symbol': symbol,
@@ -915,7 +910,7 @@ class ViperAsyncTrader:
             }
             
         except Exception as e:
-            logger.error(f"❌ Trade execution failed for {symbol}: {e}")
+            logger.error(f"# X Trade execution failed for {symbol}: {e}")
             return {}
 
     async def monitor_positions(self) -> Dict:
@@ -950,11 +945,11 @@ class ViperAsyncTrader:
                         if current_price < position_data['lowest_price']:
                             position_data['lowest_price'] = current_price
 
-                    logger.debug(f"📊 {symbol}: P&L {pnl_pct:.2f}% (${current_price:.6f})")
+                    logger.debug(f"# Chart {symbol}: P&L {pnl_pct:.2f}% (${current_price:.6f})")
 
                     # Check Take Profit
                     if pnl_pct >= self.take_profit_pct:
-                        logger.info(f"🎯 TAKE PROFIT triggered for {symbol}: {pnl_pct:.2f}% profit")
+                        logger.info(f"# Target TAKE PROFIT triggered for {symbol}: {pnl_pct:.2f}% profit")
                         await self.close_position(symbol, f"TAKE_PROFIT_{pnl_pct:.2f}%")
                         continue
 
@@ -969,7 +964,7 @@ class ViperAsyncTrader:
                         # Activate trailing stop after profit threshold
                         if pnl_pct >= self.trailing_activation_pct and not position_data['trailing_activated']:
                             position_data['trailing_activated'] = True
-                            logger.info(f"🚀 Trailing stop activated for {symbol} at {pnl_pct:.2f}% profit")
+                            logger.info(f"# Rocket Trailing stop activated for {symbol} at {pnl_pct:.2f}% profit")
 
                         # Update trailing stop if activated
                         if position_data['trailing_activated']:
@@ -980,7 +975,7 @@ class ViperAsyncTrader:
 
                         # Check trailing stop
                         if current_price <= position_data['trailing_stop_price']:
-                            logger.info(f"🎯 TRAILING STOP triggered for {symbol} at ${current_price:.6f}")
+                            logger.info(f"# Target TRAILING STOP triggered for {symbol} at ${current_price:.6f}")
                             await self.close_position(symbol, f"TRAILING_STOP_{pnl_pct:.2f}%")
                             continue
 
@@ -988,7 +983,7 @@ class ViperAsyncTrader:
                         # Activate trailing stop after profit threshold
                         if pnl_pct >= self.trailing_activation_pct and not position_data['trailing_activated']:
                             position_data['trailing_activated'] = True
-                            logger.info(f"🚀 Trailing stop activated for {symbol} at {pnl_pct:.2f}% profit")
+                            logger.info(f"# Rocket Trailing stop activated for {symbol} at {pnl_pct:.2f}% profit")
 
                         # Update trailing stop if activated
                         if position_data['trailing_activated']:
@@ -999,14 +994,14 @@ class ViperAsyncTrader:
 
                         # Check trailing stop
                         if current_price >= position_data['trailing_stop_price']:
-                            logger.info(f"🎯 TRAILING STOP triggered for {symbol} at ${current_price:.6f}")
+                            logger.info(f"# Target TRAILING STOP triggered for {symbol} at ${current_price:.6f}")
                             await self.close_position(symbol, f"TRAILING_STOP_{pnl_pct:.2f}%")
                             continue
 
                     monitored += 1
 
                 except Exception as e:
-                    logger.error(f"❌ Error monitoring {symbol}: {e}")
+                    logger.error(f"# X Error monitoring {symbol}: {e}")
 
             return {
                 'active_positions': monitored,
@@ -1017,7 +1012,7 @@ class ViperAsyncTrader:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error monitoring positions: {e}")
+            logger.error(f"# X Error monitoring positions: {e}")
             return {}
 
     async def close_position(self, symbol: str, reason: str):
@@ -1042,7 +1037,7 @@ class ViperAsyncTrader:
                 logger.info(f"🔄 Closed position {symbol} - {reason}")
                 
         except Exception as e:
-            logger.error(f"❌ Error closing position {symbol}: {e}")
+            logger.error(f"# X Error closing position {symbol}: {e}")
 
     async def job_worker(self, worker_id: int):
         """Worker coroutine to process jobs"""
@@ -1070,7 +1065,7 @@ class ViperAsyncTrader:
                     await self.execute_job(job)
                     
             except Exception as e:
-                logger.error(f"❌ Worker {worker_id} error: {e}")
+                logger.error(f"# X Worker {worker_id} error: {e}")
                 await asyncio.sleep(1)
         
         logger.info(f"👷 Worker {worker_id} stopped")
@@ -1105,7 +1100,7 @@ class ViperAsyncTrader:
                 await asyncio.sleep(25)  # Total 30 second cycle
                 
             except Exception as e:
-                logger.error(f"❌ Scheduler error: {e}")
+                logger.error(f"# X Scheduler error: {e}")
                 await asyncio.sleep(10)
 
     async def status_reporter(self):
@@ -1116,7 +1111,7 @@ class ViperAsyncTrader:
                 running_jobs = sum(1 for job in self.jobs.values() if job.status == 'running')
                 
                 logger.info("=" * 80)
-                logger.info("📊 VIPER ASYNC TRADER STATUS")
+                logger.info("# Chart VIPER ASYNC TRADER STATUS")
                 logger.info(f"💼 Jobs: {self.total_jobs} total | {self.completed_jobs} completed | {self.failed_jobs} failed")
                 logger.info(f"🔄 Active: {running_jobs} running | {pending_jobs} pending")
                 logger.info(f"📈 Positions: {len(self.active_positions)} active | {self.total_trades} total trades")
@@ -1126,12 +1121,12 @@ class ViperAsyncTrader:
                 await asyncio.sleep(60)  # Report every minute
                 
             except Exception as e:
-                logger.error(f"❌ Status reporter error: {e}")
+                logger.error(f"# X Status reporter error: {e}")
                 await asyncio.sleep(30)
 
     async def run_async_trading(self):
         """Run the async trading system"""
-        logger.info("🚀 Starting VIPER Async Trading System")
+        logger.info("# Rocket Starting VIPER Async Trading System")
         self.is_running = True
         
         try:
@@ -1149,8 +1144,8 @@ class ViperAsyncTrader:
             self.running_tasks.add(scheduler)
             self.running_tasks.add(reporter)
             
-            logger.info(f"✅ Started {len(workers)} workers")
-            logger.info("✅ Started scheduler and status reporter")
+            logger.info(f"# Check Started {len(workers)} workers")
+            logger.info("# Check Started scheduler and status reporter")
             
             # Wait for all tasks
             await asyncio.gather(*self.running_tasks, return_exceptions=True)
@@ -1158,7 +1153,7 @@ class ViperAsyncTrader:
         except KeyboardInterrupt:
             logger.info("🛑 Shutdown requested")
         except Exception as e:
-            logger.error(f"❌ System error: {e}")
+            logger.error(f"# X System error: {e}")
         finally:
             await self.shutdown()
 
@@ -1184,17 +1179,17 @@ class ViperAsyncTrader:
         if self.session:
             await self.session.close()
         
-        logger.info("✅ Async trading system shutdown complete")
+        logger.info("# Check Async trading system shutdown complete")
 
 async def main():
     """Main async function"""
-    logger.info("🚀 VIPER ASYNC TRADER STARTING...")
+    logger.info("# Rocket VIPER ASYNC TRADER STARTING...")
     
     trader = ViperAsyncTrader()
     
     # Connect to exchange
     if not await trader.connect_exchange():
-        logger.error("❌ Failed to connect to exchange")
+        logger.error("# X Failed to connect to exchange")
         return
     
     logger.info("\n" + "=" * 100)
@@ -1212,9 +1207,9 @@ async def main():
     except KeyboardInterrupt:
         logger.info("🛑 Trading interrupted by user")
     except Exception as e:
-        logger.error(f"❌ Unexpected error: {e}")
+        logger.error(f"# X Unexpected error: {e}")
     
-    logger.info("✅ VIPER Async Trader stopped")
+    logger.info("# Check VIPER Async Trader stopped")
 
 if __name__ == "__main__":
     asyncio.run(main())

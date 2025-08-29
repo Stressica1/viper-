@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 VIPER System Setup Validator
+# Tool VIPER System Setup Validator
 Ensures all components are properly connected and aware of the new repository structure
 """
 
@@ -25,10 +25,10 @@ try:
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
-    def display_error(msg, details=None): print(f"❌ {msg}")
-    def display_success(msg, details=None): print(f"✅ {msg}")
-    def display_warning(msg, details=None): print(f"⚠️ {msg}")
-    def print_banner(): print("🔧 VIPER System Setup Validator")
+    def display_error(msg, details=None): print(f"# X {msg}")
+    def display_success(msg, details=None): print(f"# Check {msg}")
+    def display_warning(msg, details=None): print(f"# Warning {msg}")
+    def print_banner(): print("# Tool VIPER System Setup Validator")
     def display_config(config): print("Config:", config)
     def display_repo_structure(path): print(f"Repository at: {path}")
 
@@ -41,7 +41,6 @@ class ViperSetupValidator:
         
     def validate_repository_structure(self) -> bool:
         """Validate the new repository structure"""
-        print("\n🏗️ Validating Repository Structure...")
         
         required_dirs = {
             'src/viper': 'Main source code',
@@ -70,7 +69,6 @@ class ViperSetupValidator:
     
     def validate_python_imports(self) -> bool:
         """Test Python imports with new structure"""
-        print("\n🐍 Validating Python Imports...")
         
         test_imports = [
             ('src.viper', 'Main VIPER package'),
@@ -108,7 +106,6 @@ class ViperSetupValidator:
     
     def validate_dependencies(self) -> bool:
         """Check if required dependencies are installed"""
-        print("\n📦 Validating Dependencies...")
         
         # Check requirements.txt exists
         req_file = self.project_root / 'requirements.txt'
@@ -146,7 +143,6 @@ class ViperSetupValidator:
     
     def validate_configuration_files(self) -> bool:
         """Check configuration files"""
-        print("\n⚙️ Validating Configuration...")
         
         config_files = [
             ('.env.example', 'Environment template', True),
@@ -179,7 +175,6 @@ class ViperSetupValidator:
     
     def validate_scripts(self) -> bool:
         """Validate executable scripts"""
-        print("\n🚀 Validating Scripts...")
         
         key_scripts = [
             'scripts/start_live_trading_mandatory.py',
@@ -205,7 +200,6 @@ class ViperSetupValidator:
     
     def validate_docker_setup(self) -> bool:
         """Check Docker configuration"""
-        print("\n🐳 Validating Docker Setup...")
         
         try:
             # Check if Docker is available
@@ -264,10 +258,8 @@ class ViperSetupValidator:
         """Run complete system validation"""
         if ENHANCED_DISPLAY:
             print_banner()
-            terminal.console.rule("[bold blue]🔧 System Validation Starting[/]")
+            terminal.console.rule("[bold blue]# Tool System Validation Starting[/]")
         else:
-            print("🔧 VIPER System Setup Validator")
-            print("=" * 50)
         
         # Run all validation checks
         validation_steps = [
@@ -280,7 +272,6 @@ class ViperSetupValidator:
         ]
         
         for step_name, validation_func in validation_steps:
-            print(f"\n{'='*60}")
             try:
                 validation_func()
             except Exception as e:
@@ -295,9 +286,6 @@ class ViperSetupValidator:
     
     def display_final_report(self, report: Dict[str, Any]):
         """Display final validation report"""
-        print(f"\n{'='*60}")
-        print("📊 VALIDATION REPORT")
-        print(f"{'='*60}")
         
         if ENHANCED_DISPLAY:
             status_color = "green" if report['overall_status'] == 'PASS' else "yellow"
@@ -313,9 +301,7 @@ class ViperSetupValidator:
             print(f"Passed: {report['passed_checks']}/{report['total_checks']} checks")
             
             if report['recommendations']:
-                print("\n📋 Recommendations:")
                 for rec in report['recommendations']:
-                    print(f"  • {rec}")
         
         if report['overall_status'] == 'PASS':
             display_success("System validation completed successfully!")

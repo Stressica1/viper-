@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER LIVE TRADING BOT WITH MANDATORY DOCKER & MCP ENFORCEMENT
+# Rocket VIPER LIVE TRADING BOT WITH MANDATORY DOCKER & MCP ENFORCEMENT
 MAX 10 POSITIONS | MAX 3% RISK PER TRADE | PROPER MARGIN CALCULATION
 
-⚠️  CRITICAL: This module now operates through MANDATORY Docker & MCP enforcement
+# Warning  CRITICAL: This module now operates through MANDATORY Docker & MCP enforcement
 All operations require Docker services and MCP integration to be active
 """
 
@@ -23,13 +23,12 @@ try:
     from src.viper.core.mandatory_docker_mcp_wrapper import execute_module, start_system_with_enforcement
     ENFORCEMENT_AVAILABLE = True
 except ImportError:
-    print("⚠️ WARNING: Mandatory enforcement system not available - running in legacy mode")
+    print("# Warning WARNING: Mandatory enforcement system not available - running in legacy mode")
     ENFORCEMENT_AVAILABLE = False
 
 # Core imports with error handling
 try:
     import ccxt
-    import asyncio
     from datetime import datetime
     from dotenv import load_dotenv
     from src.viper.core.job_manager import ViperLiveJobManager
@@ -39,7 +38,6 @@ try:
     
     IMPORTS_AVAILABLE = True
 except ImportError as e:
-    print(f"⚠️ WARNING: Some imports failed: {e}")
     print("📦 Please ensure all dependencies are installed: pip install -r requirements.txt")
     # Continue with available modules
     IMPORTS_AVAILABLE = False
@@ -112,7 +110,7 @@ class SimpleVIPERTrader:
         """Connect to Bitget"""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
-                logger.error("❌ Missing API credentials")
+                logger.error("# X Missing API credentials")
                 return False
 
             logger.info("🔌 Connecting to Bitget...")
@@ -125,7 +123,7 @@ class SimpleVIPERTrader:
             })
 
             markets = self.exchange.load_markets()
-            logger.info(f"✅ Connected - {len(markets)} markets loaded")
+            logger.info(f"# Check Connected - {len(markets)} markets loaded")
 
             # Validate leverage for each symbol and filter
             self.filter_symbols_by_leverage()
@@ -141,12 +139,12 @@ class SimpleVIPERTrader:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Connection failed: {e}")
+            logger.error(f"# X Connection failed: {e}")
             return False
 
     def filter_symbols_by_leverage(self):
         """Filter symbols based on minimum leverage requirement (34x)"""
-        logger.info(f"🔍 Validating leverage for {len(self.all_symbols)} symbols...")
+        logger.info(f"# Search Validating leverage for {len(self.all_symbols)} symbols...")
 
         valid_symbols = []
         blacklisted = []
@@ -166,20 +164,20 @@ class SimpleVIPERTrader:
                         max_leverage = max([tier.get('maxLeverage', 1) for tier in leverage_info])
                     else:
                         max_leverage = 20  # Default fallback
-                except:
+                except Exception:
                     max_leverage = 20  # Default fallback
 
                 self.symbol_leverages[symbol] = max_leverage
 
                 if max_leverage >= self.min_leverage_required:
                     valid_symbols.append(symbol)
-                    logger.info(f"✅ {symbol}: {max_leverage}x leverage (VALID)")
+                    logger.info(f"# Check {symbol}: {max_leverage}x leverage (VALID)")
                 else:
                     blacklisted.append(symbol)
-                    logger.warning(f"❌ {symbol}: {max_leverage}x leverage (BLACKLISTED - below {self.min_leverage_required}x)")
+                    logger.warning(f"# X {symbol}: {max_leverage}x leverage (BLACKLISTED - below {self.min_leverage_required}x)")
 
             except Exception as e:
-                logger.warning(f"⚠️ Could not validate leverage for {symbol}: {e}")
+                logger.warning(f"# Warning Could not validate leverage for {symbol}: {e}")
                 # Add with default leverage as fallback
                 self.symbol_leverages[symbol] = 20
                 valid_symbols.append(symbol)
@@ -187,7 +185,7 @@ class SimpleVIPERTrader:
         self.symbols = valid_symbols
         self.blacklisted_symbols = blacklisted
 
-        logger.info(f"🎯 VALID SYMBOLS: {len(self.symbols)}/{len(self.all_symbols)}")
+        logger.info(f"# Target VALID SYMBOLS: {len(self.symbols)}/{len(self.all_symbols)}")
         logger.info(f"🚫 BLACKLISTED: {len(self.blacklisted_symbols)} symbols")
         logger.info(f"💰 MIN LEVERAGE REQUIRED: {self.min_leverage_required}x")
 
@@ -205,7 +203,7 @@ class SimpleVIPERTrader:
 
             return True
         except Exception as e:
-            logger.error(f"❌ Error fetching balance: {e}")
+            logger.error(f"# X Error fetching balance: {e}")
             return False
 
     def scan_all_signals(self):
@@ -258,15 +256,15 @@ class SimpleVIPERTrader:
 
             # Get current balance and validate
             if not self.update_balance():
-                logger.error("❌ Could not fetch balance - skipping trade")
+                logger.error("# X Could not fetch balance - skipping trade")
                 return False
 
-            logger.info(f"🚀 EXECUTING {side.upper()} ORDER ON {symbol}")
+            logger.info(f"# Rocket EXECUTING {side.upper()} ORDER ON {symbol}")
             logger.info(f"   💰 Price: ${current_price:.6f}")
             logger.info(f"   📏 Size: {position_size:.6f}")
             logger.info(f"   🎲 Leverage: {max_leverage}x")
             logger.info(f"   💵 Margin Required: ${self.position_size_usdt}")
-            logger.info(f"   ⚠️ Risk Amount: ${self.position_size_usdt * self.max_risk_per_trade:.2f} (3%)")
+            logger.info(f"   # Warning Risk Amount: ${self.position_size_usdt * self.max_risk_per_trade:.2f} (3%)")
 
             order = self.exchange.create_order(
                 symbol=symbol,
@@ -297,12 +295,12 @@ class SimpleVIPERTrader:
             }
 
             self.total_trades += 1
-            logger.info(f"✅ TRADE EXECUTED: {order['id']} | Leverage: {max_leverage}x")
-            logger.info(f"   📊 ACTIVE POSITIONS: {len(self.active_positions)}/{self.max_positions}")
+            logger.info(f"# Check TRADE EXECUTED: {order['id']} | Leverage: {max_leverage}x")
+            logger.info(f"   # Chart ACTIVE POSITIONS: {len(self.active_positions)}/{self.max_positions}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Trade failed on {symbol}: {e}")
+            logger.error(f"# X Trade failed on {symbol}: {e}")
             return False
 
     def monitor_positions(self):
@@ -328,7 +326,7 @@ class SimpleVIPERTrader:
                 else:
                     pnl_pct = (entry_price - current_price) / entry_price * 100
 
-                logger.info(f"📊 {symbol}: {pnl_pct:.2f}% P&L | {leverage}x | ${position.get('margin_used', 0)} margin")
+                logger.info(f"# Chart {symbol}: {pnl_pct:.2f}% P&L | {leverage}x | ${position.get('margin_used', 0)} margin")
 
                 # Risk management
                 if pnl_pct >= self.take_profit_pct:
@@ -339,7 +337,7 @@ class SimpleVIPERTrader:
                     self.close_position(symbol, "STOP_LOSS")
 
             except Exception as e:
-                logger.error(f"❌ Monitor error for {symbol}: {e}")
+                logger.error(f"# X Monitor error for {symbol}: {e}")
 
     def close_position(self, symbol, reason):
         """Close position for any symbol"""
@@ -377,16 +375,16 @@ class SimpleVIPERTrader:
             else:
                 self.losses += 1
 
-            logger.info(f"✅ Position closed: {symbol} ({reason}) - P&L: {pnl_pct:.2f}%")
+            logger.info(f"# Check Position closed: {symbol} ({reason}) - P&L: {pnl_pct:.2f}%")
             del self.active_positions[symbol]
 
         except Exception as e:
-            logger.error(f"❌ Close error for {symbol}: {e}")
+            logger.error(f"# X Close error for {symbol}: {e}")
 
     def run(self):
         """Main trading loop - SCANS ALL PAIRS"""
-        logger.info("🚀 Starting VIPER ALL-PAIRS Trading Bot")
-        logger.info(f"📊 Scanning {len(self.symbols)} trading pairs")
+        logger.info("# Rocket Starting VIPER ALL-PAIRS Trading Bot")
+        logger.info(f"# Chart Scanning {len(self.symbols)} trading pairs")
         logger.info("=" * 80)
 
         self.is_running = True
@@ -405,7 +403,7 @@ class SimpleVIPERTrader:
                     opportunities = self.scan_all_signals()
 
                     if opportunities:
-                        logger.info(f"🎯 Found {len(opportunities)} trading opportunities")
+                        logger.info(f"# Target Found {len(opportunities)} trading opportunities")
 
                         # Sort by signal strength (highest change first)
                         opportunities.sort(key=lambda x: abs(x[2]), reverse=True)
@@ -414,26 +412,26 @@ class SimpleVIPERTrader:
                         trades_executed = 0
                         for symbol, side, change_pct in opportunities[:2]:  # Take top 2
                             if symbol not in self.active_positions and trades_executed < 2:
-                                logger.info(f"🎯 Executing {side.upper()} on {symbol} ({change_pct:.1f}%)")
+                                logger.info(f"# Target Executing {side.upper()} on {symbol} ({change_pct:.1f}%)")
                                 if self.execute_trade(symbol, side):
                                     trades_executed += 1
                                     time.sleep(1)  # Brief pause between trades
 
                         if trades_executed > 0:
-                            logger.info(f"✅ Executed {trades_executed} trades this cycle")
+                            logger.info(f"# Check Executed {trades_executed} trades this cycle")
 
                 # Comprehensive status update with leverage info
                 win_rate = (self.wins / max(self.total_trades, 1)) * 100
                 total_margin_used = sum([pos.get('margin_used', 0) for pos in self.active_positions.values()])
 
-                logger.info("📊 STATUS UPDATE:")
+                logger.info("# Chart STATUS UPDATE:")
                 logger.info(f"   💰 Balance: ${self.balance:.2f} | Margin Used: ${total_margin_used:.2f}")
-                logger.info(f"   📊 Active Positions: {len(self.active_positions)}/{self.max_positions}")
+                logger.info(f"   # Chart Active Positions: {len(self.active_positions)}/{self.max_positions}")
                 logger.info(f"   📈 Total Trades: {self.total_trades}")
                 logger.info(f"   🟢 Wins: {self.wins} | 🔴 Losses: {self.losses}")
-                logger.info(f"   🎯 Win Rate: {win_rate:.1f}%")
+                logger.info(f"   # Target Win Rate: {win_rate:.1f}%")
                 logger.info(f"   ⚙️ Position Size: ${self.position_size_usdt} | TP/SL: {self.take_profit_pct}%/{self.stop_loss_pct}%")
-                logger.info(f"   🔍 Valid Pairs: {len(self.symbols)} | Min Leverage: {self.min_leverage_required}x")
+                logger.info(f"   # Search Valid Pairs: {len(self.symbols)} | Min Leverage: {self.min_leverage_required}x")
 
                 # Wait before next cycle
                 logger.info("⏰ Next scan in 30 seconds...")
@@ -448,21 +446,19 @@ class SimpleVIPERTrader:
                 for symbol in list(self.active_positions.keys()):
                     self.close_position(symbol, "EMERGENCY_SHUTDOWN")
 
-            logger.info("✅ All-pairs trading bot shutdown complete")
+            logger.info("# Check All-pairs trading bot shutdown complete")
 
 
 def main():
     """
     MAIN ENTRY POINT - LIVE TRADING ONLY WITH MANDATORY DOCKER & MCP ENFORCEMENT
     
-    ⚠️ CRITICAL: This system only operates in live trading mode
+    # Warning CRITICAL: This system only operates in live trading mode
     All operations require Docker services and MCP integration - NO EXCEPTIONS
     """
     
     print("🔒 VIPER LIVE TRADING BOT - MANDATORY DOCKER & MCP ENFORCEMENT")
-    print("=" * 70)
     print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO MODE")
-    print("=" * 70)
     
     # Force load environment with live trading settings
     from dotenv import load_dotenv
@@ -470,28 +466,27 @@ def main():
     
     # Validate live trading environment
     if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
-        logger.error("❌ MOCK DATA MODE DETECTED - NOT ALLOWED IN LIVE TRADING")
+        logger.error("# X MOCK DATA MODE DETECTED - NOT ALLOWED IN LIVE TRADING")
         logger.error("Set USE_MOCK_DATA=false in .env file")
         sys.exit(1)
     
     if not ENFORCEMENT_AVAILABLE:
-        logger.error("❌ MANDATORY ENFORCEMENT SYSTEM NOT AVAILABLE")
+        logger.error("# X MANDATORY ENFORCEMENT SYSTEM NOT AVAILABLE")
         logger.error("Docker and MCP enforcement is required for live trading")
         sys.exit(1)
     
-    print("🚀 Starting system with mandatory Docker & MCP validation...")
+    print("# Rocket Starting system with mandatory Docker & MCP validation...")
     
     # Start system with enforcement - no bypassing allowed
     if not start_system_with_enforcement():
         print("💀 SYSTEM STARTUP FAILED - ENFORCEMENT REQUIREMENTS NOT MET")
         sys.exit(1)
     
-    print("✅ Enforcement validation passed - starting live trading bot...")
+    print("# Check Enforcement validation passed - starting live trading bot...")
     
     # Execute through mandatory wrapper only
     try:
         result = execute_module('main', 'run_live_trading')
-        print("🎉 Live trading bot execution completed!")
         return result
     except SystemExit:
         print("💀 Live trading bot execution blocked by enforcement!")
@@ -499,24 +494,24 @@ def main():
 
 def run_live_trading():
     """Live trading function - LIVE MODE ONLY"""
-    logger.info("🚀 VIPER LIVE TRADING BOT STARTING...")
-    logger.info("📊 Scanning cryptocurrency pairs for live trading opportunities")
-    logger.info("⚠️ LIVE MODE: Real trades will be executed with real money")
+    logger.info("# Rocket VIPER LIVE TRADING BOT STARTING...")
+    logger.info("# Chart Scanning cryptocurrency pairs for live trading opportunities")
+    logger.info("# Warning LIVE MODE: Real trades will be executed with real money")
 
     trader = SimpleVIPERTrader()
 
     if not trader.connect():
-        logger.error("❌ Failed to connect to Bitget exchange")
+        logger.error("# X Failed to connect to Bitget exchange")
         sys.exit(1)
 
-    logger.info("\n🎯 VIPER LIVE TRADING CONFIGURATION:")
-    logger.info(f"   📊 Total Pairs Available: {len(trader.all_symbols)}")
-    logger.info(f"   ✅ Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
+    logger.info("\n# Target VIPER LIVE TRADING CONFIGURATION:")
+    logger.info(f"   # Chart Total Pairs Available: {len(trader.all_symbols)}")
+    logger.info(f"   # Check Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
     logger.info(f"   🚫 Blacklisted Pairs (<{trader.min_leverage_required}x): {len(trader.blacklisted_symbols)}")
     logger.info(f"   💰 Position Size: ${trader.position_size_usdt} per trade")
     logger.info(f"   📈 Take Profit: {trader.take_profit_pct}%")
     logger.info(f"   🛑 Stop Loss: {trader.stop_loss_pct}%")
-    logger.info(f"   🎯 Max Positions: {trader.max_positions} concurrent")
+    logger.info(f"   # Target Max Positions: {trader.max_positions} concurrent")
     logger.info(f"   🔒 SINGLE POSITION PER PAIR: ENABLED")
     logger.info(f"   🚫 CAPITAL STACKING: DISABLED")
 
@@ -528,7 +523,7 @@ def run_live_trading():
             logger.info(f"      ... and {len(trader.blacklisted_symbols) - 5} more")
 
     logger.info("⏳ Starting live trading with real money in 5 seconds...")
-    logger.warning("⚠️ WARNING: This will execute real trades with real money!")
+    logger.warning("# Warning WARNING: This will execute real trades with real money!")
     time.sleep(5)
 
     try:
@@ -536,22 +531,22 @@ def run_live_trading():
     except KeyboardInterrupt:
         logger.info("\n🛑 Live trading cancelled by user")
     except Exception as e:
-        logger.error(f"\n❌ Fatal error in live trading: {e}")
+        logger.error(f"\n# X Fatal error in live trading: {e}")
     finally:
-        logger.info("✅ Live trading bot shutdown complete")
+        logger.info("# Check Live trading bot shutdown complete")
 
     if not trader.connect():
-        logger.error("❌ Failed to connect to Bitget")
+        logger.error("# X Failed to connect to Bitget")
         return
 
-    logger.info("\n🎯 VIPER LEVERAGE-BASED CONFIGURATION:")
-    logger.info(f"   📊 Total Pairs Available: {len(trader.all_symbols)}")
-    logger.info(f"   ✅ Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
+    logger.info("\n# Target VIPER LEVERAGE-BASED CONFIGURATION:")
+    logger.info(f"   # Chart Total Pairs Available: {len(trader.all_symbols)}")
+    logger.info(f"   # Check Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
     logger.info(f"   🚫 Blacklisted Pairs (<{trader.min_leverage_required}x): {len(trader.blacklisted_symbols)}")
     logger.info(f"   💰 Position Size: ${trader.position_size_usdt} per trade")
     logger.info(f"   📈 Take Profit: {trader.take_profit_pct}%")
     logger.info(f"   🛑 Stop Loss: {trader.stop_loss_pct}%")
-    logger.info(f"   🎯 Max Positions: {trader.max_positions} concurrent")
+    logger.info(f"   # Target Max Positions: {trader.max_positions} concurrent")
     logger.info(f"   🔒 SINGLE POSITION PER PAIR: ENABLED")
     logger.info(f"   🚫 CAPITAL STACKING: DISABLED")
 
@@ -570,9 +565,9 @@ def run_live_trading():
     except KeyboardInterrupt:
         logger.info("\n🛑 Trading cancelled by user")
     except Exception as e:
-        logger.error(f"\n❌ Fatal error: {e}")
+        logger.error(f"\n# X Fatal error: {e}")
     finally:
-        logger.info("✅ All-pairs trading bot shutdown complete")
+        logger.info("# Check All-pairs trading bot shutdown complete")
 
 if __name__ == "__main__":
     main()

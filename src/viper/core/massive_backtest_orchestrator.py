@@ -1,27 +1,24 @@
 #!/usr/bin/env python3
 """
-🎯 MASSIVE BACKTEST ORCHESTRATOR - 50 Pairs × 200 Configs
+# Target MASSIVE BACKTEST ORCHESTRATOR - 50 Pairs × 200 Configs
 GitHub MCP-powered comprehensive backtesting system
 
 This orchestrator provides:
-✅ 50 trading pairs simultaneous backtesting
-✅ 200 configuration variations optimization
-✅ Parallel processing with resource management
-✅ Real-time progress monitoring
-✅ GitHub MCP integration for results
-✅ Distributed processing capabilities
+# Check 50 trading pairs simultaneous backtesting
+# Check 200 configuration variations optimization
+# Check Parallel processing with resource management
+# Check Real-time progress monitoring
+# Check GitHub MCP integration for results
+# Check Distributed processing capabilities
 """
 
-import os
 import sys
 import json
 import asyncio
 import logging
 import math
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import psutil
 import gc
 from dataclasses import dataclass, asdict
@@ -33,7 +30,6 @@ project_root = Path(__file__).parent
 sys.path.append(str(project_root))
 
 # Import existing components
-from mcp_backtesting_optimizer import MCPBacktestingOptimizer, BacktestResult
 from github_mcp_integration import GitHubMCPIntegration
 
 # Configure logging
@@ -96,8 +92,8 @@ class MassiveBacktestOrchestrator:
         self.task_queue = asyncio.Queue()
         self.result_queue = asyncio.Queue()
 
-        logger.info("🎯 Massive Backtest Orchestrator initialized")
-        logger.info(f"📊 Configuration: {len(self.config.trading_pairs)} pairs × {self._calculate_total_configs()} configs")
+        logger.info("# Target Massive Backtest Orchestrator initialized")
+        logger.info(f"# Chart Configuration: {len(self.config.trading_pairs)} pairs × {self._calculate_total_configs()} configs")
 
     def _load_configuration(self):
         """Load massive backtest configuration"""
@@ -123,10 +119,10 @@ class MassiveBacktestOrchestrator:
                 max_concurrent_pairs=massive_config['processing_strategy']['max_concurrent_pairs']
             )
 
-            logger.info("✅ Configuration loaded successfully")
+            logger.info("# Check Configuration loaded successfully")
 
         except Exception as e:
-            logger.error(f"❌ Failed to load configuration: {e}")
+            logger.error(f"# X Failed to load configuration: {e}")
             raise
 
     def _calculate_total_configs(self) -> int:
@@ -170,7 +166,7 @@ class MassiveBacktestOrchestrator:
             config['config_id'] = config_id
             combinations.append(config)
 
-        logger.info(f"📊 Generated {len(combinations)} configuration combinations")
+        logger.info(f"# Chart Generated {len(combinations)} configuration combinations")
         return combinations
 
     async def initialize_optimizer(self):
@@ -178,9 +174,9 @@ class MassiveBacktestOrchestrator:
         try:
             self.optimizer = MCPBacktestingOptimizer()
             await self.optimizer.initialize_exchange()
-            logger.info("✅ Backtesting optimizer initialized")
+            logger.info("# Check Backtesting optimizer initialized")
         except Exception as e:
-            logger.error(f"❌ Optimizer initialization failed: {e}")
+            logger.error(f"# X Optimizer initialization failed: {e}")
             raise
 
     async def create_massive_backtest_task(self) -> str:
@@ -215,14 +211,14 @@ class MassiveBacktestOrchestrator:
                 'task_config': task_config
             })
 
-            logger.info(f"✅ Massive backtest task created: {task_id}")
-            logger.info(f"📊 Total combinations: {task_config['total_combinations']:,}")
+            logger.info(f"# Check Massive backtest task created: {task_id}")
+            logger.info(f"# Chart Total combinations: {task_config['total_combinations']:,}")
             logger.info(f"⏱️ Estimated duration: {task_config['estimated_duration_hours']:.1f} hours")
 
             return task_id
 
         except Exception as e:
-            logger.error(f"❌ Task creation failed: {e}")
+            logger.error(f"# X Task creation failed: {e}")
             return None
 
     async def run_massive_backtest(self, task_id: str) -> Dict[str, Any]:
@@ -236,7 +232,7 @@ class MassiveBacktestOrchestrator:
             Comprehensive results summary
         """
         try:
-            logger.info("🚀 STARTING MASSIVE BACKTEST OPERATION")
+            logger.info("# Rocket STARTING MASSIVE BACKTEST OPERATION")
             logger.info("=" * 60)
 
             # Initialize processing stats
@@ -256,13 +252,13 @@ class MassiveBacktestOrchestrator:
             self.processing_stats.completed_tasks = len(results)
             self.processing_stats.failed_tasks = len(self.failed_tasks)
 
-            logger.info("✅ MASSIVE BACKTEST OPERATION COMPLETED")
-            logger.info(f"📊 Results: {len(results)} successful, {len(self.failed_tasks)} failed")
+            logger.info("# Check MASSIVE BACKTEST OPERATION COMPLETED")
+            logger.info(f"# Chart Results: {len(results)} successful, {len(self.failed_tasks)} failed")
 
             return summary
 
         except Exception as e:
-            logger.error(f"❌ Massive backtest failed: {e}")
+            logger.error(f"# X Massive backtest failed: {e}")
             return {'status': 'failed', 'error': str(e)}
 
     async def _populate_task_queue(self):
@@ -288,7 +284,7 @@ class MassiveBacktestOrchestrator:
             logger.info(f"📋 Task queue populated with {total_tasks} tasks")
 
         except Exception as e:
-            logger.error(f"❌ Failed to populate task queue: {e}")
+            logger.error(f"# X Failed to populate task queue: {e}")
             raise
 
     async def _run_parallel_processing(self) -> List[Dict[str, Any]]:
@@ -331,7 +327,7 @@ class MassiveBacktestOrchestrator:
                     except asyncio.QueueEmpty:
                         break
                     except Exception as e:
-                        logger.error(f"❌ Worker error: {e}")
+                        logger.error(f"# X Worker error: {e}")
                         self.processing_stats.active_tasks -= 1
                         continue
 
@@ -347,7 +343,7 @@ class MassiveBacktestOrchestrator:
             return results
 
         except Exception as e:
-            logger.error(f"❌ Parallel processing failed: {e}")
+            logger.error(f"# X Parallel processing failed: {e}")
             return []
 
     async def _process_single_backtest(self, task: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -357,7 +353,7 @@ class MassiveBacktestOrchestrator:
             timeframe = task['timeframe']
             config = task['config']
 
-            logger.debug(f"🔍 Processing: {symbol} {timeframe} {config['config_id']}")
+            logger.debug(f"# Search Processing: {symbol} {timeframe} {config['config_id']}")
 
             # Create optimization parameters from config
             from mcp_backtesting_optimizer import OptimizationParameters
@@ -389,11 +385,11 @@ class MassiveBacktestOrchestrator:
 
                 return result_dict
             else:
-                logger.warning(f"⚠️ No result for {symbol} {timeframe} {config['config_id']}")
+                logger.warning(f"# Warning No result for {symbol} {timeframe} {config['config_id']}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Single backtest failed: {e}")
+            logger.error(f"# X Single backtest failed: {e}")
             return None
 
     async def _update_progress(self):
@@ -417,7 +413,7 @@ class MassiveBacktestOrchestrator:
 
             # Log progress every 100 tasks
             if total_processed % 100 == 0:
-                logger.info(f"📊 Progress: {progress_pct:.1f}% ({total_processed}/{self.processing_stats.total_tasks})")
+                logger.info(f"# Chart Progress: {progress_pct:.1f}% ({total_processed}/{self.processing_stats.total_tasks})")
                 logger.info(f"   Active: {self.processing_stats.active_tasks}, Memory: {self.processing_stats.memory_usage_mb:.1f}MB")
 
                 # Log to GitHub MCP
@@ -433,7 +429,7 @@ class MassiveBacktestOrchestrator:
                 })
 
         except Exception as e:
-            logger.error(f"❌ Progress update failed: {e}")
+            logger.error(f"# X Progress update failed: {e}")
 
     async def _generate_massive_results_summary(self, task_id: str, results: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Generate comprehensive results summary"""
@@ -483,11 +479,11 @@ class MassiveBacktestOrchestrator:
                 'processing_time_seconds': (datetime.now() - self.processing_stats.start_time).total_seconds() if self.processing_stats.start_time else 0
             })
 
-            logger.info("✅ Massive results summary generated")
+            logger.info("# Check Massive results summary generated")
             return summary
 
         except Exception as e:
-            logger.error(f"❌ Results summary generation failed: {e}")
+            logger.error(f"# X Results summary generation failed: {e}")
             return {'status': 'error', 'error': str(e)}
 
     def _find_best_results(self, results: List[Dict[str, Any]], metric: str, limit: int = 10, reverse: bool = True) -> List[Dict[str, Any]]:
@@ -504,7 +500,7 @@ class MassiveBacktestOrchestrator:
             return sorted_results[:limit]
 
         except Exception as e:
-            logger.error(f"❌ Best results analysis failed: {e}")
+            logger.error(f"# X Best results analysis failed: {e}")
             return []
 
     def _calculate_overall_statistics(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -538,7 +534,7 @@ class MassiveBacktestOrchestrator:
             }
 
         except Exception as e:
-            logger.error(f"❌ Overall statistics calculation failed: {e}")
+            logger.error(f"# X Overall statistics calculation failed: {e}")
             return {}
 
     def _analyze_pair_performance(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -581,7 +577,7 @@ class MassiveBacktestOrchestrator:
             return pair_stats
 
         except Exception as e:
-            logger.error(f"❌ Pair performance analysis failed: {e}")
+            logger.error(f"# X Pair performance analysis failed: {e}")
             return {}
 
     def _analyze_timeframe_performance(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -620,7 +616,7 @@ class MassiveBacktestOrchestrator:
             return timeframe_stats
 
         except Exception as e:
-            logger.error(f"❌ Timeframe performance analysis failed: {e}")
+            logger.error(f"# X Timeframe performance analysis failed: {e}")
             return {}
 
     def _analyze_success_rates(self, results: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -640,7 +636,7 @@ class MassiveBacktestOrchestrator:
             }
 
         except Exception as e:
-            logger.error(f"❌ Success rate analysis failed: {e}")
+            logger.error(f"# X Success rate analysis failed: {e}")
             return {}
 
     async def _save_massive_results(self, summary: Dict[str, Any]):
@@ -665,7 +661,7 @@ class MassiveBacktestOrchestrator:
             logger.info(f"💾 Results saved: {json_file}, {csv_file}, {top_performers_file}")
 
         except Exception as e:
-            logger.error(f"❌ Results saving failed: {e}")
+            logger.error(f"# X Results saving failed: {e}")
 
     async def _save_csv_summary(self, summary: Dict[str, Any], filename: str):
         """Save CSV summary of results"""
@@ -686,7 +682,7 @@ class MassiveBacktestOrchestrator:
                 await f.write(csv_content)
 
         except Exception as e:
-            logger.error(f"❌ CSV summary save failed: {e}")
+            logger.error(f"# X CSV summary save failed: {e}")
 
     async def _save_top_performers(self, summary: Dict[str, Any], filename: str):
         """Save top performing configurations"""
@@ -702,7 +698,7 @@ class MassiveBacktestOrchestrator:
                 await f.write(json.dumps(top_performers, indent=2, default=str))
 
         except Exception as e:
-            logger.error(f"❌ Top performers save failed: {e}")
+            logger.error(f"# X Top performers save failed: {e}")
 
 # MCP Task Functions
 async def create_massive_backtest_task() -> str:
@@ -718,7 +714,7 @@ async def create_massive_backtest_task() -> str:
         return await orchestrator.create_massive_backtest_task()
 
     except Exception as e:
-        logger.error(f"❌ MCP task creation failed: {e}")
+        logger.error(f"# X MCP task creation failed: {e}")
         return None
 
 async def run_massive_backtest_operation(task_id: str) -> Dict[str, Any]:
@@ -737,7 +733,7 @@ async def run_massive_backtest_operation(task_id: str) -> Dict[str, Any]:
         return await orchestrator.run_massive_backtest(task_id)
 
     except Exception as e:
-        logger.error(f"❌ Massive backtest operation failed: {e}")
+        logger.error(f"# X Massive backtest operation failed: {e}")
         return {'status': 'failed', 'error': str(e)}
 
 async def get_massive_backtest_status() -> Dict[str, Any]:
@@ -761,19 +757,14 @@ async def get_massive_backtest_status() -> Dict[str, Any]:
 # Main execution
 async def main():
     """Main massive backtesting execution"""
-    print("🎯 MASSIVE BACKTEST ORCHESTRATOR - 50 Pairs × 200 Configs")
-    print("=" * 80)
 
     try:
         # Create massive backtest task
-        print("📋 Creating massive backtest task...")
         task_id = await create_massive_backtest_task()
 
         if not task_id:
-            print("❌ Failed to create backtest task")
             return 1
 
-        print(f"✅ Task Created: {task_id}")
 
         # Get configuration info
         orchestrator = MassiveBacktestOrchestrator()
@@ -781,43 +772,32 @@ async def main():
         total_configs = orchestrator._calculate_total_configs()
         total_combinations = total_pairs * total_configs * len(orchestrator.config.timeframes)
 
-        print("\n📊 BACKTEST SCALE:")
-        print(f"   Trading Pairs: {total_pairs}")
-        print(f"   Configurations: {total_configs}")
         print(f"   Timeframes: {len(orchestrator.config.timeframes)}")
         print(f"   Total Combinations: {total_combinations:,}")
         print(f"   Estimated Duration: {(total_combinations * 30) / 3600:.1f} hours")
 
         # Confirm execution
-        confirm = input(f"\n🚀 Execute massive backtest with {total_combinations:,} combinations? (yes/no): ").strip().lower()
+        confirm = input(f"\n# Rocket Execute massive backtest with {total_combinations:,} combinations? (yes/no): ").strip().lower()
 
         if confirm != 'yes':
-            print("❌ Operation cancelled by user")
             return 0
 
         # Run the massive backtest
-        print("\n🚀 EXECUTING MASSIVE BACKTEST...")
-        print("This may take several hours. Progress will be logged to massive_backtest.log")
-        print("=" * 80)
 
         start_time = datetime.now()
         results = await run_massive_backtest_operation(task_id)
         end_time = datetime.now()
 
-        print("\n" + "=" * 80)
-        print("✅ MASSIVE BACKTEST COMPLETED")
-        print("=" * 80)
         print(f"Duration: {(end_time - start_time).total_seconds() / 3600:.2f} hours")
 
         if results.get('status') == 'error':
-            print(f"❌ Error: {results.get('error', 'Unknown error')}")
+            print(f"# X Error: {results.get('error', 'Unknown error')}")
             return 1
 
         # Display summary
         summary = results
         overall_stats = summary.get('overall_stats', {})
 
-        print("\n📊 RESULTS SUMMARY:")
         print(f"   Total Results: {summary.get('total_results', 0):,}")
         print(f"   Failed Tasks: {summary.get('total_failed', 0)}")
         print(f"   Average Win Rate: {overall_stats.get('avg_win_rate', 0):.1f}%")
@@ -826,27 +806,19 @@ async def main():
 
         if summary.get('best_by_sharpe_ratio'):
             best_sharpe = summary['best_by_sharpe_ratio'][0]
-            print("\n🏆 BEST CONFIGURATION (Sharpe Ratio):")
             print(f"   Symbol: {best_sharpe.get('symbol', 'N/A')}")
             print(f"   Timeframe: {best_sharpe.get('timeframe', 'N/A')}")
             print(f"   Sharpe Ratio: {best_sharpe.get('sharpe_ratio', 0):.2f}")
             print(f"   Win Rate: {best_sharpe.get('win_rate', 0):.1f}%")
             print(f"   Total P&L: ${best_sharpe.get('total_pnl', 0):.2f}")
 
-        print("\n📄 Detailed results saved to:")
-        print("   - massive_backtest_results_*.json (comprehensive results)")
-        print("   - massive_backtest_results_*_summary.csv (summary CSV)")
-        print("   - massive_backtest_results_*_top_performers.json (top configs)")
 
-        print("\n✅ Massive backtesting operation completed successfully!")
         return 0
 
     except KeyboardInterrupt:
-        print("\n🛑 Operation cancelled by user")
         return 0
     except Exception as e:
-        logger.error(f"❌ Execution failed: {e}")
-        print(f"❌ ERROR: {e}")
+        logger.error(f"# X Execution failed: {e}")
         return 1
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Live Trading System Launcher - LIVE MODE ONLY
+# Rocket VIPER Live Trading System Launcher - LIVE MODE ONLY
 Complete system startup with mandatory Docker & MCP enforcement
 """
 
@@ -29,7 +29,7 @@ class LiveTradingLauncher:
     def __init__(self):
         # Validate live trading mode first
         if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
-            logger.error("❌ Mock data mode not allowed in live trading launcher")
+            logger.error("# X Mock data mode not allowed in live trading launcher")
             sys.exit(1)
         
         # Enforce live trading requirements
@@ -37,7 +37,7 @@ class LiveTradingLauncher:
         
         logger.info("🔒 Enforcing Docker & MCP requirements...")
         if not enforce_docker_mcp_requirements():
-            logger.error("❌ Docker/MCP requirements not met")
+            logger.error("# X Docker/MCP requirements not met")
             sys.exit(1)
         
         self.project_root = Path(__file__).parent
@@ -50,7 +50,7 @@ class LiveTradingLauncher:
         # Check if all required files exist
         self.files_ready = self.check_required_files()
         
-        logger.info("✅ Live trading launcher initialized with enforcement")
+        logger.info("# Check Live trading launcher initialized with enforcement")
 
     def check_docker(self) -> bool:
         """Check if Docker is available and running"""
@@ -62,13 +62,13 @@ class LiveTradingLauncher:
                 timeout=10
             )
             if result.returncode == 0:
-                logger.info(f"✅ Docker available: {result.stdout.strip()}")
+                logger.info(f"# Check Docker available: {result.stdout.strip()}")
                 return True
             else:
-                logger.error("❌ Docker not available")
+                logger.error("# X Docker not available")
                 return False
         except (subprocess.CalledProcessError, FileNotFoundError):
-            logger.error("❌ Docker not installed or not accessible")
+            logger.error("# X Docker not installed or not accessible")
             return False
 
     def check_required_files(self) -> bool:
@@ -86,15 +86,15 @@ class LiveTradingLauncher:
                 missing_files.append(str(file_path))
 
         if missing_files:
-            logger.error(f"❌ Missing required files: {missing_files}")
+            logger.error(f"# X Missing required files: {missing_files}")
             return False
 
-        logger.info("✅ All required files present")
+        logger.info("# Check All required files present")
         return True
 
     def validate_environment(self) -> bool:
         """Validate environment configuration"""
-        logger.info("🔍 Validating environment configuration...")
+        logger.info("# Search Validating environment configuration...")
 
         # Check critical environment variables
         required_vars = [
@@ -114,23 +114,23 @@ class LiveTradingLauncher:
                 missing_vars.append(var)
 
         if missing_vars:
-            logger.error(f"❌ Missing or invalid environment variables: {missing_vars}")
+            logger.error(f"# X Missing or invalid environment variables: {missing_vars}")
             return False
 
         # Validate specific values
         real_data_only = os.getenv('REAL_DATA_ONLY', '').lower() == 'true'
         if not real_data_only:
-            logger.warning("⚠️ REAL_DATA_ONLY is not set to 'true' - system will use simulated data")
+            logger.warning("# Warning REAL_DATA_ONLY is not set to 'true' - system will use simulated data")
 
         risk_per_trade = float(os.getenv('RISK_PER_TRADE', '0.02'))
         if risk_per_trade > 0.05:  # More than 5%
-            logger.warning(f"⚠️ High risk per trade: {risk_per_trade*100}%")
+            logger.warning(f"# Warning High risk per trade: {risk_per_trade*100}%")
 
         max_positions = int(os.getenv('MAX_POSITIONS', '15'))
         if max_positions > 20:
-            logger.warning(f"⚠️ High maximum positions: {max_positions}")
+            logger.warning(f"# Warning High maximum positions: {max_positions}")
 
-        logger.info("✅ Environment configuration validated")
+        logger.info("# Check Environment configuration validated")
         return True
 
     def start_docker_services(self) -> bool:
@@ -148,7 +148,7 @@ class LiveTradingLauncher:
             )
 
             # Start services
-            logger.info("🚀 Starting all VIPER services...")
+            logger.info("# Rocket Starting all VIPER services...")
             result = subprocess.run(
                 ["docker", "compose", "up", "-d", "--build"],
                 cwd=self.project_root,
@@ -158,20 +158,20 @@ class LiveTradingLauncher:
             )
 
             if result.returncode == 0:
-                logger.info("✅ Docker services started successfully")
+                logger.info("# Check Docker services started successfully")
                 # Wait for services to be healthy
                 logger.info("⏳ Waiting for services to be ready...")
                 time.sleep(30)
                 return True
             else:
-                logger.error(f"❌ Failed to start Docker services: {result.stderr}")
+                logger.error(f"# X Failed to start Docker services: {result.stderr}")
                 return False
 
         except subprocess.TimeoutExpired:
-            logger.error("❌ Timeout starting Docker services")
+            logger.error("# X Timeout starting Docker services")
             return False
         except Exception as e:
-            logger.error(f"❌ Error starting Docker services: {e}")
+            logger.error(f"# X Error starting Docker services: {e}")
             return False
 
     def check_service_health(self) -> bool:
@@ -194,24 +194,24 @@ class LiveTradingLauncher:
                 import requests
                 response = requests.get(health_url, timeout=10)
                 if response.status_code == 200:
-                    logger.info(f"   ✅ {service_name}: Healthy")
+                    logger.info(f"   # Check {service_name}: Healthy")
                 else:
-                    logger.error(f"   ❌ {service_name}: Status {response.status_code}")
+                    logger.error(f"   # X {service_name}: Status {response.status_code}")
                     unhealthy_services.append(service_name)
             except Exception as e:
-                logger.error(f"   ❌ {service_name}: {e}")
+                logger.error(f"   # X {service_name}: {e}")
                 unhealthy_services.append(service_name)
 
         if unhealthy_services:
-            logger.error(f"❌ Unhealthy services: {unhealthy_services}")
+            logger.error(f"# X Unhealthy services: {unhealthy_services}")
             return False
 
-        logger.info("✅ All services are healthy")
+        logger.info("# Check All services are healthy")
         return True
 
     def start_live_trading_optimizer(self):
         """Start the live trading optimizer"""
-        logger.info("🚀 Starting Live Trading Optimizer...")
+        logger.info("# Rocket Starting Live Trading Optimizer...")
 
         try:
             # Run the live trading optimizer
@@ -221,14 +221,14 @@ class LiveTradingLauncher:
             ], cwd=self.project_root)
 
             if result.returncode == 0:
-                logger.info("✅ Live trading optimizer completed successfully")
+                logger.info("# Check Live trading optimizer completed successfully")
             else:
-                logger.warning(f"⚠️ Live trading optimizer exited with code: {result.returncode}")
+                logger.warning(f"# Warning Live trading optimizer exited with code: {result.returncode}")
 
         except KeyboardInterrupt:
             logger.info("⏹️ Live trading interrupted by user")
         except Exception as e:
-            logger.error(f"❌ Error running live trading optimizer: {e}")
+            logger.error(f"# X Error running live trading optimizer: {e}")
 
     def signal_handler(self, signum, frame):
         """Handle shutdown signals"""
@@ -243,22 +243,16 @@ class LiveTradingLauncher:
                 capture_output=True,
                 timeout=60
             )
-            logger.info("✅ Docker services stopped")
+            logger.info("# Check Docker services stopped")
         except Exception as e:
-            logger.error(f"❌ Error stopping Docker services: {e}")
+            logger.error(f"# X Error stopping Docker services: {e}")
 
         sys.exit(0)
 
     def run_system_startup(self):
         """Run complete system startup sequence"""
-        print("🚀 VIPER LIVE TRADING SYSTEM STARTUP")
-        print("=" * 60)
-        print("⚠️  IMPORTANT SAFETY INFORMATION:")
-        print("   • This system trades with REAL MONEY")
-        print("   • Risk management is CRITICAL")
         print("   • Monitor closely during initial operation")
         print("   • Emergency stop: Ctrl+C or 'docker compose down'")
-        print("=" * 60)
 
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.signal_handler)
@@ -266,69 +260,49 @@ class LiveTradingLauncher:
 
         try:
             # Step 1: Validate prerequisites
-            print("\n1️⃣ VALIDATING PREREQUISITES...")
             if not self.docker_available:
-                print("❌ Docker is not available. Please install Docker Desktop.")
+                print("# X Docker is not available. Please install Docker Desktop.")
                 return
 
             if not self.files_ready:
-                print("❌ Required files are missing.")
                 return
 
             if not self.validate_environment():
-                print("❌ Environment configuration is invalid.")
                 print("   Please check your .env file and ensure all required variables are set.")
                 return
 
-            print("✅ Prerequisites validated")
 
             # Step 2: Start Docker services
-            print("\n2️⃣ STARTING DOCKER SERVICES...")
             if not self.start_docker_services():
-                print("❌ Failed to start Docker services.")
                 return
 
             # Step 3: Check service health
-            print("\n3️⃣ VERIFYING SERVICE HEALTH...")
             if not self.check_service_health():
-                print("❌ Some services are unhealthy.")
                 print("   Check Docker logs: docker compose logs")
                 return
 
             # Step 4: Start live trading
-            print("\n4️⃣ STARTING LIVE TRADING OPTIMIZER...")
-            print("🎯 System will begin live trading with optimization")
-            print("📊 Monitor performance at: http://localhost:8000")
-            print("🛑 Emergency stop: Ctrl+C")
-            print("-" * 60)
+            print("# Target System will begin live trading with optimization")
+            print("# Chart Monitor performance at: http://localhost:8000")
 
             self.start_live_trading_optimizer()
 
         except KeyboardInterrupt:
-            print("\n⏹️ System shutdown requested by user")
         except Exception as e:
-            logger.error(f"❌ System startup error: {e}")
-            print(f"\n❌ System error: {e}")
+            logger.error(f"# X System startup error: {e}")
         finally:
-            print("\n" + "=" * 60)
-            print("🛑 SYSTEM SHUTDOWN")
-            print("=" * 60)
 
             # Cleanup
             try:
-                print("🧹 Cleaning up Docker services...")
                 subprocess.run(
                     ["docker", "compose", "down"],
                     cwd=self.project_root,
                     capture_output=True,
                     timeout=60
                 )
-                print("✅ Cleanup complete")
             except Exception as e:
-                print(f"⚠️ Cleanup warning: {e}")
 
-            print("✅ VIPER Live Trading System shutdown complete")
-            print("📊 Check logs for performance summary")
+            print("# Check VIPER Live Trading System shutdown complete")
 
 def main():
     """Main entry point"""

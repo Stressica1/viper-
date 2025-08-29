@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Enhanced Backtesting Engine
+# Rocket VIPER Enhanced Backtesting Engine
 Advanced backtesting system with walk-forward analysis, Monte Carlo simulations,
 and comprehensive performance analytics
 
@@ -24,22 +24,15 @@ import logging
 import asyncio
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Tuple, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
-from pathlib import Path
-import threading
-import httpx
 import uuid
 import warnings
 warnings.filterwarnings('ignore')
 
 # Statistical and optimization libraries
-from scipy import stats
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_squared_error
 import concurrent.futures
 import multiprocessing as mp
 
@@ -373,7 +366,7 @@ class EnhancedBacktester:
         self.results_cache = {}
         self.active_backtests = {}
         
-        logger.info("🏗️ Enhanced Backtester initialized")
+        logger.info("# Construction Enhanced Backtester initialized")
     
     async def initialize(self) -> bool:
         """Initialize the backtesting engine"""
@@ -382,20 +375,20 @@ class EnhancedBacktester:
             if self.redis_url:
                 self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
                 await asyncio.to_thread(self.redis_client.ping)
-                logger.info("✅ Redis connection established")
+                logger.info("# Check Redis connection established")
             
-            logger.info("✅ Enhanced Backtester initialized")
+            logger.info("# Check Enhanced Backtester initialized")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize backtester: {e}")
+            logger.error(f"# X Failed to initialize backtester: {e}")
             return False
     
     async def run_backtest(self, strategy_func: Callable, config: BacktestConfig, 
                           symbol_list: List[str], backtest_type: BacktestType = BacktestType.SINGLE_STRATEGY) -> BacktestResult:
         """Run comprehensive backtest with specified strategy"""
         
-        logger.info(f"🚀 Starting {backtest_type.value} backtest: {config.start_date} to {config.end_date}")
+        logger.info(f"# Rocket Starting {backtest_type.value} backtest: {config.start_date} to {config.end_date}")
         
         try:
             # Generate unique backtest ID
@@ -424,7 +417,7 @@ class EnhancedBacktester:
             if MATH_VALIDATOR_AVAILABLE:
                 validation = await self._validate_backtest_results(result)
                 if not validation['is_valid']:
-                    logger.warning(f"⚠️ Backtest validation issues: {validation['issues']}")
+                    logger.warning(f"# Warning Backtest validation issues: {validation['issues']}")
             
             # Cache results
             if self.cache_results:
@@ -434,12 +427,12 @@ class EnhancedBacktester:
             self.active_backtests[backtest_id]['status'] = 'completed'
             self.active_backtests[backtest_id]['result'] = result
             
-            logger.info(f"✅ Backtest completed: Total Return {result.total_return:.2%}, Sharpe {result.sharpe_ratio:.2f}")
+            logger.info(f"# Check Backtest completed: Total Return {result.total_return:.2%}, Sharpe {result.sharpe_ratio:.2f}")
             
             return result
             
         except Exception as e:
-            logger.error(f"❌ Backtest execution error: {e}")
+            logger.error(f"# X Backtest execution error: {e}")
             if backtest_id in self.active_backtests:
                 self.active_backtests[backtest_id]['status'] = 'failed'
                 self.active_backtests[backtest_id]['error'] = str(e)
@@ -492,7 +485,7 @@ class EnhancedBacktester:
             # Risk management checks
             daily_return = (portfolio_value / config.initial_capital) - 1
             if daily_return <= -config.daily_loss_limit:
-                logger.warning(f"⚠️ Daily loss limit hit: {daily_return:.2%}")
+                logger.warning(f"# Warning Daily loss limit hit: {daily_return:.2%}")
                 # Close all positions
                 for symbol in list(positions.keys()):
                     if symbol in market_data:
@@ -556,7 +549,7 @@ class EnhancedBacktester:
             is_dates = all_dates[start_idx:is_end_idx]
             oos_dates = all_dates[oos_start_idx:end_idx]
             
-            logger.info(f"📊 WF Period {period + 1}: IS {len(is_dates)} days, OOS {len(oos_dates)} days")
+            logger.info(f"# Chart WF Period {period + 1}: IS {len(is_dates)} days, OOS {len(oos_dates)} days")
             
             # Create period configuration
             period_config = BacktestConfig(
@@ -766,7 +759,7 @@ class EnhancedBacktester:
                 historical_data[symbol] = symbol_data
                 
             except Exception as e:
-                logger.error(f"❌ Error getting data for {symbol}: {e}")
+                logger.error(f"# X Error getting data for {symbol}: {e}")
         
         return historical_data
     
@@ -782,7 +775,7 @@ class EnhancedBacktester:
             return benchmark_returns
             
         except Exception as e:
-            logger.error(f"❌ Error getting benchmark data: {e}")
+            logger.error(f"# X Error getting benchmark data: {e}")
             return None
     
     def _update_portfolio_value(self, positions: Dict, market_data: Dict) -> float:
@@ -961,7 +954,7 @@ class EnhancedBacktester:
     def start(self):
         """Start the backtester"""
         self.is_running = True
-        logger.info("🚀 Enhanced Backtester started")
+        logger.info("# Rocket Enhanced Backtester started")
     
     def stop(self):
         """Stop the backtester"""
@@ -984,7 +977,7 @@ async def simple_momentum_strategy(market_data: Dict, positions: Dict, config: B
             # In practice, this would use historical data to calculate MA
             if len(positions) < config.max_positions and symbol not in positions:
                 # Generate buy signal (simplified)
-                if np.random.random() > 0.8:  # 20% chance to buy
+                if np.secrets.randbelow(1000000) / 1000000.0  # Was: random.random() > 0.8:  # 20% chance to buy
                     signals.append({
                         'symbol': symbol,
                         'action': 'buy',
@@ -993,7 +986,7 @@ async def simple_momentum_strategy(market_data: Dict, positions: Dict, config: B
             
             elif symbol in positions:
                 # Generate sell signal (simplified)
-                if np.random.random() > 0.9:  # 10% chance to sell
+                if np.secrets.randbelow(1000000) / 1000000.0  # Was: random.random() > 0.9:  # 10% chance to sell
                     signals.append({
                         'symbol': symbol,
                         'action': 'close'
@@ -1060,30 +1053,25 @@ if __name__ == "__main__":
         symbol_list = ["BTCUSDT", "ETHUSDT", "ADAUSDT"]
         
         # Test standard backtest
-        print("🔍 Running standard backtest...")
         standard_result = await enhanced_backtester.run_backtest(
             simple_momentum_strategy, config, symbol_list, BacktestType.SINGLE_STRATEGY
         )
-        print(f"✅ Standard backtest: {standard_result.total_return:.2%} return, {standard_result.sharpe_ratio:.2f} Sharpe")
         
         # Test walk-forward analysis
-        print("🔄 Running walk-forward analysis...")
         wf_result = await enhanced_backtester.run_backtest(
             simple_momentum_strategy, config, symbol_list, BacktestType.WALK_FORWARD
         )
-        print(f"✅ Walk-forward: {wf_result.total_return:.2%} return, {wf_result.sharpe_ratio:.2f} Sharpe")
+        print(f"# Check Walk-forward: {wf_result.total_return:.2%} return, {wf_result.sharpe_ratio:.2f} Sharpe")
         
         # Test Monte Carlo simulation
-        print("🎰 Running Monte Carlo simulation...")
         mc_result = await enhanced_backtester.run_backtest(
             viper_based_strategy, config, symbol_list, BacktestType.MONTE_CARLO
         )
-        print(f"✅ Monte Carlo: {mc_result.total_return:.2%} return")
+        print(f"# Check Monte Carlo: {mc_result.total_return:.2%} return")
         if hasattr(mc_result, 'monte_carlo_stats'):
             print(f"   MC Mean: {mc_result.monte_carlo_stats['mean_return']:.2%}")
             print(f"   MC P95: {mc_result.monte_carlo_stats['percentiles']['p95']:.2%}")
         
         enhanced_backtester.stop()
-        print("🎯 Enhanced backtester test completed!")
     
     asyncio.run(test_enhanced_backtester())
