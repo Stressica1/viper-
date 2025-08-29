@@ -43,6 +43,20 @@ rich>=13.0.0
 # WebSocket Support
 websockets>=12.0
 
+# Advanced Analytics & ML
+scipy>=1.11.0
+scikit-learn>=1.3.0
+statsmodels>=0.14.0
+
+# Visualization & Plotting
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+dash>=2.14.0
+
+# Technical Analysis
+TA-Lib>=0.4.0
+
 # Optional MCP Dependencies
 # Uncomment if you want MCP (Model Context Protocol) support
 # websockets>=12.0
