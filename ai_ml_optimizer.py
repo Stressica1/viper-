@@ -32,6 +32,7 @@ class AIMLOptimizer:
 
     def __init__(self):
         # Use environment variables for optimal configuration management
+        import os
         self.api_server_url = os.getenv('API_SERVER_URL', "http://localhost:8000")
         self.backtester_url = os.getenv('BACKTESTER_URL', "http://localhost:8001")
         self.risk_manager_url = os.getenv('RISK_MANAGER_URL', "http://localhost:8002")
@@ -792,7 +793,8 @@ def main():
         print(f"❌ Backtest failed: {backtest_results['error']}")
         return
 
-    print("📊 BACKTEST RESULTS:"    print(f"   Win Rate: {backtest_results['win_rate']:.1%}")
+    print("📊 BACKTEST RESULTS:")
+    print(f"   Win Rate: {backtest_results['win_rate']:.1%}")
     print(f"   Total Return: {backtest_results['total_return']:.2%}")
     print(f"   Max Drawdown: {backtest_results['max_drawdown']:.2%}")
     print(f"   Sharpe Ratio: {backtest_results['sharpe_ratio']:.2f}")
