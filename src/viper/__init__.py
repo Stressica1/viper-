@@ -26,6 +26,7 @@ try:
         from . import core
         available_modules.append('core')
     except ImportError as e:
+        pass  # Core module not available
     
     try:
         from . import strategies
