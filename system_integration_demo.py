@@ -72,7 +72,7 @@ class SystemIntegrationDemo:
 
     def _initialize_orchestrator(self):
         """Initialize the Master System Orchestrator"""
-        print("📊 Step 1: Initializing Master System Orchestrator...")")
+        print("TEXT")
             try:
             from master_system_orchestrator import MasterSystemOrchestrator
 
@@ -90,7 +90,7 @@ class SystemIntegrationDemo:
 
     def _initialize_trading_engine(self):
         """Initialize the Unified Trading Engine"""
-        print("⚡ Step 2: Initializing Unified Trading Engine...")")
+        print("TEXT")
             try:
             from unified_trading_engine import UnifiedTradingEngine
 
@@ -107,7 +107,7 @@ class SystemIntegrationDemo:
 
     def _run_system_diagnostics(self):
         """Run comprehensive system diagnostics"""
-        print("🔍 Step 3: Running Comprehensive System Diagnostics...")")
+        print("TEXT")
             try:
             # Run orchestrator diagnostics
             orch_diagnostics = self.orchestrator.run_system_diagnostics()
@@ -136,7 +136,7 @@ class SystemIntegrationDemo:
 
     def _demonstrate_component_integration(self):
         """Demonstrate component integration and data flow"""
-        print("🔄 Step 4: Demonstrating Component Integration...")")
+        print("TEXT")
             try:
             # Test mathematical validator integration
             if 'math_validator' in self.trading_engine.components:
@@ -178,7 +178,7 @@ class SystemIntegrationDemo:
 
     def _run_system_optimization(self):
         """Run system-wide optimization routines"""
-        print("⚡ Step 5: Running System-Wide Optimization...")")
+        print("TEXT")
             try:
             # Run orchestrator optimization
             orch_optimization = self.orchestrator.optimize_system()
@@ -208,7 +208,7 @@ class SystemIntegrationDemo:
 
     def _display_final_status(self):
         """Display final comprehensive system status"""
-        print("🎯 Step 6: Final System Status Report")")
+        print("TEXT")
             print("-" * 50)
 
         try:
@@ -224,7 +224,7 @@ class SystemIntegrationDemo:
             # Get trading engine status
             engine_status = self.trading_engine.get_system_status()
 
-            print("⚡ UNIFIED TRADING ENGINE:")")
+            print("TEXT")
             print(f"   Components: {len(engine_status.get('components_loaded', []))}")
             print(f"   Exchange: {'Connected' if engine_status.get('exchange_connected') else 'Disconnected'}")
             print(f"   Trading: {'Active' if engine_status.get('trading_active') else 'Inactive'}")
@@ -232,7 +232,7 @@ class SystemIntegrationDemo:
             # Get system integrity
             integrity = self.orchestrator.validate_system_integrity()
 
-            print("🛡️ SYSTEM INTEGRITY:")")
+            print("TEXT")
             print(f"   Status: {integrity.get('integrity_status', 'unknown').upper()}")
             print(f"   Validations: {len(integrity.get('validation_results', {}))}")
 
@@ -240,7 +240,7 @@ class SystemIntegrationDemo:
                 print(f"   Critical Issues: {len(integrity['critical_issues'])}")
 
             # Overall assessment
-            print("🎉 OVERALL ASSESSMENT:")")
+            print("TEXT")
             healthy_components = orch_status['healthy_components'] + len(engine_status.get('components_loaded', []))
             total_components = orch_status['total_components'] + len(engine_status.get('components_loaded', []))
 
