@@ -235,8 +235,8 @@ class LiveBalanceService:
         self.exchanges = {
             'bitget': {
                 'name': 'Bitget',
-                'ws_url': 'wss://ws.bitget.com/spot/v1/stream',
-                'rest_url': 'https://api.bitget.com/api/spot/v1/account/assets',
+                'ws_url': 'wss://ws.bitget.com/mix/v1/stream',  # Futures websocket
+                'rest_url': 'https://api.bitget.com/api/mix/v1/account/accounts',  # Futures account
                 'enabled': True,
                 'priority': 1
             },
@@ -482,7 +482,7 @@ class LiveBalanceService:
                 "op": "subscribe",
                 "args": [{
                     "channel": "account",
-                    "instType": "SPOT"
+                    "instType": "UMCBL"  # USDT-Margined Contracts
                 }]
             }
         elif exchange == 'bybit':

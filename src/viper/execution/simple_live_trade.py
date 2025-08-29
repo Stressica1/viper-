@@ -42,7 +42,7 @@ class SimpleLiveTrader:
             'password': self.api_password,
             'enableRateLimit': True,
             'options': {
-                'defaultType': 'future',  # Use future instead of swap
+                'defaultType': 'swap',  # USDT perpetual swaps only
                 'adjustForTimeDifference': True,
                 'recvWindow': 60000
             }
