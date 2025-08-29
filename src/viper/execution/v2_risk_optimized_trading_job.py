@@ -251,7 +251,7 @@ class V2RiskOptimizedTradingJob:
             notional_value = fixed_margin * leverage  # $2 * 50x = $100
             
             # Position size in contracts = notional value / price
-            position_size = notional_value / price
+            position_size = notional_value / float(price)
             
             # Get minimum contract size
             min_contract_size = 0.001
