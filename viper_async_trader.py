@@ -36,7 +36,20 @@ except ImportError as e:
     # Fallback to basic components
     logger.warning(f"⚠️ Enhanced components not available: {e}")
     try:
-        from advanced_trend_detector import AdvancedTrendDetector, TrendConfig, TrendDirection, TrendStrength
+        from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
+        # Define fallback enums if not available
+        from enum import Enum
+
+        class TrendDirection(Enum):
+            UP = "up"
+            DOWN = "down"
+            SIDEWAYS = "sideways"
+
+        class TrendStrength(Enum):
+            WEAK = "weak"
+            MODERATE = "moderate"
+            STRONG = "strong"
+
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
@@ -45,6 +58,19 @@ except ImportError as e:
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
+
+# Define basic enums for core functionality (always available)
+from enum import Enum
+
+class TrendDirection(Enum):
+    UP = "up"
+    DOWN = "down"
+    SIDEWAYS = "sideways"
+
+class TrendStrength(Enum):
+    WEAK = "weak"
+    MODERATE = "moderate"
+    STRONG = "strong"
 
 # Configure logging
 logging.basicConfig(
@@ -247,10 +273,26 @@ class ViperAsyncTrader:
             return 0.0
 
     def calculate_position_size(self, price: float, balance: float, leverage: int = 50):
-        """Calculate position size with 3% risk and leverage"""
+        """Calculate position size with adaptive risk and leverage for low-balance accounts"""
         try:
-            # 3% risk per trade
-            risk_per_trade = 0.03
+            # Adaptive risk based on account balance
+            if balance < 10:
+                # Very low balance - use minimal risk
+                risk_per_trade = 0.005  # 0.5% risk for small accounts
+                leverage = min(leverage, 5)  # Max 5x leverage for small accounts
+            elif balance < 100:
+                # Low balance - conservative risk
+                risk_per_trade = 0.01   # 1% risk for small accounts
+                leverage = min(leverage, 10)  # Max 10x leverage
+            elif balance < 1000:
+                # Medium balance - moderate risk
+                risk_per_trade = 0.02   # 2% risk
+                leverage = min(leverage, 25)  # Max 25x leverage
+            else:
+                # Large balance - standard risk
+                risk_per_trade = 0.03   # 3% risk
+                leverage = min(leverage, 50)  # Max 50x leverage
+
             risk_amount = balance * risk_per_trade
 
             # Assume 2% stop loss distance (can be adjusted)
@@ -263,11 +305,28 @@ class ViperAsyncTrader:
             # Apply leverage to get actual position size
             leveraged_position_size = base_position_size * leverage
 
+            # Calculate required margin
+            required_margin = (leveraged_position_size * price) / leverage
+
+            # Ensure we don't exceed 70% of available balance for margin
+            max_safe_margin = balance * 0.7
+            if required_margin > max_safe_margin:
+                # Recalculate position size to fit within safe margin
+                safe_position_size = (max_safe_margin * leverage) / price
+                leveraged_position_size = safe_position_size
+
             # Ensure minimum contract size
             min_contract_size = 0.001  # 0.001 BTC minimum
             position_size = max(leveraged_position_size, min_contract_size)
 
-            logger.info(f"🎯 Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+            # Final safety check - ensure position size doesn't require more than 80% of balance
+            final_required_margin = (position_size * price) / leverage
+            if final_required_margin > balance * 0.8:
+                # Emergency reduction
+                position_size = (balance * 0.8 * leverage) / price
+                position_size = max(position_size, min_contract_size)
+
+            logger.info(f"🎯 Position Sizing: Balance=${balance:.2f}, Risk={risk_per_trade*100}% (${risk_amount:.2f}), "
                        f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
                        f"({leverage}x leverage) → Final Size={position_size:.6f}")

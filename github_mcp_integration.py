@@ -494,6 +494,60 @@ class GitHubMCPIntegration:
             logger.error(f"❌ Pull request creation failed: {e}")
             return False
 
+    async def commit_and_push(self, message: str, files: List[str] = None) -> bool:
+        """
+        Commit and push changes to GitHub repository
+
+        Args:
+            message: Commit message
+            files: List of files to commit (None for all changes)
+
+        Returns:
+            bool: Success status
+        """
+        try:
+            if not self.repo:
+                logger.error("❌ Repository not initialized")
+                return False
+
+            # Add files to staging
+            if files:
+                for file_path in files:
+                    if os.path.exists(file_path):
+                        self.repo.index.add([file_path])
+                        logger.info(f"✅ Added to staging: {file_path}")
+            else:
+                # Add all changes
+                self.repo.git.add(A=True)
+                logger.info("✅ Added all changes to staging")
+
+            # Check if there are changes to commit
+            if not self.repo.is_dirty() and len(self.repo.untracked_files) == 0:
+                logger.info("ℹ️ No changes to commit")
+                return True
+
+            # Create commit
+            commit = self.repo.index.commit(message)
+            logger.info(f"✅ Changes committed: {commit.hexsha[:8]}")
+
+            # Push to remote
+            if self.remote_url:
+                try:
+                    origin = self.repo.remote('origin')
+                    origin.push()
+                    logger.info("✅ Changes pushed to remote repository")
+                    return True
+                except Exception as e:
+                    logger.error(f"❌ Push failed: {e}")
+                    return False
+            else:
+                logger.warning("⚠️ No remote repository configured")
+                return True
+
+        except Exception as e:
+            logger.error(f"❌ Commit and push failed: {e}")
+            return False
+
 # Example usage and testing functions
 async def test_github_integration():
     """Test GitHub MCP integration"""

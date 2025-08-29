@@ -781,8 +781,8 @@ async def main():
         total_configs = orchestrator._calculate_total_configs()
         total_combinations = total_pairs * total_configs * len(orchestrator.config.timeframes)
 
-        print("
-📊 BACKTEST SCALE:"        print(f"   Trading Pairs: {total_pairs}")
+        print("\n📊 BACKTEST SCALE:")
+        print(f"   Trading Pairs: {total_pairs}")
         print(f"   Configurations: {total_configs}")
         print(f"   Timeframes: {len(orchestrator.config.timeframes)}")
         print(f"   Total Combinations: {total_combinations:,}")
@@ -817,8 +817,8 @@ async def main():
         summary = results
         overall_stats = summary.get('overall_stats', {})
 
-        print("
-📊 RESULTS SUMMARY:"        print(f"   Total Results: {summary.get('total_results', 0):,}")
+        print("\n📊 RESULTS SUMMARY:")
+        print(f"   Total Results: {summary.get('total_results', 0):,}")
         print(f"   Failed Tasks: {summary.get('total_failed', 0)}")
         print(f"   Average Win Rate: {overall_stats.get('avg_win_rate', 0):.1f}%")
         print(f"   Best Win Rate: {overall_stats.get('best_win_rate', 0):.1f}%")
@@ -826,15 +826,15 @@ async def main():
 
         if summary.get('best_by_sharpe_ratio'):
             best_sharpe = summary['best_by_sharpe_ratio'][0]
-            print("
-🏆 BEST CONFIGURATION (Sharpe Ratio):"            print(f"   Symbol: {best_sharpe.get('symbol', 'N/A')}")
+            print("\n🏆 BEST CONFIGURATION (Sharpe Ratio):")
+            print(f"   Symbol: {best_sharpe.get('symbol', 'N/A')}")
             print(f"   Timeframe: {best_sharpe.get('timeframe', 'N/A')}")
             print(f"   Sharpe Ratio: {best_sharpe.get('sharpe_ratio', 0):.2f}")
             print(f"   Win Rate: {best_sharpe.get('win_rate', 0):.1f}%")
             print(f"   Total P&L: ${best_sharpe.get('total_pnl', 0):.2f}")
 
-        print("
-📄 Detailed results saved to:"        print("   - massive_backtest_results_*.json (comprehensive results)")
+        print("\n📄 Detailed results saved to:")
+        print("   - massive_backtest_results_*.json (comprehensive results)")
         print("   - massive_backtest_results_*_summary.csv (summary CSV)")
         print("   - massive_backtest_results_*_top_performers.json (top configs)")
 

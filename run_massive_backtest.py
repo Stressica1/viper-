@@ -188,8 +188,8 @@ class MassiveBacktestLauncher:
             # Time estimation
             time_estimate = await self.estimate_execution_time()
             if time_estimate:
-                print("
-⏱️ EXECUTION ESTIMATE:"                print(f"   Total Combinations: {time_estimate['total_combinations']:,}")
+                print("\n⏱️ EXECUTION ESTIMATE:")
+                print(f"   Total Combinations: {time_estimate['total_combinations']:,}")
                 print(f"   Trading Pairs: {time_estimate['trading_pairs']}")
                 print(f"   Configurations: {time_estimate['total_configs']}")
                 print(f"   Timeframes: {time_estimate['timeframes']}")
@@ -265,8 +265,8 @@ class MassiveBacktestLauncher:
 
             # Success analysis
             success_analysis = summary.get('success_analysis', {})
-            print("
-🎯 SUCCESS ANALYSIS:"            print(f"   Profitable Configurations: {success_analysis.get('profitable_configs', 0)}")
+            print("\n🎯 SUCCESS ANALYSIS:")
+            print(f"   Profitable Configurations: {success_analysis.get('profitable_configs', 0)}")
             print(f"   High Win Rate Configs (≥60%): {success_analysis.get('high_win_rate_configs', 0)}")
             print(f"   High Sharpe Configs (≥1.0): {success_analysis.get('high_sharpe_configs', 0)}")
             print(f"   Elite Configurations: {success_analysis.get('elite_configs', 0)}")
@@ -281,8 +281,8 @@ class MassiveBacktestLauncher:
             # Recommendations
             await self.display_recommendations(summary)
 
-            print("
-📄 DETAILED RESULTS SAVED:"            print("   - massive_backtest_results_*.json (comprehensive results)")
+            print("\n📄 DETAILED RESULTS SAVED:")
+            print("   - massive_backtest_results_*.json (comprehensive results)")
             print("   - massive_backtest_results_*_summary.csv (summary CSV)")
             print("   - massive_backtest_results_*_top_performers.json (top configs)")
 
@@ -292,14 +292,15 @@ class MassiveBacktestLauncher:
     async def display_best_performers(self, summary: Dict[str, Any]):
         """Display best performing configurations"""
         try:
-            print("
-🏆 TOP PERFORMERS:"            print("-" * 40)
+            print("\n🏆 TOP PERFORMERS:")
+            print("-" * 40)
 
             # Best by Sharpe Ratio
             best_sharpe = summary.get('best_by_sharpe_ratio', [])
             if best_sharpe:
                 top = best_sharpe[0]
-                print("🎯 Best Sharpe Ratio:"                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
+                print("🎯 Best Sharpe Ratio:")
+                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
                 print(f"   Total P&L: ${top.get('total_pnl', 0):.2f}")
@@ -308,8 +309,8 @@ class MassiveBacktestLauncher:
             best_win_rate = summary.get('best_by_win_rate', [])
             if best_win_rate:
                 top = best_win_rate[0]
-                print("
-💯 Best Win Rate:"                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
+                print("\n💯 Best Win Rate:")
+                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
                 print(f"   Total P&L: ${top.get('total_pnl', 0):.2f}")
@@ -318,8 +319,8 @@ class MassiveBacktestLauncher:
             best_pnl = summary.get('best_by_total_pnl', [])
             if best_pnl:
                 top = best_pnl[0]
-                print("
-💰 Best Total P&L:"                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
+                print("\n💰 Best Total P&L:")
+                print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Total P&L: ${top.get('total_pnl', 0):.2f}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
@@ -334,8 +335,8 @@ class MassiveBacktestLauncher:
             if not pair_performance:
                 return
 
-            print("
-📊 PAIR PERFORMANCE ANALYSIS:"            print("-" * 40)
+            print("\n📊 PAIR PERFORMANCE ANALYSIS:")
+            print("-" * 40)
 
             # Sort by profitability
             sorted_pairs = sorted(pair_performance.items(),
@@ -354,8 +355,8 @@ class MassiveBacktestLauncher:
     async def display_recommendations(self, summary: Dict[str, Any]):
         """Display optimization recommendations"""
         try:
-            print("
-💡 RECOMMENDATIONS:"            print("-" * 40)
+            print("\n💡 RECOMMENDATIONS:")
+            print("-" * 40)
 
             overall_stats = summary.get('overall_stats', {})
             success_analysis = summary.get('success_analysis', {})
