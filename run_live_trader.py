@@ -51,7 +51,7 @@ class MultiPairVIPERTrader:
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '3.0'))
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '2.0'))
         self.max_positions = int(os.getenv('MAX_POSITIONS', '15'))  # 15 positions as per your rules
-        self.min_margin_per_trade = float(os.getenv('MIN_MARGIN_PER_TRADE', '0.005'))  # $0.005 minimum margin for 50x
+        self.min_margin_per_trade = float(os.getenv('MIN_MARGIN_PER_TRADE', '5.0'))  # $5.0 minimum margin for exchange requirements
 
         self.exchange = None
         self.all_pairs = []
@@ -135,8 +135,8 @@ class MultiPairVIPERTrader:
     def validate_trade(self, symbol, position_size, margin_value_usdt):
         """Validate trade parameters before execution"""
         try:
-            # Check minimum margin size ($0.005 for 50x leverage) with small tolerance for rounding
-            min_margin_size = 0.005  # Minimum $0.005 margin for 50x leverage
+            # Check minimum margin size ($5 for exchange requirements) with small tolerance for rounding
+            min_margin_size = 4.95  # Minimum $4.95 margin for exchange requirements (with tolerance)
             if margin_value_usdt < min_margin_size:
                 logger.warning(f"⚠️ Margin value ${margin_value_usdt:.2f} below minimum ${min_margin_size}")
                 return False
@@ -376,10 +376,10 @@ class MultiPairVIPERTrader:
                     logger.error(f"❌ No USDT balance available for {symbol}")
                     return None
 
-                # FIXED $1 MARGIN PER TRADE with 50x leverage
-                margin_value_usdt = self.min_margin_per_trade  # Always use exactly $1 margin per trade
+                # FIXED $5 MARGIN PER TRADE with 50x leverage
+                margin_value_usdt = self.min_margin_per_trade  # Always use exactly $5 margin per trade
 
-                # Check if account has enough balance for $1 margin
+                # Check if account has enough balance for $5 margin
                 if usdt_balance < margin_value_usdt:
                     logger.warning(f"⚠️ Insufficient balance: ${usdt_balance:.2f} < ${margin_value_usdt:.2f} required margin")
                     return None
@@ -415,7 +415,7 @@ class MultiPairVIPERTrader:
 
                 logger.info(f"🎯 {signal} {symbol} at ${current_price:.6f}")
                 logger.info(f"💰 Account Balance: ${usdt_balance:.2f}")
-                logger.info(f"💰 Position size: {position_size:.6f} coins (Margin: ${margin_value_usdt:.2f}, Notional: ${notional_value_usdt:.2f})")
+                logger.info(f"💰 Position size: {position_size:.6f} coins (Margin: ${margin_value_usdt:.2f}, Notional: ${notional_value_usdt:.2f}, Leverage: {self.max_leverage}x)")
 
             except Exception as e:
                 logger.error(f"❌ Failed to calculate position size for {symbol}: {e}")
@@ -428,32 +428,32 @@ class MultiPairVIPERTrader:
 
             # Execute order with proper Bitget unilateral position parameters
             try:
-                if signal == 'BUY':
-                    order = self.exchange.create_market_buy_order(
-                        symbol,
-                        position_size,
-                        params={
-                            'leverage': self.max_leverage,
-                            'marginMode': 'isolated',
-                            'tradeSide': 'open'  # Open position for unilateral mode
-                        }
-                    )
-                elif signal == 'SELL':
-                    order = self.exchange.create_market_sell_order(
-                        symbol,
-                        position_size,
-                        params={
-                            'leverage': self.max_leverage,
-                            'marginMode': 'isolated',
-                            'tradeSide': 'open'  # Open position for unilateral mode
-                        }
-                    )
+            if signal == 'BUY':
+                order = self.exchange.create_market_buy_order(
+                    symbol,
+                    position_size,
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'open'  # Open position for unilateral mode
+                    }
+                )
+            elif signal == 'SELL':
+                order = self.exchange.create_market_sell_order(
+                    symbol,
+                    position_size,
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'open'  # Open position for unilateral mode
+                    }
+                )
 
             except Exception as e:
                 logger.error(f"❌ Trade execution error for {symbol}: {e}")
                 return None
             else:
-                logger.info(f"✅ Trade executed: {order['id']}")
+            logger.info(f"✅ Trade executed: {order['id']}")
 
                 # SET TAKE-PROFIT AND STOP-LOSS ORDERS
                 try:
@@ -510,7 +510,7 @@ class MultiPairVIPERTrader:
                     logger.error(f"❌ Failed to set TP/SL for {symbol}: {tp_sl_error}")
                     logger.warning("⚠️ Position opened without TP/SL - manual monitoring required")
 
-                return order
+            return order
 
         except Exception as e:
             logger.error(f"❌ Trade execution error for {symbol}: {e}")
@@ -602,6 +602,168 @@ class MultiPairVIPERTrader:
 
             return None
 
+    def scan_markets(self):
+        """Single market scan - returns trading opportunities for MCP integration"""
+        opportunities = []
+
+        logger.info(f"🔍 Scanning {len(self.all_pairs)} pairs for opportunities...")
+
+        # Scan subset of pairs for trading opportunities
+        pairs_to_scan = min(25, len(self.all_pairs))  # Scan 25 pairs per cycle
+        scanned_pairs = random.sample(self.all_pairs, pairs_to_scan)
+
+        for symbol in scanned_pairs:
+            # CHECK POSITION LIMITS BEFORE TRADING
+            current_positions = len(self.active_positions)
+            if current_positions >= self.max_positions:
+                logger.debug(f"🚫 Position limit reached ({current_positions}/{self.max_positions}). Skipping {symbol}")
+                continue
+
+            # SKIP IF ALREADY HAVE POSITION IN THIS PAIR
+            if symbol in self.active_positions:
+                logger.debug(f"📊 Skipping {symbol} - already have position")
+                continue
+
+            signal = self.generate_signal(symbol)
+
+            if signal in ['BUY', 'SELL']:
+                # Calculate confidence based on signal strength
+                confidence = self.calculate_signal_confidence(symbol, signal)
+
+                opportunities.append({
+                    'symbol': symbol,
+                    'signal': signal,
+                    'confidence': confidence,
+                    'timestamp': time.time()
+                })
+                logger.info(f"📊 Found opportunity: {symbol} -> {signal} (confidence: {confidence:.2f})")
+
+        logger.info(f"✅ Scan complete - {len(opportunities)} opportunities found")
+        return opportunities
+
+    def calculate_signal_confidence(self, symbol: str, signal: str) -> float:
+        """Calculate confidence score for trading signal"""
+        try:
+            # Get recent price data
+            ohlcv_5m = self.exchange.fetch_ohlcv(symbol, timeframe='5m', limit=20)
+            ohlcv_15m = self.exchange.fetch_ohlcv(symbol, timeframe='15m', limit=12)
+
+            if len(ohlcv_5m) < 10 or len(ohlcv_15m) < 6:
+                return 0.5  # Neutral confidence
+
+            # Analyze trend consistency across timeframes
+            primary_trend = self.analyze_trend_relaxed([candle[4] for candle in ohlcv_15m])
+            secondary_trend = self.analyze_trend_relaxed([candle[4] for candle in ohlcv_5m])
+
+            # Base confidence on trend agreement
+            confidence = 0.6  # Base confidence
+
+            # Boost confidence for strong trend alignment
+            if signal == 'BUY':
+                if primary_trend in ['BULLISH', 'WEAK_BULLISH'] and secondary_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    confidence = 0.8
+                elif primary_trend == 'SIDEWAYS' and secondary_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    confidence = 0.7
+                elif primary_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    confidence = 0.3  # Low confidence against primary trend
+            else:  # SELL signal
+                if primary_trend in ['BEARISH', 'WEAK_BEARISH'] and secondary_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    confidence = 0.8
+                elif primary_trend == 'SIDEWAYS' and secondary_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    confidence = 0.7
+                elif primary_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    confidence = 0.3  # Low confidence against primary trend
+
+            # Check for momentum confirmation
+            if self.detect_momentum_signal([candle[4] for candle in ohlcv_5m]):
+                momentum_signal = self.detect_momentum_signal([candle[4] for candle in ohlcv_5m])
+                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \
+                   (signal == 'SELL' and momentum_signal == 'STRONG_BEAR'):
+                    confidence += 0.1  # Boost for momentum confirmation
+
+            return min(confidence, 1.0)  # Cap at 100%
+
+        except Exception as e:
+            logger.debug(f"⚠️ Error calculating confidence for {symbol}: {e}")
+            return 0.5  # Return neutral confidence on error
+
+    def should_enter_position(self, symbol: str, signal: str, confidence: float) -> bool:
+        """Determine if a trade should be executed based on confidence and conditions"""
+        try:
+            # Minimum confidence threshold
+            min_confidence = 0.6  # Require at least 60% confidence
+
+            if confidence < min_confidence:
+                logger.debug(f"⚠️ {symbol}: Confidence {confidence:.2f} below threshold {min_confidence}")
+                return False
+
+            # Check position limits
+            current_positions = len(self.active_positions)
+            if current_positions >= self.max_positions:
+                logger.debug(f"🚫 Position limit reached ({current_positions}/{self.max_positions})")
+                return False
+
+            # Check if already have position in this pair
+            if symbol in self.active_positions:
+                logger.debug(f"📊 Already have position in {symbol}")
+                return False
+
+            # Additional risk checks
+            usdt_balance = self.exchange.fetch_balance()['USDT']['free']
+            if usdt_balance < self.min_margin_per_trade:
+                logger.debug(f"⚠️ Insufficient balance: ${usdt_balance:.2f} < ${self.min_margin_per_trade:.2f}")
+                return False
+
+            logger.info(f"✅ {symbol}: Trade approved (confidence: {confidence:.2f})")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Error checking position entry for {symbol}: {e}")
+            return False
+
+    def calculate_position_size(self, symbol: str = None):
+        """Calculate position size based on risk management parameters and minimum amounts"""
+        try:
+            # Get current balance
+            balance = self.exchange.fetch_balance()
+            usdt_balance = balance['USDT']['free']
+
+            # FIXED: Use minimum margin per trade (fixed $5 to meet exchange minimum)
+            risk_based_size = usdt_balance * 0.1  # 10% of balance
+            position_size_usdt = max(5.0, risk_based_size)  # Ensure minimum $5, but allow larger if risk allows
+
+            logger.debug(f"💰 Balance: ${usdt_balance:.2f}, Risk-based: ${risk_based_size:.2f}, Final size: ${position_size_usdt:.2f}")
+
+            # If symbol is provided, ensure we meet minimum amount requirements
+            if symbol:
+                try:
+                    # Get market info for minimum amounts
+                    market = self.exchange.market(symbol)
+                    min_amount = market.get('limits', {}).get('amount', {}).get('min', 1)
+
+                    # Get current price to convert USDT amount to crypto amount
+                    ticker = self.exchange.fetch_ticker(symbol)
+                    current_price = ticker['last']
+
+                    # Calculate crypto amount needed
+                    crypto_amount = position_size_usdt / current_price
+
+                    # Ensure it meets minimum requirements
+                    if crypto_amount < min_amount:
+                        # Recalculate USDT amount needed for minimum crypto amount
+                        position_size_usdt = min_amount * current_price
+                        logger.debug(f"📊 Adjusted {symbol} position size to meet minimum amount: ${position_size_usdt:.2f}")
+
+                except Exception as market_error:
+                    logger.debug(f"⚠️ Could not check minimum amount for {symbol}: {market_error}")
+
+            logger.debug(f"📊 Position size calculated: ${position_size_usdt:.2f} (balance: ${usdt_balance:.2f})")
+            return position_size_usdt
+
+        except Exception as e:
+            logger.error(f"❌ Error calculating position size: {e}")
+            return 0.0
+
     def run(self):
         """Main trading loop - scans ALL pairs"""
         self.is_running = True
@@ -614,32 +776,15 @@ class MultiPairVIPERTrader:
             cycle += 1
             logger.info(f"\n🔄 Cycle #{cycle} - Scanning {len(self.all_pairs)} pairs")
 
-            # Scan subset of pairs for trading opportunities
-            pairs_to_scan = min(25, len(self.all_pairs))  # Scan 25 pairs per cycle (reasonable for multi-pair)
-            scanned_pairs = random.sample(self.all_pairs, pairs_to_scan)
+            # Use the scan_markets method for consistency
+            opportunities = self.scan_markets()
 
             trades_this_cycle = 0
 
-            for symbol in scanned_pairs:
-                if not self.is_running:
-                    break
+            for opportunity in opportunities:
+                symbol = opportunity['symbol']
+                signal = opportunity['signal']
 
-                # CHECK POSITION LIMITS BEFORE TRADING
-                current_positions = len(self.active_positions)
-                if current_positions >= self.max_positions:
-                    logger.warning(f"🚫 POSITION LIMIT REACHED: {current_positions}/{self.max_positions} positions. Skipping {symbol}")
-                    logger.warning(f"📊 Active positions: {list(self.active_positions.keys())}")
-                    continue
-
-                # SKIP IF ALREADY HAVE POSITION IN THIS PAIR
-                if symbol in self.active_positions:
-                    logger.debug(f"📊 Skipping {symbol} - already have position")
-                    continue
-
-                signal = self.generate_signal(symbol)
-
-                if signal in ['BUY', 'SELL']:
-                    logger.info(f"📊 {symbol} -> {signal}")
                     order = self.execute_trade(symbol, signal)
                     if order:
                         trades_this_cycle += 1
