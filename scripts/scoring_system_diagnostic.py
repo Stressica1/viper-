@@ -42,7 +42,8 @@ class VIPERScoringDiagnostic:
     """
 
     def __init__(self):
-        self.project_root = "/Users/tradecomp/Desktop/2/untitled folder/viper-"
+        # Use current working directory or environment variable for better portability
+        self.project_root = os.getenv('VIPER_PROJECT_ROOT', os.getcwd())
         self.diagnostic_report = {
             'timestamp': datetime.now().isoformat(),
             'system_status': 'INITIALIZING',
@@ -583,11 +584,29 @@ def main():
         # Print detailed report
         diagnostic.print_diagnostic_report()
 
-        # Save report to file
-        report_file = f"/Users/tradecomp/Desktop/2/untitled folder/viper-/scoring_system_diagnostic_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(report_file, 'w') as f:
-            json.dump(report, f, indent=2, default=str)
-        print(f"\n💾 Detailed report saved to: {report_file}")
+        # Save diagnostic report - ensure directory exists and use relative path
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        
+        # Create reports directory if it doesn't exist
+        reports_dir = os.path.join(diagnostic.project_root, "reports")
+        os.makedirs(reports_dir, exist_ok=True)
+        
+        report_file = os.path.join(reports_dir, f"scoring_system_diagnostic_{timestamp}.json")
+        
+        try:
+            with open(report_file, 'w') as f:
+                json.dump(report, f, indent=2, default=str)
+            print(f"💾 Detailed report saved to: {report_file}")
+        except Exception as save_e:
+            print(f"❌ Failed to save report: {save_e}")
+            # Try to save in current directory as fallback
+            try:
+                fallback_file = f"scoring_system_diagnostic_{timestamp}.json"
+                with open(fallback_file, 'w') as f:
+                    json.dump(report, f, indent=2, default=str)
+                print(f"💾 Fallback report saved to: {fallback_file}")
+            except Exception as fallback_e:
+                print(f"❌ Fallback save also failed: {fallback_e}")
 
     except Exception as e:
         print(f"❌ Diagnostic failed: {e}")
