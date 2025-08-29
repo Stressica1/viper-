@@ -67,12 +67,14 @@ class MarketDataStreamer:
             # Load exchange credentials
             self.load_exchange_credentials()
 
-            # Initialize exchange
+            # Initialize exchange for swap trading
             self.exchange = ccxt.bitget({
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
                 'password': self.api_password,
                 'options': {
+                    'defaultType': 'swap',
+                    'adjustForTimeDifference': True,
                     'watchOrderBook': True,
                     'watchTicker': True,
                     'watchTrades': True,
