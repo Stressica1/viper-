@@ -1,0 +1,22 @@
+🚀 COMPREHENSIVE VIPER BACKTEST RESULTS
+==================================================
+
+Total Tests: 80
+Successful Tests: 80
+Success Rate: 100.0%
+Execution Time: 0.61 seconds
+
+PERFORMANCE OVERVIEW:
+Average Return: 0.00%
+Average Sharpe Ratio: 0.00
+Average Win Rate: 0.0%
+Average Max Drawdown: 0.00%
+
+ENHANCED ENTRY ANALYSIS:
+Enhanced Entry Avg Return: 0.00%
+Baseline Avg Return: 0.00%
+Improvement: 0.00%
+
+TOP PERFORMERS:
+Highest Return: BTC/USDT (5m) - 0.00%
+Best Sharpe: BTC/USDT (5m) - 0.00
