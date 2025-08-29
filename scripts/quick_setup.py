@@ -35,6 +35,7 @@ def run_command(cmd, description, check=True):
         if ENHANCED_DISPLAY:
             terminal.console.print(f"[blue]Running:[/] {description}")
         else:
+            print(f"Running: {description}")
             
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)
         
@@ -203,6 +204,7 @@ def main():
             terminal.console.print("3. Start system: python scripts/start_live_trading_mandatory.py")
         else:
             print("1. Edit .env file with your API credentials")
+            print("2. Run: python tools/setup_validator.py") 
             print("3. Start system: python scripts/start_live_trading_mandatory.py")
             
     else:
