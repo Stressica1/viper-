@@ -79,8 +79,7 @@ class DataManager:
     def fetch_all_trading_pairs(self):
         """Fetch ALL available trading pairs from Bitget"""
         try:
-            spot_instruments_url = f"{self.redis_url.replace('redis://', 'http://').replace(':6379', '')}/api/v2/spot/public/symbols"
-            # Actually use the exchange API directly
+            # Use the exchange API directly for swap trading pairs
             import ccxt
             exchange = ccxt.bitget({
                 'options': {
