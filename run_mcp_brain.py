@@ -348,19 +348,19 @@ async def dashboard():
                 healthDiv.innerHTML = `
                     <div class="metric">
                         <span>CPU Usage:</span>
-                        <span class="${cpuClass}">${system.cpu_usage}</span>
+                        <span class="$${{cpuClass}}">$${{system.cpu_usage}}</span>
                     </div>
                     <div class="metric">
                         <span>Memory Usage:</span>
-                        <span class="${memClass}">${system.memory_usage}</span>
+                        <span class="$${{memClass}}">$${{system.memory_usage}}</span>
                     </div>
                     <div class="metric">
                         <span>Uptime:</span>
-                        <span class="status-healthy">${system.uptime_seconds}s</span>
+                        <span class="status-healthy">$${{system.uptime_seconds}}s</span>
                     </div>
                     <div class="metric">
                         <span>Brain Status:</span>
-                        <span class="${system.brain_active ? 'status-healthy' : 'status-error'}">${system.brain_active ? 'ACTIVE' : 'INACTIVE'}</span>
+                        <span class="$${{system.brain_active ? 'status-healthy' : 'status-error'}}">$${{system.brain_active ? 'ACTIVE' : 'INACTIVE'}}</span>
                     </div>
                 `;
             }}
@@ -372,19 +372,19 @@ async def dashboard():
                 tradingDiv.innerHTML = `
                     <div class="metric">
                         <span>Trading Status:</span>
-                        <span class="${tradingClass}">${trading.trading_active ? 'ACTIVE' : 'STANDBY'}</span>
+                        <span class="$${{tradingClass}}">$${{trading.trading_active ? 'ACTIVE' : 'STANDBY'}}</span>
                     </div>
                     <div class="metric">
                         <span>Active Positions:</span>
-                        <span>${trading.active_positions}</span>
+                        <span>$${{trading.active_positions}}</span>
                     </div>
                     <div class="metric">
                         <span>P&L:</span>
-                        <span class="${trading.pnl.startsWith('+') ? 'status-healthy' : 'status-error'}">${trading.pnl}</span>
+                        <span class="$${{trading.pnl.startsWith('+') ? 'status-healthy' : 'status-error'}}">$${{trading.pnl}}</span>
                     </div>
                     <div class="metric">
                         <span>Strategy:</span>
-                        <span>${trading.active_strategy}</span>
+                        <span>$${{trading.active_strategy}}</span>
                     </div>
                 `;
             }}
@@ -396,15 +396,15 @@ async def dashboard():
                 aiDiv.innerHTML = `
                     <div class="metric">
                         <span>Cursor Integration:</span>
-                        <span class="${aiClass}">${ai.cursor_integration ? 'CONNECTED' : 'DISCONNECTED'}</span>
+                        <span class="$${{aiClass}}">$${{ai.cursor_integration ? 'CONNECTED' : 'DISCONNECTED'}}</span>
                     </div>
                     <div class="metric">
                         <span>Commands Processed:</span>
-                        <span>${ai.commands_processed}</span>
+                        <span>$${{ai.commands_processed}}</span>
                     </div>
                     <div class="metric">
                         <span>Confidence Threshold:</span>
-                        <span>${ai.confidence_threshold}%</span>
+                        <span>$${{ai.confidence_threshold}}%</span>
                     </div>
                 `;
             }}
@@ -416,15 +416,15 @@ async def dashboard():
                 securityDiv.innerHTML = `
                     <div class="metric">
                         <span>Ruleset:</span>
-                        <span class="${security.ruleset_active ? 'status-healthy' : 'status-error'}">${security.ruleset_active ? 'ENFORCED' : 'DISABLED'}</span>
+                        <span class="$${{security.ruleset_active ? 'status-healthy' : 'status-error'}}">$${{security.ruleset_active ? 'ENFORCED' : 'DISABLED'}}</span>
                     </div>
                     <div class="metric">
                         <span>Emergency Mode:</span>
-                        <span class="${emergencyClass}">${security.emergency_mode ? 'ACTIVE' : 'STANDBY'}</span>
+                        <span class="$${{emergencyClass}}">$${{security.emergency_mode ? 'ACTIVE' : 'STANDBY'}}</span>
                     </div>
                     <div class="metric">
                         <span>Last Check:</span>
-                        <span>${new Date(security.last_security_check).toLocaleTimeString()}</span>
+                        <span>$${{new Date(security.last_security_check).toLocaleTimeString()}}</span>
                     </div>
                 `;
             }}
@@ -439,7 +439,7 @@ async def dashboard():
 
                 // Add to log
                 const log = document.getElementById('command-log');
-                log.innerHTML += `\\n[${timestamp}] [${commandCount}] Executing: ${command}`;
+                log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] Executing: $${{command}}`;
 
                 try {{
                     const response = await fetch('/command', {{
@@ -451,17 +451,17 @@ async def dashboard():
                     const result = await response.json();
                     const status = result.status === 'success' ? '✅' : '❌';
 
-                    log.innerHTML += `\\n[${timestamp}] [${commandCount}] Result: ${status} ${result.message || JSON.stringify(result)}`;
+                    log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] Result: $${{status}} $${{result.message || JSON.stringify(result)}}`;
                     log.scrollTop = log.scrollHeight;
 
                     // Show alert for important messages
                     if (command === 'emergency_stop' || result.status === 'error') {{
-                        alert(`Command Result: ${result.message || JSON.stringify(result)}`);
+                        alert(`Command Result: $${{result.message || JSON.stringify(result)}}`);
                     }}
 
                 }} catch (error) {{
-                    log.innerHTML += `\\n[${timestamp}] [${commandCount}] ❌ Error: ${error.message}`;
-                    alert(`Command failed: ${error.message}`);
+                    log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] ❌ Error: $${{error.message}}`;
+                    alert(`Command failed: $${{error.message}}`);
                 }}
             }}
 
