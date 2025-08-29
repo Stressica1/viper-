@@ -658,7 +658,7 @@ def run_performance_analysis():
         data_loaded = analyzer.load_performance_data()
         if not data_loaded:
             print("❌ No performance data available for analysis")
-            print("💡 Run backtesting validation first to generate performance data")
+print("💡 Run backtesting validation first to generate performance data")
             return False
 
         # Generate comprehensive analysis
@@ -672,15 +672,14 @@ def run_performance_analysis():
 
         # Print key metrics
         comparison = analysis_results.get("performance_comparison", {})
-        print("
+        print("")
 📊 KEY PERFORMANCE METRICS:"        print("-" * 40)
 
         for metric, data in comparison.items():
             improvement = data.get("improvement_pct", 0)
             status = "📈" if improvement > 0 else "📉"
             print(".1%")
-
-        print("
+print("")
 📊 VISUALIZATIONS SAVED TO:"        print(f"   {analyzer.visualization_path}")
 
         return True
@@ -693,7 +692,7 @@ if __name__ == "__main__":
     success = run_performance_analysis()
     if success:
         print("\n🎉 Performance analysis completed successfully!")
-        print("📋 Check the analysis report and visualizations for detailed insights")
+print("📋 Check the analysis report and visualizations for detailed insights")
     else:
         print("\n⚠️ Performance analysis encountered issues")
-        print("🔧 Please check the logs and ensure performance data is available")
+print("🔧 Please check the logs and ensure performance data is available")

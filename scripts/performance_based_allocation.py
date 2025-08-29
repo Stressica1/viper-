@@ -231,9 +231,9 @@ class PerformanceBasedAllocator:
         print(f"\n💡 ALLOCATION STRATEGY")
         print("-" * 25)
         print("• Top performer gets maximum allocation (up to $12.00)")
-        print("• Second best gets medium allocation (up to $9.00)")
+print("• Second best gets medium allocation (up to $9.00")
         print("• Third best gets smaller allocation (up to $6.00)")
-        print("• Remaining strategies get minimum allocation ($0.50+)"        print("• Focus on Sharpe ratio, win rate, and risk-adjusted returns")
+print("• Remaining strategies get minimum allocation ($0.50+")"        print("• Focus on Sharpe ratio, win rate, and risk-adjusted returns")
 
     def export_allocation_report(self, result: AllocationResult) -> str:
         """Export allocation results to file"""
@@ -302,7 +302,7 @@ def main():
             report_path = allocator.export_allocation_report(result)
             print(f"\n📄 Allocation report saved: {report_path}")
 
-        print("
+        print("")
 ✅ Performance-based allocation optimization completed!")
         print(f"💰 Portfolio: ${allocator.portfolio_value:.2f}")
         print("🎯 Capital allocated based on strategy performance metrics"
@@ -311,9 +311,9 @@ def main():
         print("=" * 50)
         print(f"💰 Portfolio Value: ${allocator.portfolio_value:.2f}")
         print("\nUse --optimize to run performance-based allocation")
-        print("Use --export to save detailed allocation report")
+print("Use --export to save detailed allocation report")
         print("\nExample:")
-        print("  python scripts/performance_based_allocation.py --optimize --export")
+print("  python scripts/performance_based_allocation.py --optimize --export")
 
 if __name__ == '__main__':
     main()

@@ -147,8 +147,8 @@ class BacktestingLauncher:
             results = await run_backtesting_analysis(symbols, timeframes, days)
             end_time = datetime.now()
 
-            print("
-📊 COMPREHENSIVE ANALYSIS RESULTS"            print("=" * 40)
+            print("📊 COMPREHENSIVE ANALYSIS RESULTS")
+            print("=" * 40)
             print(f"Status: {results['status']}")
             print(f"Duration: {(end_time - start_time).total_seconds():.1f} seconds")
             print(f"Symbols Analyzed: {results['symbols_analyzed']}")
@@ -158,7 +158,7 @@ class BacktestingLauncher:
 
             if results['status'] == 'completed':
                 print("✅ Analysis completed successfully!")
-                print("📄 Check the generated report files for detailed results")
+print("📄 Check the generated report files for detailed results")
             else:
                 print(f"❌ Analysis failed: {results.get('error', 'Unknown error')}")
 
@@ -181,7 +181,7 @@ class BacktestingLauncher:
                 print(f"   Max Drawdown: {recs['max_drawdown']:.3f}")
                 print(f"   Immediate Loss Rate: {recs['immediate_loss_rate']:.1f}%")
 
-                print("
+                print("")
 🔧 OPTIMIZATION RECOMMENDATIONS:"                recommendations = recs.get('recommendations', {})
 
                 if recommendations:
@@ -192,20 +192,19 @@ class BacktestingLauncher:
                     if recommendations.get('min_time_to_profit'):
                         print(f"   ⏱️ Min Time to Profit: {recommendations['min_time_to_profit']} hours")
                 else:
-                    print("   📋 No specific recommendations available")
-
-                print("
+                    print("📋 No specific recommendations available")
+print("")
 💡 GENERAL IMPROVEMENT SUGGESTIONS:"                if recs['success_rate'] < 50:
-                    print("   • Consider stricter entry filters")
-                    print("   • Increase minimum confidence threshold")
+                    print("• Consider stricter entry filters")
+print("   • Increase minimum confidence threshold")
                     print("   • Add additional technical confirmations")
                 elif recs['avg_drawdown'] < -0.05:
-                    print("   • Implement entry price validation")
-                    print("   • Consider reducing position sizes")
+                    print("• Implement entry price validation")
+print("   • Consider reducing position sizes")
                     print("   • Add immediate stop-loss protection")
                 elif recs['immediate_loss_rate'] > 30:
-                    print("   • Optimize entry timing")
-                    print("   • Add market condition filters")
+                    print("• Optimize entry timing")
+print("   • Add market condition filters")
                     print("   • Consider avoiding certain market hours")
 
             else:

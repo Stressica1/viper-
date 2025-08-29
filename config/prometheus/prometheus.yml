@@ -1,0 +1,214 @@
+# 🚀 VIPER Trading System - Prometheus Configuration
+# Comprehensive metrics collection for all microservices
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  scrape_timeout: 10s
+
+# Alert manager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          - alertmanager:9093
+
+# Rule files for alerting
+rule_files:
+  - "alert_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+
+  # 🌐 API Server - Main REST API
+  - job_name: 'viper-api-server'
+    static_configs:
+      - targets: ['api-server:8000']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+    scrape_timeout: 5s
+
+  # 🔥 Live Trading Engine - Production Trading
+  - job_name: 'viper-live-trading'
+    static_configs:
+      - targets: ['live-trading-engine:8007']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+    scrape_timeout: 3s
+
+  # 🔗 Exchange Connector - API Client
+  - job_name: 'viper-exchange-connector'
+    static_configs:
+      - targets: ['exchange-connector:8005']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 🛡️ Risk Manager - Position Control
+  - job_name: 'viper-risk-manager'
+    static_configs:
+      - targets: ['risk-manager:8002']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 🧪 Ultra Backtester - Strategy Testing
+  - job_name: 'viper-backtester'
+    static_configs:
+      - targets: ['ultra-backtester:8001']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 🎯 VIPER Scoring Service - Signal Processing
+  - job_name: 'viper-scoring'
+    static_configs:
+      - targets: ['viper-scoring-service:8009']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 🤖 MCP Server - AI/ML Integration
+  - job_name: 'viper-mcp-server'
+    static_configs:
+      - targets: ['mcp-server:8015']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # 📊 Market Data Manager - Data Collection
+  - job_name: 'viper-market-data'
+    static_configs:
+      - targets: ['market-data-manager:8003']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 📡 Market Data Streamer - Real-time Data
+  - job_name: 'viper-data-streamer'
+    static_configs:
+      - targets: ['market-data-streamer:8010']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+
+  # 🎯 Signal Processor - Trading Signals
+  - job_name: 'viper-signal-processor'
+    static_configs:
+      - targets: ['signal-processor:8011']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 📋 Order Lifecycle Manager - Order Management
+  - job_name: 'viper-order-manager'
+    static_configs:
+      - targets: ['order-lifecycle-manager:8013']
+    metrics_path: '/metrics'
+    scrape_interval: 5s
+
+  # 🔄 Position Synchronizer - Position Sync
+  - job_name: 'viper-position-sync'
+    static_configs:
+      - targets: ['position-synchronizer:8014']
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # 📊 Monitoring Service - System Analytics
+  - job_name: 'viper-monitoring'
+    static_configs:
+      - targets: ['monitoring-service:8006']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 🔐 Credential Vault - Secure Secrets
+  - job_name: 'viper-credential-vault'
+    static_configs:
+      - targets: ['credential-vault:8008']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 📊 Data Manager - Data Synchronization
+  - job_name: 'viper-data-manager'
+    static_configs:
+      - targets: ['data-manager:8004']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # 🚨 Alert System - Notifications
+  - job_name: 'viper-alert-system'
+    static_configs:
+      - targets: ['alert-system:8012']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 📈 Strategy Optimizer - Parameter Tuning
+  - job_name: 'viper-strategy-optimizer'
+    static_configs:
+      - targets: ['strategy-optimizer:8010']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 📡 Event System - Communication
+  - job_name: 'viper-event-system'
+    static_configs:
+      - targets: ['event-system:8018']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # 🔍 Unified Scanner - Market Scanning
+  - job_name: 'viper-scanner'
+    static_configs:
+      - targets: ['unified-scanner:8017']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # ⚙️ Configuration Manager - Parameter Management
+  - job_name: 'viper-config-manager'
+    static_configs:
+      - targets: ['config-manager:8019']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # 📊 Workflow Monitor - System Validation
+  - job_name: 'viper-workflow-monitor'
+    static_configs:
+      - targets: ['workflow-monitor:8020']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # 📋 Task Scheduler - Job Management
+  - job_name: 'viper-task-scheduler'
+    static_configs:
+      - targets: ['task-scheduler:8021']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # 🧠 Centralized Logger - Log Aggregation
+  - job_name: 'viper-centralized-logger'
+    static_configs:
+      - targets: ['centralized-logger:8015']
+    metrics_path: '/metrics'
+    scrape_interval: 30s
+
+  # Redis Cache - Database Metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    metrics_path: '/metrics'
+
+  # Node Exporter - System Metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # Docker Metrics
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['docker-exporter:9323']
+
+# Remote write configuration (optional)
+remote_write:
+  - url: "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom/push"
+    basic_auth:
+      username: "your_username"
+      password: "your_password"
+
+# Remote read configuration (optional)
+remote_read:
+  - url: "https://prometheus-prod-10-prod-us-central-0.grafana.net/api/prom"
+    basic_auth:
+      username: "your_username"
+      password: "your_password"

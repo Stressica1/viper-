@@ -1,0 +1,572 @@
+---
+description: |
+  VIPER Trading System - Enforced Structure, Naming & Version Control Policies
+globs:
+alwaysApply: true
+---
+
+# 🚀 VIPER TRADING SYSTEM - ENFORCED POLICIES
+## 🔒 MANDATORY STRUCTURE, NAMING & VERSION CONTROL ENFORCEMENT
+
+## ⚠️ CRITICAL: THESE POLICIES ARE AUTOMATICALLY ENFORCED
+
+### Policy #0: ALWAYS APPLY - Zero Tolerance
+- **ALL** policies in this file are **MANDATORY** and **AUTOMATICALLY ENFORCED**
+- **NO EXCEPTIONS** allowed for any policy violation
+- **IMMEDIATE CORRECTION** required for any non-compliance
+- **BLOCKING** of operations that violate these policies
+
+---
+
+## 📁 ENFORCED PROJECT STRUCTURE
+
+### Directory Structure Enforcement
+```
+viper-/
+├── .cursor/
+│   └── rules/
+│       ├── viper_policy_enforcement.mdc (THIS FILE - ALWAYS APPLIED)
+│       └── mainb.mdc
+├── .github/
+│   └── workflows/ (MANDATORY - GitHub Actions)
+├── config/
+│   ├── exchange_credentials.json (MANDATORY - Encrypted)
+│   ├── enhanced_risk_config.json (MANDATORY)
+│   └── performance_monitoring_config.json (MANDATORY)
+├── scripts/
+│   ├── trading/ (ENFORCED - All trading scripts)
+│   ├── backtesting/ (ENFORCED - All backtesting scripts)
+│   ├── monitoring/ (ENFORCED - All monitoring scripts)
+│   └── utils/ (ENFORCED - Utility scripts)
+├── services/
+│   ├── api-server/ (MANDATORY - REST API)
+│   ├── trading-engine/ (MANDATORY - Core trading)
+│   ├── risk-manager/ (MANDATORY - Risk management)
+│   └── monitoring-service/ (MANDATORY - System monitoring)
+├── src/
+│   ├── core/ (MANDATORY - Core business logic)
+│   ├── strategies/ (MANDATORY - Trading strategies)
+│   ├── indicators/ (MANDATORY - Technical indicators)
+│   └── utils/ (MANDATORY - Shared utilities)
+├── docs/
+│   ├── api/ (MANDATORY - API documentation)
+│   ├── trading/ (MANDATORY - Trading guides)
+│   └── deployment/ (MANDATORY - Deployment docs)
+├── tests/
+│   ├── unit/ (MANDATORY - Unit tests)
+│   ├── integration/ (MANDATORY - Integration tests)
+│   └── backtesting/ (MANDATORY - Backtest validation)
+├── docker/ (MANDATORY - Docker configurations)
+├── logs/ (MANDATORY - All system logs)
+└── reports/ (MANDATORY - Performance reports)
+```
+
+### File Location Enforcement
+- **NO FILES** allowed outside designated directories
+- **AUTOMATIC BLOCKING** of file operations in wrong locations
+- **IMMEDIATE RELOCATION** required for misplaced files
+- **VERSION CONTROL REJECTION** for improperly located files
+
+---
+
+## 🏷️ ENFORCED NAMING CONVENTIONS
+
+### Python Files - STRICT NAMING
+```python
+# ✅ CORRECT - Follow these patterns EXACTLY
+trading_engine.py           # Core trading functionality
+risk_manager.py             # Risk management systems
+backtester.py               # Backtesting engines
+strategy_optimizer.py       # Strategy optimization
+market_data_streamer.py     # Data streaming
+performance_monitor.py     # Performance monitoring
+
+# ❌ INCORRECT - These patterns are BLOCKED
+tradeEngine.py              # camelCase BLOCKED
+trading-engine.py           # hyphens BLOCKED
+TradingEngine.py            # PascalCase BLOCKED
+my_trading_script.py        # Descriptive names required
+temp_trading.py             # Temporary files BLOCKED
+```
+
+### Class Naming - STRICT RULES
+```python
+# ✅ CORRECT - Mandatory patterns
+class ViperAsyncTrader:           # PascalCase, descriptive
+class RiskManager:               # PascalCase, clear purpose
+class Backtester:                # PascalCase, specific function
+class GitHubMCPIntegration:      # PascalCase, full name
+
+# ❌ INCORRECT - BLOCKED patterns
+class viperAsyncTrader:          # camelCase BLOCKED
+class VIPER_ASYNC_TRADER:        # UPPER_CASE BLOCKED
+class tradingClass:              # Non-descriptive BLOCKED
+```
+
+### Function Naming - STRICT RULES
+```python
+# ✅ CORRECT - Mandatory patterns
+def run_backtest():              # snake_case, action verb
+def calculate_risk_metrics():    # snake_case, descriptive
+def validate_credentials():      # snake_case, clear purpose
+def get_market_data():           # snake_case, get prefix
+
+# ❌ INCORRECT - BLOCKED patterns
+def RunBacktest():               # PascalCase BLOCKED
+def runBacktest():               # camelCase BLOCKED
+def do_stuff():                  # Non-descriptive BLOCKED
+def getData():                   # Mixed case BLOCKED
+```
+
+### Variable Naming - STRICT RULES
+```python
+# ✅ CORRECT - Mandatory patterns
+initial_balance = 10000.0        # snake_case, descriptive
+max_drawdown_limit = 0.05        # snake_case, clear limits
+trading_active = True            # snake_case, boolean naming
+current_position = 0.0           # snake_case, current state
+
+# ❌ INCORRECT - BLOCKED patterns
+InitialBalance = 10000.0         # PascalCase BLOCKED
+maxDrawdownLimit = 0.05          # camelCase BLOCKED
+tradingActive = True             # camelCase BLOCKED
+pos = 0.0                        # Non-descriptive BLOCKED
+```
+
+### Configuration Files - STRICT NAMING
+```json
+// ✅ CORRECT - Mandatory patterns
+{
+  "exchange_credentials.json": "API credentials",
+  "risk_config.json": "Risk parameters",
+  "performance_config.json": "Performance settings",
+  "trading_config.json": "Trading parameters"
+}
+
+// ❌ INCORRECT - BLOCKED patterns
+{
+  "config.json": "Too generic BLOCKED",
+  "settings.json": "Too generic BLOCKED",
+  "myconfig.json": "Non-standard BLOCKED"
+}
+```
+
+---
+
+## 📋 ENFORCED VERSION CONTROL POLICIES
+
+### Commit Message Standards - MANDATORY
+```bash
+# ✅ CORRECT - Required format
+git commit -m "🚀 Add advanced Monte Carlo backtesting engine
+
+- Implement probabilistic simulation framework
+- Add Value at Risk calculations (95%, 99%)
+- Include parallel processing optimization
+- Integrate GitHub MCP logging
+
+Fixes: #123
+Refs: backtesting-improvements"
+
+# ❌ INCORRECT - BLOCKED formats
+git commit -m "fix bug"              # Too vague BLOCKED
+git commit -m "update"               # Non-descriptive BLOCKED
+git commit -m "WIP"                  # Work in progress BLOCKED
+git commit -m "temp changes"         # Temporary BLOCKED
+```
+
+### Branch Naming - STRICT RULES
+```bash
+# ✅ CORRECT - Required patterns
+feature/monte-carlo-backtesting     # feature/[description]
+bugfix/exchange-connection-issue    # bugfix/[description]
+hotfix/critical-security-patch      # hotfix/[description]
+release/v2.1.0                      # release/v[semver]
+
+# ❌ INCORRECT - BLOCKED patterns
+feature1                             # Non-descriptive BLOCKED
+my-feature                           # Personal naming BLOCKED
+temp-branch                          # Temporary BLOCKED
+master-backup                        # Non-standard BLOCKED
+```
+
+### Pull Request Standards - MANDATORY
+```markdown
+<!-- ✅ CORRECT - Required format -->
+# 🚀 Add Advanced Backtesting Engine
+
+## Description
+Implement Monte Carlo simulation framework with parallel processing for probabilistic backtesting analysis.
+
+## Changes Made
+- [x] Add Monte Carlo simulation engine
+- [x] Implement parallel processing
+- [x] Add VaR calculations
+- [x] Integrate GitHub MCP logging
+- [x] Add comprehensive tests
+
+## Testing
+- [x] Unit tests pass
+- [x] Integration tests pass
+- [x] Backtesting validation complete
+- [x] Performance benchmarks met
+
+## Risk Assessment
+- [x] Low risk - backward compatible
+- [x] Emergency rollback plan documented
+- [x] Performance impact minimal
+
+Closes: #123
+Refs: backtesting-improvements
+```
+
+### Version Control Workflow - ENFORCED
+```bash
+# ✅ CORRECT - Required workflow
+1. Create feature branch: git checkout -b feature/new-feature
+2. Make atomic commits with descriptive messages
+3. Push branch: git push origin feature/new-feature
+4. Create PR with template above
+5. Code review required (minimum 1 reviewer)
+6. CI/CD checks must pass
+7. Squash merge to main branch
+
+# ❌ INCORRECT - BLOCKED workflows
+- Direct commits to main branch BLOCKED
+- Force pushes BLOCKED
+- Merge commits BLOCKED
+- Large monolithic commits BLOCKED
+- Unreviewed PR merges BLOCKED
+```
+
+---
+
+## 🔒 ENFORCED SECURITY POLICIES
+
+### Credentials Management - MANDATORY
+```python
+# ✅ CORRECT - Required patterns
+import os
+api_key = os.getenv('BITGET_API_KEY')  # Environment variables ONLY
+secret_key = os.getenv('BITGET_SECRET_KEY')
+
+# ❌ INCORRECT - BLOCKED patterns
+api_key = "hardcoded_key"              # Hardcoded BLOCKED
+from config import API_KEY            # Direct imports BLOCKED
+api_key = open('secrets.txt').read()   # File reading BLOCKED
+```
+
+### File Permissions - ENFORCED
+```bash
+# ✅ CORRECT - Required permissions
+-rw-r--r--  config/exchange_credentials.json  # 644 - Config files
+-rw-------  logs/trading.log                  # 600 - Log files
+-rwxr-xr-x  scripts/start_trading.py          # 755 - Executable scripts
+
+# ❌ INCORRECT - BLOCKED permissions
+-rw-rw-rw-  config/exchange_credentials.json  # World writable BLOCKED
+-rwxrwxrwx  scripts/start_trading.py          # World executable BLOCKED
+```
+
+### Sensitive Data Handling - MANDATORY
+```python
+# ✅ CORRECT - Required patterns
+# Use environment variables
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+# Use encrypted config files
+with open('config/encrypted_credentials.json', 'r') as f:
+    credentials = json.load(f)
+
+# ❌ INCORRECT - BLOCKED patterns
+DATABASE_URL = "postgresql://user:pass@host:5432/db"  # Exposed credentials BLOCKED
+api_key = "sk-1234567890abcdef"                       # API keys in code BLOCKED
+```
+
+---
+
+## 📊 ENFORCED CODE QUALITY POLICIES
+
+### Import Organization - MANDATORY
+```python
+# ✅ CORRECT - Required order
+# 1. Standard library imports
+import os
+import sys
+import json
+from datetime import datetime
+
+# 2. Third-party imports
+import numpy as np
+import pandas as pd
+import ccxt
+
+# 3. Local imports
+from viper_async_trader import ViperAsyncTrader
+from risk_manager import RiskManager
+
+# ❌ INCORRECT - BLOCKED patterns
+# Random import order BLOCKED
+import numpy as np
+from viper_async_trader import ViperAsyncTrader
+import os
+import ccxt
+import json
+```
+
+### Documentation Standards - MANDATORY
+```python
+# ✅ CORRECT - Required format
+"""
+🚀 VIPER ADVANCED TRADING ENGINE
+================================
+
+High-performance trading system with Monte Carlo analysis.
+
+Features:
+✅ Real-time market data processing
+✅ Advanced risk management
+✅ Monte Carlo simulations
+✅ GitHub MCP integration
+
+Author: VIPER Development Team
+Version: 2.1.0
+Date: 2025-08-29
+"""
+
+class AdvancedTradingEngine:
+    """
+    Advanced trading engine with comprehensive risk management.
+
+    This class provides high-performance trading capabilities with
+    integrated Monte Carlo analysis for probabilistic decision making.
+
+    Attributes:
+        initial_balance (float): Starting account balance
+        max_drawdown (float): Maximum allowed drawdown percentage
+        monte_carlo_iterations (int): Number of simulation iterations
+
+    Example:
+        >>> engine = AdvancedTradingEngine(10000.0)
+        >>> engine.run_trading_strategy()
+    """
+
+    def __init__(self, initial_balance: float):
+        """Initialize trading engine with starting balance."""
+        pass
+
+# ❌ INCORRECT - BLOCKED patterns
+# No docstrings BLOCKED
+# Incomplete documentation BLOCKED
+# Non-standard formatting BLOCKED
+```
+
+### Error Handling - MANDATORY
+```python
+# ✅ CORRECT - Required patterns
+try:
+    # Risky operation
+    result = self.execute_trade(order)
+except ccxt.ExchangeError as e:
+    logger.error(f"Exchange error during trade execution: {e}")
+    self.emergency_stop()
+except Exception as e:
+    logger.error(f"Unexpected error: {e}")
+    raise TradingError(f"Trade execution failed: {e}") from e
+
+# ❌ INCORRECT - BLOCKED patterns
+# Bare except BLOCKED
+try:
+    result = self.execute_trade(order)
+except:
+    pass  # Silent failure BLOCKED
+
+# No logging BLOCKED
+try:
+    result = self.execute_trade(order)
+except Exception:
+    print("Error occurred")  # Print instead of logging BLOCKED
+```
+
+---
+
+## 🔄 ENFORCED DEVELOPMENT WORKFLOW
+
+### Pre-Commit Hooks - MANDATORY
+```bash
+# .pre-commit-config.yaml - REQUIRED
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  - repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+```
+
+### Code Formatting - ENFORCED
+```python
+# ✅ CORRECT - Black formatting (MANDATORY)
+def calculate_sharpe_ratio(returns, risk_free_rate=0.02):
+    """Calculate Sharpe ratio for given returns."""
+    excess_returns = returns - risk_free_rate / 252
+    return np.mean(excess_returns) / np.std(excess_returns)
+
+# ❌ INCORRECT - BLOCKED formatting
+def calculate_sharpe_ratio(returns,risk_free_rate=0.02): # No spaces BLOCKED
+    excess_returns=returns-risk_free_rate/252 # No spaces BLOCKED
+    return np.mean(excess_returns)/np.std(excess_returns) # No spaces BLOCKED
+```
+
+### Testing Requirements - MANDATORY
+```python
+# ✅ CORRECT - Required test structure
+# tests/test_trading_engine.py
+import pytest
+from viper_async_trader import ViperAsyncTrader
+
+class TestViperAsyncTrader:
+    """Test cases for ViperAsyncTrader."""
+
+    def test_initialization(self):
+        """Test trader initialization."""
+        trader = ViperAsyncTrader()
+        assert trader is not None
+
+    def test_balance_calculation(self):
+        """Test balance calculation logic."""
+        trader = ViperAsyncTrader()
+        result = trader.calculate_balance()
+        assert isinstance(result, (int, float))
+
+# ❌ INCORRECT - BLOCKED patterns
+# No tests BLOCKED
+# Incomplete test coverage BLOCKED
+# Non-standard test naming BLOCKED
+```
+
+---
+
+## 🚨 POLICY ENFORCEMENT MECHANISMS
+
+### Automatic Rejection System
+- **COMMIT REJECTION**: Non-compliant commits automatically blocked
+- **PR BLOCKING**: Pull requests violating policies cannot merge
+- **FILE CREATION BLOCKING**: Incorrectly named files cannot be created
+- **BUILD FAILURE**: CI/CD pipelines fail on policy violations
+
+### Real-time Monitoring
+- **GitHub MCP Integration**: All policy violations logged and tracked
+- **Automated Alerts**: Team notifications for policy breaches
+- **Compliance Dashboard**: Real-time compliance monitoring
+- **Audit Trail**: Complete history of policy enforcement actions
+
+### Remediation System
+```python
+# Automatic correction suggestions
+POLICY_VIOLATIONS = {
+    'naming_convention': 'File name must follow snake_case pattern',
+    'commit_message': 'Commit message must include emoji and description',
+    'documentation': 'All public methods require docstrings',
+    'security': 'Credentials must use environment variables'
+}
+```
+
+---
+
+## 📈 POLICY COMPLIANCE METRICS
+
+### Compliance Tracking
+- **Policy Adherence Rate**: Percentage of compliant operations
+- **Violation Frequency**: Number of policy violations per day
+- **Resolution Time**: Average time to fix violations
+- **Team Compliance Score**: Individual and team compliance metrics
+
+### Automated Reporting
+```python
+# Daily compliance report
+COMPLIANCE_REPORT = {
+    'date': '2025-08-29',
+    'total_operations': 150,
+    'compliant_operations': 147,
+    'violations': 3,
+    'compliance_rate': 98.0,
+    'top_violations': [
+        {'type': 'commit_message', 'count': 2},
+        {'type': 'naming_convention', 'count': 1}
+    ]
+}
+```
+
+---
+
+## 🎯 ENFORCEMENT LEVELS
+
+### Level 1: Warnings (Non-blocking)
+- Minor formatting issues
+- Optional documentation
+- Code style preferences
+
+### Level 2: Blocking (CI/CD Failure)
+- Naming convention violations
+- Missing tests for new features
+- Security policy breaches
+- Version control policy violations
+
+### Level 3: Critical (Immediate Action Required)
+- Exposed credentials in code
+- Critical security vulnerabilities
+- Data loss prevention violations
+- System stability threats
+
+---
+
+## 🔧 POLICY MAINTENANCE
+
+### Policy Updates
+- **Version Control**: All policy changes tracked in Git
+- **Review Process**: Policy changes require code review
+- **Testing**: Policy changes tested before deployment
+- **Documentation**: Policy updates documented and communicated
+
+### Exception Process
+- **Rare Cases Only**: Exceptions granted only for critical business needs
+- **Documentation Required**: All exceptions must be documented
+- **Time-limited**: Exceptions have expiration dates
+- **Review Required**: Exception requests reviewed by architecture team
+
+---
+
+## 📞 SUPPORT & ESCALATION
+
+### Policy Violation Response
+1. **Immediate Notification**: Automated alerts to responsible parties
+2. **Self-Service Fix**: Clear instructions provided for common violations
+3. **Peer Review**: Escalation to team lead for complex issues
+4. **Architecture Review**: Critical violations reviewed by architecture team
+
+### Contact Information
+- **Policy Owner**: Architecture Team
+- **Emergency Contact**: DevOps Team
+- **Documentation**: `docs/policies/` directory
+- **Issue Tracking**: GitHub Issues with `policy-violation` label
+
+---
+
+**🚨 THESE POLICIES ARE AUTOMATICALLY ENFORCED - NO EXCEPTIONS ALLOWED**
+
+**Violations will be automatically blocked and require immediate correction.**
+
+**VIPER Development Team - Policy Enforcement v2.0.0**

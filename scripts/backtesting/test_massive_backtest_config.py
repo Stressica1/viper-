@@ -361,25 +361,24 @@ class MassiveBacktestConfigTester:
 
             if readiness == 'READY':
                 print("✅ SYSTEM READY FOR MASSIVE BACKTEST")
-                print("   All validations passed")
-                print("   Sample backtest successful")
-                print("   System requirements met")
+print("   All validations passed")
+                print("Sample backtest successful")
+print("   System requirements met")
             elif readiness.startswith('NOT_READY'):
                 print(f"❌ SYSTEM NOT READY: {readiness}")
                 print("   Address issues before proceeding")
             else:
                 print("⚠️ SYSTEM STATUS UNCLEAR")
-                print("   Review test report for details")
+print("   Review test report for details")
 
-            print("
+            print("")
 📋 RECOMMENDATIONS:"            recommendations = test_report.get('recommendations', [])
             if recommendations:
                 for rec in recommendations:
                     print(f"   • {rec}")
             else:
-                print("   • No specific recommendations")
-
-            print("
+                print("• No specific recommendations")
+print("")
 📄 Detailed results saved to test report file"            return test_report
 
         except Exception as e:

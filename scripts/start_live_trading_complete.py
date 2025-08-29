@@ -272,7 +272,7 @@ class CompleteLiveTradingSystem:
     def run_interactive_mode(self):
         """Run in interactive mode with command interface"""
         print("\n🎮 Interactive Mode Started")
-        print("Commands: status, strategies, trading, github, stop, help")
+print("Commands: status, strategies, trading, github, stop, help")
         print("Type 'stop' to exit")
 
         while True:
@@ -300,11 +300,11 @@ class CompleteLiveTradingSystem:
                             print("📭 No open tasks")
                 elif command == 'help':
                     print("Available commands:")
-                    print("  status     - Show system status")
-                    print("  strategies - Show strategy metrics")
-                    print("  trading    - Show trading report")
-                    print("  github     - Show GitHub tasks")
-                    print("  stop       - Stop the system")
+print("  status     - Show system status")
+                    print("strategies - Show strategy metrics")
+print("  trading    - Show trading report")
+                    print("github     - Show GitHub tasks")
+print("  stop       - Stop the system")
                     print("  help       - Show this help")
                 else:
                     print(f"Unknown command: {command}")
@@ -369,7 +369,7 @@ def main():
                 system.run_automated_mode(args.automated)
             else:
                 print("💡 System started. Use --interactive for command interface")
-                print("   or --automated N for automated operation")
+print("   or --automated N for automated operation")
                 print("   Press Ctrl+C to stop")
                 try:
                     while True:
@@ -397,11 +397,11 @@ def main():
         print("🚀 VIPER Complete Live Trading System")
         print("=" * 50)
         print("Quick Start Commands:")
-        print("  Start interactive: python scripts/start_live_trading_complete.py --start --interactive")
-        print("  Start automated:   python scripts/start_live_trading_complete.py --start --automated 24")
-        print("  Show status:       python scripts/start_live_trading_complete.py --status")
-        print("  Stop system:       python scripts/start_live_trading_complete.py --stop")
-        print("\nUse --help for all options")
+print("  Start interactive: python scripts/start_live_trading_complete.py --start --interactive")
+        print("Start automated:   python scripts/start_live_trading_complete.py --start --automated 24")
+print("  Show status:       python scripts/start_live_trading_complete.py --status")
+        print("Stop system:       python scripts/start_live_trading_complete.py --stop")
+print("\nUse --help for all options")
 
 if __name__ == '__main__':
     main()

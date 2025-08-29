@@ -37,10 +37,10 @@ warnings.filterwarnings('ignore')
 
 # Import existing MCP components
 try:
-    from github_mcp_integration import GitHubMCPIntegration
+    from github_mcp_integration import GitHubMCPOrchestration
     from mcp_performance_tracker import MCPPerformanceTracker
 except ImportError:
-    GitHubMCPIntegration = None
+    GitHubMCPOrchestration = None
     MCPPerformanceTracker = None
 
 # Optional numba import with fallback
@@ -132,7 +132,7 @@ class HighPerformanceBacktester:
 
     def __init__(self):
         # Initialize MCP components
-        self.github_mcp = GitHubMCPIntegration() if GitHubMCPIntegration else None
+        self.github_mcp = GitHubMCPOrchestration() if GitHubMCPOrchestration else None
         self.performance_tracker = MCPPerformanceTracker() if MCPPerformanceTracker else None
 
         # Service URLs
@@ -500,3 +500,69 @@ class HighPerformanceBacktester:
 
         logger.info("✅ Walk Forward Analysis completed")
         return result
+
+
+# ============================================================================
+# MAIN EXECUTION AND DEMO FUNCTIONS
+# ============================================================================
+
+async def demo_github_mcp_integration():
+    """Demo GitHub MCP integration with backtesting"""
+    print("🚀 VIPER GITHUB MCP INTEGRATION DEMO")
+    print("=" * 50)
+
+    # Initialize backtester with GitHub MCP
+    backtester = HighPerformanceBacktester()
+
+    if backtester.github_mcp:
+        print("✅ GitHub MCP Orchestration System Active")
+        print(f"📊 Active Tools: {len(backtester.github_mcp.active_tools)}")
+
+        # Demo backtesting with GitHub MCP integration
+        config = backtester.default_config
+        config.monte_carlo_iterations = 100  # Smaller for demo
+
+        print("🤖 Running backtesting with GitHub MCP integration...")
+        print(f"   Symbol: {config.symbol}")
+        print(f"   Monte Carlo Iterations: {config.monte_carlo_iterations}")
+        print(f"   Walk Forward Windows: {config.walk_forward_windows}")
+
+        # Run comprehensive workflow
+        workflow_result = await backtester.github_mcp.run_comprehensive_mcp_workflow(
+            'backtesting',
+            {
+                'strategy': 'High-Performance Monte Carlo',
+                'results': {'total_return': 0.25, 'sharpe_ratio': 2.1},
+                'files_to_commit': ['backtest_results.json']
+            }
+        )
+
+        print("")
+📊 GitHub MCP Workflow Results:"        print(f"   Status: {workflow_result['status']}")
+        print(f"   Tools Used: {len(workflow_result['tools_used'])}")
+        print(f"   Repository Management: {'✅' if 'repository' in workflow_result['results'] else '❌'}")
+        print(f"   Security Scanning: {'✅' if 'security' in workflow_result['results'] else '❌'}")
+        print(f"   Code Review: {'✅' if 'code_review' in workflow_result['results'] else '❌'}")
+
+    else:
+        print("❌ GitHub MCP not available - install github_mcp_integration")
+print("\n✅ GitHub MCP Integration Demo Completed!")
+
+
+if __name__ == "__main__":
+    import sys
+    import asyncio
+
+    if len(sys.argv) > 1 and sys.argv[1] == "github_demo":
+        # Run GitHub MCP demo
+        asyncio.run(demo_github_mcp_integration())
+    elif len(sys.argv) > 1 and sys.argv[1] == "demo":
+        # Run high-performance demo
+        asyncio.run(demo_high_performance_backtesting())
+    else:
+        print("VIPER High-Performance Backtesting Engine")
+        print("=" * 50)
+        print("Usage:")
+print("  python comprehensive_backtester.py demo        # High-performance demo")
+        print("  python comprehensive_backtester.py github_demo # GitHub MCP demo")
+        print("=" * 50)

@@ -48,7 +48,7 @@ class LiveBalanceDemo:
         print("💰 VIPER LIVE BALANCE DEMO")
         print("=" * 50)
         print("🔴 IMPORTANT: This demo shows REAL-TIME balance tracking")
-        print("🔴 NO HARD-CODED VALUES - Uses actual exchange connections")
+print("🔴 NO HARD-CODED VALUES - Uses actual exchange connections")
         print("🔴 WebSocket streams provide live balance updates")
         print()
 
@@ -56,7 +56,7 @@ class LiveBalanceDemo:
         credentials_file = Path("config/exchange_credentials.json")
         if not credentials_file.exists():
             print("⚠️  API credentials not found!")
-            print("📝 Please configure your exchange API credentials in:")
+print("📝 Please configure your exchange API credentials in:")
             print("    config/exchange_credentials.json")
             print()
             print("📋 Template format:")
@@ -84,7 +84,7 @@ class LiveBalanceDemo:
 
             if not configured_exchanges:
                 print("⚠️  No exchange API credentials configured!")
-                print("💡 Configure at least one exchange to see live balance tracking")
+print("💡 Configure at least one exchange to see live balance tracking")
                 return False
 
             print(f"✅ Configured exchanges: {', '.join(configured_exchanges)}")
@@ -110,7 +110,7 @@ class LiveBalanceDemo:
             end_time = time.time() + 120  # 2 minutes
 
             print("📊 Monitoring live balance updates...")
-            print("💡 Updates will appear every 10 seconds from WebSocket streams")
+print("💡 Updates will appear every 10 seconds from WebSocket streams")
             print("💡 Balance changes will be logged automatically")
             print()
 
@@ -141,7 +141,7 @@ class LiveBalanceDemo:
                     print(f"⚠️  Balance update error: {e}")
                     time.sleep(5)
 
-            print("
+            print("")
 ✅ Live balance tracking demonstration completed!"            print(f"📊 Total balance updates monitored: {len(self.balance_history)}")
 
         finally:
@@ -174,29 +174,29 @@ class LiveBalanceDemo:
         print("=" * 50)
 
         print("📊 This live balance system integrates with:")
-        print("   • Strategy Metrics Dashboard")
-        print("   • Live Trading Manager")
-        print("   • Performance-Based Allocation")
-        print("   • Risk Management Systems")
-        print("   • GitHub MCP Task Automation")
+print("   • Strategy Metrics Dashboard")
+        print("• Live Trading Manager")
+print("   • Performance-Based Allocation")
+        print("• Risk Management Systems")
+print("   • GitHub MCP Task Automation")
         print()
 
         print("💰 NO MORE HARD-CODED BALANCE VALUES:")
-        print("   ❌ OLD: balance = 30.00  # Hard-coded")
+print("   ❌ OLD: balance = 30.00  # Hard-coded")
         print("   ✅ NEW: balance = get_live_balance().total_usd_balance")
         print()
 
         print("🔄 REAL-TIME UPDATES:")
-        print("   • WebSocket streams from exchanges")
-        print("   • 5-10 second balance update intervals")
-        print("   • Automatic reconnection on failures")
+print("   • WebSocket streams from exchanges")
+        print("• 5-10 second balance update intervals")
+print("   • Automatic reconnection on failures")
         print("   • Multi-exchange failover support")
         print()
 
         print("🛡️ RISK MANAGEMENT:")
-        print("   • Dynamic risk limits based on live balance")
-        print("   • Real-time position size calculations")
-        print("   • Automatic emergency stops")
+print("   • Dynamic risk limits based on live balance")
+        print("• Real-time position size calculations")
+print("   • Automatic emergency stops")
         print("   • Balance anomaly detection")
         print()
 
@@ -222,14 +222,14 @@ class LiveBalanceDemo:
 
         print()
         print("💡 This shows real-time balance tracking in action!")
-        print("💡 In a real scenario, balance would change based on trading activity")
+print("💡 In a real scenario, balance would change based on trading activity")
 
     def run_full_demo(self):
         """Run the complete live balance demonstration"""
         print("🎬 VIPER COMPLETE LIVE BALANCE SYSTEM DEMO")
         print("=" * 60)
         print("This demo shows the REAL-TIME balance tracking system")
-        print("that replaces all hard-coded balance values in your system.")
+print("that replaces all hard-coded balance values in your system.")
         print()
 
         if not self.initialize_demo():
@@ -248,13 +248,13 @@ class LiveBalanceDemo:
         print("🎉 DEMO COMPLETED!")
         print("=" * 30)
         print("✅ Real-time balance tracking system operational")
-        print("✅ No more hard-coded balance values")
+print("✅ No more hard-coded balance values")
         print("✅ WebSocket connections established")
-        print("✅ Multi-exchange support configured")
+print("✅ Multi-exchange support configured")
         print("✅ Live balance integration ready")
         print()
         print("🚀 Your VIPER system now uses REAL exchange balance!")
-        print("💰 Balance updates automatically every 5-10 seconds")
+print("💰 Balance updates automatically every 5-10 seconds")
         print("🛡️ Risk management adapts to your actual balance")
 
 def main():
@@ -311,12 +311,12 @@ def main():
         print("Real-time balance tracking system demonstration")
         print()
         print("Commands:")
-        print("  --quick    - Run 30-second demo")
-        print("  --full     - Run complete 2-minute demo")
-        print("  --status   - Show current balance status")
+print("  --quick    - Run 30-second demo")
+        print("--full     - Run complete 2-minute demo")
+print("  --status   - Show current balance status")
         print()
         print("⚠️  IMPORTANT: Configure API credentials first!")
-        print("   Edit: config/exchange_credentials.json")
+print("   Edit: config/exchange_credentials.json")
 
 if __name__ == '__main__':
     main()

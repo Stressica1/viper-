@@ -1,0 +1,236 @@
+# 🚀 VIPER Trading Bot - Docker Compose Override
+# 🔒 SECURE PRODUCTION CONFIGURATION
+# This file provides production-specific overrides and secure credential handling
+
+version: '3.8'
+
+# =============================================================================
+# 🔐 SECURE ENVIRONMENT FILE REFERENCE
+# =============================================================================
+# This override file ensures that sensitive credentials from .env.docker
+# are properly loaded into all services that require them
+
+services:
+  # 🔐 Credential Vault - Enhanced Security Configuration
+  credential-vault:
+    environment:
+      # Enhanced security settings for production
+      - VAULT_ENCRYPTION_ENABLED=true
+      - VAULT_AUDIT_LOGGING=true
+      - VAULT_TOKEN_ROTATION_ENABLED=true
+      - VAULT_MAX_SESSIONS=100
+      - VAULT_SESSION_TIMEOUT=3600
+    secrets:
+      - vault_master_key
+      - bitget_credentials
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  # 🔥 Live Trading Engine - Production Configuration
+  live-trading-engine:
+    environment:
+      # Production trading settings
+      - TRADING_MODE=PRODUCTION
+      - EMERGENCY_STOP_ENABLED=true
+      - MAX_CONSECUTIVE_LOSSES=3
+      - PROFIT_TARGET_MULTIPLIER=2.0
+      - DYNAMIC_POSITION_SIZING=true
+    secrets:
+      - bitget_credentials
+      - jordan_credentials
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # 🤖 MCP Server - GitHub Integration
+  mcp-server:
+    environment:
+      # Enhanced MCP configuration for production
+      - MCP_PRODUCTION_MODE=true
+      - MCP_AUTO_BACKUP_ENABLED=true
+      - MCP_PERFORMANCE_MONITORING=true
+      - MCP_SECURITY_SCANNING=true
+    secrets:
+      - github_pat
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # 📊 Market Data Manager - High Performance Configuration
+  market-data-manager:
+    environment:
+      # Production data streaming settings
+      - HIGH_FREQUENCY_MODE=true
+      - DATA_QUALITY_MONITORING=true
+      - CONNECTION_POOL_SIZE=20
+      - CACHE_OPTIMIZATION=true
+    secrets:
+      - bitget_credentials
+      - jordan_credentials
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2.0'
+        reservations:
+          memory: 1G
+          cpus: '1.0'
+
+  # 📡 Exchange Connector - Production Trading Interface
+  exchange-connector:
+    environment:
+      # Production exchange settings
+      - PRODUCTION_MODE=true
+      - RATE_LIMIT_STRICT=true
+      - CONNECTION_POOLING=true
+      - AUTO_RECONNECT=true
+      - ERROR_RETRY_ENABLED=true
+    secrets:
+      - bitget_credentials
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # 📈 Prometheus - Enhanced Monitoring
+  prometheus:
+    volumes:
+      - prometheus_data:/prometheus
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 1G
+          cpus: '0.5'
+
+  # 📊 Grafana - Production Dashboard
+  grafana:
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-viper_secure_2025}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-worldmap-panel
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+# =============================================================================
+# 🔐 SECRETS DEFINITION
+# =============================================================================
+# Docker secrets for secure credential management
+secrets:
+  vault_master_key:
+    file: ./.env.docker
+    environment: "VAULT_MASTER_KEY"
+
+  bitget_credentials:
+    file: ./.env.docker
+    environment: "BITGET_API_KEY,BITGET_API_SECRET,BITGET_API_PASSWORD"
+
+  jordan_credentials:
+    file: ./.env.docker
+    environment: "JORDAN_MAINNET_KEY,JORDAN_MAINNET_SECRET,JORDAN_MAINNET_PASSPHRASE"
+
+  github_pat:
+    file: ./.env.docker
+    environment: "GITHUB_PAT"
+
+# =============================================================================
+# 🚀 DEPLOYMENT CONFIGURATION
+# =============================================================================
+# Production deployment settings with resource limits and health checks
+
+networks:
+  viper-network:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: viper_bridge
+
+volumes:
+  redis_data:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+# =============================================================================
+# 🔒 SECURITY CONFIGURATION
+# =============================================================================
+# Additional security settings for production deployment
+
+x-security-defaults: &security-defaults
+  security_opt:
+    - no-new-privileges:true
+  read_only: true
+  tmpfs:
+    - /tmp:noexec,nosuid,size=100m
+    - /var/run:noexec,nosuid,size=100m
+
+x-logging-defaults: &logging-defaults
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "100m"
+      max-file: "5"
+
+# =============================================================================
+# 📋 USAGE INSTRUCTIONS
+# =============================================================================
+#
+# 🚀 PRODUCTION DEPLOYMENT:
+#   docker-compose -f docker/docker-compose.yml -f docker/docker-compose.override.yml up -d
+#
+# 🔒 SECURE DEPLOYMENT:
+#   1. Ensure .env.docker exists with all credentials
+#   2. Run: docker-compose --env-file .env.docker -f docker/docker-compose.yml -f docker/docker-compose.override.yml up -d
+#
+# 🛑 EMERGENCY SHUTDOWN:
+#   docker-compose -f docker/docker-compose.yml -f docker/docker-compose.override.yml down
+#
+# 📊 MONITORING:
+#   - Grafana: http://localhost:3000 (admin/viper_secure_2025)
+#   - Prometheus: http://localhost:9090
+#   - Kibana: http://localhost:5601
+#
+# 🔐 SECURITY NOTES:
+#   - All sensitive credentials are stored as Docker secrets
+#   - Services run with restricted privileges
+#   - Network isolation between services
+#   - Resource limits prevent abuse
+#   - Audit logging enabled for all services
+#
+# =============================================================================

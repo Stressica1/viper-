@@ -1,0 +1,139 @@
+# 🚫 DOCKER IGNORE FILE - SECURE BUILD ENVIRONMENT
+# Files and directories to exclude from Docker build context
+
+# =============================================================================
+# 🔒 SECURITY EXCLUSIONS (CRITICAL)
+# =============================================================================
+
+# Environment files with sensitive credentials
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+ENV/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =============================================================================
+# 📁 PROJECT EXCLUSIONS
+# =============================================================================
+
+# Logs (will be mounted as volumes)
+logs/
+*.log
+
+# Backups and temporary files
+backups/
+*.backup
+*.tmp
+*.temp
+
+# Test files and coverage
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Git
+.git/
+.gitignore
+
+# Documentation builds
+docs/_build/
+
+# =============================================================================
+# 🔐 SENSITIVE DATA PROTECTION
+# =============================================================================
+
+# API keys and credentials
+config/exchange_credentials.json
+config/*credentials*.json
+config/*secret*.json
+config/*key*.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.cer
+
+# Configuration with sensitive data
+config/*config*.json
+!config/enhanced_*.json
+!config/performance_*.json
+
+# =============================================================================
+# 📊 LARGE FILES AND DATA
+# =============================================================================
+
+# Backtest results (can be large)
+backtest_results/
+scan_results/
+reports/
+performance_*.json
+
+# Market data cache
+data/
+*.csv
+*.parquet
+
+# Model files
+*.pkl
+*.h5
+*.pb
+
+# =============================================================================
+# 🐳 DOCKER SPECIFIC
+# =============================================================================
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# =============================================================================
+# 🚨 SECURITY REMINDER
+# =============================================================================
+# This .dockerignore file ensures that sensitive files are NOT
+# included in Docker build contexts, protecting credentials and
+# other sensitive data from being accidentally exposed in
+# container images.
+#
+# ALWAYS review this file before building production containers!
+# =============================================================================

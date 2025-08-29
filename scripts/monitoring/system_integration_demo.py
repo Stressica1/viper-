@@ -61,7 +61,7 @@ class SystemIntegrationDemo:
             self._display_final_status()
 
             print("✅ System Integration Demo Completed Successfully!")
-            print("🎉 All components are properly integrated and operational!")
+print("🎉 All components are properly integrated and operational!")
 
         except Exception as e:
             logger.error(f"❌ Demo failed: {e}")
@@ -169,8 +169,8 @@ class SystemIntegrationDemo:
                 print("   🩺 Testing Diagnostic System...")
                 diagnostic = self.trading_engine.components['diagnostic_system']
 
-                print("      Diagnostic system loaded and ready")
-            print("   ✅ Component integration verified!")
+                print("Diagnostic system loaded and ready")
+print("   ✅ Component integration verified!")
 
         except Exception as e:
             print(f"   ❌ Component integration test failed: {e}")

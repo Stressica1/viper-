@@ -1,0 +1,285 @@
+# 🚨 VIPER Trading System - Prometheus Alert Rules
+# Critical alerts for trading system monitoring
+
+groups:
+
+  # 🔥 CRITICAL TRADING ALERTS
+  - name: trading_critical
+    rules:
+      - alert: TradingEngineDown
+        expr: up{job="viper-live-trading"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: live-trading-engine
+        annotations:
+          summary: "Live Trading Engine is down"
+          description: "Live Trading Engine has been down for more than 30 seconds"
+
+      - alert: ExchangeConnectorDown
+        expr: up{job="viper-exchange-connector"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: exchange-connector
+        annotations:
+          summary: "Exchange Connector is down"
+          description: "Exchange Connector has been down for more than 1 minute"
+
+      - alert: HighDrawdown
+        expr: trading_max_drawdown > 0.15
+        for: 5m
+        labels:
+          severity: critical
+          service: risk-management
+        annotations:
+          summary: "High drawdown detected"
+          description: "Portfolio drawdown has exceeded 15%"
+
+      - alert: DailyLossLimitExceeded
+        expr: trading_daily_loss > 0.05
+        for: 1m
+        labels:
+          severity: critical
+          service: risk-management
+        annotations:
+          summary: "Daily loss limit exceeded"
+          description: "Daily loss has exceeded 5% of account balance"
+
+      - alert: CredentialVaultDown
+        expr: up{job="viper-credential-vault"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: credential-vault
+        annotations:
+          summary: "Credential Vault is down"
+          description: "Credential Vault has been down for more than 2 minutes"
+
+  # ⚠️ HIGH PRIORITY ALERTS
+  - name: trading_high
+    rules:
+      - alert: RiskManagerDown
+        expr: up{job="viper-risk-manager"} == 0
+        for: 2m
+        labels:
+          severity: warning
+          service: risk-manager
+        annotations:
+          summary: "Risk Manager is down"
+          description: "Risk Manager has been down for more than 2 minutes"
+
+      - alert: APIServerDown
+        expr: up{job="viper-api-server"} == 0
+        for: 1m
+        labels:
+          severity: warning
+          service: api-server
+        annotations:
+          summary: "API Server is down"
+          description: "API Server has been down for more than 1 minute"
+
+      - alert: LowWinRate
+        expr: trading_win_rate < 0.35
+        for: 15m
+        labels:
+          severity: warning
+          service: performance
+        annotations:
+          summary: "Low win rate detected"
+          description: "Trading win rate has fallen below 35%"
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{status=~"[4-5].."}[5m]) / rate(http_requests_total[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: "High error rate detected"
+          description: "API error rate has exceeded 10%"
+
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis memory usage high"
+          description: "Redis memory usage has exceeded 90%"
+
+  # 📊 MEDIUM PRIORITY ALERTS
+  - name: trading_medium
+    rules:
+      - alert: BacktesterDown
+        expr: up{job="viper-backtester"} == 0
+        for: 5m
+        labels:
+          severity: info
+          service: backtester
+        annotations:
+          summary: "Backtester is down"
+          description: "Ultra Backtester has been down for more than 5 minutes"
+
+      - alert: MCPServerDown
+        expr: up{job="viper-mcp-server"} == 0
+        for: 5m
+        labels:
+          severity: info
+          service: mcp-server
+        annotations:
+          summary: "MCP Server is down"
+          description: "MCP Server has been down for more than 5 minutes"
+
+      - alert: HighMemoryUsage
+        expr: (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) > 0.8
+        for: 5m
+        labels:
+          severity: info
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "System memory usage has exceeded 80%"
+
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: info
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "System CPU usage has exceeded 80%"
+
+      - alert: DiskSpaceLow
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) < 0.1
+        for: 5m
+        labels:
+          severity: info
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Available disk space has fallen below 10%"
+
+  # 🔍 PERFORMANCE ALERTS
+  - name: performance_alerts
+    rules:
+      - alert: SlowAPIResponse
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m])) > 5.0
+        for: 5m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: "Slow API response time"
+          description: "95th percentile API response time exceeds 5 seconds"
+
+      - alert: HighQueueLength
+        expr: trading_queue_length > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: trading
+        annotations:
+          summary: "High trading queue length"
+          description: "Trading queue length has exceeded 100 items"
+
+      - alert: LowCacheHitRate
+        expr: (cache_hits_total / (cache_hits_total + cache_misses_total)) < 0.7
+        for: 10m
+        labels:
+          severity: info
+          service: cache
+        annotations:
+          summary: "Low cache hit rate"
+          description: "Cache hit rate has fallen below 70%"
+
+  # 📡 CONNECTIVITY ALERTS
+  - name: connectivity_alerts
+    rules:
+      - alert: ExchangeConnectivityIssue
+        expr: trading_exchange_connectivity_status == 0
+        for: 2m
+        labels:
+          severity: critical
+          service: exchange
+        annotations:
+          summary: "Exchange connectivity issue"
+          description: "Exchange connectivity has been lost"
+
+      - alert: DatabaseConnectionIssue
+        expr: db_connections_active == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "Database connection issue"
+          description: "No active database connections detected"
+
+      - alert: RedisConnectionIssue
+        expr: redis_connected_clients == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis connection issue"
+          description: "No Redis connections detected"
+
+  # 🔄 SERVICE HEALTH ALERTS
+  - name: service_health
+    rules:
+      - alert: ServiceRestart
+        expr: increase(process_start_time_seconds[1h]) > 0
+        for: 0m
+        labels:
+          severity: info
+          service: general
+        annotations:
+          summary: "Service restart detected"
+          description: "A service has been restarted"
+
+      - alert: ServiceOOMKilled
+        expr: increase(container_oom_events_total[1h]) > 0
+        for: 0m
+        labels:
+          severity: warning
+          service: container
+        annotations:
+          summary: "Container OOM killed"
+          description: "A container has been killed due to out of memory"
+
+  # 📊 BUSINESS METRICS ALERTS
+  - name: business_metrics
+    rules:
+      - alert: NoTradesExecuted
+        expr: increase(trading_trades_executed_total[1h]) == 0
+        for: 1h
+        labels:
+          severity: warning
+          service: trading
+        annotations:
+          summary: "No trades executed"
+          description: "No trades have been executed in the last hour"
+
+      - alert: SharpRatioDecline
+        expr: trading_sharpe_ratio < 0.5
+        for: 15m
+        labels:
+          severity: warning
+          service: performance
+        annotations:
+          summary: "Sharpe ratio decline"
+          description: "Sharpe ratio has fallen below 0.5"
+
+      - alert: HighVolatility
+        expr: trading_portfolio_volatility > 0.3
+        for: 10m
+        labels:
+          severity: info
+          service: risk
+        annotations:
+          summary: "High portfolio volatility"
+          description: "Portfolio volatility has exceeded 30%"
