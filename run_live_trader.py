@@ -370,34 +370,48 @@ class MultiPairVIPERTrader:
 
             # Calculate position size based on account balance percentage
             try:
-                # FIXED: Use total balance including unrealized P&L
+                # FIXED: Use ONLY free balance - don't include unrealized P&L as capital/margin
                 balance = self.exchange.fetch_balance({'type': 'swap'})
-                usdt_balance = float(balance.get('USDT', {}).get('total', 0))  # Include unrealized P&L
+                usdt_balance = float(balance.get('USDT', {}).get('free', 0))  # Only use actual free balance, no UPNL
                 if usdt_balance <= 0:
                     logger.error(f"❌ No USDT balance available for {symbol}")
                     return None
 
-                # FIXED $5 MARGIN PER TRADE with 50x leverage
-                margin_value_usdt = self.min_margin_per_trade  # Always use exactly $5 margin per trade
+                # FIXED: EXACTLY $1 MARGIN PER TRADE + COIN'S MAX LEVERAGE
+                margin_value_usdt = 1.0  # Always use exactly $1 margin per trade
 
-                # Check if account has enough balance for $5 margin
+                # Check if account has enough balance for $1 margin
                 if usdt_balance < margin_value_usdt:
                     logger.warning(f"⚠️ Insufficient balance: ${usdt_balance:.2f} < ${margin_value_usdt:.2f} required margin")
                     return None
 
-                # APPLY LEVERAGE: Calculate the actual position size (notional value)
-                notional_value_usdt = margin_value_usdt * self.max_leverage
+                # GET COIN'S MAX LEVERAGE FROM EXCHANGE
+                try:
+                    market_info = self.exchange.market(symbol)
+                    coin_max_leverage = market_info.get('limits', {}).get('leverage', {}).get('max', 50)
+                    # Ensure we don't exceed exchange limits
+                    coin_max_leverage = min(coin_max_leverage, 100)  # Cap at 100x for safety
+                except Exception as leverage_error:
+                    logger.warning(f"⚠️ Could not get coin leverage for {symbol}, using default 50x: {leverage_error}")
+                    coin_max_leverage = 50
+
+                # CALCULATE NOTIONAL: $1 margin × coin's max leverage
+                notional_value_usdt = margin_value_usdt * coin_max_leverage
                 position_size = notional_value_usdt / current_price
 
-                logger.info(f"💰 Margin: ${margin_value_usdt:.2f} | Leverage: {self.max_leverage}x | Notional: ${notional_value_usdt:.2f} | Account: ${usdt_balance:.2f}")
+                logger.info(f"💰 FIXED: $1 Margin × {coin_max_leverage}x Leverage = ${notional_value_usdt:.2f} Notional | Account: ${usdt_balance:.2f}")
 
                 # Final safety check: ensure notional value doesn't exceed account balance
                 if notional_value_usdt > usdt_balance * 0.5:  # Max 50% of account as notional
-                    # Recalculate with safer margin
-                    margin_value_usdt = usdt_balance * 0.02  # Use 2% of balance
-                    notional_value_usdt = margin_value_usdt * self.max_leverage
-                    position_size = notional_value_usdt / current_price
-                    logger.info(f"💰 Reduced margin for safety (${margin_value_usdt:.2f})")
+                    # Recalculate with safer margin but keep $1 minimum
+                    if usdt_balance >= 1.0:
+                        margin_value_usdt = max(1.0, usdt_balance * 0.02)  # Minimum $1 or 2% of balance
+                        notional_value_usdt = margin_value_usdt * coin_max_leverage
+                        position_size = notional_value_usdt / current_price
+                        logger.info(f"💰 Reduced margin for safety (${margin_value_usdt:.2f}) but kept minimum $1")
+                    else:
+                        logger.warning(f"⚠️ Account balance too low for $1 minimum margin")
+                        return None
 
                 # Adjust for precision requirements (this will ensure we meet exchange minimums)
                 position_size = self.adjust_for_precision(symbol, position_size)
@@ -434,7 +448,7 @@ class MultiPairVIPERTrader:
                     symbol,
                     position_size,
                     params={
-                        'leverage': self.max_leverage,
+                        'leverage': coin_max_leverage,  # Use coin's max leverage
                         'marginMode': 'isolated',
                         'tradeSide': 'open'  # Open position for unilateral mode
                     }
@@ -444,7 +458,7 @@ class MultiPairVIPERTrader:
                     symbol,
                     position_size,
                     params={
-                        'leverage': self.max_leverage,
+                        'leverage': coin_max_leverage,  # Use coin's max leverage
                         'marginMode': 'isolated',
                         'tradeSide': 'open'  # Open position for unilateral mode
                     }
@@ -484,7 +498,7 @@ class MultiPairVIPERTrader:
                         position_size,
                         tp_price,
                         params={
-                            'leverage': self.max_leverage,
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
                             'marginMode': 'isolated',
                             'tradeSide': 'close',
                             'reduceOnly': True
@@ -510,7 +524,7 @@ class MultiPairVIPERTrader:
                         position_size,
                         sl_price,
                         params={
-                            'leverage': self.max_leverage,
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
                             'marginMode': 'isolated',
                             'tradeSide': 'close',
                             'reduceOnly': True
@@ -747,10 +761,9 @@ class MultiPairVIPERTrader:
     def calculate_position_size(self, symbol: str = None):
         """Calculate position size based on risk management parameters and minimum amounts"""
         try:
-            # FIXED: Get current balance including unrealized P&L
+            # FIXED: Use ONLY free balance - don't include unrealized P&L as capital/margin
             balance = self.exchange.fetch_balance()
-            # Use total USDT (includes unrealized P&L) instead of just free balance
-            usdt_balance = balance['USDT']['total']  # This includes unrealized P&L
+            usdt_balance = balance['USDT']['free']  # Only use actual free balance, no UPNL
 
             # FIXED: Use minimum margin per trade (fixed $5 to meet exchange minimum)
             risk_based_size = usdt_balance * 0.1  # 10% of balance
