@@ -473,7 +473,7 @@ class AdvancedScalpingEngine:
             self.session_stats['trades_executed'] += 1
 
             print(f"🎯 Executed {signal.value} scalp on {symbol}")
-            print(".4f"
+            print(f"💰 Position size: {position.size:.4f}")
             return True, f"Scalp position opened for {symbol}"
 
         except Exception as e:
@@ -608,7 +608,8 @@ class AdvancedScalpingEngine:
 
     def run_scalping_session(self, symbols: List[str], duration_minutes: int = 60):
         """Run a complete scalping session"""
-        print("🚀 Starting Advanced Crypto Scalping Session"        print(f"📊 Monitoring {len(symbols)} symbols for {duration_minutes} minutes")
+        print("🚀 Starting Advanced Crypto Scalping Session")
+        print(f"📊 Monitoring {len(symbols)} symbols for {duration_minutes} minutes")
         print("=" * 60)
 
         session_start = time.time()
@@ -639,9 +640,10 @@ class AdvancedScalpingEngine:
                     stats = self.get_session_statistics()
                     print("\n📊 Session Statistics:")
                     print(f"  Trades Executed: {stats['trades_executed']}")
-                    print(".2f"                    print(f"  Success Rate: {stats['success_rate']:.2f}")
+                    print(f"  Profit/Loss: {stats['total_pnl']:.2f}")
+                    print(f"  Success Rate: {stats['success_rate']:.2f}")
                     print(f"  Active Positions: {stats['active_positions']}")
-                    print(".4f"
+                    print(f"  Total Volume: {stats['total_volume']:.4f}")
                 time.sleep(10)  # 10 second intervals
 
         except KeyboardInterrupt:
@@ -663,7 +665,9 @@ class AdvancedScalpingEngine:
             print(f"Total Trades: {final_stats['trades_executed']}")
             print(f"Winning Trades: {final_stats['winning_trades']}")
             print(f"Losing Trades: {final_stats['losing_trades']}")
-            print(".2f"            print(".4f"            print(f"Best Trade: {final_stats['best_trade']:.4f}")
+            print(f"Success Rate: {final_stats['success_rate']:.2f}%")
+            print(f"Total P&L: {final_stats['total_pnl']:.4f}")
+            print(f"Best Trade: {final_stats['best_trade']:.4f}")
             print(f"Worst Trade: {final_stats['worst_trade']:.4f}")
             print(f"Profit Factor: {final_stats['profit_factor']:.2f}")
 

@@ -584,19 +584,19 @@ async def main():
     print(f"   Trading Active: {'✅' if status['trading_active'] else '❌'}")
 
     # Run system check
-    print("
-🔍 Running system check..."    system_check = engine.run_system_check()
+    print("🔍 Running system check...")
+    system_check = engine.run_system_check()
     print(f"   System Health: {len([h for h in system_check['health_checks'].values() if h != 'unknown'])} components healthy")
 
     # Start trading if requested
     if len(sys.argv) > 1 and sys.argv[1] == '--start-trading':
-        print("
-🚀 Starting trading engine..."        try:
+        print("🚀 Starting trading engine...")
+        try:
             await engine.start_trading_engine()
         except KeyboardInterrupt:
             print("\n🛑 Trading stopped by user")
     else:
-        print("
-💡 Use '--start-trading' flag to begin live trading"        print("   Example: python unified_trading_engine.py --start-trading"
+        print("💡 Use '--start-trading' flag to begin live trading")
+        print("   Example: python unified_trading_engine.py --start-trading")
 if __name__ == "__main__":
     asyncio.run(main())

@@ -80,11 +80,10 @@ class IntegratedSystemLauncher:
             success = demo.run_full_system_demo()
 
             if success:
-                print("
-✅ Demo completed successfully!"                print("🎉 All system components are properly integrated!")
+                print("✅ Demo completed successfully!")")
+            print("🎉 All system components are properly integrated!")
             else:
-                print("
-❌ Demo failed - check system logs for details"
+                print("❌ Demo failed - check system logs for details")")
             return success
 
         except ImportError as e:
@@ -108,19 +107,19 @@ class IntegratedSystemLauncher:
             scanner = MasterDiagnosticScanner()
             results = scanner.run_full_diagnostic()
 
-            print("
-📊 Diagnostic Results:"            print(f"   System Health: {results.get('overall_health', 'unknown')}")
+            print("📊 Diagnostic Results:")")
+            print(f"   System Health: {results.get('overall_health', 'unknown')}")
             print(f"   Components Scanned: {len(results.get('component_results', {}))}")
             print(f"   Issues Found: {len(results.get('issues', []))}")
 
             if results.get('issues'):
-                print("
-⚠️ Issues Detected:"                for i, issue in enumerate(results['issues'][:5], 1):
+                print("⚠️ Issues Detected:")")
+            for i, issue in enumerate(results['issues'][:5], 1):
                     print(f"   {i}. {issue}")
 
             if results.get('recommendations'):
-                print("
-💡 Recommendations:"                for i, rec in enumerate(results['recommendations'][:5], 1):
+                print("💡 Recommendations:")")
+            for i, rec in enumerate(results['recommendations'][:5], 1):
                     print(f"   {i}. {rec}")
 
             return True
@@ -151,8 +150,8 @@ class IntegratedSystemLauncher:
                 while True:
                     time.sleep(1)
             except KeyboardInterrupt:
-                print("
-🛑 Stopping monitoring..."                orchestrator.stop_monitoring()
+                print("🛑 Stopping monitoring...")")
+            orchestrator.stop_monitoring()
                 print("✅ Monitoring stopped")
                 return True
 
@@ -186,8 +185,8 @@ class IntegratedSystemLauncher:
             asyncio.run(run_trading())
 
         except KeyboardInterrupt:
-            print("
-🛑 Trading stopped by user"            return True
+            print("🛑 Trading stopped by user")")
+            return True
         except Exception as e:
             print(f"❌ Trading system failed: {e}")
             return False
@@ -208,20 +207,20 @@ class IntegratedSystemLauncher:
             print("🔧 Optimizing system components...")
             results = orchestrator.optimize_system()
 
-            print("
-📊 Optimization Results:"            print(f"   Optimizations Applied: {len(results.get('optimizations_applied', []))}")
+            print("📊 Optimization Results:")")
+            print(f"   Optimizations Applied: {len(results.get('optimizations_applied', []))}")
             print(f"   Performance Improvements: {len(results.get('performance_improvements', []))}")
             print(f"   Errors: {len(results.get('errors', []))}")
 
             # Show details
             if results.get('optimizations_applied'):
-                print("
-✅ Applied Optimizations:"                for opt in results['optimizations_applied'][:5]:
+                print("✅ Applied Optimizations:")")
+            for opt in results['optimizations_applied'][:5]:
                     print(f"   • {opt}")
 
             if results.get('performance_improvements'):
-                print("
-📈 Performance Improvements:"                for imp in results['performance_improvements'][:5]:
+                print("📈 Performance Improvements:")")
+            for imp in results['performance_improvements'][:5]:
                     print(f"   • {imp}")
 
             return True

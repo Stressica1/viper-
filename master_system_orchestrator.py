@@ -350,8 +350,8 @@ def main():
     print(f"   Monitoring: {'Active' if status['monitoring_active'] else 'Inactive'}")
 
     # Run diagnostics
-    print("
-🔍 Running system diagnostics..."    diagnostics = orchestrator.run_system_diagnostics()
+    print("🔍 Running system diagnostics...")
+    diagnostics = orchestrator.run_system_diagnostics()
     print(f"   System Health: {diagnostics.get('system_health', 'unknown')}")
 
     if diagnostics.get('issues'):
@@ -364,8 +364,8 @@ def main():
 
     # Start monitoring if requested
     if len(sys.argv) > 1 and sys.argv[1] == '--monitor':
-        print("
-📊 Starting real-time monitoring..."        orchestrator.start_monitoring()
+        print("📊 Starting real-time monitoring...")
+        orchestrator.start_monitoring()
 
         try:
             # Keep running until interrupted
@@ -375,8 +375,8 @@ def main():
             print("\n🛑 Stopping monitoring...")
             orchestrator.stop_monitoring()
     else:
-        print("
-💡 Use '--monitor' flag to start real-time monitoring"        print("   Example: python master_system_orchestrator.py --monitor"
+        print("💡 Use '--monitor' flag to start real-time monitoring")
+        print("   Example: python master_system_orchestrator.py --monitor")
 
 if __name__ == "__main__":
     main()
