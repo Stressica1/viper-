@@ -144,9 +144,23 @@ logs/
 data/
 backtest_results/
 *.log
-*.json
 __pycache__/
 *.pyc
+
+# Repository Organization Rules
+# Prevent files in root directory (except allowed ones)
+/*.py
+!setup.py
+/*.json
+!pyproject.toml
+/*.txt
+!requirements.txt
+/*.md
+!README.md
+/backup_*
+/*_backup*
+/temp_*
+/tmp_*
 
 # Demo, test, and development files (removed from live system)
 demo_*.py
@@ -162,15 +176,35 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.DS_Store
-Thumbs.db
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
+.cursor/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+temp/
+tmp/
+.tmp/
+
+# Configuration backups
+*.backup
+*.bak
+.env.backup*
+
+# Generated reports (should be in reports/ directory)
+/*.html
+/*.pdf
+/*_report.*
+viper_env/
