@@ -165,13 +165,14 @@ class UnifiedTradingEngine:
                 self.exchange = None
                 return
 
-            # Initialize exchange with optimal settings
+            # Initialize exchange with optimal settings for swap trading
             exchange_config = {
                 'apiKey': api_key,
                 'secret': api_secret,
                 'password': api_password,
                 'enableRateLimit': True,
                 'options': {
+                    'defaultType': 'swap',
                     'adjustForTimeDifference': True,
                     'recvWindow': 10000,
                 }
