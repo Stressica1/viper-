@@ -51,7 +51,7 @@ class TradingPosition:
 
 @dataclass 
 class VIPERSignal:
-    """Data class for VIPER trading signals"""
+    """Data class for VIPER trading signals with execution cost awareness"""
     symbol: str
     signal: str  # 'LONG', 'SHORT', or 'HOLD'
     viper_score: float
@@ -62,6 +62,8 @@ class VIPERSignal:
     stop_loss: float
     take_profit: float
     timestamp: str
+    execution_cost: float = 0.0  # Expected execution cost in USD
+    order_type: str = "MARKET"   # Recommended order type
 
 class StandaloneVIPERTrader:
     """Complete standalone VIPER trading system"""
@@ -77,10 +79,10 @@ class StandaloneVIPERTrader:
         self.active_positions = {}  # {symbol: TradingPosition}
         self.running = True
         
-        # Trading parameters
+        # Trading parameters - optimized for execution cost awareness
         self.max_positions = self.config.get('max_positions', 5)
         self.risk_per_trade = self.config.get('risk_per_trade', 0.02)  # 2%
-        self.viper_threshold = self.config.get('viper_threshold', 85.0)
+        self.viper_threshold = self.config.get('viper_threshold', 50.0)  # Lowered from 85 due to stricter scoring
         self.scan_interval = self.config.get('scan_interval', 30)  # seconds
         
         # Trading pairs to monitor
@@ -155,38 +157,349 @@ class StandaloneVIPERTrader:
             raise
     
     def fetch_market_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch comprehensive market data for a symbol"""
+        """
+        Fetch comprehensive market data with advanced metrics for optimization
+        Includes volatility, liquidity metrics, and microstructure data
+        """
         try:
             # Get ticker data
             ticker = self.exchange.fetch_ticker(symbol)
             
-            # Get recent OHLCV data for additional analysis
-            ohlcv = self.exchange.fetch_ohlcv(symbol, '1h', limit=24)
-            recent_candle = ohlcv[-1] if ohlcv else None
+            # Get recent OHLCV data for volatility and trend analysis
+            ohlcv = self.exchange.fetch_ohlcv(symbol, '1h', limit=48)  # 48 hours for better analysis
             
-            if not ticker or not recent_candle:
+            if not ticker or not ohlcv or len(ohlcv) < 24:
                 return None
                 
+            # Calculate volatility (24-hour rolling)
+            recent_prices = [candle[4] for candle in ohlcv[-24:]]  # Closing prices
+            if len(recent_prices) > 1:
+                price_changes = [(recent_prices[i] - recent_prices[i-1]) / recent_prices[i-1] 
+                               for i in range(1, len(recent_prices))]
+                volatility = (sum(x**2 for x in price_changes) / len(price_changes)) ** 0.5
+            else:
+                volatility = 0.02  # Default 2% volatility
+            
+            # Calculate average volume (for liquidity assessment)
+            recent_volumes = [candle[5] for candle in ohlcv[-24:]]  # Volume data
+            avg_volume = sum(recent_volumes) / len(recent_volumes) if recent_volumes else 0
+            
+            # Calculate volume trend (current vs average)
+            current_volume = ticker['baseVolume']
+            volume_ratio = current_volume / max(avg_volume, 1) if avg_volume > 0 else 1.0
+            
+            # Price momentum over different timeframes
+            if len(ohlcv) >= 6:
+                price_6h = ohlcv[-6][4]  # 6 hours ago
+                short_momentum = (ticker['last'] - price_6h) / price_6h * 100
+            else:
+                short_momentum = ticker['percentage'] or 0
+                
+            # Enhanced spread calculation
+            bid_ask_spread = 0
+            if ticker['bid'] and ticker['ask'] and ticker['last']:
+                bid_ask_spread = (ticker['ask'] - ticker['bid']) / ticker['last']
+            
+            # Time-based liquidity adjustment (simplified - in practice would use market hours)
+            current_hour = datetime.now().hour
+            if 8 <= current_hour <= 20:  # Assume business hours have better liquidity
+                liquidity_adjustment = 1.0
+            else:
+                liquidity_adjustment = 1.2  # 20% penalty for off-hours
+            
+            # Order book depth estimation (using volume as proxy)
+            depth_score = min(100, current_volume / 1_000_000 * 50)  # Rough depth score 0-100
+            
             return {
                 'symbol': symbol,
                 'price': ticker['last'],
                 'high': ticker['high'],
                 'low': ticker['low'],
-                'volume': ticker['baseVolume'],
+                'volume': current_volume,
+                'avg_volume': avg_volume,
+                'volume_ratio': volume_ratio,
                 'price_change': ticker['percentage'],
+                'short_momentum': short_momentum,
                 'bid': ticker['bid'],
                 'ask': ticker['ask'],
-                'spread': (ticker['ask'] - ticker['bid']) / ticker['last'] * 100 if ticker['ask'] and ticker['bid'] else 0,
-                'timestamp': datetime.now().isoformat()
+                'spread': bid_ask_spread,
+                'volatility': volatility,
+                'liquidity_adjustment': liquidity_adjustment,
+                'depth_score': depth_score,
+                'timestamp': datetime.now().isoformat(),
+                
+                # Additional metrics for advanced optimization
+                'price_stability': max(0, 100 - volatility * 5000),  # 0-100 stability score
+                'market_pressure': min(max(-100, short_momentum * 10), 100),  # -100 to +100
+                'liquidity_score': min(100, (current_volume * ticker['last']) / 1_000_000 * 20),  # Dollar liquidity score
             }
             
         except Exception as e:
-            self.logger.error(f"❌ Error fetching market data for {symbol}: {e}")
+            self.logger.error(f"❌ Error fetching enhanced market data for {symbol}: {e}")
             return None
     
+    def calculate_execution_cost(self, market_data: Dict, position_size_usd: float = 5000) -> float:
+        """
+        Enhanced execution cost calculation with advanced market microstructure modeling
+        Includes spread cost, market impact, volatility adjustment, and liquidity premiums
+        """
+        try:
+            spread = market_data.get('spread', 0)
+            volume = market_data.get('volume', 0)
+            volatility = market_data.get('volatility', 0.02)  # Default 2% daily vol
+            price = market_data.get('price', 1.0)
+            
+            # Base spread cost (half spread for market order)
+            spread_cost = position_size_usd * spread / 2
+            
+            # Enhanced market impact with volatility adjustment
+            # Uses advanced square-root law with volatility scaling
+            volume_ratio = position_size_usd / max(volume * price, 100_000)  # Position as % of dollar volume
+            base_impact_rate = 0.0001 * (volume_ratio ** 0.5)
+            
+            # Volatility adjustment - higher vol = higher impact
+            volatility_multiplier = max(1.0, volatility / 0.02)  # Scale from 2% base volatility
+            adjusted_impact_rate = base_impact_rate * volatility_multiplier
+            
+            # Market impact cost
+            market_impact_cost = position_size_usd * adjusted_impact_rate
+            
+            # Liquidity premium for large positions relative to volume
+            if volume_ratio > 0.05:  # Position > 5% of volume
+                liquidity_premium = position_size_usd * 0.0002 * (volume_ratio - 0.05)
+            else:
+                liquidity_premium = 0.0
+            
+            # Time-of-day adjustment (assuming this could be passed in market_data)
+            time_adjustment = market_data.get('liquidity_adjustment', 1.0)
+            
+            total_execution_cost = (spread_cost + market_impact_cost + liquidity_premium) * time_adjustment
+            return total_execution_cost
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error calculating execution cost: {e}")
+            return 999.0  # High cost to avoid trading
+
+    def optimize_position_size(self, market_data: Dict, base_position_size: float) -> Tuple[float, str]:
+        """
+        Dynamic position sizing optimization based on market conditions
+        Returns: (optimized_position_size, reasoning)
+        """
+        try:
+            spread = market_data.get('spread', 0)
+            volume = market_data.get('volume', 0)
+            volatility = market_data.get('volatility', 0.02)
+            price = market_data.get('price', 1.0)
+            
+            # Start with base position size
+            optimized_size = base_position_size
+            reasoning_parts = []
+            
+            # Volatility adjustment - reduce size in high volatility
+            if volatility > 0.04:  # > 4% daily volatility
+                vol_reduction = min(0.5, (volatility - 0.04) / 0.04)  # Up to 50% reduction
+                optimized_size *= (1 - vol_reduction)
+                reasoning_parts.append(f"High volatility ({volatility*100:.1f}%): -{vol_reduction*100:.0f}% size")
+            elif volatility < 0.015:  # < 1.5% daily volatility  
+                vol_increase = min(0.3, (0.015 - volatility) / 0.015)  # Up to 30% increase
+                optimized_size *= (1 + vol_increase)
+                reasoning_parts.append(f"Low volatility ({volatility*100:.1f}%): +{vol_increase*100:.0f}% size")
+            
+            # Liquidity adjustment - reduce size for low liquidity
+            dollar_volume = volume * price
+            if dollar_volume < 500_000:  # Less than $500k volume
+                liquidity_reduction = 0.4  # 40% reduction for low liquidity
+                optimized_size *= (1 - liquidity_reduction)
+                reasoning_parts.append(f"Low liquidity (${dollar_volume:,.0f}): -{liquidity_reduction*100:.0f}% size")
+            elif dollar_volume > 5_000_000:  # More than $5M volume
+                liquidity_increase = 0.2  # 20% increase for high liquidity
+                optimized_size *= (1 + liquidity_increase)
+                reasoning_parts.append(f"High liquidity (${dollar_volume:,.0f}): +{liquidity_increase*100:.0f}% size")
+            
+            # Spread adjustment - reduce size for wide spreads
+            spread_bps = spread * 10000  # Convert to basis points
+            if spread_bps > 20:  # > 20 basis points
+                spread_reduction = min(0.6, (spread_bps - 20) / 50)  # Up to 60% reduction
+                optimized_size *= (1 - spread_reduction)
+                reasoning_parts.append(f"Wide spread ({spread_bps:.1f}bps): -{spread_reduction*100:.0f}% size")
+            
+            # Execution cost efficiency - optimize size to minimize cost per dollar traded
+            test_sizes = [optimized_size * mult for mult in [0.5, 0.75, 1.0, 1.25, 1.5]]
+            best_efficiency = 0
+            best_size = optimized_size
+            
+            for test_size in test_sizes:
+                if test_size > 0:
+                    exec_cost = self.calculate_execution_cost(market_data, test_size)
+                    efficiency = test_size / max(exec_cost, 0.01)  # Dollars traded per dollar of cost
+                    if efficiency > best_efficiency:
+                        best_efficiency = efficiency
+                        best_size = test_size
+            
+            if best_size != optimized_size:
+                change_pct = (best_size - optimized_size) / optimized_size * 100
+                reasoning_parts.append(f"Cost efficiency: {change_pct:+.0f}% size")
+                optimized_size = best_size
+            
+            # Ensure position size stays within reasonable bounds
+            max_size = base_position_size * 2.0  # Never more than 2x base
+            min_size = base_position_size * 0.1  # Never less than 10% of base
+            optimized_size = max(min_size, min(optimized_size, max_size))
+            
+            reasoning = " | ".join(reasoning_parts) if reasoning_parts else "No adjustments needed"
+            return optimized_size, reasoning
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error optimizing position size: {e}")
+            return base_position_size, "Error in optimization - using base size"
+
+    def optimize_entry_timing(self, symbol: str, signal, market_data: Dict) -> Dict:
+        """
+        Advanced entry timing optimization with smart order placement
+        Returns: {order_type, price, size, timing_score, reasoning}
+        """
+        try:
+            current_price = market_data.get('price', 0)
+            spread = market_data.get('spread', 0)
+            volume = market_data.get('volume', 0)
+            volatility = market_data.get('volatility', 0.02)
+            
+            # Base position size
+            base_position_size = self.risk_per_trade * 100_000
+            
+            # Optimize position size first
+            optimized_size, size_reasoning = self.optimize_position_size(market_data, base_position_size)
+            
+            # Calculate bid/ask from spread
+            half_spread = spread / 2
+            bid_price = current_price - half_spread
+            ask_price = current_price + half_spread
+            
+            # Smart order placement strategy
+            order_strategies = []
+            
+            # Strategy 1: Aggressive Market Order (immediate execution)
+            market_cost = self.calculate_execution_cost(market_data, optimized_size)
+            market_score = max(0, 100 - market_cost * 20)  # Penalize high costs
+            order_strategies.append({
+                'type': 'MARKET',
+                'price': current_price,
+                'size': optimized_size,
+                'expected_cost': market_cost,
+                'score': market_score,
+                'reasoning': f"Immediate execution, cost ${market_cost:.2f}"
+            })
+            
+            # Strategy 2: Patient Limit Order (better price, risk of missing)
+            if signal.signal == "LONG":
+                # Place limit slightly above bid (better than market, likely to fill)
+                limit_price = bid_price + (half_spread * 0.3)  # 30% into spread
+                price_improvement = current_price - limit_price
+            else:  # SHORT
+                # Place limit slightly below ask
+                limit_price = ask_price - (half_spread * 0.3)
+                price_improvement = limit_price - current_price
+                
+            # Estimate fill probability based on position in spread
+            fill_probability = max(0.7, 0.9 - (abs(limit_price - current_price) / half_spread))
+            
+            # Adjusted execution cost for limit order (lower due to better price)
+            limit_cost_reduction = price_improvement * optimized_size
+            limit_cost = market_cost - limit_cost_reduction
+            limit_score = (max(0, 100 - limit_cost * 20)) * fill_probability  # Adjust for fill risk
+            
+            order_strategies.append({
+                'type': 'LIMIT',
+                'price': limit_price,
+                'size': optimized_size,
+                'expected_cost': limit_cost,
+                'score': limit_score,
+                'reasoning': f"Better price (${price_improvement:.4f} improvement), {fill_probability*100:.0f}% fill chance"
+            })
+            
+            # Strategy 3: Iceberg Order for large positions (reduce market impact)
+            if optimized_size > volume * current_price * 0.02:  # Position > 2% of volume
+                iceberg_chunks = min(5, max(2, int(optimized_size / (volume * current_price * 0.01))))
+                chunk_size = optimized_size / iceberg_chunks
+                
+                # Estimate reduced market impact from smaller chunks
+                iceberg_cost = sum([self.calculate_execution_cost(market_data, chunk_size) 
+                                  for _ in range(iceberg_chunks)])
+                iceberg_score = max(0, 100 - iceberg_cost * 20)
+                
+                order_strategies.append({
+                    'type': 'ICEBERG',
+                    'price': current_price,
+                    'size': optimized_size,
+                    'chunk_size': chunk_size,
+                    'chunks': iceberg_chunks,
+                    'expected_cost': iceberg_cost,
+                    'score': iceberg_score,
+                    'reasoning': f"Reduced impact via {iceberg_chunks} chunks of ${chunk_size:,.0f}"
+                })
+            
+            # Select best strategy
+            best_strategy = max(order_strategies, key=lambda x: x['score'])
+            
+            # Add timing score based on market conditions
+            timing_factors = []
+            timing_score = 50  # Base score
+            
+            # Volatility timing
+            if volatility < 0.015:  # Low volatility - good for entry
+                timing_score += 20
+                timing_factors.append("Low volatility (+20)")
+            elif volatility > 0.05:  # High volatility - wait for calmer conditions
+                timing_score -= 15
+                timing_factors.append("High volatility (-15)")
+            
+            # Volume timing  
+            if volume > 0:  # Avoid division by zero
+                timing_score += 15
+                timing_factors.append("Good volume (+15)")
+            else:
+                timing_score -= 10
+                timing_factors.append("Low volume (-10)")
+            
+            # Spread timing
+            spread_bps = spread * 10000
+            if spread_bps < 5:  # Tight spread
+                timing_score += 10
+                timing_factors.append("Tight spread (+10)")
+            elif spread_bps > 25:  # Wide spread
+                timing_score -= 20
+                timing_factors.append("Wide spread (-20)")
+            
+            timing_reasoning = " | ".join(timing_factors) if timing_factors else "Neutral timing"
+            
+            return {
+                'order_type': best_strategy['type'],
+                'price': best_strategy['price'],
+                'size': best_strategy['size'],
+                'expected_cost': best_strategy['expected_cost'],
+                'strategy_score': best_strategy['score'],
+                'timing_score': max(0, min(100, timing_score)),
+                'reasoning': f"{best_strategy['reasoning']} | {size_reasoning} | {timing_reasoning}",
+                **{k: v for k, v in best_strategy.items() if k not in ['type', 'price', 'size', 'expected_cost', 'score', 'reasoning']}
+            }
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error optimizing entry timing: {e}")
+            # Fallback to simple market order
+            return {
+                'order_type': 'MARKET',
+                'price': market_data.get('price', 0),
+                'size': self.risk_per_trade * 100_000,
+                'expected_cost': 999.0,
+                'strategy_score': 0,
+                'timing_score': 0,
+                'reasoning': 'Error in optimization - using fallback market order'
+            }
+            
     def calculate_viper_score(self, market_data: Dict) -> float:
         """
         Calculate VIPER score using Volume, Price, External, Range factors
+        Enhanced with execution cost awareness to prevent $3+ losses on entry
         Returns score from 0-100 (higher = better opportunity)
         """
         try:
@@ -203,8 +516,21 @@ class StandaloneVIPERTrader:
             # Price Score (0-100): Momentum strength  
             price_score = min(price_change * 20, 100)  # Scale by price change %
             
-            # External Score (0-100): Lower spread = better execution
-            external_score = max(100 - (spread * 1000), 0)  # Penalize high spreads
+            # Enhanced External Score (0-100): Execution cost awareness
+            # Calculate expected execution cost for typical position size
+            position_size = self.risk_per_trade * 100_000  # Assume $100k account for calculation
+            execution_cost = self.calculate_execution_cost(market_data, position_size)
+            
+            # Penalize heavily if execution cost > $3 threshold
+            if execution_cost >= 3.0:
+                external_score = 0  # Zero score for high execution cost
+            elif execution_cost >= 2.0:
+                external_score = 30  # Low score for moderate execution cost  
+            elif execution_cost >= 1.0:
+                external_score = 60  # Medium score
+            else:
+                # Use improved spread-based scoring for low-cost scenarios
+                external_score = max(100 - (spread * 5000), 50)  # More sensitive to spread
             
             # Range Score (0-100): Volatility within reasonable bounds
             if current_price > 0:
@@ -213,12 +539,12 @@ class StandaloneVIPERTrader:
             else:
                 range_score = 0
             
-            # Weighted VIPER score
+            # Weighted VIPER score with increased emphasis on execution cost
             viper_score = (
-                volume_score * 0.30 +     # 30% volume weight
-                price_score * 0.35 +      # 35% momentum weight  
-                external_score * 0.20 +   # 20% execution cost weight
-                range_score * 0.15        # 15% volatility weight
+                volume_score * 0.25 +     # 25% volume weight (reduced)
+                price_score * 0.30 +      # 30% momentum weight (reduced) 
+                external_score * 0.30 +   # 30% execution cost weight (increased)
+                range_score * 0.15        # 15% volatility weight (same)
             )
             
             return min(max(viper_score, 0), 100)  # Clamp to 0-100 range
@@ -228,52 +554,157 @@ class StandaloneVIPERTrader:
             return 0.0
     
     def generate_signal(self, symbol: str, market_data: Dict) -> Optional[VIPERSignal]:
-        """Generate trading signal based on VIPER score and market conditions"""
+        """
+        Generate advanced trading signal with comprehensive entry optimization
+        Uses dynamic position sizing, timing optimization, and smart order routing
+        """
         try:
+            # Calculate base VIPER score
             viper_score = self.calculate_viper_score(market_data)
             
             if viper_score < self.viper_threshold:
                 return None  # Score too low for trading
                 
+            # Initial execution cost check
+            base_position_size = self.risk_per_trade * 100_000  # Assume $100k account 
+            initial_execution_cost = self.calculate_execution_cost(market_data, base_position_size)
+            
+            if initial_execution_cost >= 3.0:
+                self.logger.warning(f"🚫 Signal rejected for {symbol}: execution cost ${initial_execution_cost:.2f} >= $3.00 threshold")
+                return None
+                
             price_change = market_data.get('price_change', 0)
             current_price = market_data.get('price', 0)
             volume = market_data.get('volume', 0)
             
-            # Determine signal direction based on momentum
+            # Determine signal direction with enhanced momentum analysis
             signal = None
-            if price_change > 1.0:  # Strong upward momentum (>1%)
+            confidence_boost = 0
+            
+            # Multi-factor momentum analysis for better entry signals
+            if price_change > 1.5:  # Strong upward momentum (>1.5%)
                 signal = "LONG"
-            elif price_change < -1.0:  # Strong downward momentum (<-1%)
-                signal = "SHORT"
+                confidence_boost = min(20, (price_change - 1.5) * 10)  # Bonus for strong momentum
+            elif price_change < -1.5:  # Strong downward momentum (<-1.5%)
+                signal = "SHORT" 
+                confidence_boost = min(20, abs(price_change + 1.5) * 10)
+            elif abs(price_change) > 0.8:  # Medium momentum
+                # Check volume confirmation for medium momentum
+                volume_ratio = volume / max(1_000_000, volume)  # Simplified volume check
+                if volume_ratio > 1.2:  # High volume confirmation
+                    signal = "LONG" if price_change > 0 else "SHORT"
+                    confidence_boost = 10  # Bonus for volume confirmation
+                else:
+                    return None  # Insufficient volume confirmation
             else:
                 return None  # Insufficient momentum
             
-            # Calculate stop loss and take profit levels
+            # Create preliminary signal for optimization
+            preliminary_signal = type('PreliminarySignal', (), {
+                'signal': signal,
+                'viper_score': viper_score,
+                'price': current_price
+            })()
+            
+            # Apply advanced entry timing optimization
+            entry_optimization = self.optimize_entry_timing(symbol, preliminary_signal, market_data)
+            
+            # Update execution cost based on optimized strategy
+            optimized_execution_cost = entry_optimization['expected_cost']
+            optimized_size = entry_optimization['size']
+            optimized_order_type = entry_optimization['order_type']
+            optimized_price = entry_optimization['price']
+            
+            # Final execution cost check after optimization
+            if optimized_execution_cost >= 2.5:  # Slightly lower threshold after optimization
+                self.logger.warning(f"🚫 Signal rejected for {symbol} after optimization: cost ${optimized_execution_cost:.2f} still too high")
+                return None
+            
+            # Enhanced confidence calculation
+            base_confidence = min(viper_score / 100, 1.0)
+            timing_confidence = entry_optimization['timing_score'] / 100
+            strategy_confidence = entry_optimization['strategy_score'] / 100
+            
+            # Weighted confidence score
+            enhanced_confidence = (
+                base_confidence * 0.4 +      # 40% VIPER score
+                timing_confidence * 0.3 +    # 30% timing
+                strategy_confidence * 0.3    # 30% strategy
+            ) + (confidence_boost / 100)     # Add momentum bonus
+            
+            enhanced_confidence = min(1.0, enhanced_confidence)  # Cap at 100%
+            
+            # Calculate stop loss and take profit with advanced risk management
             stop_loss_pct = self.config['stop_loss_percent']
             take_profit_pct = self.config['take_profit_percent']
             
-            if signal == "LONG":
-                stop_loss = current_price * (1 - stop_loss_pct)
-                take_profit = current_price * (1 + take_profit_pct)
-            else:  # SHORT
-                stop_loss = current_price * (1 + stop_loss_pct)
-                take_profit = current_price * (1 - take_profit_pct)
+            # More sophisticated risk adjustment based on optimized execution cost
+            execution_cost_pct = optimized_execution_cost / optimized_size if optimized_size > 0 else 0.01
+            volatility = market_data.get('volatility', 0.02)
             
-            return VIPERSignal(
+            # Dynamic stop loss - accounts for execution costs and volatility
+            volatility_adjustment = max(1.0, volatility / 0.02)  # Scale from 2% base volatility
+            adjusted_stop_loss_pct = max(
+                stop_loss_pct * volatility_adjustment,           # Volatility adjustment
+                execution_cost_pct + 0.008                      # Execution cost + 0.8% buffer
+            )
+            
+            # Dynamic take profit - ensures good risk/reward after costs
+            min_rr_ratio = 2.5  # Minimum 2.5:1 risk/reward after costs
+            adjusted_take_profit_pct = max(
+                take_profit_pct,
+                adjusted_stop_loss_pct * min_rr_ratio,          # Maintain risk/reward
+                execution_cost_pct * 4 + 0.015                  # 4x execution cost + 1.5%
+            )
+            
+            # Calculate final price levels
+            if signal == "LONG":
+                stop_loss = optimized_price * (1 - adjusted_stop_loss_pct)
+                take_profit = optimized_price * (1 + adjusted_take_profit_pct)
+            else:  # SHORT
+                stop_loss = optimized_price * (1 + adjusted_stop_loss_pct)
+                take_profit = optimized_price * (1 - adjusted_take_profit_pct)
+            
+            # Enhanced VIPER signal with optimization data
+            optimized_signal = VIPERSignal(
                 symbol=symbol,
                 signal=signal,
                 viper_score=viper_score,
-                price=current_price,
+                price=optimized_price,  # Use optimized entry price
                 price_change=price_change,
                 volume=volume,
-                confidence=min(viper_score / 100, 1.0),
+                confidence=enhanced_confidence,
                 stop_loss=stop_loss,
                 take_profit=take_profit,
-                timestamp=datetime.now().isoformat()
+                timestamp=datetime.now().isoformat(),
+                execution_cost=optimized_execution_cost,
+                order_type=optimized_order_type
             )
             
+            # Add optimization metadata
+            optimized_signal.optimization_data = {
+                'original_size': base_position_size,
+                'optimized_size': optimized_size,
+                'size_change_pct': ((optimized_size - base_position_size) / base_position_size * 100),
+                'original_cost': initial_execution_cost,
+                'cost_savings': initial_execution_cost - optimized_execution_cost,
+                'strategy_score': entry_optimization['strategy_score'],
+                'timing_score': entry_optimization['timing_score'],
+                'reasoning': entry_optimization['reasoning']
+            }
+            
+            # Log optimization results
+            self.logger.info(f"📊 {symbol} Signal Optimized: "
+                           f"Size ${base_position_size:,.0f} → ${optimized_size:,.0f} "
+                           f"({optimized_signal.optimization_data['size_change_pct']:+.1f}%), "
+                           f"Cost ${initial_execution_cost:.2f} → ${optimized_execution_cost:.2f} "
+                           f"(${optimized_signal.optimization_data['cost_savings']:+.2f} savings), "
+                           f"Confidence {base_confidence:.1%} → {enhanced_confidence:.1%}")
+            
+            return optimized_signal
+            
         except Exception as e:
-            self.logger.error(f"❌ Error generating signal for {symbol}: {e}")
+            self.logger.error(f"❌ Error generating optimized signal for {symbol}: {e}")
             return None
     
     def scan_markets(self) -> List[VIPERSignal]:

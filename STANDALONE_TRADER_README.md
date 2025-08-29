@@ -134,7 +134,7 @@ python test_standalone_trader.py
 |-----------|---------|-------------|
 | `MAX_POSITIONS` | 5 | Maximum concurrent positions |
 | `RISK_PER_TRADE` | 0.02 (2%) | Risk per individual trade |
-| `VIPER_THRESHOLD` | 85.0 | Minimum score for trade signals |
+| `VIPER_THRESHOLD` | 50.0 | Minimum score for trade signals (reduced due to stricter scoring) |
 | `SCAN_INTERVAL` | 30 | Seconds between market scans |
 | `STOP_LOSS_PERCENT` | 0.02 (2%) | Stop loss distance |
 | `TAKE_PROFIT_PERCENT` | 0.04 (4%) | Take profit target |
@@ -154,30 +154,37 @@ Default pairs (easily customizable in code):
 
 ## 📈 VIPER Scoring Methodology
 
-### Volume Score (30% weight)
+### Volume Score (25% weight)
 - Evaluates trading volume relative to 1M threshold
 - Higher volume indicates better liquidity
 - Formula: `min((volume / 1_000_000) * 25, 100)`
 
-### Price Score (35% weight)  
+### Price Score (30% weight)  
 - Measures price momentum strength
 - Considers absolute percentage change
 - Formula: `min(abs(price_change) * 20, 100)`
 
-### External Score (20% weight)
-- Penalizes high bid-ask spreads
-- Lower spreads = better execution
-- Formula: `max(100 - (spread * 1000), 0)`
+### External Score (30% weight)
+- **ENHANCED**: Execution cost awareness to prevent $3+ losses
+- Calculates real execution cost including spread and market impact
+- Zero score if execution cost ≥ $3.00 (prevents losing trades)
+- Low score (30) if execution cost ≥ $2.00 
+- Medium score (60) if execution cost ≥ $1.00
+- High score for low-cost scenarios with improved spread sensitivity
+- Formula: Execution cost-based scoring + `max(100 - (spread * 5000), 50)` for low costs
 
 ### Range Score (15% weight)
 - Evaluates volatility within reasonable bounds
 - Formula: `min(volatility * 10, 100) if volatility > 0.5%`
 
 ### Signal Generation Criteria
-- Minimum VIPER score: 85 (configurable)
+- **UPDATED**: Minimum VIPER score: 50 (reduced from 85 due to stricter execution cost scoring)
+- **NEW**: Maximum execution cost: $3.00 (prevents losing trades)
 - Minimum momentum: ±1.0% price change
 - LONG signals: Price change > +1.0%
 - SHORT signals: Price change < -1.0%
+- **ENHANCED**: Smart order routing (LIMIT vs MARKET based on execution cost)
+- **ENHANCED**: Dynamic stop/take-profit levels adjusted for execution costs
 
 ## 🛡️ Safety Features
 
