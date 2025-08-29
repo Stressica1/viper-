@@ -20,9 +20,30 @@ import logging
 import subprocess
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent
+# Add project root to path for new structure
+project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
+sys.path.append(str(project_root / "src"))
+
+# Enhanced terminal display
+try:
+    from src.viper.utils.terminal_display import terminal, display_error, display_success, display_warning, print_banner
+    ENHANCED_DISPLAY = True
+except ImportError:
+    ENHANCED_DISPLAY = False
+    # Fallback terminal functions
+    def display_error(msg, details=None):
+        print(f"❌ {msg}")
+        if details: print(f"   {details}")
+    def display_success(msg, details=None):
+        print(f"✅ {msg}")
+        if details: print(f"   {details}")
+    def display_warning(msg, details=None):
+        print(f"⚠️ {msg}")
+        if details: print(f"   {details}")
+    def print_banner():
+        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
+        print("=" * 70)
 
 # Configure logging
 logging.basicConfig(
@@ -38,8 +59,7 @@ def validate_environment():
     # Check for .env file
     env_file = Path('.env')
     if not env_file.exists():
-        logger.error("❌ .env file not found")
-        logger.error("Create .env file with live trading configuration")
+        display_error(".env file not found", "Create .env file with live trading configuration")
         return False
     
     # Load environment
@@ -48,13 +68,11 @@ def validate_environment():
     
     # Validate critical settings
     if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
-        logger.error("❌ Mock data mode detected in environment")
-        logger.error("Set USE_MOCK_DATA=false in .env file")
+        display_error("Mock data mode detected in environment", "Set USE_MOCK_DATA=false in .env file")
         return False
     
     if not os.getenv('FORCE_LIVE_TRADING', '').lower() == 'true':
-        logger.error("❌ Live trading mode not forced")
-        logger.error("Set FORCE_LIVE_TRADING=true in .env file")
+        display_error("Live trading mode not forced", "Set FORCE_LIVE_TRADING=true in .env file")
         return False
     
     # Check API credentials
@@ -62,11 +80,10 @@ def validate_environment():
     for cred in required_creds:
         value = os.getenv(cred, '')
         if not value or value.startswith('your_') or value.startswith('test_'):
-            logger.error(f"❌ Invalid {cred}: {value}")
-            logger.error("Real Bitget API credentials required for live trading")
+            display_error(f"Invalid {cred}: {value}", "Real Bitget API credentials required for live trading")
             return False
     
-    logger.info("✅ Live trading environment validated")
+    display_success("Live trading environment validated")
     return True
 
 def check_docker_services():
@@ -155,59 +172,99 @@ def start_docker_services():
 
 def main():
     """Main launcher with mandatory enforcement"""
-    print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
-    print("=" * 70)
-    print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO")
-    print("🔒 DOCKER AND MCP ENFORCEMENT ACTIVE")
-    print("=" * 70)
+    
+    # Enhanced banner display
+    if ENHANCED_DISPLAY:
+        print_banner()
+        terminal.console.rule("[bold red]⚠️ LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO ⚠️[/]")
+        terminal.console.rule("[bold blue]🔒 DOCKER AND MCP ENFORCEMENT ACTIVE 🔒[/]")
+    else:
+        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
+        print("=" * 70)
+        print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO")
+        print("🔒 DOCKER AND MCP ENFORCEMENT ACTIVE")
+        print("=" * 70)
+    
+    # System validation with enhanced progress display
+    validation_steps = [
+        "Environment Configuration",
+        "Docker Services", 
+        "MCP Server Connection",
+        "API Credentials"
+    ]
+    
+    if ENHANCED_DISPLAY:
+        terminal.show_progress(validation_steps, "🔍 System Validation")
     
     # Step 1: Validate environment
     if not validate_environment():
-        logger.error("💀 Environment validation failed")
+        display_error("Environment validation failed", "Check configuration and try again")
         sys.exit(1)
     
     # Step 2: Check Docker services
     if not check_docker_services():
         logger.info("🚀 Attempting to start Docker services...")
         if not start_docker_services():
-            logger.error("💀 Cannot start required Docker services")
+            display_error("Cannot start required Docker services", "Ensure Docker is installed and running")
             sys.exit(1)
         
         # Re-check after starting
         if not check_docker_services():
-            logger.error("💀 Docker services still not available")
+            display_error("Docker services still not available", "Check Docker configuration")
             sys.exit(1)
     
     # Step 3: Check MCP server
     if not check_mcp_server():
-        logger.error("💀 MCP server not available")
-        logger.error("Ensure MCP server is configured and running")
+        display_error("MCP server not available", "Ensure MCP server is configured and running")
         sys.exit(1)
     
-    print("✅ ALL MANDATORY REQUIREMENTS MET")
-    print("🚀 Starting live trading system...")
-    print("=" * 70)
-    print("⚠️ WARNING: This will execute real trades with real money!")
-    print("⚠️ Press Ctrl+C within 10 seconds to cancel")
-    print("=" * 70)
-    
-    try:
+    # All systems go
+    if ENHANCED_DISPLAY:
+        terminal.console.rule("[bold green]✅ ALL MANDATORY REQUIREMENTS MET[/]")
+        
+        # Display final warning with countdown
+        warning_panel = terminal.console.print(
+            "[bold red]⚠️ WARNING: This will execute real trades with real money![/]\n"
+            "[yellow]Press Ctrl+C within 10 seconds to cancel[/]",
+            style="bold"
+        )
+        
+        # Enhanced countdown
         for i in range(10, 0, -1):
-            print(f"Starting in {i} seconds...")
+            terminal.console.print(f"[bold yellow]🚀 Starting in {i} seconds...[/]", end="\r")
             time.sleep(1)
-    except KeyboardInterrupt:
-        print("\n🛑 Launch cancelled by user")
-        sys.exit(0)
-    
-    print("\n🚀 LAUNCHING LIVE TRADING SYSTEM...")
+            
+        terminal.console.print("[bold green]🚀 LAUNCHING LIVE TRADING SYSTEM...[/]")
+    else:
+        print("✅ ALL MANDATORY REQUIREMENTS MET")
+        print("🚀 Starting live trading system...")
+        print("=" * 70)
+        print("⚠️ WARNING: This will execute real trades with real money!")
+        print("⚠️ Press Ctrl+C within 10 seconds to cancel")
+        print("=" * 70)
+        
+        try:
+            for i in range(10, 0, -1):
+                print(f"Starting in {i} seconds...")
+                time.sleep(1)
+        except KeyboardInterrupt:
+            print("\n🛑 Launch cancelled by user")
+            sys.exit(0)
     
     # Import and start the main system
     try:
-        from main import main as start_main_system
+        # Try new structure import first
+        try:
+            from src.viper.core.main import main as start_main_system
+        except ImportError:
+            # Fallback to old import
+            from main import main as start_main_system
+        
+        display_success("System starting...", "All enforcement checks passed")
         start_main_system()
         
     except Exception as e:
-        logger.error(f"❌ Failed to start live trading system: {e}")
+        display_error(f"Failed to start live trading system: {e}", "Check system logs for details")
         sys.exit(1)
 
 if __name__ == "__main__":

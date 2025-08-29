@@ -1,0 +1,27 @@
+name: Repository Structure Validation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  validate-structure:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+    
+    - name: Validate Repository Structure
+      run: |
+        python tools/repository_rules.py --validate
+        if [ $? -ne 0 ]; then
+          echo "Repository structure validation failed!"
+          exit 1
+        fi
