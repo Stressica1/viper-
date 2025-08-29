@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
 # Target VIPER V2 RISK-OPTIMIZED TRADING JOB
-Implements strict 2% risk per trade with max leverage (50x) and one position per symbol
+Implements fixed $2 margin per position with max leverage (50x) and one position per symbol
 
 Key Features:
-- 2% risk per trade maximum
-- 50x leverage utilization
+- Fixed $2 margin per position (instead of percentage-based risk)
+- 50x leverage utilization → $100 notional value per position
 - One position per symbol enforcement
 - Enhanced position sizing with leverage optimization
 - Real-time balance and margin monitoring
@@ -17,6 +17,8 @@ import sys
 import asyncio
 import logging
 import signal
+from datetime import datetime
+from typing import Dict, List, Any
 
 # Configure comprehensive logging
 logging.basicConfig(
@@ -41,7 +43,7 @@ except ImportError as e:
     PERFORMANCE_MONITORING_AVAILABLE = False
 
 class V2RiskOptimizedTradingJob:
-    """V2 Risk-Optimized Trading Job with 2% risk and max leverage"""
+    """V2 Risk-Optimized Trading Job with fixed $2 margin per position and max leverage"""
 
     def __init__(self):
         self.is_running = False
@@ -51,11 +53,14 @@ class V2RiskOptimizedTradingJob:
         self.active_positions = {}
         self.system_components = {}
 
-        # STRICT RISK PARAMETERS
-        self.risk_per_trade = 0.02  # 2% RISK PER TRADE
+        # FIXED MARGIN RISK PARAMETERS
+        self.fixed_margin_per_position = 2.0  # $2 fixed margin per position
         self.max_leverage = 50      # MAXIMUM LEVERAGE
         self.max_positions = 15     # MAX POSITIONS (one per symbol)
-        self.stop_loss_pct = 0.02   # 2% STOP LOSS (matches risk)
+        
+        # Legacy parameters (kept for compatibility)
+        self.risk_per_trade = 0.02  # 2% RISK PER TRADE (legacy)
+        self.stop_loss_pct = 0.02   # 2% STOP LOSS
 
         # Trading intervals
         self.scan_interval = 30     # seconds between market scans
@@ -70,9 +75,9 @@ class V2RiskOptimizedTradingJob:
         logger.info("# Rocket INITIALIZING V2 RISK-OPTIMIZED TRADING JOB")
         logger.info("=" * 80)
         logger.info(f"# Target RISK PARAMETERS:")
-        logger.info(f"   • Risk per Trade: {self.risk_per_trade*100}%")
+        logger.info(f"   • Fixed Margin per Position: ${self.fixed_margin_per_position}")
         logger.info(f"   • Max Leverage: {self.max_leverage}x")
-        logger.info(f"   • Stop Loss: {self.stop_loss_pct*100}%")
+        logger.info(f"   • Notional per Position: ${self.fixed_margin_per_position * self.max_leverage}")
         logger.info(f"   • Max Positions: {self.max_positions}")
         logger.info("=" * 80)
 
@@ -204,10 +209,10 @@ class V2RiskOptimizedTradingJob:
             return False
 
     def calculate_v2_position_size(self, price: float, balance: float, leverage: int = 50, symbol: str = None) -> float:
-        """Calculate position size with enhanced risk management or STRICT 2% risk fallback"""
+        """Calculate position size with fixed $2 margin per position"""
         try:
             # Use enhanced risk manager if available
-            if (self.system_components.get('risk_manager') and:
+            if (self.system_components.get('risk_manager') and
                 ENHANCED_RISK_AVAILABLE and symbol):
 
                 try:
@@ -220,7 +225,7 @@ class V2RiskOptimizedTradingJob:
                         portfolio_value=balance
                     )
 
-                    if (enhanced_sizing and:
+                    if (enhanced_sizing and
                         'position_size_contracts' in enhanced_sizing and
                         enhanced_sizing['position_size_contracts'] > 0):
 
@@ -238,36 +243,33 @@ class V2RiskOptimizedTradingJob:
                     logger.warning(f"# Warning Enhanced position sizing failed for {symbol}: {e}")
                     # Fall back to basic calculation
 
-            # FALLBACK: STRICT 2% RISK CALCULATION
-            logger.info(f"# Chart Using basic position sizing for {symbol or 'unknown'}")
-            risk_amount = balance * self.risk_per_trade  # 2% of balance
-
-            # Stop loss distance (2% of price)
-            stop_loss_distance = price * self.stop_loss_pct
-
-            # Base position size (risk amount / stop loss distance)
-            base_position_size = risk_amount / stop_loss_distance
-
-            # Apply maximum leverage (50x)
-            leveraged_position_size = base_position_size * leverage
-
+            # NEW LOGIC: FIXED $2 MARGIN PER POSITION
+            logger.info(f"# Chart Using fixed margin position sizing for {symbol or 'unknown'}")
+            fixed_margin = self.fixed_margin_per_position  # $2 per position
+            
+            # With leverage, calculate notional value
+            notional_value = fixed_margin * leverage  # $2 * 50x = $100
+            
+            # Position size in contracts = notional value / price
+            position_size = notional_value / float(price)
+            
             # Get minimum contract size
             min_contract_size = 0.001
-
+            
             # Final position size
-            position_size = max(leveraged_position_size, min_contract_size)
+            position_size = max(position_size, min_contract_size)
             
             # Mathematical validation
             if self.system_components.get('math_validator'):
                 validation_data = {
                     'price': price, 'balance': balance, 'leverage': leverage,
-                    'risk_per_trade': self.risk_per_trade, 'stop_loss_pct': self.stop_loss_pct,
+                    'fixed_margin': fixed_margin, 'notional_value': notional_value,
                     'position_size': position_size
                 }
                 
                 # Validate calculations
-                price_array = [price, price * (1 - self.stop_loss_pct)]
-                balance_array = [balance, risk_amount]
+                price_array = [price, notional_value]
+                balance_array = [balance, fixed_margin]
                 
                 price_validation = self.system_components['math_validator'].validate_array(price_array, "price_data")
                 balance_validation = self.system_components['math_validator'].validate_array(balance_array, "balance_data")
@@ -281,10 +283,9 @@ class V2RiskOptimizedTradingJob:
                     logger.warning(f"# Warning Position size ({position_size:.6f}) seems unusually large")
                     position_size = max_reasonable_size * 0.95
             
-            logger.info(f"# Target V2 Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), "
-                       f"Stop Loss=2% (${stop_loss_distance:.4f}), "
-                       f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
-                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
+            logger.info(f"# Target V2 Position Sizing: Fixed Margin=${fixed_margin:.2f}, "
+                       f"Leverage={leverage}x, Notional=${notional_value:.2f}, "
+                       f"Price=${price:.4f} → Final Size={position_size:.6f}")
             
             return position_size
             
@@ -422,20 +423,23 @@ class V2RiskOptimizedTradingJob:
                         executed_trades.append(trade_result)
                         self.trades_executed += 1
 
-                        # Track active position with V2 parameters
+                        # Track active position with V2 fixed margin parameters
+                        notional_value = self.fixed_margin_per_position * self.max_leverage
                         self.active_positions[opportunity.symbol] = {
                             "entry_time": datetime.now(),
                             "side": opportunity.recommended_side,
                             "entry_price": trade_result.get('price', price),
                             "size": position_size,
-                            "risk_amount": balance * self.risk_per_trade,
+                            "margin_amount": self.fixed_margin_per_position,
+                            "notional_value": notional_value,
                             "leverage_used": self.max_leverage,
                             "stop_loss_pct": self.stop_loss_pct
                         }
 
                         logger.info(f"# Check V2 Trade executed: {opportunity.symbol} {opportunity.recommended_side}")
                         logger.info(f"   • Position Size: {position_size:.6f}")
-                        logger.info(f"   • Risk Amount: ${balance * self.risk_per_trade:.2f}")
+                        logger.info(f"   • Margin: ${self.fixed_margin_per_position:.2f}")
+                        logger.info(f"   • Notional: ${notional_value:.2f}")
                         logger.info(f"   • Leverage: {self.max_leverage}x")
                     else:
                         skipped_trades.append({
@@ -480,24 +484,28 @@ class V2RiskOptimizedTradingJob:
             # Log position status with V2 details
             if current_positions > 0:
                 logger.info(f"# Chart V2 Active Positions: {current_positions}")
-                total_risk_exposure = 0.0
+                total_margin_exposure = 0.0
+                total_notional_exposure = 0.0
                 
                 for symbol, position in self.active_positions.items():
                     entry_time = position['entry_time']
                     age = datetime.now() - entry_time
-                    risk_amount = position.get('risk_amount', 0)
+                    margin_amount = position.get('margin_amount', self.fixed_margin_per_position)
+                    notional_value = position.get('notional_value', margin_amount * self.max_leverage)
                     leverage = position.get('leverage_used', 0)
                     
-                    total_risk_exposure += risk_amount
+                    total_margin_exposure += margin_amount
+                    total_notional_exposure += notional_value
                     
                     logger.info(f"   • {symbol}: {position['side']} @ ${position['entry_price']:.4f}")
-                    logger.info(f"     Size: {position['size']:.6f}, Risk: ${risk_amount:.2f}, Leverage: {leverage}x")
+                    logger.info(f"     Size: {position['size']:.6f}, Margin: ${margin_amount:.2f}, Notional: ${notional_value:.2f}, Leverage: {leverage}x")
                     logger.info(f"     Age: {age.seconds}s, Stop Loss: {position.get('stop_loss_pct', 0)*100}%")
                 
-                # Calculate total risk exposure
+                # Calculate total exposure
                 balance = await trader.get_account_balance()
-                total_risk_pct = (total_risk_exposure / balance) * 100 if balance > 0 else 0
-                logger.info(f"# Chart Total Risk Exposure: ${total_risk_exposure:.2f} ({total_risk_pct:.1f}% of balance)")
+                margin_pct = (total_margin_exposure / balance) * 100 if balance > 0 else 0
+                logger.info(f"# Chart Total Margin: ${total_margin_exposure:.2f} ({margin_pct:.1f}% of balance)")
+                logger.info(f"# Chart Total Notional: ${total_notional_exposure:.2f}")
             else:
                 logger.debug("# Chart No active V2 positions")
 
@@ -543,9 +551,10 @@ class V2RiskOptimizedTradingJob:
             # Calculate uptime
             uptime = datetime.now() - self.start_time
 
-            # Calculate risk metrics
-            total_risk_exposure = sum(pos.get('risk_amount', 0) for pos in self.active_positions.values())
-            total_risk_pct = (total_risk_exposure / balance) * 100 if balance > 0 else 0
+            # Calculate margin metrics with new fixed margin system
+            total_margin_exposure = sum(pos.get('margin_amount', self.fixed_margin_per_position) for pos in self.active_positions.values())
+            total_notional_exposure = sum(pos.get('notional_value', self.fixed_margin_per_position * self.max_leverage) for pos in self.active_positions.values())
+            margin_pct = (total_margin_exposure / balance) * 100 if balance > 0 else 0
 
             status = {
                 "system_status": "running" if self.is_running else "stopped",
@@ -554,9 +563,10 @@ class V2RiskOptimizedTradingJob:
                 "trades_executed": self.trades_executed,
                 "active_positions": len(self.active_positions),
                 "current_balance": balance,
-                "total_risk_exposure": total_risk_exposure,
-                "total_risk_percentage": total_risk_pct,
-                "risk_per_trade": self.risk_per_trade * 100,
+                "total_margin_exposure": total_margin_exposure,
+                "total_notional_exposure": total_notional_exposure,
+                "margin_percentage": margin_pct,
+                "fixed_margin_per_position": self.fixed_margin_per_position,
                 "max_leverage": self.max_leverage,
                 "max_positions": self.max_positions,
                 "last_balance_check": self.last_balance_check.isoformat() if self.last_balance_check else None,
@@ -623,7 +633,8 @@ class V2RiskOptimizedTradingJob:
                 # 4. Status Update
                 status = await self.get_v2_system_status()
                 logger.info(f"# Chart V2 Status: {status['active_positions']} positions, ${status['current_balance']:.2f} balance")
-                logger.info(f"   Risk Exposure: ${status['total_risk_exposure']:.2f} ({status['total_risk_percentage']:.1f}%)")
+                logger.info(f"   Margin Exposure: ${status['total_margin_exposure']:.2f} ({status['margin_percentage']:.1f}%)")
+                logger.info(f"   Notional Exposure: ${status['total_notional_exposure']:.2f}")
 
                 # Calculate cycle duration
                 cycle_duration = datetime.now() - cycle_start
@@ -666,14 +677,15 @@ class V2RiskOptimizedTradingJob:
             # Display V2 system configuration
             print("\n# Chart V2 RISK-OPTIMIZED SYSTEM CONFIGURATION:")
             print(f"   • Risk per Trade: {self.risk_per_trade*100}% (STRICT)")
-            print(f"   • Max Leverage: {self.max_leverage}x (MAXIMUM)")
-            print(f"   • Stop Loss: {self.stop_loss_pct*100}% (MATCHES RISK)")
+            print(f"   • Fixed Margin per Position: ${self.fixed_margin_per_position}")
+            print(f"   • Max Leverage: {self.max_leverage}x")
+            print(f"   • Notional per Position: ${self.fixed_margin_per_position * self.max_leverage}")
             print(f"   • Max Positions: {self.max_positions} (ONE PER SYMBOL)")
             print(f"   • Scan Interval: {self.scan_interval}s")
             print(f"   • Monitor Interval: {self.monitor_interval}s")
 
             logger.info("# Party V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM STARTED!")
-            logger.info("# Chart All components connected and operational with 2% risk management")
+            logger.info("# Chart All components connected and operational with fixed $2 margin system")
 
             # Start the main V2 trading loop
             await self.continuous_v2_trading_loop()
@@ -697,7 +709,8 @@ class V2RiskOptimizedTradingJob:
         logger.info(f"   • Trades Executed: {self.trades_executed}")
         logger.info(f"   • Active Positions: {len(self.active_positions)}")
         logger.info(f"   • System Uptime: {uptime}")
-        logger.info(f"   • Risk Management: {self.risk_per_trade*100}% per trade")
+        logger.info(f"   • Risk Management: ${self.fixed_margin_per_position} fixed margin per position")
+        logger.info(f"   • Notional per Position: ${self.fixed_margin_per_position * self.max_leverage}")
         logger.info(f"   • Leverage Used: {self.max_leverage}x maximum")
         logger.info("=" * 60)
         logger.info("# Check V2 System shutdown complete")
@@ -705,7 +718,7 @@ class V2RiskOptimizedTradingJob:
 async def main():
     """Main execution function for V2 Risk-Optimized Trading"""
     print("# Target VIPER V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING JOB")
-    print("# Target STRICT 2% RISK PER TRADE • MAX 50X LEVERAGE • ONE POSITION PER SYMBOL")
+    print("# Target FIXED $2 MARGIN PER POSITION • MAX 50X LEVERAGE • $100 NOTIONAL PER POSITION")
 
     job = V2RiskOptimizedTradingJob()
 

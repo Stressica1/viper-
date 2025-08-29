@@ -13,7 +13,6 @@ import random
 import requests
 from pathlib import Path
 from dotenv import load_dotenv
-from position_adoption_system import PositionAdoptionSystem
 
 # Load environment variables
 load_dotenv()
@@ -54,14 +53,6 @@ class MultiPairVIPERTrader:
         self.all_pairs = []
         self.active_positions = {}
         self.is_running = False
-
-        # Advanced position tracking and adoption
-        self.position_adoption_system = PositionAdoptionSystem()
-
-        # Set up position adoption callbacks
-        self.position_adoption_system.on_position_adopted = self._on_position_adopted
-        self.position_adoption_system.on_position_closed = self._on_position_closed
-        self.position_adoption_system.on_position_updated = self._on_position_updated
 
     def connect(self):
         """Connect to Bitget and load ALL available pairs"""
@@ -234,13 +225,6 @@ class MultiPairVIPERTrader:
             cycle += 1
             logger.info(f"\n🔄 Cycle #{cycle} - Scanning {len(self.all_pairs)} pairs")
 
-            # Periodic position sync (every 10 cycles)
-            if cycle % 10 == 0:
-                logger.info("🔄 Performing position sync with exchange...")
-                sync_result = self.sync_positions()
-                if sync_result.get('success'):
-                    logger.debug(f"   Synced {sync_result.get('positions_synced', 0)} positions")
-
             # Scan subset of pairs for trading opportunities
             pairs_to_scan = min(25, len(self.all_pairs))  # Scan 25 pairs per cycle (reasonable for multi-pair)
             scanned_pairs = random.sample(self.all_pairs, pairs_to_scan)
@@ -283,66 +267,50 @@ class MultiPairVIPERTrader:
             time.sleep(30)
 
     def close_position(self, symbol, reason="manual"):
-        """Close a position using the adoption system"""
-        return self.position_adoption_system.close_position(symbol, reason)
+        """Close a position"""
+        try:
+            if symbol not in self.active_positions:
+                logger.warning(f"⚠️ No active position found for {symbol}")
+                return False
 
-    def _on_position_adopted(self, position_record):
-        """Callback when a position is adopted"""
-        symbol = position_record['symbol']
-        logger.info(f"📊 Position adopted: {symbol}")
+            position = self.active_positions[symbol]
+            opposite_signal = 'SELL' if position['signal'] == 'BUY' else 'BUY'
 
-        # Add to our active positions tracking
-        self.active_positions[symbol] = {
-            'order_id': f"adopted_{int(time.time())}",
-            'signal': position_record['side'],
-            'entry_price': position_record['entry_price'],
-            'quantity': position_record['contracts'],
-            'timestamp': time.time(),
-            'source': 'adopted'
-        }
+            logger.info(f"🔄 Closing {symbol} position ({reason})")
 
-    def _on_position_closed(self, position_record):
-        """Callback when a position is closed"""
-        symbol = position_record['symbol']
-        logger.info(f"🔄 Position closed: {symbol}")
+            # Close the position
+            if opposite_signal == 'SELL':
+                close_order = self.exchange.create_market_sell_order(
+                    symbol,
+                    position['quantity'],
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'close'
+                    }
+                )
+            else:
+                close_order = self.exchange.create_market_buy_order(
+                    symbol,
+                    position['quantity'],
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'close'
+                    }
+                )
 
-        # Remove from our active positions tracking
-        if symbol in self.active_positions:
-            del self.active_positions[symbol]
+            if close_order:
+                logger.info(f"✅ Position closed: {symbol} - {close_order['id']}")
+                del self.active_positions[symbol]
+                return True
+            else:
+                logger.error(f"❌ Failed to close position: {symbol}")
+                return False
 
-    def _on_position_updated(self, position_record):
-        """Callback when a position is updated"""
-        symbol = position_record['symbol']
-        pnl = position_record.get('unrealized_pnl', 0)
-
-        # Update our tracking if we have this position
-        if symbol in self.active_positions:
-            self.active_positions[symbol]['pnl'] = pnl
-            self.active_positions[symbol]['last_updated'] = time.time()
-
-    def adopt_existing_positions(self):
-        """Adopt any existing positions"""
-        logger.info("🔍 Checking for existing positions to adopt...")
-        result = self.position_adoption_system.adopt_existing_positions()
-
-        if result['success']:
-            logger.info(f"✅ Adopted {result['newly_adopted']} existing positions")
-            if result['newly_adopted'] > 0:
-                logger.info(f"   Adopted symbols: {', '.join(result['adopted_symbols'])}")
-        else:
-            logger.warning(f"⚠️ Position adoption failed: {result.get('error', 'Unknown error')}")
-
-        return result
-
-    def sync_positions(self):
-        """Sync positions with exchange"""
-        logger.debug("🔄 Syncing positions with exchange...")
-        result = self.position_adoption_system.sync_positions()
-
-        if result.get('positions_closed', 0) > 0:
-            logger.info(f"ℹ️ {result['positions_closed']} positions were closed externally")
-
-        return result
+        except Exception as e:
+            logger.error(f"❌ Error closing position {symbol}: {e}")
+            return False
 
     def stop(self):
         """Stop trading"""
@@ -377,16 +345,6 @@ def main():
 
         logger.info("✅ Connected to Bitget successfully")
         logger.info(f"🔥 Ready to trade {len(trader.all_pairs)} pairs with 50x leverage!")
-
-        # Adopt any existing positions
-        logger.info("🔍 Checking for existing positions...")
-        adoption_result = trader.adopt_existing_positions()
-
-        if adoption_result['success'] and adoption_result['newly_adopted'] > 0:
-            logger.warning(f"⚠️ Adopted {adoption_result['newly_adopted']} existing positions!")
-            logger.warning("   These positions were not created by this bot.")
-            logger.warning("   The bot will now track and manage them.")
-
         logger.info("🚀 Starting multi-pair live trading...")
 
         trader.run()

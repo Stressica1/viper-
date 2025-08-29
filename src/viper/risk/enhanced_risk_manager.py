@@ -94,12 +94,16 @@ class RiskLimits:
 class EnhancedRiskManager:
     """Enhanced risk management with dynamic adjustments and ML-based predictions"""
 
-    def __init__(self):
+    def __init__(self, use_fixed_margin: bool = False, fixed_margin_amount: float = 2.0):
         self.positions: Dict[str, EnhancedPosition] = {}
         self.risk_limits = RiskLimits()
         self.market_data_cache = {}
         self.correlation_matrix = {}
         self.risk_events: List[Dict[str, Any]] = []
+        
+        # Fixed margin settings
+        self.use_fixed_margin = use_fixed_margin
+        self.fixed_margin_amount = fixed_margin_amount
 
         # Performance tracking
         self.portfolio_value = 10000.0  # Starting value
@@ -119,7 +123,8 @@ class EnhancedRiskManager:
         # Exchange connection
         self.exchange = None
 
-        logger.info("🛡️ Enhanced Risk Manager initialized with dynamic adjustments")
+        mode_info = f"fixed ${fixed_margin_amount} margin" if use_fixed_margin else "dynamic risk-based"
+        logger.info(f"🛡️ Enhanced Risk Manager initialized with {mode_info} adjustments")
 
     async def initialize_exchange(self) -> bool:
         """Initialize exchange connection for real-time data"""
@@ -145,6 +150,10 @@ class EnhancedRiskManager:
                                       stop_loss: float, portfolio_value: float) -> Dict[str, Any]:
         """Calculate optimal position size with dynamic risk adjustment"""
         try:
+            # Check if using fixed margin mode
+            if self.use_fixed_margin:
+                return self._calculate_fixed_margin_position_size(symbol, entry_price, portfolio_value)
+            
             # Base risk per trade
             base_risk = self.risk_limits.max_single_position_risk
 
@@ -196,6 +205,55 @@ class EnhancedRiskManager:
 
         except Exception as e:
             logger.error(f"# X Error calculating dynamic position size: {e}")
+            return {'error': str(e)}
+    
+    def _calculate_fixed_margin_position_size(self, symbol: str, entry_price: float, portfolio_value: float) -> Dict[str, Any]:
+        """Calculate position size using fixed margin approach"""
+        try:
+            # Fixed margin amount
+            fixed_margin = self.fixed_margin_amount
+            
+            # Calculate with maximum leverage (50x for consistency with main system)
+            max_leverage = 50.0
+            notional_value = fixed_margin * max_leverage
+            
+            # Position size in contracts
+            position_size_contracts = notional_value / entry_price
+            
+            # Apply dynamic adjustments for risk management
+            risk_multiplier = self._calculate_risk_multiplier(symbol, entry_price)
+            correlation_adjustment = self._calculate_correlation_adjustment(symbol)
+            volatility_adjustment = self._calculate_volatility_adjustment(symbol)
+            
+            # Reduce position size based on market conditions
+            adjustment_factor = risk_multiplier * correlation_adjustment * volatility_adjustment
+            adjusted_position_size = position_size_contracts * adjustment_factor
+            
+            # Ensure minimum position size
+            min_position_size = 0.001
+            final_position_size = max(adjusted_position_size, min_position_size)
+            
+            # Calculate actual values
+            actual_notional = final_position_size * entry_price
+            actual_margin = actual_notional / max_leverage
+            
+            result = {
+                'position_size_usd': actual_notional,
+                'position_size_contracts': final_position_size,
+                'fixed_margin_amount': actual_margin,
+                'notional_value': actual_notional,
+                'leverage_used': max_leverage,
+                'risk_multiplier': risk_multiplier,
+                'correlation_adjustment': correlation_adjustment,
+                'volatility_adjustment': volatility_adjustment,
+                'adjustment_factor': adjustment_factor,
+                'mode': 'fixed_margin'
+            }
+            
+            return result
+            
+        except Exception as e:
+            logger.error(f"# X Error calculating fixed margin position size: {e}")
             return {'error': str(e)}
 
     def _calculate_risk_multiplier(self, symbol: str, entry_price: float) -> float:
