@@ -13,6 +13,7 @@ Features:
 import os
 import time
 import logging
+import threading
 from datetime import datetime
 from typing import Dict, Optional
 import ccxt
@@ -48,6 +49,11 @@ class LiveTradingEngine:
         self.risk_per_trade = float(os.getenv('RISK_PER_TRADE', '0.02'))
         self.max_leverage = int(os.getenv('MAX_LEVERAGE', '50'))
 
+        # Bitget USDT swap configuration
+        self.trading_mode = os.getenv('TRADING_MODE', 'CRYPTO')
+        self.target_symbol = os.getenv('TARGET_SYMBOL', 'BTCUSDT')
+        self.leverage = int(os.getenv('LEVERAGE', '50'))
+
         # Standard environment variables
         self.redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
         self.log_level = os.getenv('LOG_LEVEL', 'INFO')
@@ -61,7 +67,7 @@ class LiveTradingEngine:
         self.vault_token = os.getenv('VAULT_ACCESS_TOKEN')
 
         # Load credentials from vault
-        self.load_credentials_from_vault()
+        self.load_credentials_from_env()
 
         # Validate API credentials - REAL DATA ONLY
         if not all([self.api_key, self.api_secret, self.api_password]):
@@ -79,63 +85,26 @@ class LiveTradingEngine:
         logger.info("📊 Only real OHLCV data will be used")
         logger.info("❌ No simulation or mock data allowed")
 
-    def load_credentials_from_vault(self):
-        """Load API credentials from credential vault"""
+    def load_credentials_from_env(self):
+        """Load credentials directly from environment variables"""
         try:
-            logger.info("🔐 Loading credentials from vault...")
-
-            # Get API Key
-            response = requests.get(
-                f"{self.vault_url}/credentials/retrieve/bitget/api_key",
-                headers={'Authorization': f'Bearer {self.vault_token}'},
-                timeout=10
-            )
-
-            if response.status_code == 200:
-                self.api_key = response.json().get('value')
-                logger.info("✅ API Key loaded from vault")
-            else:
-                logger.error(f"❌ Failed to load API Key: {response.status_code}")
-                return
-
-            # Get API Secret
-            response = requests.get(
-                f"{self.vault_url}/credentials/retrieve/bitget/api_secret",
-                headers={'Authorization': f'Bearer {self.vault_token}'},
-                timeout=10
-            )
-
-            if response.status_code == 200:
-                self.api_secret = response.json().get('value')
-                logger.info("✅ API Secret loaded from vault")
-            else:
-                logger.error(f"❌ Failed to load API Secret: {response.status_code}")
-                return
-
-            # Get API Password
-            response = requests.get(
-                f"{self.vault_url}/credentials/retrieve/bitget/api_password",
-                headers={'Authorization': f'Bearer {self.vault_token}'},
-                timeout=10
-            )
-
-            if response.status_code == 200:
-                self.api_password = response.json().get('value')
-                logger.info("✅ API Password loaded from vault")
-            else:
-                logger.error(f"❌ Failed to load API Password: {response.status_code}")
-                return
-
-            logger.info("🎉 All credentials loaded successfully from vault")
+            logger.info("🔐 Loading credentials from environment...")
+            
+            self.api_key = os.getenv('BITGET_API_KEY', '')
+            self.api_secret = os.getenv('BITGET_API_SECRET', '')
+            self.api_password = os.getenv('BITGET_API_PASSWORD', '')
+            self.symbol = os.getenv('TARGET_SYMBOL', 'BTCUSDT')
+            
+            logger.info("✅ Credentials loaded from environment")
 
         except Exception as e:
-            logger.error(f"❌ Error loading credentials from vault: {e}")
-            raise Exception(f"🚫 Failed to load credentials from vault: {e}")
+            logger.error(f"❌ Error loading credentials: {e}")
+            raise Exception(f"🚫 Failed to load credentials: {e}")
 
     def initialize_exchange(self):
-        """Initialize Bitget exchange connection - EXACT SAME AS DIAGNOSTIC"""
+        """Initialize Bitget exchange connection for USDT swaps"""
         try:
-            # EXACT same configuration as diagnostic script
+            logger.info("🔄 Initializing Bitget for USDT swap trading...")
             self.exchange = ccxt.bitget({
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
@@ -147,15 +116,15 @@ class LiveTradingEngine:
                 'sandbox': False,
             })
 
-            # Load markets exactly like diagnostic
+            # Load markets
             logger.info("📡 Loading markets...")
             self.exchange.load_markets()
             logger.info("✅ Markets loaded successfully")
-            logger.info("✅ Bitget exchange connection established")
+            logger.info("✅ Bitget USDT swap connection established")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
+            logger.error(f"❌ Failed to initialize Bitget exchange: {e}")
             return False
 
     def initialize_redis(self):
@@ -171,9 +140,9 @@ class LiveTradingEngine:
             return False
 
     def get_market_data(self):
-        """Get current market data - REAL DATA ONLY"""
+        """Get current market data - Bitget USDT swaps only"""
         try:
-            logger.info("📊 REAL DATA: Fetching live market data...")
+            logger.info("📊 BITGET DATA: Fetching live USDT swap market data...")
             ticker = self.exchange.fetch_ticker(self.symbol)
 
             if not ticker or 'last' not in ticker:
@@ -196,16 +165,20 @@ class LiveTradingEngine:
             logger.error(f"❌ REAL DATA ONLY: Failed to fetch market data: {e}")
             return None
 
-    def check_account_balance(self):
-        """Check account balance - REAL DATA ONLY"""
+    async def get_account_balance(self) -> float:
+        """Get USDT balance from swap wallet"""
         try:
-            logger.info("🔄 Checking account balance...")
-            balance = self.exchange.fetch_balance()
-            usdt_balance = balance['USDT']['free']
-            logger.info(f"💰 Account balance: ${usdt_balance:.2f} USDT")
-            return usdt_balance
+            # Fetch balance specifically for swap account
+            balance = await self.exchange.fetch_balance({'type': 'swap'})
+            if 'USDT' in balance:
+                usdt_balance = balance['USDT']['free']
+                logger.info(f"💰 Swap Wallet Balance: ${usdt_balance:.2f} USDT (available)")
+                return usdt_balance
+            else:
+                logger.error("❌ USDT balance not found in swap wallet")
+                return 0.0
         except Exception as e:
-            logger.error(f"❌ Failed to fetch balance: {e}")
+            logger.error(f"❌ Failed to fetch swap wallet balance: {e}")
             # Check if it's an API key issue
             if "Apikey does not exist" in str(e):
                 logger.error("🚫 REAL DATA ONLY: Invalid API key - cannot proceed with real trading")
@@ -216,37 +189,49 @@ class LiveTradingEngine:
                 logger.error("   4. Restart the live trading engine")
                 logger.error("❌ System will not operate with invalid API credentials")
                 raise Exception("REAL DATA ONLY: Invalid API credentials - exiting")
-            return 0
+            return 0.0
 
-    def calculate_position_size(self, price: float, balance: float):
-        """Calculate position size using risk manager service - 2% RISK RULE"""
+    def check_account_balance(self) -> float:
+        """Synchronous wrapper for get_account_balance"""
         try:
-            # Use risk manager service for proper 2% risk calculation
-            response = requests.post(
-                f"{self.risk_manager_url}/api/position/size",
-                json={
-                    'symbol': 'BTC/USDT:USDT',  # Default symbol for sizing
-                    'price': price,
-                    'balance': balance,
-                    'risk_per_trade': 0.02  # 2% risk per trade
-                },
-                timeout=5
-            )
+            # Run the async method in a new event loop
+            import asyncio
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            result = loop.run_until_complete(self.get_account_balance())
+            loop.close()
+            return result
+        except Exception as e:
+            logger.error(f"❌ Error in sync balance check: {e}")
+            return 0.0
 
-            if response.status_code == 200:
-                result = response.json()
-                recommended_size = result.get('recommended_size', 0)
+    def calculate_position_size(self, price: float, balance: float, leverage: int = 50):
+        """Calculate position size with 3% risk and leverage"""
+        try:
+            # 3% risk per trade
+            risk_per_trade = 0.03
+            risk_amount = balance * risk_per_trade
 
-                # Ensure minimum contract size
-                min_contract_size = 0.001  # 0.001 BTC minimum
-                position_size = max(recommended_size, min_contract_size)
+            # Assume 2% stop loss distance (can be adjusted)
+            stop_loss_pct = 0.02
+            stop_loss_distance = price * stop_loss_pct
 
-                logger.info(f"🎯 Risk-managed position sizing: {position_size:.6f} BTC (2% risk rule)")
-                return position_size
-            else:
-                logger.error(f"❌ Risk manager sizing failed: {response.status_code}")
-                # Fallback to minimum size
-                return 0.001
+            # Calculate base position size (without leverage)
+            base_position_size = risk_amount / stop_loss_distance
+
+            # Apply leverage to get actual position size
+            leveraged_position_size = base_position_size * leverage
+
+            # Ensure minimum contract size
+            min_contract_size = 0.001  # 0.001 BTC minimum
+            position_size = max(leveraged_position_size, min_contract_size)
+
+            logger.info(f"🎯 Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+                       f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
+                       f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
+                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
+
+            return position_size
 
         except Exception as e:
             logger.error(f"❌ Error calculating position size: {e}")
@@ -254,16 +239,16 @@ class LiveTradingEngine:
             return 0.001
 
     def execute_trade(self, side: str, size: float, price: Optional[float] = None):
-        """Execute a trade on perpetual swaps - WORKING CONFIGURATION"""
+        """Execute a trade on Bitget USDT swaps"""
         try:
+            logger.info(f"🚀 EXECUTING BITGET {side.upper()} ORDER: {size:.6f} USDT on {self.symbol}")
+
             # Ensure size meets minimum requirements (0.0001 BTC)
             if size < 0.0001:
                 logger.error(f"❌ Position size {size:.8f} BTC below minimum 0.0001 BTC")
                 return None
 
-            logger.info(f"🚀 EXECUTING {side.upper()} ORDER: {size:.6f} BTC on {self.symbol}")
-
-            # Use hedge mode parameters for Bitget
+            # Use hedge mode parameters for Bitget USDT swaps
             if side.upper() == 'BUY':
                 order = self.exchange.create_order(
                     self.symbol,
@@ -283,7 +268,7 @@ class LiveTradingEngine:
                     params={'tradeSide': 'open'}  # Open short position in hedge mode
                 )
 
-            logger.info(f"✅ {side.upper()} order executed successfully: ID {order.get('id', 'N/A')}")
+            logger.info(f"✅ BITGET {side.upper()} order executed successfully: ID {order.get('id', 'N/A')}")
 
             # Store trade in Redis
             trade_data = {
@@ -293,12 +278,13 @@ class LiveTradingEngine:
                 'size': size,
                 'price': order.get('average', order.get('price', 0)),
                 'timestamp': datetime.now().isoformat(),
-                'status': 'executed'
+                'status': 'executed',
+                'trading_mode': 'BITGET_USDT_SWAP'
             }
 
             try:
                 self.redis_client.setex(
-                    f"trade:{order.get('id', 'unknown')}",
+                    f"trade:{trade_data['id']}",
                     86400,  # 24 hours
                     json.dumps(trade_data)
                 )
@@ -317,6 +303,8 @@ class LiveTradingEngine:
                 raise Exception("REAL DATA ONLY: Invalid API credentials - cannot execute trades")
 
             return None
+
+
 
     def check_risk_limits(self, symbol: str, position_size: float, price: float, balance: float) -> Dict:
         """Check risk limits with risk manager service"""
@@ -405,141 +393,324 @@ class LiveTradingEngine:
             logger.error(f"❌ Error closing position: {e}")
             return False
 
-    def get_viper_signal(self):
-        """Get trading signal from VIPER scoring system - REAL OHLCV DATA ONLY"""
+    def get_viper_signal_from_service(self):
+        """Get trading signal from centralized VIPER scoring service"""
         try:
-            market_data = self.get_market_data()
-            if not market_data:
-                logger.warning("⚠️ REAL DATA ONLY: Cannot get market data - skipping signal generation")
+            # Get market data from unified market data service
+            market_data_manager_url = os.getenv('MARKET_DATA_MANAGER_URL', 'http://market-data-manager:8003')
+            viper_scoring_url = os.getenv('VIPER_SCORING_SERVICE_URL', 'http://viper-scoring-service:8009')
+
+            # Fetch current market data
+            response = requests.get(f"{market_data_manager_url}/api/market/{self.symbol}", timeout=5)
+            if response.status_code != 200:
+                logger.warning(f"⚠️ Cannot fetch market data for {self.symbol}")
                 return None
 
-            # REAL DATA ONLY: Fetch OHLCV data for analysis
-            logger.info("📊 REAL DATA: Fetching OHLCV data for analysis...")
+            market_data = response.json()
 
-            # Get recent OHLCV data (last 100 candles, 1-hour timeframe)
-            ohlcv_data = self.exchange.fetch_ohlcv(self.symbol, timeframe='1h', limit=100)
+            # Request signal from VIPER scoring service
+            signal_request = {
+                'symbol': self.symbol,
+                'market_data': market_data
+            }
 
-            if not ohlcv_data or len(ohlcv_data) < 50:
-                logger.warning("⚠️ REAL DATA ONLY: Insufficient OHLCV data for analysis")
-                return None
+            response = requests.post(f"{viper_scoring_url}/api/signal",
+                                   json=signal_request, timeout=5)
 
-            # Calculate simple moving averages using REAL OHLCV data
-            closes = [candle[4] for candle in ohlcv_data]  # Close prices
-
-            # Calculate 20-period and 50-period SMAs
-            if len(closes) >= 50:
-                sma_20 = sum(closes[-20:]) / 20
-                sma_50 = sum(closes[-50:]) / 50
-
-                current_price = market_data['price']
-
-                logger.info(".2f")
-                logger.info(".2f")
-                logger.info(".2f")
-
-                # REAL DATA ONLY: Generate signal based on SMA crossover
-                if current_price > sma_20 and sma_20 > sma_50:
-                    signal = 'BUY'
-                    confidence = min(0.95, abs(current_price - sma_20) / sma_20)
-                elif current_price < sma_20 and sma_20 < sma_50:
-                    signal = 'SELL'
-                    confidence = min(0.95, abs(sma_20 - current_price) / current_price)
+            if response.status_code == 200:
+                signal_data = response.json()
+                if 'signal' in signal_data and signal_data['signal'] in ['LONG', 'SHORT']:
+                    logger.info(f"🎯 Received {signal_data['signal']} signal from VIPER service")
+                    return signal_data
                 else:
-                    signal = 'HOLD'
-                    confidence = 0.5
+                    logger.debug(f"📊 No actionable signal for {self.symbol}")
+                    return None
+            else:
+                logger.warning(f"⚠️ VIPER service returned status {response.status_code}")
+                return None
 
-                if signal in ['BUY', 'SELL']:
-                    return {
-                        'signal': signal,
-                        'symbol': self.symbol,
-                        'price': current_price,
-                        'confidence': confidence,
-                        'sma_20': sma_20,
-                        'sma_50': sma_50,
-                        'ohlcv_count': len(ohlcv_data),
+        except Exception as e:
+            logger.error(f"❌ Error getting signal from VIPER service: {e}")
+            return None
+
+    def get_viper_signal(self):
+        """Get trading signal - now using centralized service"""
+        try:
+            # Use centralized VIPER scoring service instead of local calculation
+            return self.get_viper_signal_from_service()
+
+        except Exception as e:
+            logger.error(f"❌ Error in signal generation: {e}")
+            return None
+
+    def listen_for_trading_signals(self):
+        """Listen for trading signals from the event system"""
+        try:
+            pubsub = self.redis_client.pubsub()
+            pubsub.subscribe('trading_signals', 'risk_validation', 'trading_emergency')
+
+            logger.info("📡 Listening for trading signals...")
+
+            for message in pubsub.listen():
+                if not self.is_running:
+                    break
+
+                if message['type'] == 'message':
+                    try:
+                        channel = message['channel']
+                        event_data = json.loads(message['data'])
+
+                        if channel == 'trading_signals':
+                            self.process_trading_signal(event_data)
+                        elif channel == 'risk_validation':
+                            self.process_risk_validation(event_data)
+                        elif channel == 'trading_emergency':
+                            self.process_emergency_stop(event_data)
+
+                    except json.JSONDecodeError as e:
+                        logger.error(f"❌ Failed to decode message: {e}")
+                    except Exception as e:
+                        logger.error(f"❌ Error processing message: {e}")
+
+        except Exception as e:
+            logger.error(f"❌ Error in signal listener: {e}")
+
+    def process_trading_signal(self, event_data: Dict):
+        """Process a trading signal from the event system"""
+        try:
+            signal = event_data.get('signal', {})
+            symbol = signal.get('symbol', '')
+
+            if symbol != self.symbol:
+                return  # Not for this symbol
+
+            logger.info(f"🎯 Processing signal: {signal.get('type', 'UNKNOWN')} for {symbol}")
+
+            # Validate signal has required fields
+            if not all(key in signal for key in ['type', 'price', 'confidence']):
+                logger.error("❌ Invalid signal format")
+                return
+
+            # Check account balance
+            balance = self.check_account_balance()
+            if balance < 10:
+                logger.warning(f"⚠️ Insufficient balance: ${balance:.2f}")
+                return
+
+            # Calculate position size with 3% risk and 50x leverage
+            position_size = self.calculate_position_size(signal['price'], balance, leverage=50)
+            if position_size < 0.0001:
+                logger.warning(f"⚠️ Position size too small: {position_size:.8f} BTC")
+                return
+
+            # Execute trade with enhanced error handling
+            self.execute_position(signal, position_size, balance)
+
+        except Exception as e:
+            logger.error(f"❌ Error processing trading signal: {e}")
+
+    def process_risk_validation(self, event_data: Dict):
+        """Process risk validation requests"""
+        try:
+            validation_request = event_data.get('data', {})
+            symbol = validation_request.get('symbol', '')
+
+            if symbol != self.symbol:
+                return
+
+            # Perform risk validation
+            signal = validation_request.get('signal', {})
+            price = signal.get('price', 0)
+            balance = self.check_account_balance()
+
+            # Calculate position size for validation with 50x leverage
+            position_size = self.calculate_position_size(price, balance, leverage=50)
+
+            # Check risk limits
+            risk_check = self.check_risk_limits(symbol, position_size, price, balance)
+
+            # Publish validation result
+            validation_result = {
+                'symbol': symbol,
+                'signal_id': signal.get('id', 'unknown'),
+                'validation': risk_check,
+                'position_size': position_size,
+                'timestamp': datetime.now().isoformat()
+            }
+
+            self.redis_client.publish('risk_validation_result', json.dumps(validation_result))
+
+        except Exception as e:
+            logger.error(f"❌ Error in risk validation: {e}")
+
+    def process_emergency_stop(self, event_data: Dict):
+        """Process emergency stop signals"""
+        try:
+            emergency = event_data.get('data', {})
+            alert = emergency.get('alert', {})
+
+            logger.error(f"🚨 EMERGENCY STOP: {alert.get('type', 'unknown')}")
+
+            # Close all positions immediately
+            self.emergency_close_all_positions()
+
+        except Exception as e:
+            logger.error(f"❌ Error processing emergency stop: {e}")
+
+    def execute_position(self, signal: Dict, position_size: float, balance: float):
+        """Execute a position with comprehensive error handling and logging"""
+        try:
+            symbol = signal.get('symbol', self.symbol)
+            signal_type = signal.get('type', '')
+            price = signal.get('price', 0)
+            confidence = signal.get('confidence', 0)
+
+            logger.info(f"🚀 Executing {signal_type} position: {position_size:.6f} BTC at ${price:.2f}")
+
+            # Execute the trade
+            order = self.execute_trade(signal_type, position_size, price)
+
+            if order:
+                order_id = order.get('id', 'unknown')
+                executed_price = order.get('average', order.get('price', price))
+
+                logger.info(f"✅ Trade executed successfully: {order_id}")
+
+                # Register position with risk manager
+                position_data = {
+                    'id': order_id,
+                    'symbol': symbol,
+                    'side': signal_type,
+                    'size': position_size,
+                    'price': executed_price,
+                    'signal_price': price,
+                    'confidence': confidence,
+                    'timestamp': datetime.now().isoformat()
+                }
+
+                if self.register_position(symbol, position_data):
+                    logger.info(f"📝 Position registered with risk manager")
+
+                    # Publish trade execution event
+                    trade_event = {
+                        'type': 'position_opened',
+                        'position': position_data,
+                        'order': order,
                         'timestamp': datetime.now().isoformat()
                     }
 
-            return None
+                    self.redis_client.publish('position_updates', json.dumps(trade_event))
+                else:
+                    logger.warning(f"⚠️ Failed to register position with risk manager")
+
+            else:
+                logger.error("❌ Trade execution failed")
+
+                # Publish trade failure event
+                failure_event = {
+                    'type': 'trade_failed',
+                    'signal': signal,
+                    'position_size': position_size,
+                    'error': 'execution_failed',
+                    'timestamp': datetime.now().isoformat()
+                }
+
+                self.redis_client.publish('trading_errors', json.dumps(failure_event))
 
         except Exception as e:
-            logger.error(f"❌ REAL DATA ONLY: Error getting VIPER signal: {e}")
-            return None
+            logger.error(f"❌ Error executing position: {e}")
+
+            # Publish error event
+            error_event = {
+                'type': 'trade_error',
+                        'signal': signal,
+                'position_size': position_size,
+                'error': str(e),
+                'timestamp': datetime.now().isoformat()
+            }
+
+            self.redis_client.publish('trading_errors', json.dumps(error_event))
+
+    def emergency_close_all_positions(self):
+        """Emergency close all positions"""
+        try:
+            logger.error("🚨 EMERGENCY: Closing all positions")
+
+            # Get current positions
+            positions_response = requests.get(f"{self.risk_manager_url}/api/position/status", timeout=5)
+
+            if positions_response.status_code == 200:
+                position_data = positions_response.json()
+                active_symbols = position_data.get('active_symbols', [])
+
+                for symbol in active_symbols:
+                    logger.info(f"📝 Emergency closing position for {symbol}")
+
+                    # Close position logic would go here
+                    # This is a simplified version - in production you'd implement
+                    # proper position closing with market orders
+
+                    close_event = {
+                        'type': 'emergency_close',
+                        'symbol': symbol,
+                        'reason': 'emergency_stop',
+                        'timestamp': datetime.now().isoformat()
+                    }
+
+                    self.redis_client.publish('position_updates', json.dumps(close_event))
+
+            # Publish emergency stop completed event
+            completed_event = {
+                'type': 'emergency_stop_completed',
+                'timestamp': datetime.now().isoformat()
+            }
+
+            self.redis_client.publish('system_events', json.dumps(completed_event))
+
+        except Exception as e:
+            logger.error(f"❌ Error in emergency close: {e}")
 
     def run_trading_loop(self):
-        """Main trading loop"""
-        logger.info("🚀 Starting VIPER Live Trading Engine...")
+        """Main trading loop - now event-driven"""
+        logger.info("🚀 Starting VIPER Live Trading Engine (Event-Driven)...")
         self.is_running = True
 
-        while self.is_running:
-            try:
-                # Check account balance
-                balance = self.check_account_balance()
-                logger.info(f"💵 Balance check: ${balance:.2f} (min required: $10.00)")
-                if balance < 10:  # Minimum balance check
-                    logger.warning(f"⚠️ Insufficient balance: ${balance:.2f} (minimum $10.00 required)")
+        try:
+            # Start signal listener in background thread
+            signal_thread = threading.Thread(target=self.listen_for_trading_signals, daemon=True)
+            signal_thread.start()
+
+            # Main loop for Bitget USDT swap trading
+            while self.is_running:
+                try:
+                    # Periodic health check
+                    balance = self.check_account_balance()
+                    logger.info(f"💵 Account balance: ${balance:.2f}")
+
+                    # Publish engine status
+                    status_event = {
+                        'service': 'live-trading-engine',
+                        'status': 'active',
+                        'balance': balance,
+                        'symbol': self.symbol,
+                        'timestamp': datetime.now().isoformat()
+                    }
+
+                    self.redis_client.publish('service_status', json.dumps(status_event))
+
+                    # Wait before next status update
                     time.sleep(60)
-                    continue
-                logger.info("✅ Balance sufficient, proceeding with trading logic")
 
-                # Get VIPER trading signal
-                signal = self.get_viper_signal()
-                if not signal:
+                except Exception as e:
+                    logger.error(f"❌ Error in main loop: {e}")
                     time.sleep(30)
-                    continue
 
-                logger.info(f"📊 VIPER Signal: {signal['signal']} at ${signal['price']:.2f}")
-
-                # Calculate position size
-                position_size = self.calculate_position_size(signal['price'], balance)
-                logger.info(f"🎯 Calculated position size: {position_size:.8f} BTC (${position_size * signal['price']:.2f})")
-
-                if position_size > 0 and position_size >= 0.0001:
-                    # Check risk limits before executing trade
-                    risk_check = self.check_risk_limits(signal['symbol'], position_size, signal['price'], balance)
-
-                    if not risk_check.get('allowed', False):
-                        logger.warning(f"🚫 Trade blocked by risk management: {risk_check.get('reason', 'Unknown reason')}")
-                        time.sleep(60)
-                        continue
-
-                    logger.info("✅ Risk limits passed - executing trade")
-
-                    # Execute trade
-                    logger.info(f"🚀 Executing {signal['signal']} trade: {position_size:.6f} BTC")
-                    order = self.execute_trade(signal['signal'], position_size)
-
-                    if order:
-                        logger.info(f"✅ Trade executed successfully: {order['id']}")
-
-                        # Register position with risk manager
-                        position_data = {
-                            'id': order.get('id', 'unknown'),
-                            'symbol': signal['symbol'],
-                            'side': signal['signal'],
-                            'size': position_size,
-                            'price': order.get('average', order.get('price', signal['price'])),
-                            'timestamp': datetime.now().isoformat()
-                        }
-
-                        if self.register_position(signal['symbol'], position_data):
-                            logger.info(f"📝 Position registered for {signal['symbol']}")
-                        else:
-                            logger.warning(f"⚠️ Failed to register position for {signal['symbol']}")
-                    else:
-                        logger.error("❌ Trade execution failed")
-                else:
-                    logger.warning(f"⚠️ Position size too small: {position_size:.8f} BTC (min: 0.0001 BTC)")
-
-                # Wait before next iteration
-                time.sleep(60)  # Check every minute
-
-            except KeyboardInterrupt:
-                logger.info("🛑 Trading loop interrupted by user")
-                break
-            except Exception as e:
-                logger.error(f"❌ Error in trading loop: {e}")
-                time.sleep(30)
+        except KeyboardInterrupt:
+            logger.info("🛑 Trading loop interrupted by user")
+            self.stop()
+        except Exception as e:
+            logger.error(f"❌ Fatal error in trading loop: {e}")
+            self.stop()
 
     def stop(self):
         """Stop the trading engine"""

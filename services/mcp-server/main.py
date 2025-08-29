@@ -485,11 +485,19 @@ class MCPServer:
             if not GITHUB_PAT:
                 return {"error": "GitHub PAT not configured", "status": "error"}
 
-            headers = {
-                "Authorization": f"token {GITHUB_PAT}",
-                "Accept": "application/vnd.github.v3+json",
-                "Content-Type": "application/json"
-            }
+            # Handle both old (ghp_) and new (github_pat_) token formats
+            if GITHUB_PAT.startswith("github_pat_"):
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json",
+                    "Content-Type": "application/json"
+                }
+            else:
+                headers = {
+                    "Authorization": f"token {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json",
+                    "Content-Type": "application/json"
+                }
 
             issue_data = {
                 "title": data.get("title", "New Task"),
@@ -530,10 +538,17 @@ class MCPServer:
             if not GITHUB_PAT:
                 return {"error": "GitHub PAT not configured", "status": "error"}
 
-            headers = {
-                "Authorization": f"token {GITHUB_PAT}",
-                "Accept": "application/vnd.github.v3+json"
-            }
+            # Handle both old (ghp_) and new (github_pat_) token formats
+            if GITHUB_PAT.startswith("github_pat_"):
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
+            else:
+                headers = {
+                    "Authorization": f"token {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
 
             url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/issues"
             params = {"state": status, "per_page": 10}
@@ -574,11 +589,19 @@ class MCPServer:
             if not issue_number:
                 return {"error": "Issue number required", "status": "error"}
 
-            headers = {
-                "Authorization": f"token {GITHUB_PAT}",
-                "Accept": "application/vnd.github.v3+json",
-                "Content-Type": "application/json"
-            }
+            # Handle both old (ghp_) and new (github_pat_) token formats
+            if GITHUB_PAT.startswith("github_pat_"):
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json",
+                    "Content-Type": "application/json"
+                }
+            else:
+                headers = {
+                    "Authorization": f"token {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json",
+                    "Content-Type": "application/json"
+                }
 
             update_data = {}
             if "title" in data:

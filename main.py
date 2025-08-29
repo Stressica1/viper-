@@ -1,381 +1,465 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Main Entry Point
-Ultra High-Performance Algorithmic Trading Platform
-
-🎯 ONE COMMAND STARTS EVERYTHING:
-    python main.py
-
-This script orchestrates the complete VIPER trading system startup:
-- ✅ 17 Microservices Architecture
-- ✅ Centralized Logging System (ELK Stack)
-- ✅ MCP AI Integration
-- ✅ Real-time Monitoring & Alerting
-- ✅ Web Dashboard & API
-- ✅ Ultra Backtester & Strategy Optimizer
-- ✅ Live Trading Engine (with proper API keys)
+🚀 VIPER LIVE TRADING BOT WITH JOB MANAGER INTEGRATION
+MAX 10 POSITIONS | MAX 3% RISK PER TRADE | PROPER MARGIN CALCULATION
 """
 
 import os
 import sys
 import time
-import subprocess
-import argparse
-from pathlib import Path
-from typing import List, Dict, Optional
+import logging
+import ccxt
+import asyncio
+from datetime import datetime
+from dotenv import load_dotenv
+from job_manager import ViperLiveJobManager
 
-class ViperSystemOrchestrator:
-    """Main orchestrator for the complete VIPER trading system"""
+# Load environment variables from .env file
+load_dotenv()
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+class SimpleVIPERTrader:
     def __init__(self):
-        self.project_root = Path(__file__).parent
-        self.start_microservices_script = self.project_root / "scripts" / "start_microservices.py"
-        self.env_file = self.project_root / ".env"
-        self.docker_compose_file = self.project_root / "infrastructure" / "docker-compose.yml"
+        # Load API credentials
+        self.api_key = os.getenv('BITGET_API_KEY', '')
+        self.api_secret = os.getenv('BITGET_API_SECRET', '')
+        self.api_password = os.getenv('BITGET_API_PASSWORD', '')
 
-    def print_banner(self):
-        """Print the VIPER startup banner"""
-        print("""
-🚀 VIPER Trading Bot - Ultra High-Performance Algorithmic Trading Platform
-================================================================================
-🏆 World-Class Algorithmic Trading System - ONE COMMAND STARTS EVERYTHING!
+        # Trading config
+        self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '5'))
+        self.min_leverage_required = 34  # Minimum leverage required
+        self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '2.5'))
+        self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '1.5'))
+        self.max_positions = int(os.getenv('MAX_POSITIONS', '5'))
 
-✅ COMPONENTS STARTING AUTOMATICALLY:
-   • 🧪 Ultra Badass Backtester - Strategy testing with predictive ranges
-   • 🔥 Live Trading Engine - High-performance automated trading
-   • 📊 Professional Analytics - Advanced performance metrics & risk management
-   • 🌐 Web Dashboard - Real-time monitoring and control interface
-   • 🏗️ 17-Microservices Architecture - Scalable, production-ready system
-   • 🤖 MCP Integration - Full Model Context Protocol support for AI agents
-   • 📡 Real-time Data Streaming - Live market data with sub-second latency
-   • 🚨 Advanced Risk Management - Multi-layered position control & safety
-   • 📝 Centralized Logging - ELK stack with comprehensive audit trails
-   • 🔐 Secure Credential Management - Vault-based secrets with access tokens
-
-🎯 ACCESS POINTS (after startup):
-   • 🌐 Web Dashboard: http://localhost:8000
-   • 📊 Grafana Monitoring: http://localhost:3000
-   • 📥 Kibana Logs: http://localhost:5601
-   • 🤖 MCP Server: http://localhost:8015
-================================================================================
-        """)
-
-    def check_requirements(self) -> bool:
-        """Check if all requirements are met for startup"""
-        print("🔍 Checking system requirements...")
-
-        # Check if Docker is available
-        try:
-            result = subprocess.run(
-                ["docker", "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
-            if result.returncode == 0:
-                print(f"✅ Docker: {result.stdout.strip()}")
-            else:
-                print("❌ Docker: Not available or not running")
-                return False
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-            print("❌ Docker: Not installed or not accessible")
-            print("   💡 Install Docker Desktop: https://www.docker.com/products/docker-desktop")
-            return False
-
-        # Check if Docker Compose is available
-        try:
-            result = subprocess.run(
-                ["docker-compose", "--version"],
-                capture_output=True,
-                text=True,
-                timeout=10
-            )
-            if result.returncode == 0:
-                print(f"✅ Docker Compose: {result.stdout.strip()}")
-            else:
-                print("❌ Docker Compose: Not available")
-                return False
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired, FileNotFoundError):
-            print("❌ Docker Compose: Not installed")
-            return False
-
-        # Check if .env file exists
-        if not self.env_file.exists():
-            print("❌ .env file not found!")
-            print(f"   Expected location: {self.env_file}")
-            print("   💡 Copy .env.example to .env and configure your API keys")
-            return False
-
-        # Check if start_microservices.py exists
-        if not self.start_microservices_script.exists():
-            print("❌ start_microservices.py script not found!")
-            print(f"   Expected location: {self.start_microservices_script}")
-            return False
-
-        print("✅ All requirements met!")
-        return True
-
-    def validate_environment(self) -> Dict[str, str]:
-        """Validate environment configuration and return status"""
-        print("📋 Validating environment configuration...")
-
-        validation_results = {}
-
-        # Check critical environment variables
-        critical_vars = [
-            'BITGET_API_KEY',
-            'BITGET_API_SECRET',
-            'VAULT_MASTER_KEY',
-            'GRAFANA_ADMIN_PASSWORD'
+        # ALL AVAILABLE TRADING PAIRS (will be filtered by leverage)
+        self.all_symbols = [
+            'BTC/USDT:USDT', 'ETH/USDT:USDT', 'BNB/USDT:USDT',
+            'SOL/USDT:USDT', 'ADA/USDT:USDT', 'DOT/USDT:USDT',
+            'LINK/USDT:USDT', 'UNI/USDT:USDT', 'AVAX/USDT:USDT',
+            'MATIC/USDT:USDT', 'DOGE/USDT:USDT', 'TRX/USDT:USDT',
+            'ETC/USDT:USDT', 'ICP/USDT:USDT', 'FIL/USDT:USDT',
+            'XRP/USDT:USDT', 'LTC/USDT:USDT', 'BCH/USDT:USDT',
+            'EOS/USDT:USDT', 'THETA/USDT:USDT', 'FTT/USDT:USDT',
+            'SUSHI/USDT:USDT', 'AAVE/USDT:USDT', 'MKR/USDT:USDT',
+            'COMP/USDT:USDT', 'CRV/USDT:USDT', 'YFI/USDT:USDT',
+            'BAL/USDT:USDT', 'REN/USDT:USDT', 'OMG/USDT:USDT',
+            'ZRX/USDT:USDT', 'BAT/USDT:USDT', 'MANA/USDT:USDT',
+            'ENJ/USDT:USDT', 'ANT/USDT:USDT', 'STORJ/USDT:USDT',
+            'GRT/USDT:USDT', 'CHZ/USDT:USDT', 'SAND/USDT:USDT',
+            'AXS/USDT:USDT', 'SLP/USDT:USDT', 'ALICE/USDT:USDT',
+            'TLM/USDT:USDT', 'WAVES/USDT:USDT',
+            'NEAR/USDT:USDT', 'FTM/USDT:USDT', 'ALGO/USDT:USDT',
+            'HBAR/USDT:USDT', 'EGLD/USDT:USDT', 'FLOW/USDT:USDT',
+            'VET/USDT:USDT', 'IOTX/USDT:USDT', 'RVN/USDT:USDT'
         ]
 
+        # Filtered symbols (only those supporting min leverage)
+        self.symbols = []
+        self.symbol_leverages = {}  # Store max leverage per symbol
+        self.blacklisted_symbols = []  # Pairs that don't meet leverage requirements
+
+        self.exchange = None
+        self.active_positions = {}
+        self.is_running = False
+        self.total_trades = 0
+        self.wins = 0
+        self.losses = 0
+
+        # Job Manager Integration
+        self.job_manager = None
+        self.account_balance = 0.0
+
+        # Risk Management Limits
+        self.max_positions = 10  # NEVER MORE THAN 10 POSITIONS
+        self.max_risk_per_trade = 0.03  # MAX 3% RISK PER TRADE
+
+    def connect(self):
+        """Connect to Bitget"""
         try:
-            with open(self.env_file, 'r', encoding='utf-8', errors='replace') as f:
-                env_content = f.read()
-        except UnicodeDecodeError:
-            try:
-                with open(self.env_file, 'r', encoding='latin-1') as f:
-                    env_content = f.read()
-            except Exception as e:
-                validation_results['env_file'] = f"❌ Error reading .env file: {e}"
-                return validation_results
-
-        missing_vars = []
-        for var in critical_vars:
-            if var not in env_content or f"{var}=" in env_content.split('\n'):
-                if not os.getenv(var):
-                    missing_vars.append(var)
-
-        if missing_vars:
-            validation_results['missing_vars'] = f"⚠️  Missing/empty critical variables: {', '.join(missing_vars)}"
-            validation_results['live_trading'] = "❌ Live trading will not work without proper API keys"
-        else:
-            validation_results['api_keys'] = "✅ API keys configured (live trading ready)"
-
-        # Check service ports
-        service_ports = {
-            'API_SERVER_PORT': '8000',
-            'ULTRA_BACKTESTER_PORT': '8001',
-            'RISK_MANAGER_PORT': '8002',
-            'DATA_MANAGER_PORT': '8003',
-            'STRATEGY_OPTIMIZER_PORT': '8004',
-            'EXCHANGE_CONNECTOR_PORT': '8005'
-        }
-
-        ports_configured = []
-        for port_var, default_port in service_ports.items():
-            if port_var in env_content:
-                ports_configured.append(f"{port_var} configured")
-            else:
-                ports_configured.append(f"{port_var} using default ({default_port})")
-
-        validation_results['ports'] = f"✅ Service ports: {', '.join(ports_configured)}"
-
-        return validation_results
-
-    def start_system(self, build_first: bool = False) -> bool:
-        """Start the complete VIPER system"""
-        print("🚀 Starting VIPER Trading System...")
-
-        try:
-            # Change to project root directory
-            os.chdir(self.project_root)
-
-            # Build services if requested
-            if build_first:
-                print("🔨 Building all services first...")
-                cmd = [
-                    sys.executable, str(self.start_microservices_script),
-                    "build"
-                ]
-                result = subprocess.run(cmd, capture_output=True, text=True)
-                if result.returncode != 0:
-                    print(f"❌ Build failed: {result.stderr}")
-                    return False
-                print("✅ All services built successfully!")
-
-            # Start all microservices
-            print("🏗️ Starting all microservices...")
-            cmd = [
-                sys.executable, str(self.start_microservices_script),
-                "start"
-            ]
-
-            print("⚡ This will start:")
-            print("   • 17 microservices with dependency management")
-            print("   • Redis, Prometheus, Grafana monitoring stack")
-            print("   • ELK logging stack (Elasticsearch, Logstash, Kibana)")
-            print("   • MCP AI integration server")
-            print("   • All trading components (backtester, live engine, etc.)")
-            print()
-
-            # Run the startup command
-            result = subprocess.run(cmd)
-
-            if result.returncode == 0:
-                self.print_success_message()
-                return True
-            else:
-                print("❌ Failed to start VIPER system")
-                print("💡 Check the logs above for specific error details")
+            if not all([self.api_key, self.api_secret, self.api_password]):
+                logger.error("❌ Missing API credentials")
                 return False
 
+            logger.info("🔌 Connecting to Bitget...")
+            self.exchange = ccxt.bitget({
+                'apiKey': self.api_key,
+                'secret': self.api_secret,
+                'password': self.api_password,
+                'options': {'defaultType': 'swap', 'adjustForTimeDifference': True},
+                'sandbox': False,
+            })
+
+            markets = self.exchange.load_markets()
+            logger.info(f"✅ Connected - {len(markets)} markets loaded")
+
+            # Validate leverage for each symbol and filter
+            self.filter_symbols_by_leverage()
+
+            # Initialize Job Manager for risk management
+            self.job_manager = ViperLiveJobManager()
+            self.job_manager.max_positions = self.max_positions
+            self.job_manager.max_risk_per_trade = self.max_risk_per_trade
+
+            # Get initial balance
+            self.update_balance()
+
+            return True
+
         except Exception as e:
-            print(f"❌ Error starting system: {str(e)}")
+            logger.error(f"❌ Connection failed: {e}")
             return False
 
-    def print_success_message(self):
-        """Print success message with access information"""
-        print("""
-🎉 VIPER TRADING SYSTEM STARTED SUCCESSFULLY!
-================================================
+    def filter_symbols_by_leverage(self):
+        """Filter symbols based on minimum leverage requirement (34x)"""
+        logger.info(f"🔍 Validating leverage for {len(self.all_symbols)} symbols...")
 
-🌐 ACCESS YOUR TRADING PLATFORM:
-   • 🏠 Web Dashboard:    http://localhost:8000
-   • 📊 Grafana Monitoring: http://localhost:3000
-   • 📥 Kibana Logs:      http://localhost:5601
-   • 🤖 MCP Server:       http://localhost:8015
+        valid_symbols = []
+        blacklisted = []
 
-📊 SYSTEM STATUS:
-   • ✅ 17 Microservices running
-   • ✅ Centralized logging active
-   • ✅ Real-time monitoring active
-   • ✅ MCP AI integration ready
-   • ✅ All trading engines ready
+        for symbol in self.all_symbols:
+            try:
+                # Get market info for this symbol
+                market = self.exchange.market(symbol)
+                max_leverage = market.get('contractSize', 0)  # This might not be the right field
 
-🚀 QUICK START GUIDE:
-   1. Open http://localhost:8000 in your browser
-   2. Check system status and health
-   3. Run a backtest to test strategies
-   4. Configure live trading (if API keys are set)
-   5. Monitor performance in real-time
+                # Try to get leverage info via API
+                try:
+                    # Fetch leverage info
+                    leverage_info = self.exchange.fetch_leverage_tiers(symbol)
+                    if leverage_info:
+                        # Get the maximum leverage from tiers
+                        max_leverage = max([tier.get('maxLeverage', 1) for tier in leverage_info])
+                    else:
+                        max_leverage = 20  # Default fallback
+                except:
+                    max_leverage = 20  # Default fallback
 
-🛠️ MANAGEMENT COMMANDS:
-   • Check status:    python scripts/start_microservices.py status
-   • View logs:       python scripts/start_microservices.py logs
-   • Stop system:     python scripts/start_microservices.py stop
-   • Health check:    python scripts/start_microservices.py health
+                self.symbol_leverages[symbol] = max_leverage
 
-⚠️  IMPORTANT NOTES:
-   • Live trading requires valid Bitget API keys in .env
-   • Monitor your positions and risk management closely
-   • Backtest thoroughly before live trading
-   • This software is for educational/research purposes
+                if max_leverage >= self.min_leverage_required:
+                    valid_symbols.append(symbol)
+                    logger.info(f"✅ {symbol}: {max_leverage}x leverage (VALID)")
+                else:
+                    blacklisted.append(symbol)
+                    logger.warning(f"❌ {symbol}: {max_leverage}x leverage (BLACKLISTED - below {self.min_leverage_required}x)")
 
-🚀 HAPPY TRADING WITH VIPER!
-================================================
-        """)
+            except Exception as e:
+                logger.warning(f"⚠️ Could not validate leverage for {symbol}: {e}")
+                # Add with default leverage as fallback
+                self.symbol_leverages[symbol] = 20
+                valid_symbols.append(symbol)
 
-    def print_help(self):
-        """Print help information"""
-        print("""
-🚀 VIPER Trading Bot - Help
-===========================
+        self.symbols = valid_symbols
+        self.blacklisted_symbols = blacklisted
 
-USAGE:
-    python main.py [OPTIONS]
+        logger.info(f"🎯 VALID SYMBOLS: {len(self.symbols)}/{len(self.all_symbols)}")
+        logger.info(f"🚫 BLACKLISTED: {len(self.blacklisted_symbols)} symbols")
+        logger.info(f"💰 MIN LEVERAGE REQUIRED: {self.min_leverage_required}x")
 
-OPTIONS:
-    --build          Build all services before starting
-    --status         Show current system status
-    --stop           Stop all running services
-    --help           Show this help message
+    def update_balance(self):
+        """Update account balance and sync with job manager"""
+        try:
+            balance = self.exchange.fetch_balance({'type': 'swap'})
+            if 'USDT' in balance:
+                self.account_balance = float(balance['USDT']['free'])
+                logger.info(f"💰 Balance: ${self.account_balance:.2f} USDT")
 
-EXAMPLES:
-    python main.py                    # Start everything
-    python main.py --build           # Build and start everything
-    python main.py --status          # Show system status
-    python main.py --stop            # Stop all services
+                # Sync with job manager
+                if self.job_manager:
+                    self.job_manager.update_account_balance(self.account_balance)
 
-ACCESS POINTS:
-    • Web Dashboard: http://localhost:8000
-    • Grafana:       http://localhost:3000
-    • Kibana:        http://localhost:5601
-    • MCP Server:    http://localhost:8015
+            return True
+        except Exception as e:
+            logger.error(f"❌ Error fetching balance: {e}")
+            return False
 
-For more detailed control:
-    python scripts/start_microservices.py [command]
-        """)
+    def scan_all_signals(self):
+        """Scan ALL VALID pairs for trading signals (ONLY 1 POSITION PER PAIR)"""
+        opportunities = []
+
+        for symbol in self.symbols:
+            # SINGLE POSITION PER PAIR - NO CAPITAL STACKING
+            if symbol in self.active_positions:
+                continue
+
+            try:
+                ticker = self.exchange.fetch_ticker(symbol)
+                price = ticker['last']
+                change_24h = ticker.get('percentage', 0)
+                volume = ticker.get('quoteVolume', 0)
+
+                # Simple momentum signal with volume filter
+                if change_24h > 1.0 and volume > 50000:  # >1% up, decent volume
+                    opportunities.append((symbol, 'buy', change_24h))
+                elif change_24h < -1.0 and volume > 50000:  # >1% down, decent volume
+                    opportunities.append((symbol, 'sell', change_24h))
+
+            except Exception as e:
+                continue  # Skip this symbol if error
+
+        return opportunities
+
+    def execute_trade(self, symbol, side):
+        """Execute trade with PROPER RISK MANAGEMENT - MAX 10 POSITIONS, MAX 3% RISK"""
+        try:
+            # RISK MANAGEMENT VALIDATION THROUGH JOB MANAGER
+            ticker = self.exchange.fetch_ticker(symbol)
+            current_price = ticker['last']
+
+            # Calculate position size with max leverage
+            max_leverage = self.symbol_leverages.get(symbol, 20)
+            position_value = self.position_size_usdt * max_leverage
+            position_size = position_value / current_price
+
+            # VALIDATE WITH JOB MANAGER RISK RULES
+            if self.job_manager:
+                can_open, reason = self.job_manager.can_open_position(
+                    symbol, current_price, position_size, max_leverage
+                )
+
+                if not can_open:
+                    logger.warning(f"🚫 POSITION REJECTED: {reason}")
+                    return False
+
+            # Get current balance and validate
+            if not self.update_balance():
+                logger.error("❌ Could not fetch balance - skipping trade")
+                return False
+
+            logger.info(f"🚀 EXECUTING {side.upper()} ORDER ON {symbol}")
+            logger.info(f"   💰 Price: ${current_price:.6f}")
+            logger.info(f"   📏 Size: {position_size:.6f}")
+            logger.info(f"   🎲 Leverage: {max_leverage}x")
+            logger.info(f"   💵 Margin Required: ${self.position_size_usdt}")
+            logger.info(f"   ⚠️ Risk Amount: ${self.position_size_usdt * self.max_risk_per_trade:.2f} (3%)")
+
+            order = self.exchange.create_order(
+                symbol=symbol,
+                type='market',
+                side=side,
+                amount=position_size,
+                params={
+                    'marginCoin': 'USDT',
+                    'leverage': max_leverage,
+                    'marginMode': 'isolated',
+                    'holdSide': 'long' if side == 'buy' else 'short',
+                    'tradeSide': 'open'
+                }
+            )
+
+            # TRACK POSITION WITH JOB MANAGER
+            if self.job_manager:
+                self.job_manager.add_position(symbol, side, position_size, current_price, max_leverage)
+
+            # Also store in local tracking for backward compatibility
+            self.active_positions[symbol] = {
+                'side': side,
+                'entry_price': current_price,
+                'size': position_size,
+                'leverage': max_leverage,
+                'margin_used': self.position_size_usdt,
+                'timestamp': datetime.now().isoformat()
+            }
+
+            self.total_trades += 1
+            logger.info(f"✅ TRADE EXECUTED: {order['id']} | Leverage: {max_leverage}x")
+            logger.info(f"   📊 ACTIVE POSITIONS: {len(self.active_positions)}/{self.max_positions}")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Trade failed on {symbol}: {e}")
+            return False
+
+    def monitor_positions(self):
+        """Monitor ALL positions with leverage info"""
+        if not self.active_positions:
+            return
+
+        logger.info(f"👁️ Monitoring {len(self.active_positions)} positions...")
+
+        for symbol in list(self.active_positions.keys()):
+            try:
+                ticker = self.exchange.fetch_ticker(symbol)
+                current_price = ticker['last']
+
+                position = self.active_positions[symbol]
+                entry_price = position['entry_price']
+                side = position['side']
+                leverage = position.get('leverage', 20)
+
+                # Calculate P&L
+                if side == 'buy':
+                    pnl_pct = (current_price - entry_price) / entry_price * 100
+                else:
+                    pnl_pct = (entry_price - current_price) / entry_price * 100
+
+                logger.info(f"📊 {symbol}: {pnl_pct:.2f}% P&L | {leverage}x | ${position.get('margin_used', 0)} margin")
+
+                # Risk management
+                if pnl_pct >= self.take_profit_pct:
+                    logger.info(f"💰 Taking profit on {symbol} ({pnl_pct:.1f}%)")
+                    self.close_position(symbol, "PROFIT")
+                elif pnl_pct <= -self.stop_loss_pct:
+                    logger.info(f"🛑 Stopping loss on {symbol} ({pnl_pct:.1f}%)")
+                    self.close_position(symbol, "STOP_LOSS")
+
+            except Exception as e:
+                logger.error(f"❌ Monitor error for {symbol}: {e}")
+
+    def close_position(self, symbol, reason):
+        """Close position for any symbol"""
+        try:
+            if symbol not in self.active_positions:
+                return
+
+            position = self.active_positions[symbol]
+            opposite_side = 'sell' if position['side'] == 'buy' else 'buy'
+
+            close_order = self.exchange.create_order(
+                symbol=symbol,
+                type='market',
+                side=opposite_side,
+                amount=position['size'],
+                params={
+                    'marginCoin': 'USDT',
+                    'holdSide': 'long' if position['side'] == 'buy' else 'short',
+                    'tradeSide': 'close'
+                }
+            )
+
+            # Calculate P&L for statistics
+            current_price = close_order.get('average', close_order.get('price', 0))
+            entry_price = position['entry_price']
+            side = position['side']
+
+            if side == 'buy':
+                pnl_pct = (current_price - entry_price) / entry_price * 100
+            else:
+                pnl_pct = (entry_price - current_price) / entry_price * 100
+
+            if pnl_pct > 0:
+                self.wins += 1
+            else:
+                self.losses += 1
+
+            logger.info(f"✅ Position closed: {symbol} ({reason}) - P&L: {pnl_pct:.2f}%")
+            del self.active_positions[symbol]
+
+        except Exception as e:
+            logger.error(f"❌ Close error for {symbol}: {e}")
+
+    def run(self):
+        """Main trading loop - SCANS ALL PAIRS"""
+        logger.info("🚀 Starting VIPER ALL-PAIRS Trading Bot")
+        logger.info(f"📊 Scanning {len(self.symbols)} trading pairs")
+        logger.info("=" * 80)
+
+        self.is_running = True
+        cycle_count = 0
+
+        try:
+            while self.is_running:
+                cycle_count += 1
+                logger.info(f"\n🔄 CYCLE #{cycle_count} - {datetime.now().strftime('%H:%M:%S')}")
+
+                # Monitor existing positions
+                self.monitor_positions()
+
+                # Scan ALL pairs for opportunities
+                if len(self.active_positions) < self.max_positions:
+                    opportunities = self.scan_all_signals()
+
+                    if opportunities:
+                        logger.info(f"🎯 Found {len(opportunities)} trading opportunities")
+
+                        # Sort by signal strength (highest change first)
+                        opportunities.sort(key=lambda x: abs(x[2]), reverse=True)
+
+                        # Execute up to 2 trades per cycle
+                        trades_executed = 0
+                        for symbol, side, change_pct in opportunities[:2]:  # Take top 2
+                            if symbol not in self.active_positions and trades_executed < 2:
+                                logger.info(f"🎯 Executing {side.upper()} on {symbol} ({change_pct:.1f}%)")
+                                if self.execute_trade(symbol, side):
+                                    trades_executed += 1
+                                    time.sleep(1)  # Brief pause between trades
+
+                        if trades_executed > 0:
+                            logger.info(f"✅ Executed {trades_executed} trades this cycle")
+
+                # Comprehensive status update with leverage info
+                win_rate = (self.wins / max(self.total_trades, 1)) * 100
+                total_margin_used = sum([pos.get('margin_used', 0) for pos in self.active_positions.values()])
+
+                logger.info("📊 STATUS UPDATE:")
+                logger.info(f"   💰 Balance: ${self.balance:.2f} | Margin Used: ${total_margin_used:.2f}")
+                logger.info(f"   📊 Active Positions: {len(self.active_positions)}/{self.max_positions}")
+                logger.info(f"   📈 Total Trades: {self.total_trades}")
+                logger.info(f"   🟢 Wins: {self.wins} | 🔴 Losses: {self.losses}")
+                logger.info(f"   🎯 Win Rate: {win_rate:.1f}%")
+                logger.info(f"   ⚙️ Position Size: ${self.position_size_usdt} | TP/SL: {self.take_profit_pct}%/{self.stop_loss_pct}%")
+                logger.info(f"   🔍 Valid Pairs: {len(self.symbols)} | Min Leverage: {self.min_leverage_required}x")
+
+                # Wait before next cycle
+                logger.info("⏰ Next scan in 30 seconds...")
+                time.sleep(30)
+
+        except KeyboardInterrupt:
+            logger.info("\n🛑 Trading stopped by user")
+        finally:
+            # Emergency close all positions
+            if self.active_positions:
+                logger.info("🔄 Emergency closing all positions...")
+                for symbol in list(self.active_positions.keys()):
+                    self.close_position(symbol, "EMERGENCY_SHUTDOWN")
+
+            logger.info("✅ All-pairs trading bot shutdown complete")
+
 
 def main():
     """Main entry point"""
-    parser = argparse.ArgumentParser(
-        description='🚀 VIPER Trading Bot - One Command Starts Everything',
-        add_help=False
-    )
+    logger.info("🚀 VIPER ALL-PAIRS TRADING BOT STARTING...")
+    logger.info("📊 Scanning 50+ cryptocurrency pairs for opportunities")
 
-    parser.add_argument('--build', action='store_true',
-                       help='Build all services before starting')
-    parser.add_argument('--status', action='store_true',
-                       help='Show current system status')
-    parser.add_argument('--stop', action='store_true',
-                       help='Stop all running services')
-    parser.add_argument('--help', action='store_true',
-                       help='Show help message')
+    trader = SimpleVIPERTrader()
 
-    args = parser.parse_args()
-
-    orchestrator = ViperSystemOrchestrator()
-
-    # Show help if requested
-    if args.help:
-        orchestrator.print_help()
+    if not trader.connect():
+        logger.error("❌ Failed to connect to Bitget")
         return
 
-    orchestrator.print_banner()
+    logger.info("\n🎯 VIPER LEVERAGE-BASED CONFIGURATION:")
+    logger.info(f"   📊 Total Pairs Available: {len(trader.all_symbols)}")
+    logger.info(f"   ✅ Valid Pairs (≥{trader.min_leverage_required}x): {len(trader.symbols)}")
+    logger.info(f"   🚫 Blacklisted Pairs (<{trader.min_leverage_required}x): {len(trader.blacklisted_symbols)}")
+    logger.info(f"   💰 Position Size: ${trader.position_size_usdt} per trade")
+    logger.info(f"   📈 Take Profit: {trader.take_profit_pct}%")
+    logger.info(f"   🛑 Stop Loss: {trader.stop_loss_pct}%")
+    logger.info(f"   🎯 Max Positions: {trader.max_positions} concurrent")
+    logger.info(f"   🔒 SINGLE POSITION PER PAIR: ENABLED")
+    logger.info(f"   🚫 CAPITAL STACKING: DISABLED")
 
-    # Handle status check
-    if args.status:
-        print("📊 Checking VIPER system status...")
-        if orchestrator.check_requirements():
-            validation = orchestrator.validate_environment()
-            for key, message in validation.items():
-                print(f"   {message}")
-            print("\n💡 To start the system: python main.py")
-        return
+    if trader.blacklisted_symbols:
+        logger.info("   🚫 BLACKLISTED PAIRS:")
+        for symbol in trader.blacklisted_symbols[:5]:  # Show first 5
+            logger.info(f"      - {symbol}")
+        if len(trader.blacklisted_symbols) > 5:
+            logger.info(f"      ... and {len(trader.blacklisted_symbols) - 5} more")
 
-    # Handle stop command
-    if args.stop:
-        print("🛑 Stopping VIPER system...")
-        try:
-            os.chdir(orchestrator.project_root)
-            cmd = [sys.executable, str(orchestrator.start_microservices_script), "stop"]
-            result = subprocess.run(cmd)
-            if result.returncode == 0:
-                print("✅ VIPER system stopped successfully!")
-            else:
-                print("❌ Failed to stop system properly")
-        except Exception as e:
-            print(f"❌ Error stopping system: {str(e)}")
-        return
+    logger.info("⏳ Starting leverage-validated trading in 3 seconds...")
+    time.sleep(3)
 
-    # Check requirements before starting
-    if not orchestrator.check_requirements():
-        print("\n❌ Cannot start VIPER system due to missing requirements.")
-        print("💡 Please fix the issues above and try again.")
-        return
-
-    # Validate environment
-    validation = orchestrator.validate_environment()
-    for key, message in validation.items():
-        print(f"   {message}")
-
-    # Confirm startup
-    print("\n🚀 Ready to start VIPER Trading System!")
-    response = input("Do you want to continue? (y/N): ").strip().lower()
-
-    if response not in ['y', 'yes']:
-        print("🛑 Startup cancelled by user.")
-        return
-
-    # Start the system
-    success = orchestrator.start_system(build_first=args.build)
-
-    if not success:
-        print("\n❌ VIPER system failed to start properly.")
-        print("💡 Check the logs above for specific error details.")
-        print("💡 Try: python scripts/start_microservices.py status")
-        sys.exit(1)
+    try:
+        trader.run()
+    except KeyboardInterrupt:
+        logger.info("\n🛑 Trading cancelled by user")
+    except Exception as e:
+        logger.error(f"\n❌ Fatal error: {e}")
+    finally:
+        logger.info("✅ All-pairs trading bot shutdown complete")
 
 if __name__ == "__main__":
     main()
