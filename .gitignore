@@ -148,6 +148,15 @@ backtest_results/
 __pycache__/
 *.pyc
 
+# Demo, test, and development files (removed from live system)
+demo_*.py
+test_*.py
+*_demo.py
+*_test.py
+validate_*.py
+scan_*.py
+show_*.py
+
 # Node.js dependencies
 node_modules/
 npm-debug.log*

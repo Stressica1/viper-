@@ -31,27 +31,49 @@ class ViperLiveSystem:
     """Complete VIPER Live Trading System"""
 
     def __init__(self):
+        # Validate live trading mode first
+        if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+            logger.error("❌ Mock data mode not allowed in live system")
+            sys.exit(1)
+        
+        # Enforce Docker and MCP requirements
+        try:
+            from docker_mcp_enforcer import enforce_docker_mcp_requirements
+            
+            logger.info("🔒 Enforcing Docker & MCP requirements...")
+            if not enforce_docker_mcp_requirements():
+                logger.error("❌ Docker/MCP requirements not met")
+                sys.exit(1)
+            logger.info("✅ Docker & MCP enforcement passed")
+            
+        except ImportError as e:
+            logger.error(f"❌ Cannot import enforcement system: {e}")
+            sys.exit(1)
+        
         self.project_root = Path(__file__).parent
-        self.startup_script = self.project_root / "start_live_trading.py"
+        self.startup_script = self.project_root / "start_live_trading_mandatory.py"
         self.monitor_script = self.project_root / "live_trading_monitor.py"
         self.optimizer_script = self.project_root / "live_trading_optimizer.py"
 
         self.system_running = False
         self.monitoring_active = False
+        
+        logger.info("✅ Live system initialized with mandatory enforcement")
 
     def print_banner(self):
         """Print the VIPER Live System banner"""
         print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER COMPLETE LIVE TRADING SYSTEM - PRODUCTION READY                    ║
-║ 🔥 Real-Time Algorithmic Trading | 📊 Advanced Risk Management                ║
-║ 🎯 AI-Powered Strategy Optimization | 🛡️ Enterprise Security                   ║
-║ ⚡ Ultra-Low Latency Execution | 📈 Professional Performance Monitoring       ║
+║ 🚀 VIPER LIVE TRADING SYSTEM - LIVE MODE ONLY - DOCKER & MCP ENFORCED       ║
+║ 🔥 Real-Time Live Trading | 📊 Mandatory Risk Management                      ║
+║ 🎯 MCP-Powered Automation | 🛡️ Docker Infrastructure Required                 ║
+║ ⚡ Live Market Execution | 📈 Real-Time Performance Monitoring                ║
 ╠══════════════════════════════════════════════════════════════════════════════╣
-║ ⚠️  REAL MONEY TRADING SYSTEM - USE WITH CAUTION                             ║
+║ 🚨 LIVE MONEY TRADING SYSTEM - NO SIMULATION MODE                            ║
+║ 🔒 DOCKER & MCP ENFORCEMENT ACTIVE                                           ║
 ║ 🛑 EMERGENCY STOP: Ctrl+C or 'docker compose down'                          ║
 ║ 📊 MONITORING: http://localhost:8000                                       ║
-║ 📈 DASHBOARD: Run 'python live_trading_monitor.py'                         ║
+║ 📈 MCP SERVER: http://localhost:8015                                       ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
         """)
 

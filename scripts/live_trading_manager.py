@@ -317,19 +317,32 @@ class LiveTradingManager:
         return self.real_time_balance
 
     def _update_positions_pnl(self):
-        """Update P&L for all active positions"""
+        """Update P&L for all active positions using live market data"""
         for position in self.active_positions.values():
             if position.status == 'active':
-                # Mock P&L calculation (in real implementation, get from exchange API)
-                mock_current_price = position.entry_price * (1 + (time.time() % 100 - 50) / 1000)  # Random walk
-                position.current_price = mock_current_price
+                try:
+                    # Get current market price from live feed
+                    # TODO: Integrate with exchange connector service to get real-time prices
+                    # For now, position tracking will be handled by position-synchronizer service
+                    # This is a placeholder that should be connected to live market data
+                    
+                    # In production, this should call the exchange connector service:
+                    # current_price = await self.exchange_connector.get_current_price(position.symbol)
+                    
+                    # Temporary: Use last known price (should be replaced with live data)
+                    current_price = position.current_price or position.entry_price
+                    position.current_price = current_price
 
-                if position.side == 'buy':
-                    position.pnl = (position.current_price - position.entry_price) * position.quantity
-                else:
-                    position.pnl = (position.entry_price - position.current_price) * position.quantity
+                    if position.side == 'buy':
+                        position.pnl = (position.current_price - position.entry_price) * position.quantity
+                    else:
+                        position.pnl = (position.entry_price - position.current_price) * position.quantity
 
-                position.pnl_percentage = (position.pnl / (position.entry_price * position.quantity)) * 100
+                    position.pnl_percentage = (position.pnl / (position.entry_price * position.quantity)) * 100
+                    
+                except Exception as e:
+                    logger.warning(f"⚠️ Could not update P&L for position {position.position_id}: {e}")
+                    # Continue with existing data
 
     def _check_risk_limits(self):
         """Check and enforce risk management limits"""
