@@ -150,15 +150,39 @@ class MCPBrainController:
     def initialize_redis(self):
         """Initialize Redis for distributed state management"""
         try:
-            self.redis_client = redis.Redis(
-                host=os.getenv('REDIS_HOST', 'localhost'),
-                port=int(os.getenv('REDIS_PORT', 6379)),
-                decode_responses=True
-            )
-            self.redis_client.ping()
-            self.logger.info("🔴 Redis connection established")
+            # Try container networking first, then fallback to localhost
+            redis_hosts = [
+                os.getenv('REDIS_HOST', 'redis'),  # Container name
+                'localhost',  # Fallback to localhost
+                '127.0.0.1'   # Alternative localhost
+            ]
+            
+            redis_port = int(os.getenv('REDIS_PORT', 6379))
+            
+            for host in redis_hosts:
+                try:
+                    self.logger.info(f"🔍 Attempting Redis connection to {host}:{redis_port}")
+                    self.redis_client = redis.Redis(
+                        host=host,
+                        port=redis_port,
+                        decode_responses=True,
+                        socket_connect_timeout=5,
+                        socket_timeout=5
+                    )
+                    self.redis_client.ping()
+                    self.logger.info(f"🔴 Redis connection established to {host}:{redis_port}")
+                    return
+                except Exception as e:
+                    self.logger.warning(f"⚠️ Redis connection to {host}:{redis_port} failed: {e}")
+                    continue
+            
+            # If all connections fail, log error and continue without Redis
+            self.logger.error("❌ All Redis connection attempts failed. Continuing without Redis.")
+            self.redis_client = None
+            
         except Exception as e:
-            self.logger.error(f"❌ Redis connection failed: {e}")
+            self.logger.error(f"❌ Redis initialization failed: {e}")
+            self.redis_client = None
             # Continue without Redis - use in-memory storage
 
     def setup_routes(self):

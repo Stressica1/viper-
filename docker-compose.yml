@@ -645,17 +645,33 @@ services:
       retries: 3
       start_period: 60s
 
-  # 🤖 MCP Server - Model Context Protocol Integration
+  # 🤖 MCP Server - Model Context Protocol Integration (OPTIMIZED)
   mcp-server:
     build:
       context: services/mcp-server
       dockerfile: Dockerfile
     ports:
-      - "${MCP_SERVER_PORT:-8016}:8000"
+      - "${MCP_PORT:-8015}:${MCP_PORT:-8015}"
     environment:
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}
       - LOG_LEVEL=${LOG_LEVEL:-INFO}
       - SERVICE_NAME=mcp-server
+      # Optimal MCP Configuration
+      - MCP_HOST=${MCP_HOST:-0.0.0.0}
+      - MCP_PORT=${MCP_PORT:-8015}
+      - MCP_WORKERS=${MCP_WORKERS:-4}
+      - MCP_MAX_CONNECTIONS=${MCP_MAX_CONNECTIONS:-100}
+      - MCP_TIMEOUT=${MCP_TIMEOUT:-30}
+      - MCP_POOL_SIZE=${MCP_POOL_SIZE:-20}
+      - MCP_MAX_CONCURRENT=${MCP_MAX_CONCURRENT:-10}
+      - MCP_REQUEST_TIMEOUT=${MCP_REQUEST_TIMEOUT:-15}
+      - MCP_RETRY_ATTEMPTS=${MCP_RETRY_ATTEMPTS:-3}
+      - MCP_HEALTH_CHECK_ENABLED=${MCP_HEALTH_CHECK_ENABLED:-true}
+      # GitHub Integration
+      - GITHUB_PAT=${GITHUB_PAT}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      # Service URLs
       - VAULT_URL=http://credential-vault:8008
       - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_MCP_SERVER}
       - API_SERVER_URL=http://api-server:8000
