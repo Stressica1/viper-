@@ -51,7 +51,7 @@ class TradingPosition:
 
 @dataclass 
 class VIPERSignal:
-    """Data class for VIPER trading signals"""
+    """Data class for VIPER trading signals with execution cost awareness"""
     symbol: str
     signal: str  # 'LONG', 'SHORT', or 'HOLD'
     viper_score: float
@@ -62,6 +62,8 @@ class VIPERSignal:
     stop_loss: float
     take_profit: float
     timestamp: str
+    execution_cost: float = 0.0  # Expected execution cost in USD
+    order_type: str = "MARKET"   # Recommended order type
 
 class StandaloneVIPERTrader:
     """Complete standalone VIPER trading system"""
@@ -77,10 +79,10 @@ class StandaloneVIPERTrader:
         self.active_positions = {}  # {symbol: TradingPosition}
         self.running = True
         
-        # Trading parameters
+        # Trading parameters - optimized for execution cost awareness
         self.max_positions = self.config.get('max_positions', 5)
         self.risk_per_trade = self.config.get('risk_per_trade', 0.02)  # 2%
-        self.viper_threshold = self.config.get('viper_threshold', 85.0)
+        self.viper_threshold = self.config.get('viper_threshold', 50.0)  # Lowered from 85 due to stricter scoring
         self.scan_interval = self.config.get('scan_interval', 30)  # seconds
         
         # Trading pairs to monitor
@@ -184,9 +186,31 @@ class StandaloneVIPERTrader:
             self.logger.error(f"❌ Error fetching market data for {symbol}: {e}")
             return None
     
+    def calculate_execution_cost(self, market_data: Dict, position_size_usd: float = 5000) -> float:
+        """Calculate expected execution cost including spread and market impact"""
+        try:
+            spread = market_data.get('spread', 0)
+            volume = market_data.get('volume', 0)
+            
+            # Spread cost (half spread for market order)
+            spread_cost = position_size_usd * spread / 2
+            
+            # Market impact estimation using square-root law
+            # More sophisticated than simple spread cost
+            market_impact_rate = 0.0001 * (position_size_usd / max(volume, 100_000)) ** 0.5 if volume > 0 else 0.005
+            market_impact_cost = position_size_usd * market_impact_rate
+            
+            total_execution_cost = spread_cost + market_impact_cost
+            return total_execution_cost
+            
+        except Exception as e:
+            self.logger.error(f"❌ Error calculating execution cost: {e}")
+            return 999.0  # High cost to avoid trading
+
     def calculate_viper_score(self, market_data: Dict) -> float:
         """
         Calculate VIPER score using Volume, Price, External, Range factors
+        Enhanced with execution cost awareness to prevent $3+ losses on entry
         Returns score from 0-100 (higher = better opportunity)
         """
         try:
@@ -203,8 +227,21 @@ class StandaloneVIPERTrader:
             # Price Score (0-100): Momentum strength  
             price_score = min(price_change * 20, 100)  # Scale by price change %
             
-            # External Score (0-100): Lower spread = better execution
-            external_score = max(100 - (spread * 1000), 0)  # Penalize high spreads
+            # Enhanced External Score (0-100): Execution cost awareness
+            # Calculate expected execution cost for typical position size
+            position_size = self.risk_per_trade * 100_000  # Assume $100k account for calculation
+            execution_cost = self.calculate_execution_cost(market_data, position_size)
+            
+            # Penalize heavily if execution cost > $3 threshold
+            if execution_cost >= 3.0:
+                external_score = 0  # Zero score for high execution cost
+            elif execution_cost >= 2.0:
+                external_score = 30  # Low score for moderate execution cost  
+            elif execution_cost >= 1.0:
+                external_score = 60  # Medium score
+            else:
+                # Use improved spread-based scoring for low-cost scenarios
+                external_score = max(100 - (spread * 5000), 50)  # More sensitive to spread
             
             # Range Score (0-100): Volatility within reasonable bounds
             if current_price > 0:
@@ -213,12 +250,12 @@ class StandaloneVIPERTrader:
             else:
                 range_score = 0
             
-            # Weighted VIPER score
+            # Weighted VIPER score with increased emphasis on execution cost
             viper_score = (
-                volume_score * 0.30 +     # 30% volume weight
-                price_score * 0.35 +      # 35% momentum weight  
-                external_score * 0.20 +   # 20% execution cost weight
-                range_score * 0.15        # 15% volatility weight
+                volume_score * 0.25 +     # 25% volume weight (reduced)
+                price_score * 0.30 +      # 30% momentum weight (reduced) 
+                external_score * 0.30 +   # 30% execution cost weight (increased)
+                range_score * 0.15        # 15% volatility weight (same)
             )
             
             return min(max(viper_score, 0), 100)  # Clamp to 0-100 range
@@ -228,12 +265,20 @@ class StandaloneVIPERTrader:
             return 0.0
     
     def generate_signal(self, symbol: str, market_data: Dict) -> Optional[VIPERSignal]:
-        """Generate trading signal based on VIPER score and market conditions"""
+        """Generate trading signal based on VIPER score and market conditions with execution cost checks"""
         try:
             viper_score = self.calculate_viper_score(market_data)
             
             if viper_score < self.viper_threshold:
                 return None  # Score too low for trading
+                
+            # Additional execution cost check
+            position_size = self.risk_per_trade * 100_000  # Assume $100k account 
+            execution_cost = self.calculate_execution_cost(market_data, position_size)
+            
+            if execution_cost >= 3.0:
+                self.logger.warning(f"🚫 Signal rejected for {symbol}: execution cost ${execution_cost:.2f} >= $3.00 threshold")
+                return None
                 
             price_change = market_data.get('price_change', 0)
             current_price = market_data.get('price', 0)
@@ -248,16 +293,29 @@ class StandaloneVIPERTrader:
             else:
                 return None  # Insufficient momentum
             
-            # Calculate stop loss and take profit levels
+            # Calculate stop loss and take profit levels with execution cost adjustments
             stop_loss_pct = self.config['stop_loss_percent']
             take_profit_pct = self.config['take_profit_percent']
             
+            # Adjust stops to account for execution costs
+            position_size_usd = position_size  # Already calculated above
+            execution_cost_pct = execution_cost / position_size_usd if position_size_usd > 0 else 0.01
+            
+            # Increase stop loss distance to account for execution costs
+            adjusted_stop_loss_pct = max(stop_loss_pct, execution_cost_pct + 0.005)  # Add 0.5% buffer
+            # Increase take profit to maintain favorable risk/reward after costs
+            adjusted_take_profit_pct = max(take_profit_pct, execution_cost_pct * 3 + 0.01)  # Minimum 3:1 after costs
+            
             if signal == "LONG":
-                stop_loss = current_price * (1 - stop_loss_pct)
-                take_profit = current_price * (1 + take_profit_pct)
+                stop_loss = current_price * (1 - adjusted_stop_loss_pct)
+                take_profit = current_price * (1 + adjusted_take_profit_pct)
             else:  # SHORT
-                stop_loss = current_price * (1 + stop_loss_pct)
-                take_profit = current_price * (1 - take_profit_pct)
+                stop_loss = current_price * (1 + adjusted_stop_loss_pct)
+                take_profit = current_price * (1 - adjusted_take_profit_pct)
+            
+            # Determine optimal order type based on execution cost and market conditions
+            spread = market_data.get('spread', 0)
+            order_type = "LIMIT" if execution_cost >= 1.5 or spread > 0.001 else "MARKET"
             
             return VIPERSignal(
                 symbol=symbol,
@@ -269,7 +327,9 @@ class StandaloneVIPERTrader:
                 confidence=min(viper_score / 100, 1.0),
                 stop_loss=stop_loss,
                 take_profit=take_profit,
-                timestamp=datetime.now().isoformat()
+                timestamp=datetime.now().isoformat(),
+                execution_cost=execution_cost,
+                order_type=order_type
             )
             
         except Exception as e:

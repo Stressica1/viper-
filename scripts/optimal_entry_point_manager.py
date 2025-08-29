@@ -80,10 +80,12 @@ class OptimalEntryPointManager:
             'trend_strength_strong': float(os.getenv('TREND_STRENGTH_STRONG', '0.8')),
             'ema_crossover_threshold': float(os.getenv('EMA_CROSSOVER_THRESHOLD', '0.005')),
             
-            # Risk Management
+            # Risk Management - Enhanced with execution cost awareness
             'volatility_max': float(os.getenv('VOLATILITY_MAX_THRESHOLD', '0.05')),  # 5% daily volatility
             'volatility_optimal': float(os.getenv('VOLATILITY_OPTIMAL', '0.02')),  # 2% daily volatility
             'drawdown_max': float(os.getenv('DRAWDOWN_MAX_THRESHOLD', '0.15')),  # 15% max drawdown
+            'max_execution_cost': float(os.getenv('MAX_EXECUTION_COST', '3.0')),  # $3 max execution cost
+            'preferred_spread_bps': float(os.getenv('PREFERRED_SPREAD_BPS', '5')),  # 5bps preferred spread
             
             # Confidence Levels
             'confidence_min': float(os.getenv('CONFIDENCE_MIN_THRESHOLD', '0.6')),
@@ -91,13 +93,13 @@ class OptimalEntryPointManager:
             'confidence_excellent': float(os.getenv('CONFIDENCE_EXCELLENT_THRESHOLD', '0.9')),
         }
         
-        # Entry point scoring weights
+        # Entry point scoring weights - optimized for execution cost awareness
         self.scoring_weights = {
-            'technical_analysis': 0.35,
-            'trend_strength': 0.25,
-            'volume_confirmation': 0.20,
-            'risk_assessment': 0.15,
-            'market_regime': 0.05
+            'technical_analysis': 0.25,    # Reduced from 0.35
+            'trend_strength': 0.20,        # Reduced from 0.25
+            'volume_confirmation': 0.20,   # Same
+            'execution_cost': 0.25,        # NEW - major component for cost control
+            'market_regime': 0.10          # Increased from 0.05
         }
         
         # Performance tracking
@@ -140,7 +142,7 @@ class OptimalEntryPointManager:
                 'technical_analysis': self.calculate_technical_analysis_score(market_data),
                 'trend_strength': self.calculate_trend_strength_score(market_data),
                 'volume_confirmation': self.calculate_volume_confirmation_score(market_data),
-                'risk_assessment': self.calculate_risk_assessment_score(market_data),
+                'execution_cost': self.calculate_execution_cost_score(market_data),  # NEW component
                 'market_regime': self.calculate_market_regime_score(market_data)
             }
             
@@ -381,26 +383,39 @@ class OptimalEntryPointManager:
             logger.warning(f"⚠️ Error in volume confirmation score: {e}")
             return 0.5
     
-    def calculate_risk_assessment_score(self, market_data: Dict[str, Any]) -> float:
-        """Calculate risk assessment component score"""
+    def calculate_execution_cost_score(self, market_data: Dict[str, Any]) -> float:
+        """Calculate execution cost component score with position-size awareness"""
         try:
-            volatility = market_data.get('volatility', 0.02)
+            spread = market_data.get('spread', 0.001)  # Default 10bps if not provided
+            volume = market_data.get('volume', 0)
             
-            # Higher score for lower volatility (less risky)
-            if volatility <= self.entry_configs['volatility_optimal']:
-                risk_score = 0.9  # Low risk
-            elif volatility <= self.entry_configs['volatility_max']:
-                # Linear interpolation between optimal and max
-                risk_score = 0.9 - (volatility - self.entry_configs['volatility_optimal']) / \
-                           (self.entry_configs['volatility_max'] - self.entry_configs['volatility_optimal']) * 0.5
+            # Estimate execution cost for a typical position
+            typical_position_usd = 5000  # $5k position for calculation
+            
+            # Spread cost (half spread for market orders)
+            spread_cost = typical_position_usd * spread / 2
+            
+            # Market impact using square-root model
+            market_impact_rate = 0.0001 * (typical_position_usd / max(volume, 100_000)) ** 0.5 if volume > 0 else 0.005
+            market_impact_cost = typical_position_usd * market_impact_rate
+            
+            total_cost = spread_cost + market_impact_cost
+            
+            # Score based on execution cost thresholds
+            if total_cost >= 5.0:
+                return 0.1  # Very poor execution conditions
+            elif total_cost >= 3.0:
+                return 0.3  # Poor execution conditions (above $3 threshold)
+            elif total_cost >= 2.0:
+                return 0.5  # Moderate execution conditions
+            elif total_cost >= 1.0:
+                return 0.7  # Good execution conditions
             else:
-                risk_score = 0.2  # High risk
-            
-            return max(0.1, min(0.9, risk_score))
+                return 0.9  # Excellent execution conditions
             
         except Exception as e:
-            logger.warning(f"⚠️ Error in risk assessment score: {e}")
-            return 0.5
+            logger.warning(f"⚠️ Error in execution cost score: {e}")
+            return 0.5  # Neutral score on error
     
     def calculate_market_regime_score(self, market_data: Dict[str, Any]) -> float:
         """Calculate market regime component score"""
