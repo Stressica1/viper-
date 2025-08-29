@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 SYSTEM CONFIGURATION UPDATER
+# Rocket SYSTEM CONFIGURATION UPDATER
 Update system configuration with optimized parameters
 
 This script:
@@ -10,7 +10,6 @@ This script:
 - Provides rollback capabilities
 """
 
-import os
 import json
 import argparse
 from datetime import datetime
@@ -35,10 +34,10 @@ class SystemConfigUpdater:
                 with open(self.config_path, 'r') as f:
                     return json.load(f)
             else:
-                logger.error(f"❌ Configuration file not found: {self.config_path}")
+                logger.error(f"# X Configuration file not found: {self.config_path}")
                 return {}
         except Exception as e:
-            logger.error(f"❌ Error loading config: {e}")
+            logger.error(f"# X Error loading config: {e}")
             return {}
 
     def load_optimized_parameters(self, params_path: Optional[str] = None) -> Dict[str, Any]:
@@ -53,10 +52,10 @@ class SystemConfigUpdater:
                 with open(params_file, 'r') as f:
                     return json.load(f)
             else:
-                logger.warning(f"⚠️ Optimized parameters file not found: {params_file}")
+                logger.warning(f"# Warning Optimized parameters file not found: {params_file}")
                 return {}
         except Exception as e:
-            logger.error(f"❌ Error loading optimized parameters: {e}")
+            logger.error(f"# X Error loading optimized parameters: {e}")
             return {}
 
     def create_backup(self) -> bool:
@@ -71,10 +70,10 @@ class SystemConfigUpdater:
                 logger.info(f"💾 Configuration backup created: {backup_path}")
                 return True
             else:
-                logger.warning("⚠️ No configuration file to backup")
+                logger.warning("# Warning No configuration file to backup")
                 return False
         except Exception as e:
-            logger.error(f"❌ Error creating backup: {e}")
+            logger.error(f"# X Error creating backup: {e}")
             return False
 
     def update_trading_parameters(self, config: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
@@ -104,12 +103,12 @@ class SystemConfigUpdater:
             for opt_param, config_param in parameter_mapping.items():
                 if opt_param in params:
                     config['trading_parameters'][config_param] = params[opt_param]
-                    logger.info(f"📊 Updated {config_param}: {params[opt_param]}")
+                    logger.info(f"# Chart Updated {config_param}: {params[opt_param]}")
 
             return config
 
         except Exception as e:
-            logger.error(f"❌ Error updating trading parameters: {e}")
+            logger.error(f"# X Error updating trading parameters: {e}")
             return config
 
     def update_risk_parameters(self, config: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
@@ -137,7 +136,7 @@ class SystemConfigUpdater:
             return config
 
         except Exception as e:
-            logger.error(f"❌ Error updating risk parameters: {e}")
+            logger.error(f"# X Error updating risk parameters: {e}")
             return config
 
     def update_technical_parameters(self, config: Dict[str, Any], params: Dict[str, Any]) -> Dict[str, Any]:
@@ -169,7 +168,7 @@ class SystemConfigUpdater:
             return config
 
         except Exception as e:
-            logger.error(f"❌ Error updating technical parameters: {e}")
+            logger.error(f"# X Error updating technical parameters: {e}")
             return config
 
     def validate_configuration(self, config: Dict[str, Any]) -> List[str]:
@@ -180,24 +179,24 @@ class SystemConfigUpdater:
             # Check trading parameters
             tp = config.get('trading_parameters', {})
             if tp.get('default_risk_per_trade', 0) > 0.05:
-                issues.append("⚠️ Risk per trade is very high (>5%)")
+                issues.append("# Warning Risk per trade is very high (>5%)")
             if tp.get('max_positions_total', 0) > 50:
-                issues.append("⚠️ Max positions is very high (>50)")
+                issues.append("# Warning Max positions is very high (>50)")
 
             # Check risk parameters
             risk_config = config.get('modules', {}).get('enhanced_risk_manager', {}).get('config', {})
             if risk_config.get('max_single_position_risk', 0) > 0.1:
-                issues.append("⚠️ Single position risk is very high (>10%)")
+                issues.append("# Warning Single position risk is very high (>10%)")
 
             # Check technical parameters
             tech_config = config.get('modules', {}).get('enhanced_technical_optimizer', {}).get('config', {})
             if tech_config.get('fast_ma_length', 0) >= tech_config.get('medium_ma_length', 0):
-                issues.append("⚠️ Fast MA length should be less than medium MA length")
+                issues.append("# Warning Fast MA length should be less than medium MA length")
 
             return issues
 
         except Exception as e:
-            logger.error(f"❌ Error validating configuration: {e}")
+            logger.error(f"# X Error validating configuration: {e}")
             return [f"Validation error: {e}"]
 
     def save_configuration(self, config: Dict[str, Any]) -> bool:
@@ -214,14 +213,14 @@ class SystemConfigUpdater:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error saving configuration: {e}")
+            logger.error(f"# X Error saving configuration: {e}")
             return False
 
     def update_from_optimized_parameters(self, params_path: Optional[str] = None,
                                        create_backup: bool = True) -> bool:
         """Update system configuration with optimized parameters"""
         try:
-            logger.info("🚀 Updating system configuration with optimized parameters")
+            logger.info("# Rocket Updating system configuration with optimized parameters")
 
             # Load current configuration
             config = self.load_current_config()
@@ -231,12 +230,12 @@ class SystemConfigUpdater:
             # Create backup
             if create_backup:
                 if not self.create_backup():
-                    logger.warning("⚠️ Failed to create backup, continuing anyway")
+                    logger.warning("# Warning Failed to create backup, continuing anyway")
 
             # Load optimized parameters
             optimized_params = self.load_optimized_parameters(params_path)
             if not optimized_params:
-                logger.warning("⚠️ No optimized parameters found, using defaults")
+                logger.warning("# Warning No optimized parameters found, using defaults")
 
             # Update different parameter sections
             config = self.update_trading_parameters(config, optimized_params)
@@ -246,20 +245,20 @@ class SystemConfigUpdater:
             # Validate configuration
             validation_issues = self.validate_configuration(config)
             if validation_issues:
-                logger.warning("⚠️ Configuration validation issues:")
+                logger.warning("# Warning Configuration validation issues:")
                 for issue in validation_issues:
                     logger.warning(f"   {issue}")
 
             # Save updated configuration
             if self.save_configuration(config):
-                logger.info("✅ System configuration updated successfully!")
+                logger.info("# Check System configuration updated successfully!")
                 return True
             else:
-                logger.error("❌ Failed to save updated configuration")
+                logger.error("# X Failed to save updated configuration")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error updating configuration: {e}")
+            logger.error(f"# X Error updating configuration: {e}")
             return False
 
 def main():
@@ -271,8 +270,6 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 System Configuration Updater")
-    print("=" * 40)
 
     updater = SystemConfigUpdater(args.config_path)
 
@@ -282,11 +279,10 @@ def main():
     )
 
     if success:
-        print("✅ Configuration update completed successfully!")
+        print("# Check Configuration update completed successfully!")
         print("🔄 Restart your trading system to apply the new parameters")
     else:
-        print("❌ Configuration update failed")
-        print("🔧 Check the logs for detailed error information")
+        print("# Tool Check the logs for detailed error information")
 
 if __name__ == "__main__":
     main()

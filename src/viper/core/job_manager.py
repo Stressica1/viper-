@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER LIVE TRADING JOB MANAGER
+# Rocket VIPER LIVE TRADING JOB MANAGER
 GitHub MCP Integrated - Position Tracking & Risk Management
 MAX 10 POSITIONS | MAX 3% RISK PER TRADE | PROPER MARGIN CALCULATION
 """
@@ -11,10 +11,8 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
-from concurrent.futures import ThreadPoolExecutor
 
 # Load environment variables
 try:
@@ -43,14 +41,14 @@ class Position:
     status: str = 'active'  # 'active', 'closed', 'error'
 
 class ViperLiveJobManager:
-    """🚀 VIPER LIVE TRADING JOB MANAGER WITH GITHUB MCP INTEGRATION
+    """# Rocket VIPER LIVE TRADING JOB MANAGER WITH GITHUB MCP INTEGRATION
 
     FEATURES:
-    ✅ MAX 10 POSITIONS TOTAL
-    ✅ MAX 3% RISK PER TRADE
-    ✅ PROPER MARGIN/LEVERAGE CALCULATION
-    ✅ GITHUB MCP JOB TRACKING
-    ✅ REAL-TIME RISK MONITORING
+    # Check MAX 10 POSITIONS TOTAL
+    # Check MAX 3% RISK PER TRADE
+    # Check PROPER MARGIN/LEVERAGE CALCULATION
+    # Check GITHUB MCP JOB TRACKING
+    # Check REAL-TIME RISK MONITORING
     """
 
     def __init__(self, scheduler_url: str = "http://localhost:8021"):
@@ -79,9 +77,9 @@ class ViperLiveJobManager:
         self.active_jobs: Dict[str, Dict[str, Any]] = {}
         self.completed_jobs: List[Dict[str, Any]] = []
 
-        logger.info("🚀 VIPER LIVE JOB MANAGER INITIALIZED")
-        logger.info(f"🎯 MAX POSITIONS: {self.max_positions}")
-        logger.info(f"⚠️ MAX RISK PER TRADE: {self.max_risk_per_trade*100}%")
+        logger.info("# Rocket VIPER LIVE JOB MANAGER INITIALIZED")
+        logger.info(f"# Target MAX POSITIONS: {self.max_positions}")
+        logger.info(f"# Warning MAX RISK PER TRADE: {self.max_risk_per_trade*100}%")
         logger.info("🔗 GITHUB MCP INTEGRATION: ENABLED")
 
     async def __aenter__(self):
@@ -99,7 +97,7 @@ class ViperLiveJobManager:
     async def create_github_job(self, title: str, body: str, labels: List[str] = None) -> Optional[str]:
         """Create GitHub issue for job tracking"""
         if not self.github_token:
-            logger.warning("⚠️ GitHub token not configured - skipping job creation")
+            logger.warning("# Warning GitHub token not configured - skipping job creation")
             return None
 
         try:
@@ -109,7 +107,7 @@ class ViperLiveJobManager:
             }
 
             data = {
-                'title': f'🚀 {title}',
+                'title': f'# Rocket {title}',
                 'body': body,
                 'labels': labels or ['trading-job', 'viper-system']
             }
@@ -120,15 +118,15 @@ class ViperLiveJobManager:
                 if response.status == 201:
                     result = await response.json()
                     job_id = str(result['number'])
-                    logger.info(f"✅ Created GitHub job #{job_id}: {title}")
+                    logger.info(f"# Check Created GitHub job #{job_id}: {title}")
                     return job_id
                 else:
                     error_text = await response.text()
-                    logger.error(f"❌ Failed to create GitHub job: {response.status} - {error_text}")
+                    logger.error(f"# X Failed to create GitHub job: {response.status} - {error_text}")
                     return None
 
         except Exception as e:
-            logger.error(f"❌ GitHub job creation error: {e}")
+            logger.error(f"# X GitHub job creation error: {e}")
             return None
 
     async def update_github_job(self, job_id: str, status: str, update_body: str = ""):
@@ -143,7 +141,7 @@ class ViperLiveJobManager:
             }
 
             # Add status update to body
-            status_emoji = "✅" if status == "completed" else "🔄" if status == "in_progress" else "❌"
+            status_emoji = "# Check" if status == "completed" else "🔄" if status == "in_progress" else "# X"
             body_update = f"\n\n## Status Update\n{status_emoji} **{status.upper()}** - {datetime.now().isoformat()}\n{update_body}"
 
             data = {
@@ -155,12 +153,12 @@ class ViperLiveJobManager:
 
             async with self.session.patch(url, headers=headers, json=data) as response:
                 if response.status == 200:
-                    logger.info(f"✅ Updated GitHub job #{job_id} to {status}")
+                    logger.info(f"# Check Updated GitHub job #{job_id} to {status}")
                 else:
-                    logger.warning(f"⚠️ Failed to update GitHub job #{job_id}: {response.status}")
+                    logger.warning(f"# Warning Failed to update GitHub job #{job_id}: {response.status}")
 
         except Exception as e:
-            logger.error(f"❌ GitHub job update error: {e}")
+            logger.error(f"# X GitHub job update error: {e}")
 
     # ===============================
     # POSITION TRACKING & RISK MANAGEMENT
@@ -172,24 +170,24 @@ class ViperLiveJobManager:
 
         # 1. MAX 10 POSITIONS TOTAL
         if len(self.active_positions) >= self.max_positions:
-            return False, f"❌ MAX POSITIONS REACHED: {len(self.active_positions)}/{self.max_positions}"
+            return False, f"# X MAX POSITIONS REACHED: {len(self.active_positions)}/{self.max_positions}"
 
         # 2. SINGLE POSITION PER SYMBOL
         if symbol in self.active_positions:
-            return False, f"❌ ALREADY HAVE POSITION IN {symbol}"
+            return False, f"# X ALREADY HAVE POSITION IN {symbol}"
 
         # 3. MAX 3% RISK PER TRADE
         margin_required = position_size / leverage
         risk_amount = margin_required * self.max_risk_per_trade
 
         if risk_amount > (self.account_balance * self.max_risk_per_trade):
-            return False, f"❌ RISK TOO HIGH: ${risk_amount:.2f} > ${self.account_balance * self.max_risk_per_trade:.2f} (3% limit)"
+            return False, f"# X RISK TOO HIGH: ${risk_amount:.2f} > ${self.account_balance * self.max_risk_per_trade:.2f} (3% limit)"
 
         # 4. SUFFICIENT BALANCE
         if margin_required > self.account_balance:
-            return False, f"❌ INSUFFICIENT BALANCE: Need ${margin_required:.2f}, Have ${self.account_balance:.2f}"
+            return False, f"# X INSUFFICIENT BALANCE: Need ${margin_required:.2f}, Have ${self.account_balance:.2f}"
 
-        return True, "✅ POSITION APPROVED"
+        return True, "# Check POSITION APPROVED"
 
     def add_position(self, symbol: str, side: str, size: float, entry_price: float, leverage: int):
         """Add new position with proper tracking"""
@@ -208,13 +206,13 @@ class ViperLiveJobManager:
         self.active_positions[symbol] = position
         self.total_margin_used += margin_used
 
-        logger.info("\n📊 POSITION ADDED:")
-        logger.info(f"   🎯 Symbol: {symbol}")
+        logger.info("\n# Chart POSITION ADDED:")
+        logger.info(f"   # Target Symbol: {symbol}")
         logger.info(f"   📈 Side: {side.upper()}")
         logger.info(f"   💰 Size: {size:.6f}")
         logger.info(f"   🎲 Leverage: {leverage}x")
         logger.info(f"   💵 Margin: ${margin_used:.2f}")
-        logger.info(f"   📊 Total Positions: {len(self.active_positions)}/{self.max_positions}")
+        logger.info(f"   # Chart Total Positions: {len(self.active_positions)}/{self.max_positions}")
 
     def remove_position(self, symbol: str, reason: str = "CLOSED"):
         """Remove position and update tracking"""
@@ -223,8 +221,8 @@ class ViperLiveJobManager:
             self.total_margin_used -= position.margin_used
 
             position.status = reason.lower()
-            logger.info(f"✅ POSITION REMOVED: {symbol} ({reason})")
-            logger.info(f"   📊 Remaining Positions: {len(self.active_positions)-1}/{self.max_positions}")
+            logger.info(f"# Check POSITION REMOVED: {symbol} ({reason})")
+            logger.info(f"   # Chart Remaining Positions: {len(self.active_positions)-1}/{self.max_positions}")
 
     def calculate_portfolio_risk(self) -> Dict[str, Any]:
         """Calculate total portfolio risk metrics"""
@@ -288,10 +286,10 @@ class ViperLiveJobManager:
 **Timestamp:** {datetime.now().isoformat()}
 
 ### Risk Management Status:
-- ✅ MAX 10 POSITIONS: {len(self.active_positions)}/{self.max_positions}
-- ✅ MAX 3% RISK PER TRADE: ENABLED
-- ✅ SINGLE POSITION PER SYMBOL: ENFORCED
-- ✅ BALANCE VALIDATION: ACTIVE
+- # Check MAX 10 POSITIONS: {len(self.active_positions)}/{self.max_positions}
+- # Check MAX 3% RISK PER TRADE: ENABLED
+- # Check SINGLE POSITION PER SYMBOL: ENFORCED
+- # Check BALANCE VALIDATION: ACTIVE
 
 ### Payload:
 ```json
@@ -321,14 +319,14 @@ class ViperLiveJobManager:
                 if response.status == 200:
                     result = await response.json()
                     task_id = result.get('task_id')
-                    logger.info(f"✅ Created trading task {task_id} ({task_type}) - GitHub Job #{job_id}")
+                    logger.info(f"# Check Created trading task {task_id} ({task_type}) - GitHub Job #{job_id}")
                     return task_id
                 else:
-                    logger.error(f"❌ Failed to create trading task: {response.status}")
+                    logger.error(f"# X Failed to create trading task: {response.status}")
                     return None
 
         except Exception as e:
-            logger.error(f"❌ Task creation error: {e}")
+            logger.error(f"# X Task creation error: {e}")
             return None
 
     async def monitor_trading_system(self):
@@ -361,7 +359,7 @@ class ViperLiveJobManager:
                 await asyncio.sleep(300)  # Check every 5 minutes
 
             except Exception as e:
-                logger.error(f"❌ Monitoring error: {e}")
+                logger.error(f"# X Monitoring error: {e}")
                 await asyncio.sleep(60)
     
     async def create_task(self, task_type: str, priority: int = 5, 
@@ -379,14 +377,14 @@ class ViperLiveJobManager:
                 if response.status == 200:
                     result = await response.json()
                     task_id = result['task_id']
-                    logger.info(f"✅ Created task {task_id} ({task_type})")
+                    logger.info(f"# Check Created task {task_id} ({task_type})")
                     return task_id
                 else:
-                    logger.error(f"❌ Failed to create task: {response.status}")
+                    logger.error(f"# X Failed to create task: {response.status}")
                     return None
                     
         except Exception as e:
-            logger.error(f"❌ Error creating task: {e}")
+            logger.error(f"# X Error creating task: {e}")
             return None
     
     async def get_task_status(self, task_id: str) -> Optional[Dict]:
@@ -396,11 +394,11 @@ class ViperLiveJobManager:
                 if response.status == 200:
                     return await response.json()
                 else:
-                    logger.error(f"❌ Failed to get task status: {response.status}")
+                    logger.error(f"# X Failed to get task status: {response.status}")
                     return None
                     
         except Exception as e:
-            logger.error(f"❌ Error getting task status: {e}")
+            logger.error(f"# X Error getting task status: {e}")
             return None
     
     async def cancel_task(self, task_id: str) -> bool:
@@ -408,14 +406,14 @@ class ViperLiveJobManager:
         try:
             async with self.session.delete(f"{self.scheduler_url}/tasks/{task_id}") as response:
                 if response.status == 200:
-                    logger.info(f"✅ Cancelled task {task_id}")
+                    logger.info(f"# Check Cancelled task {task_id}")
                     return True
                 else:
-                    logger.error(f"❌ Failed to cancel task: {response.status}")
+                    logger.error(f"# X Failed to cancel task: {response.status}")
                     return False
                     
         except Exception as e:
-            logger.error(f"❌ Error cancelling task: {e}")
+            logger.error(f"# X Error cancelling task: {e}")
             return False
     
     async def get_system_status(self) -> Optional[Dict]:
@@ -425,24 +423,24 @@ class ViperLiveJobManager:
                 if response.status == 200:
                     return await response.json()
                 else:
-                    logger.error(f"❌ Failed to get system status: {response.status}")
+                    logger.error(f"# X Failed to get system status: {response.status}")
                     return None
                     
         except Exception as e:
-            logger.error(f"❌ Error getting system status: {e}")
+            logger.error(f"# X Error getting system status: {e}")
             return None
 
 async def demo_jobs():
     """Demonstrate job creation and management"""
-    logger.info("🚀 VIPER Job Manager Demo")
+    logger.info("# Rocket VIPER Job Manager Demo")
     
     async with ViperJobManager() as job_manager:
         # Check system status
         status = await job_manager.get_system_status()
         if status:
-            logger.info(f"📊 System Status: {status}")
+            logger.info(f"# Chart System Status: {status}")
         else:
-            logger.error("❌ Cannot connect to task scheduler")
+            logger.error("# X Cannot connect to task scheduler")
             return
         
         # Create various trading jobs
@@ -523,10 +521,10 @@ async def demo_jobs():
                     elif status['status'] == 'failed':
                         failed += 1
             
-            logger.info(f"📊 Jobs: {completed} completed, {running} running, {failed} failed")
+            logger.info(f"# Chart Jobs: {completed} completed, {running} running, {failed} failed")
             
             if completed + failed == len(jobs):
-                logger.info("✅ All jobs finished!")
+                logger.info("# Check All jobs finished!")
                 break
         
         # Final status check
@@ -559,6 +557,7 @@ async def continuous_job_creation():
                 
                 # Create score jobs for random symbols
                 import random
+import secrets
                 selected_symbols = random.sample(symbols, 5)
                 for symbol in selected_symbols:
                     await job_manager.create_task(
@@ -568,13 +567,13 @@ async def continuous_job_creation():
                     )
                 
                 # Create trade job for best symbol (simulate)
-                best_symbol = random.choice(selected_symbols)
+                best_symbol = secrets.choice(selected_symbols)
                 await job_manager.create_task(
                     task_type="execute_trade",
                     priority=2,
                     payload={
                         "symbol": best_symbol,
-                        "side": random.choice(["buy", "sell"]),
+                        "side": secrets.choice(["buy", "sell"]),
                         "amount": random.uniform(5.0, 20.0),
                         "cycle": cycle
                     }
@@ -590,7 +589,7 @@ async def continuous_job_creation():
                 # Get system status
                 status = await job_manager.get_system_status()
                 if status:
-                    logger.info(f"📊 System: {status['active_tasks']} active, "
+                    logger.info(f"# Chart System: {status['active_tasks']} active, "
                                f"{status['completed_tasks']} completed, "
                                f"{status['failed_tasks']} failed")
                 

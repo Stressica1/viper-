@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MASTER SYSTEM ORCHESTRATOR
+# Rocket VIPER MASTER SYSTEM ORCHESTRATOR
 Complete integration and orchestration of all VIPER trading system components
 
 This master orchestrator provides:
@@ -48,7 +48,7 @@ class MasterSystemOrchestrator:
 
     def _initialize_components(self):
         """Initialize all system components"""
-        logger.info("🚀 Initializing VIPER Master System Orchestrator...")
+        logger.info("# Rocket Initializing VIPER Master System Orchestrator...")
 
         # Import and initialize core components
         self._load_mathematical_validator()
@@ -58,7 +58,7 @@ class MasterSystemOrchestrator:
         self._load_scoring_system()
         self._load_ai_optimizer()
 
-        logger.info("✅ All system components initialized successfully")
+        logger.info("# Check All system components initialized successfully")
 
     def _load_mathematical_validator(self):
         """Load mathematical validator component"""
@@ -66,9 +66,9 @@ class MasterSystemOrchestrator:
             from utils.mathematical_validator import MathematicalValidator
             self.components['mathematical_validator'] = MathematicalValidator()
             self.system_status['mathematical_validator'] = 'initialized'
-            logger.info("✅ Mathematical Validator loaded")
+            logger.info("# Check Mathematical Validator loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Mathematical Validator: {e}")
+            logger.error(f"# X Failed to load Mathematical Validator: {e}")
             self.system_status['mathematical_validator'] = 'failed'
 
     def _load_optimal_mcp_config(self):
@@ -77,9 +77,9 @@ class MasterSystemOrchestrator:
             from config.optimal_mcp_config import get_optimal_mcp_config
             self.components['mcp_config'] = get_optimal_mcp_config()
             self.system_status['mcp_config'] = 'initialized'
-            logger.info("✅ Optimal MCP Config loaded")
+            logger.info("# Check Optimal MCP Config loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Optimal MCP Config: {e}")
+            logger.error(f"# X Failed to load Optimal MCP Config: {e}")
             self.system_status['mcp_config'] = 'failed'
 
     def _load_diagnostic_scanner(self):
@@ -88,9 +88,9 @@ class MasterSystemOrchestrator:
             from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
             self.components['diagnostic_scanner'] = MasterDiagnosticScanner()
             self.system_status['diagnostic_scanner'] = 'initialized'
-            logger.info("✅ Master Diagnostic Scanner loaded")
+            logger.info("# Check Master Diagnostic Scanner loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Master Diagnostic Scanner: {e}")
+            logger.error(f"# X Failed to load Master Diagnostic Scanner: {e}")
             self.system_status['diagnostic_scanner'] = 'failed'
 
     def _load_entry_point_manager(self):
@@ -99,9 +99,9 @@ class MasterSystemOrchestrator:
             from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             self.components['entry_point_manager'] = OptimalEntryPointManager()
             self.system_status['entry_point_manager'] = 'initialized'
-            logger.info("✅ Optimal Entry Point Manager loaded")
+            logger.info("# Check Optimal Entry Point Manager loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Optimal Entry Point Manager: {e}")
+            logger.error(f"# X Failed to load Optimal Entry Point Manager: {e}")
             self.system_status['entry_point_manager'] = 'failed'
 
     def _load_scoring_system(self):
@@ -110,9 +110,9 @@ class MasterSystemOrchestrator:
             from scripts.scoring_system_diagnostic import ScoringSystemDiagnostic
             self.components['scoring_system'] = ScoringSystemDiagnostic()
             self.system_status['scoring_system'] = 'initialized'
-            logger.info("✅ Scoring System Diagnostic loaded")
+            logger.info("# Check Scoring System Diagnostic loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Scoring System Diagnostic: {e}")
+            logger.error(f"# X Failed to load Scoring System Diagnostic: {e}")
             self.system_status['scoring_system'] = 'failed'
 
     def _load_ai_optimizer(self):
@@ -132,14 +132,14 @@ class MasterSystemOrchestrator:
             else:
                 self.components['ai_optimizer'] = ai_optimizer_module
             self.system_status['ai_optimizer'] = 'initialized'
-            logger.info("✅ AI/ML Optimizer loaded")
+            logger.info("# Check AI/ML Optimizer loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load AI/ML Optimizer: {e}")
+            logger.error(f"# X Failed to load AI/ML Optimizer: {e}")
             self.system_status['ai_optimizer'] = 'failed'
 
     def run_system_diagnostics(self) -> Dict[str, Any]:
         """Run comprehensive system diagnostics"""
-        logger.info("🔍 Running comprehensive system diagnostics...")
+        logger.info("# Search Running comprehensive system diagnostics...")
 
         diagnostic_results = {
             'timestamp': datetime.now().isoformat(),
@@ -174,7 +174,7 @@ class MasterSystemOrchestrator:
         # Generate recommendations
         diagnostic_results['recommendations'] = self._generate_recommendations(diagnostic_results)
 
-        logger.info(f"✅ Diagnostics completed. System health: {diagnostic_results['system_health']}")
+        logger.info(f"# Check Diagnostics completed. System health: {diagnostic_results['system_health']}")
         return diagnostic_results
 
     def _generate_recommendations(self, diagnostic_results: Dict[str, Any]) -> List[str]:
@@ -237,7 +237,7 @@ class MasterSystemOrchestrator:
             except Exception as e:
                 optimization_results['errors'].append(f"{component_name}: {str(e)}")
 
-        logger.info(f"✅ System optimization completed. Applied {len(optimization_results['optimizations_applied'])} optimizations")
+        logger.info(f"# Check System optimization completed. Applied {len(optimization_results['optimizations_applied'])} optimizations")
         return optimization_results
 
     def start_monitoring(self):
@@ -246,7 +246,7 @@ class MasterSystemOrchestrator:
             logger.warning("Monitoring already active")
             return
 
-        logger.info("📊 Starting real-time system monitoring...")
+        logger.info("# Chart Starting real-time system monitoring...")
 
         def monitoring_loop():
             while self.monitoring_active:
@@ -257,9 +257,9 @@ class MasterSystemOrchestrator:
                     # Log system health
                     health_status = diagnostics.get('system_health', 'unknown')
                     if health_status in ['critical', 'warning']:
-                        logger.warning(f"⚠️ System health: {health_status}")
+                        logger.warning(f"# Warning System health: {health_status}")
                     else:
-                        logger.info(f"✅ System health: {health_status}")
+                        logger.info(f"# Check System health: {health_status}")
 
                     # Sleep for 5 minutes
                     time.sleep(300)
@@ -272,7 +272,7 @@ class MasterSystemOrchestrator:
         self.monitoring_thread = threading.Thread(target=monitoring_loop, daemon=True)
         self.monitoring_thread.start()
 
-        logger.info("✅ Real-time monitoring started")
+        logger.info("# Check Real-time monitoring started")
 
     def stop_monitoring(self):
         """Stop real-time system monitoring"""
@@ -286,7 +286,7 @@ class MasterSystemOrchestrator:
         if hasattr(self, 'monitoring_thread'):
             self.monitoring_thread.join(timeout=5)
 
-        logger.info("✅ Real-time monitoring stopped")
+        logger.info("# Check Real-time monitoring stopped")
 
     def get_system_status(self) -> Dict[str, Any]:
         """Get comprehensive system status"""
@@ -335,36 +335,30 @@ class MasterSystemOrchestrator:
 
 def main():
     """Main execution function"""
-    print("🚀 VIPER Master System Orchestrator")
-    print("=" * 50)
 
     # Initialize orchestrator
     orchestrator = MasterSystemOrchestrator()
 
     # Display system status
     status = orchestrator.get_system_status()
-    print(f"\n📊 System Status:")
     print(f"   Components: {status['total_components']}")
     print(f"   Healthy: {status['healthy_components']}")
     print(f"   Failed: {status['failed_components']}")
     print(f"   Monitoring: {'Active' if status['monitoring_active'] else 'Inactive'}")
 
     # Run diagnostics
-    print("🔍 Running system diagnostics...")
     diagnostics = orchestrator.run_system_diagnostics()
     print(f"   System Health: {diagnostics.get('system_health', 'unknown')}")
 
     if diagnostics.get('issues'):
         print(f"   Issues Found: {len(diagnostics['issues'])}")
         for issue in diagnostics['issues'][:3]:  # Show first 3 issues
-            print(f"     - {issue}")
 
     if diagnostics.get('recommendations'):
         print(f"   Recommendations: {len(diagnostics['recommendations'])}")
 
     # Start monitoring if requested
     if len(sys.argv) > 1 and sys.argv[1] == '--monitor':
-        print("📊 Starting real-time monitoring...")
         orchestrator.start_monitoring()
 
         try:
@@ -372,10 +366,9 @@ def main():
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("\n🛑 Stopping monitoring...")
             orchestrator.stop_monitoring()
     else:
-        print("💡 Use '--monitor' flag to start real-time monitoring")
+        print("# Idea Use '--monitor' flag to start real-time monitoring")
         print("   Example: python master_system_orchestrator.py --monitor")
 
 if __name__ == "__main__":

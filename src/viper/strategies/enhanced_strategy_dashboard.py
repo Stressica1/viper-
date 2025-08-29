@@ -1,24 +1,21 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED STRATEGY COMPARISON DASHBOARD
+# Rocket ENHANCED STRATEGY COMPARISON DASHBOARD
 Interactive web dashboard for strategy backtesting results with advanced visualizations
 
 Features:
-✅ Interactive Plotly charts and dashboards
-✅ Real-time strategy comparison
-✅ Performance heatmaps and correlation analysis
-✅ Risk-return optimization plots
-✅ Strategy parameter sensitivity analysis
-✅ Export-ready reports and visualizations
+# Check Interactive Plotly charts and dashboards
+# Check Real-time strategy comparison
+# Check Performance heatmaps and correlation analysis
+# Check Risk-return optimization plots
+# Check Strategy parameter sensitivity analysis
+# Check Export-ready reports and visualizations
 """
 
 import asyncio
 import json
 import logging
-import os
-from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Tuple
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -28,15 +25,9 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import plotly.express as px
 from plotly.offline import plot
-import dash
-from dash import dcc, html, Input, Output, dash_table
-import plotly.figure_factory as ff
 
-from dataclasses import dataclass, asdict
 from rich.console import Console
 from rich.table import Table
-from rich.panel import Panel
-from rich.progress import Progress
 from rich import box
 
 console = Console()
@@ -68,7 +59,7 @@ class EnhancedStrategyDashboard:
             self.strategy_rankings = data.get('all_rankings', [])
             self.performance_metrics = data
             
-            console.print(f"✅ Loaded {len(self.backtest_results)} backtest results")
+            console.print(f"# Check Loaded {len(self.backtest_results)} backtest results")
             return True
             
         except Exception as e:
@@ -80,7 +71,7 @@ class EnhancedStrategyDashboard:
         console.print("\n🎨 [bold blue]CREATING INTERACTIVE DASHBOARD[/bold blue]")
         
         if not self.backtest_results:
-            console.print("❌ No backtest results loaded")
+            console.print("# X No backtest results loaded")
             return ""
         
         # Create main dashboard figure
@@ -88,8 +79,8 @@ class EnhancedStrategyDashboard:
             rows=3, cols=2,
             subplot_titles=[
                 "🏆 Strategy Performance Ranking",
-                "🎯 Risk-Return Analysis", 
-                "📊 Performance by Timeframe",
+                "# Target Risk-Return Analysis", 
+                "# Chart Performance by Timeframe",
                 "💰 Win Rate vs Profit Factor",
                 "📈 Consistency vs Return",
                 "🔥 Strategy Heatmap"
@@ -126,7 +117,7 @@ class EnhancedStrategyDashboard:
             height=1200,
             showlegend=True,
             title={
-                'text': "🚀 COMPREHENSIVE STRATEGY BACKTESTING DASHBOARD - LOWER TIMEFRAMES",
+                'text': "# Rocket COMPREHENSIVE STRATEGY BACKTESTING DASHBOARD - LOWER TIMEFRAMES",
                 'x': 0.5,
                 'xanchor': 'center',
                 'font': {'size': 20, 'color': '#1f77b4'}
@@ -140,7 +131,7 @@ class EnhancedStrategyDashboard:
         dashboard_file = self.results_path / f"strategy_dashboard_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
         plot(fig, filename=str(dashboard_file), auto_open=False)
         
-        console.print(f"📊 [bold green]Interactive dashboard saved to: {dashboard_file}[/bold green]")
+        console.print(f"# Chart [bold green]Interactive dashboard saved to: {dashboard_file}[/bold green]")
         
         # Create additional detailed charts
         self._create_detailed_performance_charts()
@@ -349,7 +340,7 @@ class EnhancedStrategyDashboard:
         # 3. Risk Metrics Comparison
         self._create_risk_metrics_chart()
         
-        console.print("✅ Detailed charts created successfully")
+        console.print("# Check Detailed charts created successfully")
     
     def _create_radar_chart(self):
         """Create radar chart for strategy comparison"""
@@ -387,13 +378,13 @@ class EnhancedStrategyDashboard:
                     range=[0, 1]
                 )),
             showlegend=True,
-            title="🎯 Top 5 Strategies - Multi-Metric Comparison",
+            title="# Target Top 5 Strategies - Multi-Metric Comparison",
             font_size=12
         )
         
         radar_file = self.results_path / f"strategy_radar_chart_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
         plot(fig, filename=str(radar_file), auto_open=False)
-        console.print(f"🎯 Radar chart saved to: {radar_file}")
+        console.print(f"# Target Radar chart saved to: {radar_file}")
     
     def _create_timeline_analysis(self):
         """Create timeline analysis of strategy performance"""
@@ -490,11 +481,11 @@ class EnhancedStrategyDashboard:
         )
         
         fig.update_layout(height=800, showlegend=True,
-                         title="📊 Comprehensive Risk Metrics Analysis")
+                         title="# Chart Comprehensive Risk Metrics Analysis")
         
         risk_file = self.results_path / f"risk_metrics_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
         plot(fig, filename=str(risk_file), auto_open=False)
-        console.print(f"📊 Risk metrics chart saved to: {risk_file}")
+        console.print(f"# Chart Risk metrics chart saved to: {risk_file}")
     
     def generate_strategy_report_table(self) -> Table:
         """Generate detailed strategy report table"""
@@ -597,10 +588,10 @@ def create_enhanced_summary_report(dashboard: EnhancedStrategyDashboard) -> str:
     
     # Create report
     report = f"""
-🚀 COMPREHENSIVE STRATEGY BACKTESTING REPORT
+# Rocket COMPREHENSIVE STRATEGY BACKTESTING REPORT
 ============================================
 
-📊 SUMMARY STATISTICS:
+# Chart SUMMARY STATISTICS:
 • Total Backtests: {total_backtests}
 • Strategies Tested: {strategies_tested}
 • Timeframes: 5m, 15m, 30m (Lower TF Focus)
@@ -614,9 +605,9 @@ def create_enhanced_summary_report(dashboard: EnhancedStrategyDashboard) -> str:
 ⏰ {tf} TIMEFRAME:
   🥇 Strategy: {result['strategy_name']}
   📈 Total Return: {result['total_return']:.2%}
-  📊 Sharpe Ratio: {result['sharpe_ratio']:.2f}
+  # Chart Sharpe Ratio: {result['sharpe_ratio']:.2f}
   📉 Max Drawdown: {result['max_drawdown']:.2%}
-  🎯 Win Rate: {result['win_rate']:.1%}
+  # Target Win Rate: {result['win_rate']:.1%}
 """
     
     # Overall recommendation
@@ -624,7 +615,7 @@ def create_enhanced_summary_report(dashboard: EnhancedStrategyDashboard) -> str:
     overall_best = all_results_sorted[0]
     
     report += f"""
-🎯 OVERALL RECOMMENDATION:
+# Target OVERALL RECOMMENDATION:
 ==========================
 🏆 BEST STRATEGY: {overall_best['strategy_name']} ({overall_best['timeframe']})
 
@@ -636,8 +627,8 @@ Performance Metrics:
 • Win Rate: {overall_best['win_rate']:.1%}
 • Total Trades: {overall_best['total_trades']}
 
-🚀 RECOMMENDATION: Deploy this strategy for lower timeframe trading
-✅ Ready for live implementation
+# Rocket RECOMMENDATION: Deploy this strategy for lower timeframe trading
+# Check Ready for live implementation
 """
     
     return report
@@ -661,7 +652,7 @@ async def main():
             dashboard_file = dashboard.create_interactive_dashboard()
             
             # Display summary table
-            console.print("\n📊 [bold yellow]STRATEGY PERFORMANCE SUMMARY[/bold yellow]")
+            console.print("\n# Chart [bold yellow]STRATEGY PERFORMANCE SUMMARY[/bold yellow]")
             table = dashboard.generate_strategy_report_table()
             console.print(table)
             
@@ -669,10 +660,10 @@ async def main():
             summary = create_enhanced_summary_report(dashboard)
             console.print(f"\n{summary}")
             
-            console.print(f"\n✅ [bold green]Enhanced dashboard created successfully![/bold green]")
+            console.print(f"\n# Check [bold green]Enhanced dashboard created successfully![/bold green]")
             console.print(f"🌐 [cyan]Open in browser: {dashboard_file}[/cyan]")
         else:
-            console.print("❌ Failed to load backtest results")
+            console.print("# X Failed to load backtest results")
     else:
         console.print("📄 No backtest results found. Run comprehensive_strategy_backtester.py first.")
 

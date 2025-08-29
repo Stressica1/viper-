@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-🚀 RUN MASSIVE BACKTEST - 50 Pairs × 200 Configs
+# Rocket RUN MASSIVE BACKTEST - 50 Pairs × 200 Configs
 Launcher for comprehensive backtesting operation
 
 This launcher provides:
-✅ Easy execution of massive backtesting
-✅ Real-time progress monitoring
-✅ Resource management and optimization
-✅ GitHub MCP integration
-✅ Comprehensive results analysis
+# Check Easy execution of massive backtesting
+# Check Real-time progress monitoring
+# Check Resource management and optimization
+# Check GitHub MCP integration
+# Check Comprehensive results analysis
 """
 
 import os
@@ -64,14 +64,12 @@ class MassiveBacktestLauncher:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Could not get system info: {e}")
+            logger.warning(f"# Warning Could not get system info: {e}")
             return {}
 
     async def validate_system_requirements(self) -> bool:
         """Validate system requirements for massive backtesting"""
         try:
-            print("🔍 VALIDATING SYSTEM REQUIREMENTS")
-            print("=" * 40)
 
             # Check memory
             min_memory_gb = 8.0
@@ -79,34 +77,29 @@ class MassiveBacktestLauncher:
 
             print(f"💾 Memory: {available_memory:.1f}GB available")
             if available_memory < min_memory_gb:
-                print(f"❌ Insufficient memory: {min_memory_gb}GB required")
+                print(f"# X Insufficient memory: {min_memory_gb}GB required")
                 return False
-            print("✅ Memory requirements met")
 
             # Check CPU cores
             cpu_cores = self.system_info.get('cpu_cores', 1)
             min_cores = 4
 
-            print(f"🖥️ CPU Cores: {cpu_cores}")
             if cpu_cores < min_cores:
-                print(f"⚠️ Low CPU cores: {min_cores} recommended")
+                print(f"# Warning Low CPU cores: {min_cores} recommended")
             else:
-                print("✅ CPU requirements met")
 
             # Check disk space
             disk = psutil.disk_usage('/')
             free_gb = disk.free / (1024**3)
 
-            print(f"💽 Free Disk Space: {free_gb:.1f}GB")
             if free_gb < 50:
-                print("⚠️ Low disk space: Consider freeing up space")
+                print("# Warning Low disk space: Consider freeing up space")
             else:
-                print("✅ Disk space sufficient")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ System validation failed: {e}")
+            logger.error(f"# X System validation failed: {e}")
             return False
 
     async def estimate_execution_time(self) -> Dict[str, Any]:
@@ -159,36 +152,30 @@ class MassiveBacktestLauncher:
             }
 
         except Exception as e:
-            logger.error(f"❌ Time estimation failed: {e}")
+            logger.error(f"# X Time estimation failed: {e}")
             return {}
 
     async def initialize_orchestrator(self) -> bool:
         """Initialize the massive backtest orchestrator"""
         try:
-            print("🔧 INITIALIZING ORCHESTRATOR...")
             self.orchestrator = MassiveBacktestOrchestrator()
             await self.orchestrator.initialize_optimizer()
-            print("✅ Orchestrator initialized successfully")
             return True
         except Exception as e:
-            logger.error(f"❌ Orchestrator initialization failed: {e}")
+            logger.error(f"# X Orchestrator initialization failed: {e}")
             return False
 
     async def run_massive_backtest(self) -> int:
         """Run the complete massive backtesting operation"""
         try:
-            print("🚀 MASSIVE BACKTEST LAUNCHER")
-            print("=" * 60)
 
             # System validation
             if not await self.validate_system_requirements():
-                print("❌ System requirements not met")
                 return 1
 
             # Time estimation
             time_estimate = await self.estimate_execution_time()
             if time_estimate:
-                print("\n⏱️ EXECUTION ESTIMATE:")
                 print(f"   Total Combinations: {time_estimate['total_combinations']:,}")
                 print(f"   Trading Pairs: {time_estimate['trading_pairs']}")
                 print(f"   Configurations: {time_estimate['total_configs']}")
@@ -200,7 +187,6 @@ class MassiveBacktestLauncher:
                 if time_estimate['estimated_effective_hours'] > 24:
                     confirm = input(f"\n🚨 This will take {time_estimate['estimated_days']:.1f} days. Continue? (yes/no): ").strip().lower()
                     if confirm != 'yes':
-                        print("❌ Operation cancelled")
                         return 0
 
             # Initialize orchestrator
@@ -208,20 +194,14 @@ class MassiveBacktestLauncher:
                 return 1
 
             # Create task
-            print("\n📋 Creating massive backtest task...")
             task_id = await create_massive_backtest_task()
 
             if not task_id:
-                print("❌ Failed to create backtest task")
                 return 1
 
-            print(f"✅ Task Created: {task_id}")
 
             # Execute massive backtest
-            print("\n🚀 EXECUTING MASSIVE BACKTEST...")
-            print("Progress will be logged to massive_backtest.log")
             print("Use Ctrl+C to interrupt (results will be saved)")
-            print("=" * 60)
 
             results = await run_massive_backtest_operation(task_id)
 
@@ -231,30 +211,24 @@ class MassiveBacktestLauncher:
             return 0 if results.get('status') != 'failed' else 1
 
         except KeyboardInterrupt:
-            print("\n🛑 Operation interrupted by user")
             await self.handle_interrupt()
             return 0
         except Exception as e:
-            logger.error(f"❌ Massive backtest failed: {e}")
-            print(f"❌ ERROR: {e}")
+            logger.error(f"# X Massive backtest failed: {e}")
             return 1
 
     async def display_results(self, results: Dict[str, Any]):
         """Display comprehensive results"""
         try:
-            print("\n" + "=" * 80)
-            print("📊 MASSIVE BACKTEST RESULTS")
-            print("=" * 80)
 
             if results.get('status') == 'failed':
-                print(f"❌ Operation Failed: {results.get('error', 'Unknown error')}")
+                print(f"# X Operation Failed: {results.get('error', 'Unknown error')}")
                 return
 
             # Summary stats
             summary = results
             overall_stats = summary.get('overall_stats', {})
 
-            print("📈 OVERALL PERFORMANCE:")
             print(f"   Total Results: {summary.get('total_results', 0):,}")
             print(f"   Failed Tasks: {summary.get('total_failed', 0)}")
             print(f"   Average Win Rate: {overall_stats.get('avg_win_rate', 0):.1f}%")
@@ -265,7 +239,6 @@ class MassiveBacktestLauncher:
 
             # Success analysis
             success_analysis = summary.get('success_analysis', {})
-            print("\n🎯 SUCCESS ANALYSIS:")
             print(f"   Profitable Configurations: {success_analysis.get('profitable_configs', 0)}")
             print(f"   High Win Rate Configs (≥60%): {success_analysis.get('high_win_rate_configs', 0)}")
             print(f"   High Sharpe Configs (≥1.0): {success_analysis.get('high_sharpe_configs', 0)}")
@@ -281,25 +254,18 @@ class MassiveBacktestLauncher:
             # Recommendations
             await self.display_recommendations(summary)
 
-            print("\n📄 DETAILED RESULTS SAVED:")
-            print("   - massive_backtest_results_*.json (comprehensive results)")
-            print("   - massive_backtest_results_*_summary.csv (summary CSV)")
-            print("   - massive_backtest_results_*_top_performers.json (top configs)")
 
         except Exception as e:
-            logger.error(f"❌ Results display failed: {e}")
+            logger.error(f"# X Results display failed: {e}")
 
     async def display_best_performers(self, summary: Dict[str, Any]):
         """Display best performing configurations"""
         try:
-            print("\n🏆 TOP PERFORMERS:")
-            print("-" * 40)
 
             # Best by Sharpe Ratio
             best_sharpe = summary.get('best_by_sharpe_ratio', [])
             if best_sharpe:
                 top = best_sharpe[0]
-                print("🎯 Best Sharpe Ratio:")
                 print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
@@ -309,7 +275,6 @@ class MassiveBacktestLauncher:
             best_win_rate = summary.get('best_by_win_rate', [])
             if best_win_rate:
                 top = best_win_rate[0]
-                print("\n💯 Best Win Rate:")
                 print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
@@ -319,14 +284,13 @@ class MassiveBacktestLauncher:
             best_pnl = summary.get('best_by_total_pnl', [])
             if best_pnl:
                 top = best_pnl[0]
-                print("\n💰 Best Total P&L:")
                 print(f"   Symbol: {top.get('symbol', 'N/A')} {top.get('timeframe', 'N/A')}")
                 print(f"   Total P&L: ${top.get('total_pnl', 0):.2f}")
                 print(f"   Win Rate: {top.get('win_rate', 0):.1f}%")
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
 
         except Exception as e:
-            logger.error(f"❌ Best performers display failed: {e}")
+            logger.error(f"# X Best performers display failed: {e}")
 
     async def display_pair_analysis(self, summary: Dict[str, Any]):
         """Display pair performance analysis"""
@@ -335,28 +299,21 @@ class MassiveBacktestLauncher:
             if not pair_performance:
                 return
 
-            print("\n📊 PAIR PERFORMANCE ANALYSIS:")
-            print("-" * 40)
 
             # Sort by profitability
             sorted_pairs = sorted(pair_performance.items(),
                                 key=lambda x: x[1]['profitability_pct'], reverse=True)
 
             for symbol, stats in sorted_pairs[:10]:  # Top 10
-                print(f"   {symbol}:")
-                print(f"     Tests: {stats['total_tests']}")
-                print(f"     Profitable: {stats['profitable_tests']} ({stats['profitability_pct']:.1f}%)")
                 print(f"     Avg Win Rate: {stats['avg_win_rate']:.1f}%")
                 print(f"     Best Sharpe: {stats['best_sharpe']:.2f}")
 
         except Exception as e:
-            logger.error(f"❌ Pair analysis display failed: {e}")
+            logger.error(f"# X Pair analysis display failed: {e}")
 
     async def display_recommendations(self, summary: Dict[str, Any]):
         """Display optimization recommendations"""
         try:
-            print("\n💡 RECOMMENDATIONS:")
-            print("-" * 40)
 
             overall_stats = summary.get('overall_stats', {})
             success_analysis = summary.get('success_analysis', {})
@@ -364,7 +321,7 @@ class MassiveBacktestLauncher:
             # Win rate recommendations
             avg_win_rate = overall_stats.get('avg_win_rate', 0)
             if avg_win_rate > 65:
-                print("✅ Excellent average win rate - maintain current strategy framework")
+                print("# Check Excellent average win rate - maintain current strategy framework")
             elif avg_win_rate > 50:
                 print("🟡 Good win rate - focus on parameter optimization")
             else:
@@ -373,7 +330,7 @@ class MassiveBacktestLauncher:
             # Profitability recommendations
             success_rate = success_analysis.get('success_rate_pct', 0)
             if success_rate > 60:
-                print("✅ High profitability rate - strategy is fundamentally sound")
+                print("# Check High profitability rate - strategy is fundamentally sound")
             elif success_rate > 40:
                 print("🟡 Moderate profitability - focus on risk management")
             else:
@@ -382,19 +339,18 @@ class MassiveBacktestLauncher:
             # Sharpe ratio recommendations
             avg_sharpe = overall_stats.get('avg_sharpe_ratio', 0)
             if avg_sharpe > 1.0:
-                print("✅ Strong risk-adjusted returns - excellent performance")
+                print("# Check Strong risk-adjusted returns - excellent performance")
             elif avg_sharpe > 0.5:
                 print("🟡 Moderate risk-adjusted returns - acceptable performance")
             else:
                 print("🔴 Poor risk-adjusted returns - improve return consistency")
 
         except Exception as e:
-            logger.error(f"❌ Recommendations display failed: {e}")
+            logger.error(f"# X Recommendations display failed: {e}")
 
     async def handle_interrupt(self):
         """Handle user interruption gracefully"""
         try:
-            print("\n💾 Saving current progress...")
             if self.orchestrator:
                 # Save current state
                 status = {
@@ -407,11 +363,9 @@ class MassiveBacktestLauncher:
                 with open('massive_backtest_interrupt_status.json', 'w') as f:
                     json.dump(status, f, indent=2, default=str)
 
-            print("✅ Progress saved. You can resume later.")
-            print("📄 Check massive_backtest_interrupt_status.json for details")
 
         except Exception as e:
-            logger.error(f"❌ Interrupt handling failed: {e}")
+            logger.error(f"# X Interrupt handling failed: {e}")
 
 def main():
     """Main launcher function"""
@@ -423,11 +377,8 @@ def main():
 
     args = parser.parse_args()
 
-    print("🚀 MASSIVE BACKTEST LAUNCHER - 50 Pairs × 200 Configs")
-    print("=" * 70)
 
     if args.config:
-        print(f"Config: {args.config}")
 
     async def run_launcher():
         launcher = MassiveBacktestLauncher()
@@ -436,7 +387,6 @@ def main():
             # Show time estimation
             estimate = await launcher.estimate_execution_time()
             if estimate:
-                print("⏱️ EXECUTION ESTIMATE:")
                 print(f"   Total Combinations: {estimate['total_combinations']:,}")
                 print(f"   Estimated Time: {estimate['estimated_effective_hours']:.1f} hours")
                 print(f"   Estimated Days: {estimate['estimated_days']:.1f} days")
@@ -447,7 +397,6 @@ def main():
             status = await get_massive_backtest_status()
             print(f"Status: {status.get('status', 'unknown')}")
             if status.get('message'):
-                print(f"Message: {status['message']}")
             return 0
 
         elif args.mode == 'run':
@@ -458,7 +407,6 @@ def main():
         exit_code = asyncio.run(run_launcher())
         return exit_code
     except KeyboardInterrupt:
-        print("\n🛑 Operation cancelled")
         return 0
 
 if __name__ == "__main__":

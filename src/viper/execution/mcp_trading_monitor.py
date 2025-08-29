@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-📊 MCP TRADING MONITOR
+# Chart MCP TRADING MONITOR
 Real-time monitoring client for MCP Live Trading System
 
 This monitor provides:
-✅ Real-time trading status updates
-✅ Task management interface
-✅ Performance metrics dashboard
-✅ Emergency control panel
-✅ WebSocket-based communication
+# Check Real-time trading status updates
+# Check Task management interface
+# Check Performance metrics dashboard
+# Check Emergency control panel
+# Check WebSocket-based communication
 """
 
 import os
@@ -47,9 +47,9 @@ class MCPTradingMonitor:
             logger.info(f"🔗 Connecting to {self.websocket_url}")
             self.websocket = await websockets.connect(self.websocket_url)
             self.connected = True
-            logger.info("✅ Connected to MCP Trading System")
+            logger.info("# Check Connected to MCP Trading System")
         except Exception as e:
-            logger.error(f"❌ Connection failed: {e}")
+            logger.error(f"# X Connection failed: {e}")
             self.connected = False
 
     async def disconnect(self):
@@ -63,7 +63,7 @@ class MCPTradingMonitor:
         """Send command to MCP trading system"""
         try:
             if not self.connected:
-                logger.error("❌ Not connected to MCP system")
+                logger.error("# X Not connected to MCP system")
                 return None
 
             message = {
@@ -79,7 +79,7 @@ class MCPTradingMonitor:
             return json.loads(response)
 
         except Exception as e:
-            logger.error(f"❌ Command failed: {e}")
+            logger.error(f"# X Command failed: {e}")
             return None
 
     async def get_status(self):
@@ -104,11 +104,6 @@ class MCPTradingMonitor:
 
     async def monitor_loop(self):
         """Main monitoring loop"""
-        print("📊 MCP TRADING MONITOR")
-        print("=" * 40)
-        print("Real-time monitoring active...")
-        print("Press Ctrl+C to exit")
-        print("=" * 40)
 
         try:
             await self.connect()
@@ -125,14 +120,13 @@ class MCPTradingMonitor:
                     await asyncio.sleep(5)  # Update every 5 seconds
 
                 except websockets.exceptions.ConnectionClosed:
-                    logger.warning("⚠️ Connection lost, attempting reconnect...")
+                    logger.warning("# Warning Connection lost, attempting reconnect...")
                     await self.connect()
                     await asyncio.sleep(2)
 
         except KeyboardInterrupt:
-            print("\n🛑 Monitoring stopped by user")
         except Exception as e:
-            logger.error(f"❌ Monitoring error: {e}")
+            logger.error(f"# X Monitoring error: {e}")
         finally:
             await self.disconnect()
 
@@ -140,32 +134,21 @@ class MCPTradingMonitor:
         """Display formatted status information"""
         os.system('clear' if os.name == 'posix' else 'cls')  # Clear screen
 
-        print("📊 MCP TRADING SYSTEM STATUS")
-        print("=" * 50)
         print(f"Timestamp: {status.get('timestamp', 'N/A')}")
-        print(f"MCP Connected: {'✅' if status.get('mcp_connected', False) else '❌'}")
-        print(f"Trading Active: {'✅' if status.get('trading_active', False) else '❌'}")
-        print(f"Emergency Stop: {'🚨' if status.get('emergency_stop', False) else '✅'}")
-        print()
+        print(f"MCP Connected: {'# Check' if status.get('mcp_connected', False) else '# X'}")
+        print(f"Trading Active: {'# Check' if status.get('trading_active', False) else '# X'}")
+        print(f"Emergency Stop: {'🚨' if status.get('emergency_stop', False) else '# Check'}")
 
-        print("📈 SYSTEM METRICS")
-        print("-" * 30)
         print(f"Active Tasks: {status.get('active_tasks', 0)}")
         print(f"Total Tasks: {status.get('total_tasks', 0)}")
-        print(f"Components Ready: {'✅' if status.get('system_components', {}).get('components_ready', False) else '❌'}")
-        print()
+        print(f"Components Ready: {'# Check' if status.get('system_components', {}).get('components_ready', False) else '# X'}")
 
-        print("⚙️ TRADING PARAMETERS")
-        print("-" * 30)
         params = status.get('trading_parameters', {})
         print(f"Max Positions: {params.get('max_positions', 'N/A')}")
         print(f"Risk per Trade: {params.get('risk_per_trade', 'N/A')}")
         print(f"Leverage: {params.get('leverage', 'N/A')}")
         print(f"Trading Pairs: {', '.join(params.get('trading_pairs', []))}")
-        print()
 
-        print("🎯 ACTIVE TASKS")
-        print("-" * 30)
         tasks = status.get('tasks', [])
         if tasks:
             for task in tasks:
@@ -174,25 +157,14 @@ class MCPTradingMonitor:
                     'running': '🟡',
                     'scheduled': '🔵',
                     'stopped': '🔴',
-                    'error': '❌'
+                    'error': '# X'
                 }.get(task.get('status', 'unknown'), '⚪')
 
                 print(f"{status_icon} {task.get('id', 'N/A')} - {task.get('status', 'unknown')}")
                 print(f"   Pairs: {', '.join(task.get('trading_pairs', []))}")
         else:
-            print("No active tasks")
-        print()
 
-        print("💡 CONTROLS")
-        print("-" * 30)
         print("Available commands (when in interactive mode):")
-        print("  s  - Get detailed status")
-        print("  c  - Create new task")
-        print("  t  - Start task")
-        print("  p  - Stop task")
-        print("  e  - Emergency stop")
-        print("  q  - Quit")
-        print()
 
 async def interactive_monitor():
     """Run interactive monitoring session"""
@@ -201,16 +173,6 @@ async def interactive_monitor():
     try:
         await monitor.connect()
 
-        print("🔗 INTERACTIVE MCP TRADING MONITOR")
-        print("=" * 50)
-        print("Commands:")
-        print("  s - Status")
-        print("  c - Create task")
-        print("  t - Start task")
-        print("  p - Stop task")
-        print("  e - Emergency stop")
-        print("  q - Quit")
-        print("=" * 50)
 
         while True:
             try:
@@ -221,9 +183,7 @@ async def interactive_monitor():
                 elif cmd == 's':
                     status = await monitor.get_status()
                     if status:
-                        print(json.dumps(status, indent=2))
                     else:
-                        print("❌ Failed to get status")
                 elif cmd == 'c':
                     # Create a default task
                     config = {
@@ -234,41 +194,32 @@ async def interactive_monitor():
                     }
                     result = await monitor.create_task(config)
                     if result:
-                        print(f"✅ Task created: {result.get('task_id')}")
                     else:
-                        print("❌ Failed to create task")
                 elif cmd == 't':
                     task_id = input("Task ID to start: ").strip()
                     if task_id:
                         result = await monitor.start_task(task_id)
                         if result and result.get('success'):
-                            print(f"✅ Task started: {task_id}")
                         else:
-                            print(f"❌ Failed to start task: {task_id}")
                 elif cmd == 'p':
                     task_id = input("Task ID to stop: ").strip()
                     if task_id:
                         result = await monitor.stop_task(task_id)
                         if result and result.get('success'):
-                            print(f"✅ Task stopped: {task_id}")
                         else:
-                            print(f"❌ Failed to stop task: {task_id}")
                 elif cmd == 'e':
                     confirm = input("Confirm emergency stop (yes/no): ").strip().lower()
                     if confirm == 'yes':
                         result = await monitor.emergency_stop()
                         if result and result.get('success'):
-                            print("🚨 Emergency stop activated")
                         else:
-                            print("❌ Emergency stop failed")
                 else:
-                    print("❌ Unknown command")
 
             except KeyboardInterrupt:
                 break
 
     except Exception as e:
-        logger.error(f"❌ Interactive monitor error: {e}")
+        logger.error(f"# X Interactive monitor error: {e}")
     finally:
         await monitor.disconnect()
 
@@ -282,11 +233,6 @@ def main():
 
     args = parser.parse_args()
 
-    print("📊 MCP TRADING MONITOR")
-    print("=" * 30)
-    print(f"URL: {args.url}")
-    print(f"Mode: {args.mode}")
-    print("=" * 30)
 
     if args.mode == 'interactive':
         asyncio.run(interactive_monitor())

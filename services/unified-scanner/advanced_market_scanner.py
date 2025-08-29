@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Advanced Market Scanner
+# Rocket VIPER Advanced Market Scanner
 Enhanced market scanning with sophisticated algorithms and real-time analysis
 
 Features:
@@ -15,21 +15,14 @@ Features:
 """
 
 import os
-import json
-import time
 import logging
 import asyncio
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
-from pathlib import Path
-import threading
 import httpx
-from scipy import stats
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestRegressor
 import talib
@@ -149,7 +142,7 @@ class AdvancedMarketScanner:
         self.scan_results = {}
         self.historical_results = []
         
-        logger.info("🔍 Advanced Market Scanner initialized")
+        logger.info("# Search Advanced Market Scanner initialized")
     
     async def initialize(self) -> bool:
         """Initialize the market scanner"""
@@ -161,7 +154,7 @@ class AdvancedMarketScanner:
             # Initialize enhanced caching if available
             if ENHANCED_CACHING_AVAILABLE:
                 await enhanced_cache.initialize()
-                logger.info("✅ Enhanced caching system initialized")
+                logger.info("# Check Enhanced caching system initialized")
             
             # Initialize ML model
             await self._initialize_ml_model()
@@ -170,11 +163,11 @@ class AdvancedMarketScanner:
             asyncio.create_task(self._background_scanning_loop())
             asyncio.create_task(self._model_training_loop())
             
-            logger.info("✅ Advanced Market Scanner initialized")
+            logger.info("# Check Advanced Market Scanner initialized")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize scanner: {e}")
+            logger.error(f"# X Failed to initialize scanner: {e}")
             return False
     
     async def _initialize_ml_model(self):
@@ -190,10 +183,10 @@ class AdvancedMarketScanner:
             # Load historical data for training if available
             await self._load_and_train_model()
             
-            logger.info("✅ ML model initialized")
+            logger.info("# Check ML model initialized")
             
         except Exception as e:
-            logger.error(f"❌ ML model initialization error: {e}")
+            logger.error(f"# X ML model initialization error: {e}")
     
     async def _load_and_train_model(self):
         """Load historical data and train the ML model"""
@@ -209,10 +202,10 @@ class AdvancedMarketScanner:
             # Train model
             self.ml_model.fit(features_scaled, targets)
             
-            logger.info("✅ ML model trained on synthetic data")
+            logger.info("# Check ML model trained on synthetic data")
             
         except Exception as e:
-            logger.error(f"❌ ML model training error: {e}")
+            logger.error(f"# X ML model training error: {e}")
     
     async def scan_symbol(self, symbol: str, detailed: bool = True) -> Optional[ScanResult]:
         """Scan a single symbol with comprehensive analysis"""
@@ -228,7 +221,7 @@ class AdvancedMarketScanner:
             # Get market data
             market_data = await self._get_symbol_market_data(symbol)
             if not market_data:
-                logger.warning(f"⚠️ No market data for {symbol}")
+                logger.warning(f"# Warning No market data for {symbol}")
                 return None
             
             # Multi-timeframe analysis
@@ -326,7 +319,7 @@ class AdvancedMarketScanner:
             return scan_result
             
         except Exception as e:
-            logger.error(f"❌ Error scanning {symbol}: {e}")
+            logger.error(f"# X Error scanning {symbol}: {e}")
             return None
     
     async def _get_symbol_market_data(self, symbol: str) -> Optional[Dict]:
@@ -350,11 +343,11 @@ class AdvancedMarketScanner:
                     
                     return data
                 else:
-                    logger.warning(f"⚠️ Failed to get market data for {symbol}: {response.status_code}")
+                    logger.warning(f"# Warning Failed to get market data for {symbol}: {response.status_code}")
                     return None
                     
         except Exception as e:
-            logger.error(f"❌ Error getting market data for {symbol}: {e}")
+            logger.error(f"# X Error getting market data for {symbol}: {e}")
             return None
     
     async def _analyze_multiple_timeframes(self, symbol: str, market_data: Dict) -> Dict[str, float]:
@@ -516,7 +509,7 @@ class AdvancedMarketScanner:
             return max(0, min(100, momentum_score))
             
         except Exception as e:
-            logger.error(f"❌ Momentum calculation error: {e}")
+            logger.error(f"# X Momentum calculation error: {e}")
             return 50.0
     
     async def _calculate_volatility_score(self, market_data: Dict) -> float:
@@ -544,7 +537,7 @@ class AdvancedMarketScanner:
             return max(0, min(100, volatility_score))
             
         except Exception as e:
-            logger.error(f"❌ Volatility calculation error: {e}")
+            logger.error(f"# X Volatility calculation error: {e}")
             return 50.0
     
     async def _calculate_liquidity_score(self, market_data: Dict) -> float:
@@ -590,7 +583,7 @@ class AdvancedMarketScanner:
             return max(0, min(100, liquidity_score))
             
         except Exception as e:
-            logger.error(f"❌ Liquidity calculation error: {e}")
+            logger.error(f"# X Liquidity calculation error: {e}")
             return 50.0
     
     async def _calculate_technical_score(self, market_data: Dict) -> float:
@@ -618,7 +611,7 @@ class AdvancedMarketScanner:
             return max(0, min(100, technical_score))
             
         except Exception as e:
-            logger.error(f"❌ Technical calculation error: {e}")
+            logger.error(f"# X Technical calculation error: {e}")
             return 50.0
     
     async def _calculate_fundamental_score(self, market_data: Dict, symbol: str) -> float:
@@ -647,7 +640,7 @@ class AdvancedMarketScanner:
             return max(0, min(100, fundamental_score))
             
         except Exception as e:
-            logger.error(f"❌ Fundamental calculation error: {e}")
+            logger.error(f"# X Fundamental calculation error: {e}")
             return 50.0
     
     def _extract_ml_features(self, market_data: Dict, scores: Dict) -> List[float]:
@@ -742,7 +735,7 @@ class AdvancedMarketScanner:
             return max(0.01, min(10.0, total_cost))  # Cap between 0.01% and 10%
             
         except Exception as e:
-            logger.error(f"❌ Execution cost calculation error: {e}")
+            logger.error(f"# X Execution cost calculation error: {e}")
             return 2.0  # Default moderate cost
     
     def _generate_recommendations(self, overall_score: float, market_condition: MarketCondition, 
@@ -843,7 +836,7 @@ class AdvancedMarketScanner:
             return entry_price, stop_loss, take_profit
             
         except Exception as e:
-            logger.error(f"❌ Level calculation error: {e}")
+            logger.error(f"# X Level calculation error: {e}")
             return price, price * 0.98, price * 1.02  # Default 2% levels
     
     def _calculate_confidence(self, overall_score: float, timeframes_count: int, 
@@ -874,7 +867,7 @@ class AdvancedMarketScanner:
             return max(0.0, min(1.0, confidence))
             
         except Exception as e:
-            logger.error(f"❌ Confidence calculation error: {e}")
+            logger.error(f"# X Confidence calculation error: {e}")
             return 0.5  # Default moderate confidence
     
     async def scan_multiple_symbols(self, symbols: List[str], detailed: bool = True) -> List[ScanResult]:
@@ -912,7 +905,7 @@ class AdvancedMarketScanner:
             # Filter and sort
             opportunities = [
                 result for result in all_results
-                if result.overall_score >= min_score and
+                if result.overall_score >= min_score and:
                 result.execution_cost < 3.0 and
                 result.confidence > 0.6
             ]
@@ -926,7 +919,7 @@ class AdvancedMarketScanner:
             return opportunities[:limit]
             
         except Exception as e:
-            logger.error(f"❌ Error getting opportunities: {e}")
+            logger.error(f"# X Error getting opportunities: {e}")
             return []
     
     async def _background_scanning_loop(self):
@@ -937,7 +930,7 @@ class AdvancedMarketScanner:
                 symbols = await self._get_active_symbols()
                 
                 if symbols:
-                    logger.info(f"🔍 Starting scan of {len(symbols)} symbols")
+                    logger.info(f"# Search Starting scan of {len(symbols)} symbols")
                     
                     # Scan all symbols
                     results = await self.scan_multiple_symbols(symbols, detailed=True)
@@ -953,13 +946,13 @@ class AdvancedMarketScanner:
                     if len(self.historical_results) > 1000:
                         self.historical_results = self.historical_results[-500:]
                     
-                    logger.info(f"✅ Scan completed: {len(results)} results")
+                    logger.info(f"# Check Scan completed: {len(results)} results")
                 
                 # Wait before next scan
                 await asyncio.sleep(self.scan_interval)
                 
             except Exception as e:
-                logger.error(f"❌ Background scanning error: {e}")
+                logger.error(f"# X Background scanning error: {e}")
                 await asyncio.sleep(60)  # Wait before retrying
     
     async def _get_active_symbols(self) -> List[str]:
@@ -973,7 +966,7 @@ class AdvancedMarketScanner:
             ]
             
         except Exception as e:
-            logger.error(f"❌ Error getting active symbols: {e}")
+            logger.error(f"# X Error getting active symbols: {e}")
             return []
     
     async def _model_training_loop(self):
@@ -1022,15 +1015,15 @@ class AdvancedMarketScanner:
                         features_scaled = self.scaler.fit_transform(features_array)
                         self.ml_model.fit(features_scaled, targets_array)
                         
-                        logger.info(f"✅ ML model retrained with {len(features)} samples")
+                        logger.info(f"# Check ML model retrained with {len(features)} samples")
                 
             except Exception as e:
-                logger.error(f"❌ Model training error: {e}")
+                logger.error(f"# X Model training error: {e}")
     
     def start(self):
         """Start the scanner"""
         self.is_running = True
-        logger.info("🚀 Advanced Market Scanner started")
+        logger.info("# Rocket Advanced Market Scanner started")
     
     def stop(self):
         """Stop the scanner"""
@@ -1052,19 +1045,18 @@ if __name__ == "__main__":
         # Test single symbol scan
         result = await advanced_scanner.scan_symbol("BTCUSDT")
         if result:
-            print(f"✅ Scan result: {result.symbol} - Score: {result.overall_score}")
+            print(f"# Check Scan result: {result.symbol} - Score: {result.overall_score}")
             print(f"   Recommendations: {result.recommendations}")
         
         # Test multiple symbols
         symbols = ["BTCUSDT", "ETHUSDT", "ADAUSDT"]
         results = await advanced_scanner.scan_multiple_symbols(symbols)
-        print(f"✅ Multi-symbol scan: {len(results)} results")
+        print(f"# Check Multi-symbol scan: {len(results)} results")
         
         # Get top opportunities
         opportunities = await advanced_scanner.get_top_opportunities(limit=5)
-        print(f"✅ Top opportunities: {len(opportunities)} found")
+        print(f"# Check Top opportunities: {len(opportunities)} found")
         
         advanced_scanner.stop()
-        print("🎯 Advanced scanner test completed!")
     
     asyncio.run(test_scanner())

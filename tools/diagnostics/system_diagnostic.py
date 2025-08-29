@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Comprehensive Diagnostic & Status Monitor
+# Rocket VIPER Trading System - Comprehensive Diagnostic & Status Monitor
 """
 
 import requests
@@ -102,8 +102,6 @@ class ViperDiagnostic:
     
     def run_comprehensive_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-        print("🔍 VIPER SYSTEM COMPREHENSIVE DIAGNOSTIC")
-        print("=" * 50)
         
         # Get system metrics
         metrics = self.get_system_metrics()
@@ -160,7 +158,7 @@ class ViperDiagnostic:
         if healthy_percent < 80:
             recommendations.append("🚨 CRITICAL: Many services are unhealthy. Check Docker containers and logs.")
         elif healthy_percent < 100:
-            recommendations.append("⚠️  WARNING: Some services are unhealthy. Check individual service logs.")
+            recommendations.append("# Warning  WARNING: Some services are unhealthy. Check individual service logs.")
         
         # Trading functionality recommendations
         operational_percent = (analysis['trading_status']['operational'] / max(1, analysis['trading_status']['total'])) * 100
@@ -168,48 +166,44 @@ class ViperDiagnostic:
         if operational_percent < 50:
             recommendations.append("🚨 CRITICAL: Trading functionality is severely impaired.")
         elif operational_percent < 100:
-            recommendations.append("⚠️  WARNING: Some trading endpoints are not responding.")
+            recommendations.append("# Warning  WARNING: Some trading endpoints are not responding.")
         
         if not recommendations:
-            recommendations.append("✅ SYSTEM STATUS: All services operational and trading ready!")
+            recommendations.append("# Check SYSTEM STATUS: All services operational and trading ready!")
         
         return recommendations
     
     def print_diagnostic_report(self, report: Dict[str, Any]):
         """Print formatted diagnostic report"""
-        print(f"\n📊 DIAGNOSTIC REPORT - {report['diagnostic_time']}")
-        print("=" * 60)
+        print(f"\n# Chart DIAGNOSTIC REPORT - {report['diagnostic_time']}")
         
         analysis = report['analysis']
         
         # Service Health
-        print("🏥 SERVICE HEALTH:")
         healthy = analysis['service_health']['healthy']
         total = analysis['service_health']['total']
         print(f"   Healthy: {healthy}/{total} ({healthy/max(1,total)*100:.1f}%)")
         
         if analysis['critical_issues']:
-            print("   🚨 Critical Issues:")
+            print("🚨 CRITICAL ISSUES:")
             for issue in analysis['critical_issues'][:5]:  # Show first 5
-                print(f"      • {issue}")
+                print(f"   • {issue}")
         
         # Trading Status
-        print("\n💰 TRADING STATUS:")
         operational = analysis['trading_status']['operational']
         total_trading = analysis['trading_status']['total']
         print(f"   Operational: {operational}/{total_trading} ({operational/max(1,total_trading)*100:.1f}%)")
         
         if analysis['warnings']:
-            print("   ⚠️  Warnings:")
+            print("# Warning WARNINGS:")
             for warning in analysis['warnings'][:3]:  # Show first 3
-                print(f"      • {warning}")
+                print(f"   • {warning}")
         
         # Recommendations
-        print("\n🎯 RECOMMENDATIONS:")
+        print("# Idea RECOMMENDATIONS:")
         for rec in report['recommendations']:
-            print(f"   {rec}")
+            print(f"   • {rec}")
         
-        print("\n" + "=" * 60)
 
 if __name__ == "__main__":
     diagnostic = ViperDiagnostic()

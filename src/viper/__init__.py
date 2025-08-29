@@ -1,5 +1,5 @@
 """
-🚀 VIPER Trading System
+# Rocket VIPER Trading System
 High-Performance Automated Trading Platform
 """
 
@@ -26,7 +26,6 @@ try:
         from . import core
         available_modules.append('core')
     except ImportError as e:
-        print(f"⚠️ Core module unavailable: {e}")
     
     try:
         from . import strategies
@@ -56,7 +55,7 @@ try:
     
 except ImportError as e:
     # Handle missing dependencies gracefully
-    print(f"⚠️ Some VIPER modules not available: {e}")
+    print(f"# Warning Some VIPER modules not available: {e}")
     print("📦 Run: pip install -r requirements.txt to install dependencies")
     
     __all__ = []

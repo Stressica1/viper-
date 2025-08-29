@@ -4,13 +4,13 @@
 ENFORCES Docker and MCP requirements - NO BYPASSING ALLOWED
 
 This launcher:
-✅ FORCES Docker services to be running
-✅ FORCES MCP server to be operational  
-✅ ENFORCES live trading mode only
-✅ BLOCKS execution if requirements not met
-✅ NO MOCK DATA OR DEMO MODE ALLOWED
+# Check FORCES Docker services to be running
+# Check FORCES MCP server to be operational  
+# Check ENFORCES live trading mode only
+# Check BLOCKS execution if requirements not met
+# Check NO MOCK DATA OR DEMO MODE ALLOWED
 
-⚠️ LIVE TRADING ONLY - REAL MONEY WILL BE USED
+# Warning LIVE TRADING ONLY - REAL MONEY WILL BE USED
 """
 
 import os
@@ -33,17 +33,12 @@ except ImportError:
     ENHANCED_DISPLAY = False
     # Fallback terminal functions
     def display_error(msg, details=None):
-        print(f"❌ {msg}")
         if details: print(f"   {details}")
     def display_success(msg, details=None):
-        print(f"✅ {msg}")
         if details: print(f"   {details}")
     def display_warning(msg, details=None):
-        print(f"⚠️ {msg}")
         if details: print(f"   {details}")
     def print_banner():
-        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
-        print("=" * 70)
 
 # Configure logging
 logging.basicConfig(
@@ -54,7 +49,7 @@ logger = logging.getLogger(__name__)
 
 def validate_environment():
     """Validate live trading environment configuration"""
-    logger.info("🔍 Validating live trading environment...")
+    logger.info("# Search Validating live trading environment...")
     
     # Check for .env file
     env_file = Path('.env')
@@ -94,13 +89,13 @@ def check_docker_services():
         # Check if Docker is available
         result = subprocess.run(['docker', '--version'], capture_output=True, text=True)
         if result.returncode != 0:
-            logger.error("❌ Docker not available")
+            logger.error("# X Docker not available")
             return False
         
         # Check if docker-compose.yml exists
         compose_file = Path('docker-compose.yml')
         if not compose_file.exists():
-            logger.error("❌ docker-compose.yml not found")
+            logger.error("# X docker-compose.yml not found")
             return False
         
         # Check if services are running
@@ -113,15 +108,15 @@ def check_docker_services():
         missing_services = [svc for svc in required_services if svc not in running_services]
         
         if missing_services:
-            logger.error(f"❌ Required Docker services not running: {missing_services}")
+            logger.error(f"# X Required Docker services not running: {missing_services}")
             logger.error("Start services with: docker compose up -d")
             return False
         
-        logger.info("✅ Docker services validated")
+        logger.info("# Check Docker services validated")
         return True
         
     except Exception as e:
-        logger.error(f"❌ Docker validation error: {e}")
+        logger.error(f"# X Docker validation error: {e}")
         return False
 
 def check_mcp_server():
@@ -135,30 +130,30 @@ def check_mcp_server():
         response = requests.get(f"{mcp_url}/health", timeout=10)
         
         if response.status_code == 200:
-            logger.info("✅ MCP server responding")
+            logger.info("# Check MCP server responding")
             return True
         else:
-            logger.error(f"❌ MCP server returned status {response.status_code}")
+            logger.error(f"# X MCP server returned status {response.status_code}")
             return False
             
     except Exception as e:
-        logger.error(f"❌ MCP server not responding: {e}")
+        logger.error(f"# X MCP server not responding: {e}")
         logger.error("Ensure MCP server is running: docker compose up mcp-server -d")
         return False
 
 def start_docker_services():
     """Start Docker services if not running"""
-    logger.info("🚀 Starting Docker services...")
+    logger.info("# Rocket Starting Docker services...")
     
     try:
         result = subprocess.run(['docker', 'compose', 'up', '-d'], 
                                capture_output=True, text=True)
         
         if result.returncode != 0:
-            logger.error(f"❌ Failed to start Docker services: {result.stderr}")
+            logger.error(f"# X Failed to start Docker services: {result.stderr}")
             return False
         
-        logger.info("✅ Docker services started")
+        logger.info("# Check Docker services started")
         
         # Wait for services to be healthy
         logger.info("⏳ Waiting for services to be healthy...")
@@ -167,7 +162,7 @@ def start_docker_services():
         return True
         
     except Exception as e:
-        logger.error(f"❌ Error starting Docker services: {e}")
+        logger.error(f"# X Error starting Docker services: {e}")
         return False
 
 def main():
@@ -176,14 +171,10 @@ def main():
     # Enhanced banner display
     if ENHANCED_DISPLAY:
         print_banner()
-        terminal.console.rule("[bold red]⚠️ LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO ⚠️[/]")
+        terminal.console.rule("[bold red]# Warning LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO # Warning[/]")
         terminal.console.rule("[bold blue]🔒 DOCKER AND MCP ENFORCEMENT ACTIVE 🔒[/]")
     else:
-        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
-        print("=" * 70)
         print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO")
-        print("🔒 DOCKER AND MCP ENFORCEMENT ACTIVE")
-        print("=" * 70)
     
     # System validation with enhanced progress display
     validation_steps = [
@@ -194,7 +185,7 @@ def main():
     ]
     
     if ENHANCED_DISPLAY:
-        terminal.show_progress(validation_steps, "🔍 System Validation")
+        terminal.show_progress(validation_steps, "# Search System Validation")
     
     # Step 1: Validate environment
     if not validate_environment():
@@ -203,7 +194,7 @@ def main():
     
     # Step 2: Check Docker services
     if not check_docker_services():
-        logger.info("🚀 Attempting to start Docker services...")
+        logger.info("# Rocket Attempting to start Docker services...")
         if not start_docker_services():
             display_error("Cannot start required Docker services", "Ensure Docker is installed and running")
             sys.exit(1)
@@ -220,35 +211,29 @@ def main():
     
     # All systems go
     if ENHANCED_DISPLAY:
-        terminal.console.rule("[bold green]✅ ALL MANDATORY REQUIREMENTS MET[/]")
+        terminal.console.rule("[bold green]# Check ALL MANDATORY REQUIREMENTS MET[/]")
         
         # Display final warning with countdown
         warning_panel = terminal.console.print(
-            "[bold red]⚠️ WARNING: This will execute real trades with real money![/]\n"
+            "[bold red]# Warning WARNING: This will execute real trades with real money![/]\n"
             "[yellow]Press Ctrl+C within 10 seconds to cancel[/]",
             style="bold"
         )
         
         # Enhanced countdown
         for i in range(10, 0, -1):
-            terminal.console.print(f"[bold yellow]🚀 Starting in {i} seconds...[/]", end="\r")
+            terminal.console.print(f"[bold yellow]# Rocket Starting in {i} seconds...[/]", end="\r")
             time.sleep(1)
             
-        terminal.console.print("[bold green]🚀 LAUNCHING LIVE TRADING SYSTEM...[/]")
+        terminal.console.print("[bold green]# Rocket LAUNCHING LIVE TRADING SYSTEM...[/]")
     else:
-        print("✅ ALL MANDATORY REQUIREMENTS MET")
-        print("🚀 Starting live trading system...")
-        print("=" * 70)
-        print("⚠️ WARNING: This will execute real trades with real money!")
-        print("⚠️ Press Ctrl+C within 10 seconds to cancel")
-        print("=" * 70)
+        print("# Warning WARNING: This will execute real trades with real money!")
+        print("# Warning Press Ctrl+C within 10 seconds to cancel")
         
         try:
             for i in range(10, 0, -1):
-                print(f"Starting in {i} seconds...")
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("\n🛑 Launch cancelled by user")
             sys.exit(0)
     
     # Import and start the main system

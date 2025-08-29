@@ -23,19 +23,10 @@ import os
 import sys
 import json
 import time
-import asyncio
 import threading
 import logging
 from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Callable, Union
 from dataclasses import dataclass, asdict
-from collections import defaultdict
-import hashlib
-import hmac
-import base64
-import requests
-import websockets
 import websocket
 
 # Import our exchange connectors
@@ -127,10 +118,10 @@ class WebSocketManager:
                 time.sleep(0.1)
 
             if self.is_connected:
-                self.logger.info(f"✅ Connected to {self.exchange_name} WebSocket")
+                self.logger.info(f"# Check Connected to {self.exchange_name} WebSocket")
                 return True
             else:
-                self.logger.error(f"❌ Failed to connect to {self.exchange_name} WebSocket")
+                self.logger.error(f"# X Failed to connect to {self.exchange_name} WebSocket")
                 return False
 
         except Exception as e:
@@ -323,7 +314,7 @@ class LiveBalanceService:
 
     def start(self):
         """Start the live balance service"""
-        self.logger.info("🚀 Starting Live Balance Service")
+        self.logger.info("# Rocket Starting Live Balance Service")
 
         # Load cached balance
         self._load_cached_balance()
@@ -334,14 +325,14 @@ class LiveBalanceService:
             subscription_message = self._get_subscription_message(exchange_id)
 
             if ws_manager.connect(config['ws_url'], subscription_message):
-                self.logger.info(f"✅ Connected to {config['name']} WebSocket")
+                self.logger.info(f"# Check Connected to {config['name']} WebSocket")
             else:
-                self.logger.error(f"❌ Failed to connect to {config['name']} WebSocket")
+                self.logger.error(f"# X Failed to connect to {config['name']} WebSocket")
 
         # Start background tasks
         self._start_background_tasks()
 
-        self.logger.info("✅ Live Balance Service started successfully")
+        self.logger.info("# Check Live Balance Service started successfully")
 
     def stop(self):
         """Stop the live balance service"""
@@ -354,7 +345,7 @@ class LiveBalanceService:
         # Save final balance
         self._save_balance_cache()
 
-        self.logger.info("✅ Live Balance Service stopped")
+        self.logger.info("# Check Live Balance Service stopped")
 
     def get_live_balance(self) -> LiveBalance:
         """Get current live balance"""
@@ -431,7 +422,7 @@ class LiveBalanceService:
 
     def _on_connection_lost(self, exchange: str):
         """Handle WebSocket connection loss"""
-        self.logger.warning(f"⚠️ Lost connection to {exchange}")
+        self.logger.warning(f"# Warning Lost connection to {exchange}")
         self.live_balance.status = 'disconnected'
 
         self._generate_balance_alert(
@@ -444,7 +435,7 @@ class LiveBalanceService:
 
     def _on_connection_restored(self, exchange: str):
         """Handle WebSocket connection restoration"""
-        self.logger.info(f"✅ Connection restored to {exchange}")
+        self.logger.info(f"# Check Connection restored to {exchange}")
         self.live_balance.status = 'connected'
 
         # Request fresh balance via REST API
@@ -556,11 +547,11 @@ class LiveBalanceService:
         """Perform health checks on connections"""
         for exchange_id, ws_manager in self.ws_managers.items():
             if not ws_manager.is_connected:
-                self.logger.warning(f"⚠️ {exchange_id} WebSocket disconnected")
+                self.logger.warning(f"# Warning {exchange_id} WebSocket disconnected")
 
             # Check for stale heartbeats
             if time.time() - ws_manager.last_heartbeat > 60:
-                self.logger.warning(f"⚠️ No heartbeat from {exchange_id} for 60s")
+                self.logger.warning(f"# Warning No heartbeat from {exchange_id} for 60s")
 
     def _save_balance_cache(self):
         """Save current balance to cache file"""
@@ -588,7 +579,7 @@ class LiveBalanceService:
                 cached_balance = cache_data.get('live_balance', {})
                 if cached_balance:
                     self.live_balance = LiveBalance(**cached_balance)
-                    self.logger.info(f"✅ Loaded cached balance: ${self.live_balance.total_usd_balance:.2f}")
+                    self.logger.info(f"# Check Loaded cached balance: ${self.live_balance.total_usd_balance:.2f}")
 
         except Exception as e:
             self.logger.error(f"Error loading balance cache: {e}")

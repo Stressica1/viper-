@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-📊 STRATEGY METRICS DASHBOARD - VIPER Trading Performance Analytics
+# Chart STRATEGY METRICS DASHBOARD - VIPER Trading Performance Analytics
 ================================================================
 
 Comprehensive trading strategy analytics and performance dashboard.
@@ -283,13 +283,11 @@ class StrategyMetricsDashboard:
     def display_strategy_table(self, sort_by: str = 'sharpe_ratio', ascending: bool = False,
                              filter_status: str = 'active') -> str:
         """Display comprehensive strategy performance table"""
-        print("📊 VIPER STRATEGY METRICS DASHBOARD")
-        print("=" * 80)
 
         # Filter strategies
         filtered_strategies = [
             s for s in self.strategies.values()
-            if filter_status == 'all' or s.status == filter_status
+            if filter_status == 'all' or s.status == filter_status:
         ]
 
         if not filtered_strategies:
@@ -362,14 +360,14 @@ class StrategyMetricsDashboard:
         emergency_stop = -portfolio_value * 0.15       # 15.0%
 
         summary = f"""
-🎯 PORTFOLIO SUMMARY - LIVE BALANCE TRACKING
+# Target PORTFOLIO SUMMARY - LIVE BALANCE TRACKING
 {'='*50}
-📊 Total Strategies: {pm.total_strategies}
-✅ Active Strategies: {pm.active_strategies}
+# Chart Total Strategies: {pm.total_strategies}
+# Check Active Strategies: {pm.active_strategies}
 💰 Portfolio Value: ${pm.total_portfolio_value:,.2f}
 📈 Daily P&L: ${pm.daily_pnl:,.2f}
 💹 Total P&L: ${pm.total_pnl:,.2f} ({pm.total_pnl/pm.total_portfolio_value*100:.2f}%)
-📊 Portfolio Return: {pm.portfolio_return:.1f}%
+# Chart Portfolio Return: {pm.portfolio_return:.1f}%
 ⚡ Sharpe Ratio: {pm.portfolio_sharpe:.2f}
 📉 Max Drawdown: {pm.portfolio_drawdown:.1f}%
 🎚️ Risk-Adjusted Return: {pm.risk_adjusted_return:.2f}
@@ -378,7 +376,7 @@ class StrategyMetricsDashboard:
 
 🔗 BALANCE STATUS: {balance_status}
 
-💡 DYNAMIC RISK LIMITS (based on live ${portfolio_value:.0f} balance):
+# Idea DYNAMIC RISK LIMITS (based on live ${portfolio_value:.0f} balance):
    • Max Single Position Loss: ${max_position_loss:.2f} ({max_position_loss/portfolio_value*100:.1f}%)
    • Max Daily Loss: ${max_daily_loss:.2f} ({max_daily_loss/portfolio_value*100:.1f}%)
    • Circuit Breaker: ${circuit_breaker:.2f} ({circuit_breaker/portfolio_value*100:.1f}%)
@@ -395,10 +393,10 @@ class StrategyMetricsDashboard:
         strategy = self.strategies[strategy_name]
 
         details = f"""
-🔍 STRATEGY DETAILS: {strategy.strategy_name}
+# Search STRATEGY DETAILS: {strategy.strategy_name}
 {'='*60}
 
-📊 PERFORMANCE METRICS
+# Chart PERFORMANCE METRICS
   Win Rate: {strategy.win_rate:.1f}%
   Total Trades: {strategy.total_trades}
   Winning Trades: {strategy.winning_trades}
@@ -424,7 +422,7 @@ class StrategyMetricsDashboard:
   Status: {strategy.status}
   Last Updated: {strategy.last_updated}
 
-📊 RISK METRICS
+# Chart RISK METRICS
   Alpha: {strategy.alpha:.3f}
   Beta: {strategy.beta:.3f}
   Information Ratio: {strategy.information_ratio:.2f}
@@ -501,7 +499,7 @@ class StrategyMetricsDashboard:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         report = f"""
-📊 VIPER TRADING STRATEGY PERFORMANCE REPORT
+# Chart VIPER TRADING STRATEGY PERFORMANCE REPORT
 {'='*70}
 Generated: {timestamp}
 
@@ -509,7 +507,7 @@ Generated: {timestamp}
 
 {self.display_strategy_table()}
 
-🎯 RECOMMENDATIONS
+# Target RECOMMENDATIONS
 {'='*30}
 • Monitor strategies with Sharpe ratio < 1.5 for potential optimization
 • Rebalance portfolio weights quarterly based on performance
@@ -524,7 +522,7 @@ Generated: {timestamp}
 • Max Drawdown: Largest peak-to-valley decline (target: <10%)
 • Calmar Ratio: Annual return / Max drawdown (target: >5)
 
-⚠️  DISCLAIMER
+# Warning  DISCLAIMER
 {'='*15}
 This report contains simulated performance data for demonstration purposes.
 Actual trading results may vary significantly due to market conditions,
@@ -547,14 +545,12 @@ future results. Always perform your own due diligence and risk assessment.
         self.is_monitoring = True
         self.monitor_thread = threading.Thread(target=self._monitoring_loop, daemon=True)
         self.monitor_thread.start()
-        print("✅ Real-time monitoring started")
 
     def stop_monitoring(self):
         """Stop real-time monitoring"""
         self.is_monitoring = False
         if self.monitor_thread:
             self.monitor_thread.join(timeout=5)
-        print("⏹️  Real-time monitoring stopped")
 
     def _monitoring_loop(self):
         """Main monitoring loop"""
@@ -569,7 +565,6 @@ future results. Always perform your own due diligence and risk assessment.
                 time.sleep(self.update_interval)
 
             except Exception as e:
-                print(f"⚠️  Monitoring error: {e}")
                 time.sleep(60)  # Wait before retrying
 
     def _update_live_metrics(self):
@@ -588,18 +583,16 @@ future results. Always perform your own due diligence and risk assessment.
             if strategy.status == 'active':
                 # Check for concerning metrics
                 if strategy.sharpe_ratio < 1.0:
-                    alerts.append(f"⚠️  Low Sharpe ratio for {strategy.strategy_name}: {strategy.sharpe_ratio:.2f}")
+                    alerts.append(f"# Warning  Low Sharpe ratio for {strategy.strategy_name}: {strategy.sharpe_ratio:.2f}")
 
                 if strategy.max_drawdown < -15:  # More than 15% drawdown
                     alerts.append(f"🚨 High drawdown for {strategy.strategy_name}: {strategy.max_drawdown:.1f}%")
 
                 if strategy.win_rate < 50:
-                    alerts.append(f"⚠️  Low win rate for {strategy.strategy_name}: {strategy.win_rate:.1f}%")
+                    alerts.append(f"# Warning  Low win rate for {strategy.strategy_name}: {strategy.win_rate:.1f}%")
 
         if alerts:
-            print("\n🚨 PERFORMANCE ALERTS:")
             for alert in alerts:
-                print(f"  {alert}")
 
 def main():
     """Main entry point"""
@@ -624,29 +617,23 @@ def main():
 
     # Handle commands
     if args.portfolio:
-        print(dashboard.display_portfolio_summary())
 
     if args.list:
         table = dashboard.display_strategy_table(
             sort_by=args.sort,
             filter_status=args.filter
         )
-        print(table)
 
     if args.details:
         details = dashboard.display_strategy_details(args.details)
-        print(details)
 
     if args.export:
         csv_path = dashboard.export_to_csv(args.export)
-        print(f"✅ Exported to: {csv_path}")
 
     if args.report:
         report = dashboard.generate_performance_report()
-        print(report)
 
     if args.monitor:
-        print("🚀 Starting real-time monitoring...")
         dashboard.start_monitoring()
 
         try:
@@ -657,8 +644,6 @@ def main():
 
     # Default action: show portfolio and strategy table
     if not any([args.list, args.details, args.export, args.report, args.monitor, args.portfolio]):
-        print(dashboard.display_portfolio_summary())
-        print("\n" + dashboard.display_strategy_table())
 
 if __name__ == '__main__':
     main()

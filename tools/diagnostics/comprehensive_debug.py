@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 COMPREHENSIVE VIPER TRADING SYSTEM DEBUGGER
+# Rocket COMPREHENSIVE VIPER TRADING SYSTEM DEBUGGER
 Find and fix all issues in the trading flow
 
 This debugger will:
@@ -45,8 +45,6 @@ class ComprehensiveDebugger:
 
     def run_comprehensive_debug(self):
         """Run complete system debugging"""
-        print("🚀 COMPREHENSIVE VIPER TRADING SYSTEM DEBUG")
-        print("=" * 70)
 
         try:
             # Step 1: Environment and Dependencies
@@ -71,13 +69,10 @@ class ComprehensiveDebugger:
             self.generate_debug_report()
 
         except Exception as e:
-            logger.error(f"❌ Comprehensive debug failed: {e}")
-            print(f"\n❌ Debug failed: {e}")
+            logger.error(f"# X Comprehensive debug failed: {e}")
 
     def debug_environment_setup(self):
         """Debug environment setup and dependencies"""
-        print("\n🔧 Step 1: ENVIRONMENT & DEPENDENCIES")
-        print("-" * 50)
 
         # Check Python version
         python_version = sys.version_info
@@ -92,9 +87,7 @@ class ComprehensiveDebugger:
         for dep in dependencies:
             try:
                 __import__(dep)
-                print(f"✅ {dep}: INSTALLED")
             except ImportError:
-                print(f"❌ {dep}: MISSING")
                 self.issues_found.append({
                     'type': 'dependency',
                     'component': dep,
@@ -109,9 +102,9 @@ class ComprehensiveDebugger:
 
         for env_var in required_env_vars:
             if os.getenv(env_var):
-                print(f"✅ {env_var}: SET")
+                print(f"# Check {env_var}: Present")
+                self.fixes_applied.append(f"Environment variable {env_var} loaded")
             else:
-                print(f"❌ {env_var}: MISSING")
                 self.issues_found.append({
                     'type': 'environment',
                     'component': env_var,
@@ -121,8 +114,6 @@ class ComprehensiveDebugger:
 
     def debug_configuration_files(self):
         """Debug configuration files"""
-        print("\n📋 Step 2: CONFIGURATION FILES")
-        print("-" * 50)
 
         config_files = [
             '.env',
@@ -134,7 +125,6 @@ class ComprehensiveDebugger:
         for config_file in config_files:
             file_path = self.project_root / config_file
             if file_path.exists():
-                print(f"✅ {config_file}: EXISTS")
 
                 # Check .env file specifically
                 if config_file == '.env':
@@ -142,14 +132,15 @@ class ComprehensiveDebugger:
                         with open(file_path, 'r') as f:
                             content = f.read()
                             if 'BITGET_API_KEY=' in content:
-                                print("   ✅ API credentials configured")
+                                print(f"   # Check API credentials found in {file_path}")
+                                self.fixes_applied.append(f"API credentials found in {file_path}")
                             else:
-                                print("   ⚠️  API credentials may be missing")
+                                print(f"   # Warning No API credentials in {file_path}")
                     except Exception as e:
-                        print(f"   ❌ Error reading .env: {e}")
+                        print(f"   # X Error reading {file_path}: {e}")
 
             else:
-                print(f"❌ {config_file}: MISSING")
+                print("   # Warning No .env file found")
                 self.issues_found.append({
                     'type': 'configuration',
                     'component': config_file,
@@ -159,8 +150,6 @@ class ComprehensiveDebugger:
 
     def debug_core_components(self):
         """Debug core trading components"""
-        print("\n🏗️  Step 3: CORE COMPONENTS")
-        print("-" * 50)
 
         components = [
             ('viper_async_trader.py', 'ViperAsyncTrader'),
@@ -177,7 +166,7 @@ class ComprehensiveDebugger:
             full_path = self.project_root / file_path
 
             if not full_path.exists():
-                print(f"❌ {class_name}: FILE MISSING ({file_path})")
+                print(f"# X {class_name}: FILE MISSING ({file_path})")
                 self.issues_found.append({
                     'type': 'component',
                     'component': class_name,
@@ -193,7 +182,6 @@ class ComprehensiveDebugger:
                     code = f.read()
 
                 compile(code, full_path, 'exec')
-                print(f"✅ {class_name}: SYNTAX OK")
 
                 # Try to import the module
                 try:
@@ -202,13 +190,11 @@ class ComprehensiveDebugger:
                     module = importlib.util.module_from_spec(spec)
 
                     # Don't actually execute, just check imports
-                    print(f"   ✅ Module importable: {module_name}")
 
                 except Exception as import_error:
-                    print(f"   ⚠️  Import issue: {import_error}")
 
             except SyntaxError as syntax_error:
-                print(f"❌ {class_name}: SYNTAX ERROR - {syntax_error}")
+                print(f"# X {class_name}: SYNTAX ERROR - {syntax_error}")
                 self.issues_found.append({
                     'type': 'syntax',
                     'component': class_name,
@@ -216,7 +202,6 @@ class ComprehensiveDebugger:
                     'fix': f'Fix syntax error in {file_path}'
                 })
             except Exception as e:
-                print(f"❌ {class_name}: ERROR - {e}")
                 self.issues_found.append({
                     'type': 'component',
                     'component': class_name,
@@ -226,8 +211,6 @@ class ComprehensiveDebugger:
 
     def debug_trading_flow(self):
         """Debug the trading flow"""
-        print("\n🔄 Step 4: TRADING FLOW")
-        print("-" * 50)
 
         # Check for common trading flow issues
         flow_issues = [
@@ -243,7 +226,6 @@ class ComprehensiveDebugger:
                 for issue in issues:
                     self.issues_found.append(issue)
             except Exception as e:
-                print(f"❌ Flow check failed: {e}")
 
     def check_async_sync_issues(self) -> List[Dict]:
         """Check for async/sync mismatches"""
@@ -387,9 +369,7 @@ class ComprehensiveDebugger:
         for module_name, description in modules_to_test:
             try:
                 __import__(module_name)
-                print(f"✅ {description}: IMPORT OK")
             except ImportError:
-                print(f"❌ {description}: IMPORT FAILED")
                 issues.append({
                     'type': 'import_error',
                     'component': module_name,
@@ -401,8 +381,6 @@ class ComprehensiveDebugger:
 
     def debug_api_integration(self):
         """Debug API integration"""
-        print("\n🔌 Step 5: API INTEGRATION")
-        print("-" * 50)
 
         try:
             import ccxt
@@ -415,21 +393,16 @@ class ComprehensiveDebugger:
 
             # Test basic connectivity
             exchange.load_markets()
-            print("✅ Bitget exchange connection: SUCCESSFUL")
 
             # Check number of markets
             num_markets = len(exchange.markets)
-            print(f"📊 Available markets: {num_markets}")
 
             # Check USDT pairs
             usdt_pairs = [symbol for symbol in exchange.markets.keys() if symbol.endswith('USDT:USDT')]
-            print(f"💰 USDT swap pairs: {len(usdt_pairs)}")
 
             if usdt_pairs:
-                print(f"   Sample pairs: {usdt_pairs[:5]}")
 
         except Exception as e:
-            print(f"❌ API integration failed: {e}")
             self.issues_found.append({
                 'type': 'api_error',
                 'component': 'Bitget API',
@@ -439,23 +412,18 @@ class ComprehensiveDebugger:
 
     def debug_async_sync_issues(self):
         """Debug async/sync issues specifically"""
-        print("\n🔄 Step 6: ASYNC/SYNC ANALYSIS")
-        print("-" * 50)
 
         # Check for common async/sync patterns
         async_issues = self.check_async_sync_issues()
 
         if async_issues:
-            print(f"⚠️  Found {len(async_issues)} potential async/sync issues:")
+            print(f"# Warning  Found {len(async_issues)} potential async/sync issues:")
             for issue in async_issues:
                 print(f"   • {issue['component']}: {issue['issue']}")
         else:
-            print("✅ No obvious async/sync issues detected")
 
     def generate_debug_report(self):
         """Generate comprehensive debug report"""
-        print("\n📊 Step 7: DEBUG REPORT")
-        print("-" * 50)
 
         report = {
             'debug_timestamp': datetime.now().isoformat(),
@@ -504,28 +472,22 @@ class ComprehensiveDebugger:
             json.dump(report, f, indent=2, default=str)
 
         # Display summary
-        print("🎯 DEBUG SUMMARY:")
-        print(f"   Status: {report['system_status']}")
         print(f"   Total Issues: {len(self.issues_found)}")
         print(f"   Critical Issues: {len(report['critical_issues'])}")
-        print(f"   Report Saved: {report_path}")
 
         if report['recommendations']:
-            print("\n💡 RECOMMENDATIONS:")
             for rec in report['recommendations']:
-                print(f"   • {rec}")
 
-        print(f"\n📋 ISSUES BY TYPE:")
         for issue_type, issues in report['issues_by_type'].items():
             print(f"   {issue_type.upper()}: {len(issues)} issues")
 
         # Overall assessment
         if report['system_status'] == 'HEALTHY':
-            print("\n✅ SYSTEM STATUS: READY FOR LIVE TRADING")
+            print("\n# Check SYSTEM STATUS: READY FOR LIVE TRADING")
         elif report['system_status'] == 'WARNING':
-            print("\n⚠️  SYSTEM STATUS: READY WITH MINOR ISSUES")
+            print("\n# Warning  SYSTEM STATUS: READY WITH MINOR ISSUES")
         else:
-            print("\n❌ SYSTEM STATUS: CRITICAL ISSUES DETECTED")
+            print("\n# X SYSTEM STATUS: CRITICAL ISSUES DETECTED")
 
 def main():
     """Main debug function"""

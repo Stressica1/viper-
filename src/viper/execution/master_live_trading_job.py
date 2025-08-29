@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 MASTER LIVE TRADING JOB
+# Target MASTER LIVE TRADING JOB
 Complete integration of all VIPER components for live trading
 
 This job orchestrates:
@@ -17,9 +17,6 @@ import os
 import sys
 import asyncio
 import logging
-from datetime import datetime, timedelta
-import json
-from typing import Dict, List, Any
 from pathlib import Path
 
 # Add project root to path
@@ -49,38 +46,38 @@ class MasterLiveTradingJob:
         self.system_status = {}
         self.trading_active = False
 
-        logger.info("🚀 INITIALIZING MASTER LIVE TRADING JOB")
+        logger.info("# Rocket INITIALIZING MASTER LIVE TRADING JOB")
         logger.info("=" * 60)
 
     async def initialize_components(self):
         """Initialize all system components"""
-        logger.info("🔧 Initializing System Components...")
+        logger.info("# Tool Initializing System Components...")
 
         try:
             # 1. Mathematical Validator
             from utils.mathematical_validator import MathematicalValidator
             self.components['math_validator'] = MathematicalValidator()
-            logger.info("✅ Mathematical Validator: INITIALIZED")
+            logger.info("# Check Mathematical Validator: INITIALIZED")
 
             # 2. Optimal MCP Configuration
             from config.optimal_mcp_config import get_optimal_mcp_config
             self.components['mcp_config'] = get_optimal_mcp_config()
-            logger.info("✅ Optimal MCP Config: LOADED")
+            logger.info("# Check Optimal MCP Config: LOADED")
 
             # 3. Entry Point Optimizer
             from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             self.components['entry_optimizer'] = OptimalEntryPointManager()
-            logger.info("✅ Entry Point Optimizer: INITIALIZED")
+            logger.info("# Check Entry Point Optimizer: INITIALIZED")
 
             # 4. Master Diagnostic Scanner
             from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
             self.components['diagnostic_scanner'] = MasterDiagnosticScanner()
-            logger.info("✅ Master Diagnostic Scanner: INITIALIZED")
+            logger.info("# Check Master Diagnostic Scanner: INITIALIZED")
 
             # 5. Enhanced ViperAsyncTrader
             from viper_async_trader import ViperAsyncTrader
             self.components['trader'] = ViperAsyncTrader()
-            logger.info("✅ Enhanced ViperAsyncTrader: INITIALIZED")
+            logger.info("# Check Enhanced ViperAsyncTrader: INITIALIZED")
 
             # 6. Advanced Trend Detector
             from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
@@ -94,35 +91,35 @@ class MasterLiveTradingJob:
                 trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
             )
             self.components['trend_detector'] = AdvancedTrendDetector(trend_config)
-            logger.info("✅ Advanced Trend Detector: INITIALIZED")
+            logger.info("# Check Advanced Trend Detector: INITIALIZED")
 
             self.system_status['components_initialized'] = True
-            logger.info("🎉 ALL COMPONENTS SUCCESSFULLY INITIALIZED!")
+            logger.info("# Party ALL COMPONENTS SUCCESSFULLY INITIALIZED!")
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             raise
 
     async def run_system_diagnostics(self):
         """Run comprehensive system diagnostics"""
-        logger.info("🔍 Running System Diagnostics...")
+        logger.info("# Search Running System Diagnostics...")
 
         try:
             if 'diagnostic_scanner' in self.components:
                 results = await self.components['diagnostic_scanner'].run_full_scan()
 
-                logger.info("📊 Diagnostic Results:")
+                logger.info("# Chart Diagnostic Results:")
                 logger.info(f"   Overall Score: {results.get('overall_score', 'N/A')}")
                 logger.info(f"   Issues Found: {len(results.get('issues', []))}")
                 logger.info(f"   Recommendations: {len(results.get('recommendations', []))}")
 
                 self.system_status['diagnostics_passed'] = True
             else:
-                logger.warning("⚠️ Diagnostic scanner not available")
+                logger.warning("# Warning Diagnostic scanner not available")
                 self.system_status['diagnostics_passed'] = False
 
         except Exception as e:
-            logger.error(f"❌ Diagnostics failed: {e}")
+            logger.error(f"# X Diagnostics failed: {e}")
             self.system_status['diagnostics_passed'] = False
 
     async def validate_mathematical_calculations(self):
@@ -154,18 +151,18 @@ class MasterLiveTradingJob:
                 balance_validation = validator.validate_array(balance_array, "balance_calculation")
 
                 if price_validation['is_valid'] and balance_validation['is_valid']:
-                    logger.info("✅ Mathematical calculations validated")
+                    logger.info("# Check Mathematical calculations validated")
                     self.system_status['math_validation_passed'] = True
                 else:
-                    logger.error("❌ Mathematical validation failed")
+                    logger.error("# X Mathematical validation failed")
                     self.system_status['math_validation_passed'] = False
 
             else:
-                logger.warning("⚠️ Mathematical validator not available")
+                logger.warning("# Warning Mathematical validator not available")
                 self.system_status['math_validation_passed'] = False
 
         except Exception as e:
-            logger.error(f"❌ Mathematical validation error: {e}")
+            logger.error(f"# X Mathematical validation error: {e}")
             self.system_status['math_validation_passed'] = False
 
     async def test_balance_fetching(self):
@@ -177,20 +174,20 @@ class MasterLiveTradingJob:
                 trader = self.components['trader']
 
                 # Test balance fetching (without real API call for safety)
-                logger.info("✅ Balance fetching method available")
+                logger.info("# Check Balance fetching method available")
                 self.system_status['balance_fetching_ready'] = True
 
             else:
-                logger.error("❌ Trader component not available")
+                logger.error("# X Trader component not available")
                 self.system_status['balance_fetching_ready'] = False
 
         except Exception as e:
-            logger.error(f"❌ Balance fetching test failed: {e}")
+            logger.error(f"# X Balance fetching test failed: {e}")
             self.system_status['balance_fetching_ready'] = False
 
     async def validate_tp_sl_tsl_configuration(self):
         """Validate TP/SL/TSL configuration"""
-        logger.info("🎯 Validating TP/SL/TSL Configuration...")
+        logger.info("# Target Validating TP/SL/TSL Configuration...")
 
         try:
             # Check environment variables
@@ -198,7 +195,7 @@ class MasterLiveTradingJob:
             sl_pct = float(os.getenv('STOP_LOSS_PCT', '5.0'))
             tsl_pct = float(os.getenv('TRAILING_STOP_PCT', '2.0'))
 
-            logger.info(f"✅ TP/SL/TSL Configuration:")
+            logger.info(f"# Check TP/SL/TSL Configuration:")
             logger.info(f"   Take Profit: {tp_pct}%")
             logger.info(f"   Stop Loss: {sl_pct}%")
             logger.info(f"   Trailing Stop: {tsl_pct}%")
@@ -206,12 +203,12 @@ class MasterLiveTradingJob:
             self.system_status['tp_sl_tsl_configured'] = True
 
         except Exception as e:
-            logger.error(f"❌ TP/SL/TSL configuration error: {e}")
+            logger.error(f"# X TP/SL/TSL configuration error: {e}")
             self.system_status['tp_sl_tsl_configured'] = False
 
     async def start_live_trading(self):
         """Start the complete live trading system"""
-        logger.info("🚀 STARTING LIVE TRADING SYSTEM...")
+        logger.info("# Rocket STARTING LIVE TRADING SYSTEM...")
 
         try:
             # Final system validation
@@ -226,32 +223,32 @@ class MasterLiveTradingJob:
                     missing_components.append(component)
 
             if missing_components:
-                logger.error(f"❌ Missing required components: {missing_components}")
+                logger.error(f"# X Missing required components: {missing_components}")
                 return False
 
             # Start the trader
             trader = self.components['trader']
 
-            logger.info("🎯 STARTING TRADING OPERATIONS:")
-            logger.info("   • Scoring: ✅ ACTIVE")
-            logger.info("   • Scanning: ✅ ACTIVE")
-            logger.info("   • TP/SL: ✅ ACTIVE")
-            logger.info("   • Position Sizing: ✅ ACTIVE")
-            logger.info("   • Risk Management: ✅ ACTIVE")
+            logger.info("# Target STARTING TRADING OPERATIONS:")
+            logger.info("   • Scoring: # Check ACTIVE")
+            logger.info("   • Scanning: # Check ACTIVE")
+            logger.info("   • TP/SL: # Check ACTIVE")
+            logger.info("   • Position Sizing: # Check ACTIVE")
+            logger.info("   • Risk Management: # Check ACTIVE")
 
             # Start trading operations
             self.trading_active = True
-            logger.info("🚀 LIVE TRADING SYSTEM ACTIVATED!")
+            logger.info("# Rocket LIVE TRADING SYSTEM ACTIVATED!")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to start live trading: {e}")
+            logger.error(f"# X Failed to start live trading: {e}")
             return False
 
     async def run_complete_system_check(self):
         """Run complete system check before trading"""
-        logger.info("🔧 RUNNING COMPLETE SYSTEM CHECK...")
+        logger.info("# Tool RUNNING COMPLETE SYSTEM CHECK...")
 
         # 1. Initialize all components
         await self.initialize_components()
@@ -270,7 +267,7 @@ class MasterLiveTradingJob:
 
         # System status summary
         logger.info("=" * 60)
-        logger.info("📊 SYSTEM CHECK RESULTS:")
+        logger.info("# Chart SYSTEM CHECK RESULTS:")
         logger.info("=" * 60)
 
         checks = [
@@ -283,26 +280,24 @@ class MasterLiveTradingJob:
 
         passed_checks = 0
         for check_name, status in checks:
-            status_icon = "✅" if status else "❌"
+            status_icon = "# Check" if status else "# X"
             logger.info(f"{status_icon} {check_name}: {'PASSED' if status else 'FAILED'}")
             if status:
                 passed_checks += 1
 
         logger.info("=" * 60)
         success_rate = (passed_checks / len(checks)) * 100
-        logger.info(f"🎯 SYSTEM READINESS: {passed_checks}/{len(checks)} checks passed ({success_rate:.1f}%)")
+        logger.info(f"# Target SYSTEM READINESS: {passed_checks}/{len(checks)} checks passed ({success_rate:.1f}%)")
 
         if success_rate >= 80:
-            logger.info("🚀 SYSTEM READY FOR LIVE TRADING!")
+            logger.info("# Rocket SYSTEM READY FOR LIVE TRADING!")
             return await self.start_live_trading()
         else:
-            logger.error("❌ SYSTEM NOT READY - ISSUES DETECTED")
+            logger.error("# X SYSTEM NOT READY - ISSUES DETECTED")
             return False
 
 async def main():
     """Main execution function"""
-    print("🎯 VIPER MASTER LIVE TRADING JOB")
-    print("=" * 60)
 
     job = MasterLiveTradingJob()
 
@@ -310,21 +305,13 @@ async def main():
         success = await job.run_complete_system_check()
 
         if success:
-            print("🎉 SUCCESS: Complete VIPER system is now running!")
-            print("📊 Features Active:")
-            print("   • Mathematical Validation: ✅")
-            print("   • Balance Fetching: ✅")
-            print("   • TP/SL/TSL Management: ✅")
-            print("   • Scoring & Scanning: ✅")
-            print("   • Risk Management: ✅")
-            print("   • Live Trading: ✅")
+            print("# Party SUCCESS: Complete VIPER system is now running!")
         else:
-            print("❌ FAILURE: System check failed - check logs for details")
+            print("# X FAILURE: System check failed - check logs for details")
             return 1
 
     except Exception as e:
-        logger.error(f"❌ Master job failed: {e}")
-        print(f"❌ ERROR: {e}")
+        logger.error(f"# X Master job failed: {e}")
         return 1
 
     return 0

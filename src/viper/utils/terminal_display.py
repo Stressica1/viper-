@@ -30,13 +30,9 @@ except ImportError:
     # Fallback to basic console
     class Console:
         def print(self, *args, **kwargs):
-            print(*args)
         
         def rule(self, title=""):
-            print(f"\n{'='*60}")
             if title:
-                print(f" {title} ")
-                print(f"{'='*60}")
 
 # Global console instance
 console = Console() if RICH_AVAILABLE else Console()
@@ -59,14 +55,14 @@ class ViperTerminal:
     def print_banner(self):
         """Display VIPER system banner"""
         banner_text = """
-    ██╗   ██╗██╗██████╗ ███████╗██████╗ 
-    ██║   ██║██║██╔══██╗██╔════╝██╔══██╗
-    ██║   ██║██║██████╔╝█████╗  ██████╔╝
-    ╚██╗ ██╔╝██║██╔═══╝ ██╔══╝  ██╔══██╗
-     ╚████╔╝ ██║██║     ███████╗██║  ██║
-      ╚═══╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
+    ██#   ██#██#██████# ███████#██████# 
+    ██#   ██#██#██#==██#██#====#██#==██#
+    ██#   ██#██#██████##█████#  ██████##
+    #██# ██##██#██#===# ██#==#  ██#==██#
+     #████## ██#██#     ███████#██#  ██#
+      #===#  #=##=#     #======##=#  #=#
                                         
-    🚀 AI-Powered Trading System v2.5.4
+    # Rocket AI-Powered Trading System v2.5.4
         """
         
         if RICH_AVAILABLE:
@@ -79,25 +75,22 @@ class ViperTerminal:
             )
             self.console.print(panel)
         else:
-            print(banner_text)
     
     def print_system_status(self, status_data: Dict[str, Any]):
         """Display comprehensive system status"""
         if not RICH_AVAILABLE:
-            print("\n=== SYSTEM STATUS ===")
             for key, value in status_data.items():
-                print(f"{key}: {value}")
             return
             
         # Create status table
-        table = Table(title="🔧 System Status", box=box.ROUNDED)
+        table = Table(title="# Tool System Status", box=box.ROUNDED)
         table.add_column("Component", style="cyan", no_wrap=True)
         table.add_column("Status", justify="center")
         table.add_column("Details", style="white")
         
         for component, info in status_data.items():
             status_color = "green" if info.get('healthy', False) else "red"
-            status_icon = "✅" if info.get('healthy', False) else "❌"
+            status_icon = "# Check" if info.get('healthy', False) else "# X"
             
             table.add_row(
                 component,
@@ -110,9 +103,7 @@ class ViperTerminal:
     def print_trading_summary(self, summary: Dict[str, Any]):
         """Display trading performance summary"""
         if not RICH_AVAILABLE:
-            print("\n=== TRADING SUMMARY ===")
             for key, value in summary.items():
-                print(f"{key}: {value}")
             return
             
         # Create trading summary layout
@@ -123,7 +114,7 @@ class ViperTerminal:
         )
         
         # Metrics table
-        metrics_table = Table(title="📊 Performance Metrics", box=box.SIMPLE_HEAD)
+        metrics_table = Table(title="# Chart Performance Metrics", box=box.SIMPLE_HEAD)
         metrics_table.add_column("Metric", style="cyan")
         metrics_table.add_column("Value", justify="right")
         metrics_table.add_column("Change", justify="right")
@@ -173,9 +164,7 @@ class ViperTerminal:
     def show_progress(self, tasks: List[str], title: str = "Processing"):
         """Show progress for multiple tasks"""
         if not RICH_AVAILABLE:
-            print(f"\n{title}...")
             for i, task in enumerate(tasks, 1):
-                print(f"  {i}. {task}")
             return
             
         with Progress(
@@ -203,14 +192,12 @@ class ViperTerminal:
     def display_error(self, error_msg: str, details: Optional[str] = None):
         """Display error with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n❌ ERROR: {error_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
             f"[red]{error_msg}[/]\n\n{details or ''}", 
-            title="❌ Error",
+            title="# X Error",
             border_style="red",
             padding=(1, 2)
         )
@@ -219,14 +206,12 @@ class ViperTerminal:
     def display_warning(self, warning_msg: str, details: Optional[str] = None):
         """Display warning with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n⚠️ WARNING: {warning_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
             f"[yellow]{warning_msg}[/]\n\n{details or ''}", 
-            title="⚠️ Warning",
+            title="# Warning Warning",
             border_style="yellow",
             padding=(1, 2)
         )
@@ -235,14 +220,12 @@ class ViperTerminal:
     def display_success(self, success_msg: str, details: Optional[str] = None):
         """Display success message with formatting"""
         if not RICH_AVAILABLE:
-            print(f"\n✅ SUCCESS: {success_msg}")
             if details:
-                print(f"Details: {details}")
             return
             
         panel = Panel(
             f"[green]{success_msg}[/]\n\n{details or ''}", 
-            title="✅ Success",
+            title="# Check Success",
             border_style="green",
             padding=(1, 2)
         )
@@ -251,14 +234,11 @@ class ViperTerminal:
     def display_config_summary(self, config: Dict[str, Any]):
         """Display configuration summary"""
         if not RICH_AVAILABLE:
-            print("\n=== CONFIGURATION ===")
             for section, values in config.items():
-                print(f"\n{section.upper()}:")
                 for key, value in values.items():
-                    print(f"  {key}: {value}")
             return
             
-        tree = Tree("🔧 Configuration Summary")
+        tree = Tree("# Tool Configuration Summary")
         
         for section, values in config.items():
             section_branch = tree.add(f"[bold cyan]{section.title()}[/]")

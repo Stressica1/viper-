@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER UNIFIED TRADING JOB - Complete Multi-Pair Trading System
+# Rocket VIPER UNIFIED TRADING JOB - Complete Multi-Pair Trading System
 Fixed async OHLCV fetching with comprehensive risk management
 
 This job provides:
@@ -47,9 +47,9 @@ try:
     from optimized_market_data_streamer import OptimizedMarketDataStreamer
     from performance_monitoring_system import PerformanceMonitoringSystem
     ENHANCED_MODULES_AVAILABLE = True
-    logger.info("✅ Enhanced modules imported successfully")
+    logger.info("# Check Enhanced modules imported successfully")
 except ImportError as e:
-    logger.warning(f"⚠️ Enhanced modules not available: {e}")
+    logger.warning(f"# Warning Enhanced modules not available: {e}")
     ENHANCED_MODULES_AVAILABLE = False
 
 class VIPERUnifiedTradingJob:
@@ -83,14 +83,14 @@ class VIPERUnifiedTradingJob:
         self._discover_all_pairs()
         self._setup_signal_handlers()
 
-        logger.info("✅ VIPER Unified Trading Job initialized successfully")
+        logger.info("# Check VIPER Unified Trading Job initialized successfully")
 
     def _initialize_components(self):
         """Initialize all trading components with enhanced modules support"""
         try:
             # Initialize enhanced system integrator if available
             if ENHANCED_MODULES_AVAILABLE:
-                logger.info("🚀 Initializing enhanced system components...")
+                logger.info("# Rocket Initializing enhanced system components...")
 
                 # Initialize the enhanced system
                 success = asyncio.run(initialize_enhanced_system())
@@ -105,18 +105,18 @@ class VIPERUnifiedTradingJob:
                     self.market_data_streamer = self.integrator.get_module('optimized_market_data_streamer')
                     self.performance_monitor = self.integrator.get_module('performance_monitoring_system')
 
-                    logger.info("✅ Enhanced system components initialized")
+                    logger.info("# Check Enhanced system components initialized")
                 else:
-                    logger.warning("⚠️ Enhanced system initialization failed, falling back to basic components")
+                    logger.warning("# Warning Enhanced system initialization failed, falling back to basic components")
                     self.use_enhanced_system = False
                     self._initialize_basic_components()
             else:
-                logger.info("📊 Enhanced modules not available, using basic components")
+                logger.info("# Chart Enhanced modules not available, using basic components")
                 self.use_enhanced_system = False
                 self._initialize_basic_components()
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             # Fallback to basic components
             self.use_enhanced_system = False
             self._initialize_basic_components()
@@ -133,10 +133,10 @@ class VIPERUnifiedTradingJob:
             self.mcp_config = get_optimal_mcp_config()
             self.entry_optimizer = OptimalEntryPointManager()
 
-            logger.info("✅ Basic components initialized")
+            logger.info("# Check Basic components initialized")
 
         except Exception as e:
-            logger.error(f"❌ Basic component initialization failed: {e}")
+            logger.error(f"# X Basic component initialization failed: {e}")
             raise
 
     def _load_configuration(self):
@@ -181,7 +181,7 @@ class VIPERUnifiedTradingJob:
                 for key, value in trading_params.items():
                     if key in base_config:
                         base_config[key] = value
-                        logger.info(f"📊 Enhanced parameter loaded: {key} = {value}")
+                        logger.info(f"# Chart Enhanced parameter loaded: {key} = {value}")
 
             self.trading_config = base_config
 
@@ -194,10 +194,10 @@ class VIPERUnifiedTradingJob:
                 'max_loss_per_pair': float(os.getenv('MAX_LOSS_PER_PAIR', '10.0'))
             }
 
-            logger.info("✅ Configuration loaded for unified trading")
+            logger.info("# Check Configuration loaded for unified trading")
 
         except Exception as e:
-            logger.error(f"❌ Configuration loading failed: {e}")
+            logger.error(f"# X Configuration loading failed: {e}")
             raise
 
     def _setup_exchange(self):
@@ -208,7 +208,7 @@ class VIPERUnifiedTradingJob:
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if not all([api_key, api_secret, api_password]):
-                logger.error("❌ LIVE TRADING REQUIRES API CREDENTIALS")
+                logger.error("# X LIVE TRADING REQUIRES API CREDENTIALS")
                 raise ValueError("Missing required API credentials")
 
             exchange_config = {
@@ -227,16 +227,16 @@ class VIPERUnifiedTradingJob:
 
             # Test connection and load markets
             self.exchange.load_markets()
-            logger.info("✅ LIVE Exchange connection established")
+            logger.info("# Check LIVE Exchange connection established")
 
         except Exception as e:
-            logger.error(f"❌ Exchange setup failed: {e}")
+            logger.error(f"# X Exchange setup failed: {e}")
             raise
 
     def _discover_all_pairs(self):
         """Discover ALL available swap pairs"""
         try:
-            logger.info("🔍 Discovering ALL Bitget swap pairs...")
+            logger.info("# Search Discovering ALL Bitget swap pairs...")
 
             # Get all swap markets
             all_markets = self.exchange.markets
@@ -244,7 +244,7 @@ class VIPERUnifiedTradingJob:
             # Filter for active swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
-                if (market.get('active', False) and
+                if (market.get('active', False) and:
                     market.get('type') == 'swap' and
                     market.get('quote') == 'USDT'):
 
@@ -260,22 +260,22 @@ class VIPERUnifiedTradingJob:
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"📊 Found {len(self.all_pairs)} active USDT swap pairs")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()
 
         except Exception as e:
-            logger.error(f"❌ Failed to discover pairs: {e}")
+            logger.error(f"# X Failed to discover pairs: {e}")
             raise
 
     def _filter_pairs_by_criteria(self):
         """Filter pairs based on volume, leverage, and other criteria"""
         try:
-            logger.info("🔍 Filtering pairs by trading criteria...")
-            logger.info(f"🎯 Total pairs to filter: {len(self.all_pairs)}")
-            logger.info(f"🎯 Filtering config: volume>={self.trading_config['min_volume_threshold']}, leverage>={self.trading_config['min_leverage_required']}, spread<={self.trading_config['max_spread_threshold']}")
-            logger.info(f"🎯 Environment check: MIN_VOLUME_THRESHOLD={os.getenv('MIN_VOLUME_THRESHOLD')}, MIN_LEVERAGE_REQUIRED={os.getenv('MIN_LEVERAGE_REQUIRED')}")
+            logger.info("# Search Filtering pairs by trading criteria...")
+            logger.info(f"# Target Total pairs to filter: {len(self.all_pairs)}")
+            logger.info(f"# Target Filtering config: volume>={self.trading_config['min_volume_threshold']}, leverage>={self.trading_config['min_leverage_required']}, spread<={self.trading_config['max_spread_threshold']}")
+            logger.info(f"# Target Environment check: MIN_VOLUME_THRESHOLD={os.getenv('MIN_VOLUME_THRESHOLD')}, MIN_LEVERAGE_REQUIRED={os.getenv('MIN_LEVERAGE_REQUIRED')}")
 
             filtered_pairs = []
             rejected_pairs = []  # Define rejected_pairs list
@@ -321,7 +321,7 @@ class VIPERUnifiedTradingJob:
                         pair['price'] = ticker.get('last', 0)
                         filtered_pairs.append(pair)
 
-                        logger.info(f"✅ QUALIFIED: {pair['symbol']}: {' | '.join(criteria_met)}")
+                        logger.info(f"# Check QUALIFIED: {pair['symbol']}: {' | '.join(criteria_met)}")
                     else:
                         # Add to rejected pairs for logging
                         pair['volume_24h'] = volume_24h
@@ -330,15 +330,15 @@ class VIPERUnifiedTradingJob:
                         rejected_pairs.append(pair)
 
                         if i < 5:  # Only log first 5 rejections for debugging
-                            logger.info(f"❌ REJECTED: {pair['symbol']}: {' | '.join(criteria_failed)}")
+                            logger.info(f"# X REJECTED: {pair['symbol']}: {' | '.join(criteria_failed)}")
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not filter {pair['symbol']}: {e}")
+                    logger.warning(f"# Warning Could not filter {pair['symbol']}: {e}")
                     continue
 
             self.active_pairs = filtered_pairs
-            logger.info(f"🎯 Filtered to {len(self.active_pairs)} qualified pairs for trading")
-            logger.info(f"❌ Rejected {len(rejected_pairs)} pairs")
+            logger.info(f"# Target Filtered to {len(self.active_pairs)} qualified pairs for trading")
+            logger.info(f"# X Rejected {len(rejected_pairs)} pairs")
 
             # Show top pairs by volume
             if self.active_pairs:
@@ -347,20 +347,20 @@ class VIPERUnifiedTradingJob:
                 for i, pair in enumerate(top_pairs, 1):
                     logger.info(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f}")
             else:
-                logger.warning("⚠️ No qualified pairs found - check filtering criteria")
+                logger.warning("# Warning No qualified pairs found - check filtering criteria")
 
 
 
         except Exception as e:
-            logger.error(f"❌ Pair filtering failed: {e}")
+            logger.error(f"# X Pair filtering failed: {e}")
             # Initialize empty active_pairs if filtering fails
             self.active_pairs = []
             # Try to use all_pairs as fallback, but ensure they exist
             if hasattr(self, 'all_pairs') and self.all_pairs:
                 self.active_pairs = self.all_pairs
-                logger.warning("⚠️ Using all pairs as fallback due to filtering failure")
+                logger.warning("# Warning Using all pairs as fallback due to filtering failure")
             else:
-                logger.error("❌ No pairs available - trading system cannot start")
+                logger.error("# X No pairs available - trading system cannot start")
                 self.active_pairs = []
 
     def _setup_signal_handlers(self):
@@ -378,9 +378,9 @@ class VIPERUnifiedTradingJob:
             logger.warning("Unified trading job already running")
             return
 
-        logger.info("🚀 Starting VIPER Unified Trading Job...")
-        logger.info(f"📊 Scanning {len(self.active_pairs)} pairs every {self.trading_config['scan_interval']} seconds")
-        logger.info("🎯 Using 2% risk per trade with multi-pair distribution")
+        logger.info("# Rocket Starting VIPER Unified Trading Job...")
+        logger.info(f"# Chart Scanning {len(self.active_pairs)} pairs every {self.trading_config['scan_interval']} seconds")
+        logger.info("# Target Using 2% risk per trade with multi-pair distribution")
         self.is_running = True
         self.trading_stats['start_time'] = datetime.now()
 
@@ -391,7 +391,7 @@ class VIPERUnifiedTradingJob:
         except KeyboardInterrupt:
             logger.info("🛑 Unified trading job stopped by user")
         except Exception as e:
-            logger.error(f"❌ Unified trading job error: {e}")
+            logger.error(f"# X Unified trading job error: {e}")
         finally:
             self._cleanup()
 
@@ -410,7 +410,7 @@ class VIPERUnifiedTradingJob:
         # Generate final report
         self._generate_final_report()
 
-        logger.info("✅ Unified trading job cleanup completed")
+        logger.info("# Check Unified trading job cleanup completed")
 
     async def _scanning_loop(self):
         """Main scanning loop for all pairs with fixed async handling"""
@@ -456,7 +456,7 @@ class VIPERUnifiedTradingJob:
         opportunities = []
         total_pairs = len(self.active_pairs)
 
-        logger.info(f"📊 Scanning {total_pairs} pairs in batches of {batch_size}...")
+        logger.info(f"# Chart Scanning {total_pairs} pairs in batches of {batch_size}...")
 
         for i in range(0, total_pairs, batch_size):
             batch_pairs = self.active_pairs[i:i + batch_size]
@@ -466,7 +466,7 @@ class VIPERUnifiedTradingJob:
             # Small delay between batches to avoid rate limits
             await asyncio.sleep(0.1)
 
-        logger.info(f"📊 Found {len(opportunities)} opportunities across all pairs")
+        logger.info(f"# Chart Found {len(opportunities)} opportunities across all pairs")
         self.trading_stats['pairs_scanned'] += total_pairs
         self.trading_stats['opportunities_found'] += len(opportunities)
 
@@ -549,12 +549,12 @@ class VIPERUnifiedTradingJob:
 
                     if ohlcv and len(ohlcv) > 0:
                         ohlcv_data[timeframe] = ohlcv
-                        logger.debug(f"✅ OHLCV data fetched for {symbol} {timeframe}: {len(ohlcv)} candles")
+                        logger.debug(f"# Check OHLCV data fetched for {symbol} {timeframe}: {len(ohlcv)} candles")
                     else:
-                        logger.warning(f"⚠️ No OHLCV data for {symbol} {timeframe}")
+                        logger.warning(f"# Warning No OHLCV data for {symbol} {timeframe}")
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not fetch OHLCV for {symbol} {timeframe}: {e}")
+                    logger.warning(f"# Warning Could not fetch OHLCV for {symbol} {timeframe}: {e}")
                     self.trading_stats['errors_fixed'] += 1
                     continue
 
@@ -574,7 +574,7 @@ class VIPERUnifiedTradingJob:
 
             if not best_ohlcv:
                 # Fallback to basic data without technical indicators
-                logger.warning(f"⚠️ Using basic data for {symbol} (no technical indicators)")
+                logger.warning(f"# Warning Using basic data for {symbol} (no technical indicators)")
                 return {
                     'symbol': symbol,
                     'close': close_price,
@@ -621,11 +621,11 @@ class VIPERUnifiedTradingJob:
                 'data_quality': 'full'
             }
 
-            logger.debug(f"📊 Market data for {symbol}: Price=${close_price:.4f}, RSI={rsi:.1f}")
+            logger.debug(f"# Chart Market data for {symbol}: Price=${close_price:.4f}, RSI={rsi:.1f}")
             return market_data
 
         except Exception as e:
-            logger.error(f"❌ Error getting market data for {symbol}: {e}")
+            logger.error(f"# X Error getting market data for {symbol}: {e}")
             return None
 
     def _calculate_rsi_fixed(self, prices: List[float], period: int = 14) -> float:
@@ -722,7 +722,7 @@ class VIPERUnifiedTradingJob:
             # Sort by score (highest first)
             scored_opportunities.sort(key=lambda x: x['overall_score'], reverse=True)
 
-            logger.info(f"🎯 Scored {len(scored_opportunities)} opportunities (min score: {self.trading_config['min_viper_score']})")
+            logger.info(f"# Target Scored {len(scored_opportunities)} opportunities (min score: {self.trading_config['min_viper_score']})")
             return scored_opportunities
 
         except Exception as e:
@@ -767,7 +767,7 @@ class VIPERUnifiedTradingJob:
                         scores['ai_ml_confidence'] = ai_ml_result['confidence']
                         scores['ai_ml_recommendation'] = ai_ml_result.get('recommendation', 'HOLD')
                 except Exception as e:
-                    logger.warning(f"⚠️ AI/ML scoring failed: {e}")
+                    logger.warning(f"# Warning AI/ML scoring failed: {e}")
 
             scores['ai_ml'] = ai_ml_score
 
@@ -784,7 +784,7 @@ class VIPERUnifiedTradingJob:
                         scores['technical_direction'] = mtf_analysis.direction.value
                         scores['technical_confluence'] = mtf_analysis.confluence_score
                 except Exception as e:
-                    logger.warning(f"⚠️ Enhanced technical analysis failed: {e}")
+                    logger.warning(f"# Warning Enhanced technical analysis failed: {e}")
 
             # Fallback to basic technical score if enhanced fails
             if technical_score == 0.0:
@@ -877,7 +877,7 @@ class VIPERUnifiedTradingJob:
             return df
 
         except Exception as e:
-            logger.warning(f"⚠️ Error preparing data for AI/ML: {e}")
+            logger.warning(f"# Warning Error preparing data for AI/ML: {e}")
             return pd.DataFrame()
 
     def _calculate_enhanced_volume_score(self, opportunity: Dict[str, Any]) -> float:
@@ -897,7 +897,7 @@ class VIPERUnifiedTradingJob:
             return volume_score
 
         except Exception as e:
-            logger.warning(f"⚠️ Enhanced volume scoring error: {e}")
+            logger.warning(f"# Warning Enhanced volume scoring error: {e}")
             return min(opportunity.get('volume', 0) / 5000000, 1.0)
 
     def _calculate_enhanced_risk_score(self, opportunity: Dict[str, Any]) -> float:
@@ -926,7 +926,7 @@ class VIPERUnifiedTradingJob:
             return 0.8  # Neutral risk score
 
         except Exception as e:
-            logger.warning(f"⚠️ Enhanced risk scoring error: {e}")
+            logger.warning(f"# Warning Enhanced risk scoring error: {e}")
             return 0.5
 
     def _calculate_enhanced_leverage_score(self, opportunity: Dict[str, Any]) -> float:
@@ -951,7 +951,7 @@ class VIPERUnifiedTradingJob:
             return leverage_score
 
         except Exception as e:
-            logger.warning(f"⚠️ Enhanced leverage scoring error: {e}")
+            logger.warning(f"# Warning Enhanced leverage scoring error: {e}")
             leverage = opportunity.get('pair_info', {}).get('leverage', 1)
             return min(leverage / 100, 1.0)
 
@@ -980,7 +980,7 @@ class VIPERUnifiedTradingJob:
             return metrics
 
         except Exception as e:
-            logger.warning(f"⚠️ Error getting enhanced metrics: {e}")
+            logger.warning(f"# Warning Error getting enhanced metrics: {e}")
             return {}
 
     def _calculate_technical_score(self, market_data: Dict[str, Any]) -> float:
@@ -1064,7 +1064,7 @@ class VIPERUnifiedTradingJob:
                     continue
 
             if executed_trades:
-                logger.info(f"✅ Executed {len(executed_trades)} trades across pairs")
+                logger.info(f"# Check Executed {len(executed_trades)} trades across pairs")
 
             return executed_trades
 
@@ -1134,7 +1134,7 @@ class VIPERUnifiedTradingJob:
                 'order_id': order['id']
             }
 
-            logger.info(f"🚀 LIVE TRADE: {symbol} at ${order['price']:.4f} (Size: {position_size:.6f})")
+            logger.info(f"# Rocket LIVE TRADE: {symbol} at ${order['price']:.4f} (Size: {position_size:.6f})")
 
             # Track position
             self.positions[symbol] = {
@@ -1319,7 +1319,7 @@ class VIPERUnifiedTradingJob:
 
             # Check hourly trade limit
             trades_this_hour = sum(1 for pos in self.positions.values()
-                                 if (datetime.now() - pos['entry_time']).seconds < 3600)
+                                 if (datetime.now() - pos['entry_time']).seconds < 3600):
             if trades_this_hour >= self.emergency_config['max_trades_per_hour']:
                 return True
 
@@ -1408,10 +1408,10 @@ class VIPERUnifiedTradingJob:
             with open(report_path, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
 
-            logger.info(f"📊 Final report saved to: {report_path}")
+            logger.info(f"# Chart Final report saved to: {report_path}")
             logger.info(f"💰 Session P&L: ${self.trading_stats['total_pnl']:.2f}")
             logger.info(f"📈 Win Rate: {self.trading_stats['win_rate']:.1%}")
-            logger.info(f"🔧 OHLCV Errors Fixed: {self.trading_stats['errors_fixed']}")
+            logger.info(f"# Tool OHLCV Errors Fixed: {self.trading_stats['errors_fixed']}")
 
         except Exception as e:
             logger.error(f"Final report generation failed: {e}")
@@ -1444,14 +1444,12 @@ class VIPERUnifiedTradingJob:
 
 def main():
     """Main entry point for unified trading job"""
-    print("🚀 VIPER Unified Trading Job - Complete Multi-Pair System")
-    print("=" * 70)
+    print("# Rocket VIPER Unified Trading Job - Complete Multi-Pair System")
 
     # Initialize unified trading job
     unified_job = VIPERUnifiedTradingJob()
 
     # Display configuration
-    print("📊 Unified Trading Configuration:")
     print(f"   Total Pairs Available: {len(unified_job.all_pairs)}")
     print(f"   Active Pairs Filtered: {len(unified_job.active_pairs)}")
     print(f"   Risk per Trade: {unified_job.trading_config['risk_per_trade']*100:.1f}%")
@@ -1459,28 +1457,24 @@ def main():
     print(f"   Scan Interval: {unified_job.trading_config['scan_interval']} seconds")
     print(f"   Min VIPER Score: {unified_job.trading_config['min_viper_score']}")
 
-    print("\n🏆 Top 5 Pairs by Volume:")
     top_pairs = sorted(unified_job.active_pairs, key=lambda x: x.get('volume_24h', 0), reverse=True)[:5]
     for i, pair in enumerate(top_pairs, 1):
         print(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f}")
 
-    print("\n🚀 Trading Mode: LIVE UNIFIED TRADING")
-    print("⚠️  This will execute REAL trades across ALL qualified pairs")
-    print("🔧 FIXED: OHLCV async coroutine errors resolved")
+    print("# Warning  This will execute REAL trades across ALL qualified pairs")
+    print("# Tool FIXED: OHLCV async coroutine errors resolved")
 
     # Confirm start
     confirm = input("\n🚨 Execute REAL LIVE TRADES across ALL PAIRS? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Unified trading job cancelled")
         return
 
     # Start unified trading job
-    print("\n🚀 Starting unified multi-pair trading job...")
+    print("\n# Rocket Starting unified multi-pair trading job...")
     try:
         unified_job.start()
     except KeyboardInterrupt:
-        print("\n🛑 Unified trading job stopped by user")
     except Exception as e:
-        print(f"\n❌ Unified trading job failed: {e}")
+        pass
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED RISK MANAGEMENT SYSTEM
+# Rocket ENHANCED RISK MANAGEMENT SYSTEM
 Advanced risk management with dynamic adjustments and sophisticated position sizing
 
 This enhanced version includes:
@@ -13,19 +13,11 @@ This enhanced version includes:
 """
 
 import os
-import json
-import time
-import math
 import logging
 import asyncio
 import numpy as np
-import pandas as pd
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from enum import Enum
-from pathlib import Path
-import threading
 import ccxt
 
 logging.basicConfig(level=logging.INFO)
@@ -142,11 +134,11 @@ class EnhancedRiskManager:
             })
 
             await asyncio.get_event_loop().run_in_executor(None, self.exchange.load_markets)
-            logger.info("✅ Exchange connected for enhanced risk management")
+            logger.info("# Check Exchange connected for enhanced risk management")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect exchange: {e}")
+            logger.error(f"# X Failed to connect exchange: {e}")
             return False
 
     def calculate_dynamic_position_size(self, symbol: str, entry_price: float,
@@ -203,7 +195,7 @@ class EnhancedRiskManager:
                 return {'error': 'Invalid stop loss distance'}
 
         except Exception as e:
-            logger.error(f"❌ Error calculating dynamic position size: {e}")
+            logger.error(f"# X Error calculating dynamic position size: {e}")
             return {'error': str(e)}
 
     def _calculate_risk_multiplier(self, symbol: str, entry_price: float) -> float:
@@ -237,7 +229,7 @@ class EnhancedRiskManager:
             return max(multiplier, 0.1)  # Minimum 10% of normal risk
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating risk multiplier: {e}")
+            logger.warning(f"# Warning Error calculating risk multiplier: {e}")
             return 1.0
 
     def _calculate_correlation_adjustment(self, symbol: str) -> float:
@@ -267,7 +259,7 @@ class EnhancedRiskManager:
                 return 1.0
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating correlation adjustment: {e}")
+            logger.warning(f"# Warning Error calculating correlation adjustment: {e}")
             return 1.0
 
     def _calculate_volatility_adjustment(self, symbol: str) -> float:
@@ -294,7 +286,7 @@ class EnhancedRiskManager:
                 return 1.0
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating volatility adjustment: {e}")
+            logger.warning(f"# Warning Error calculating volatility adjustment: {e}")
             return 1.0
 
     def assess_portfolio_risk(self) -> Dict[str, Any]:
@@ -358,7 +350,7 @@ class EnhancedRiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error assessing portfolio risk: {e}")
+            logger.error(f"# X Error assessing portfolio risk: {e}")
             return {
                 'overall_risk_level': RiskLevel.HIGH,
                 'error': str(e)
@@ -386,7 +378,7 @@ class EnhancedRiskManager:
             return min(avg_correlation * 1.2, 1.0)  # Scale up for conservatism
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating portfolio correlation risk: {e}")
+            logger.warning(f"# Warning Error calculating portfolio correlation risk: {e}")
             return 0.5
 
     def _calculate_portfolio_volatility_risk(self) -> float:
@@ -419,7 +411,7 @@ class EnhancedRiskManager:
                 return 0.5
 
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating portfolio volatility risk: {e}")
+            logger.warning(f"# Warning Error calculating portfolio volatility risk: {e}")
             return 0.5
 
     def update_market_conditions(self, symbol: str, market_data: Dict[str, Any]):
@@ -445,7 +437,7 @@ class EnhancedRiskManager:
             self._update_correlation_matrix(symbol, market_data)
 
         except Exception as e:
-            logger.warning(f"⚠️ Error updating market conditions: {e}")
+            logger.warning(f"# Warning Error updating market conditions: {e}")
 
     def _update_correlation_matrix(self, symbol: str, market_data: Dict[str, Any]):
         """Update correlation matrix with new market data"""
@@ -473,7 +465,7 @@ class EnhancedRiskManager:
                         self.correlation_matrix[existing_symbol][symbol] = correlation
 
         except Exception as e:
-            logger.warning(f"⚠️ Error updating correlation matrix: {e}")
+            logger.warning(f"# Warning Error updating correlation matrix: {e}")
 
     def check_risk_limits(self) -> List[str]:
         """Check if any risk limits are breached"""
@@ -507,7 +499,7 @@ class EnhancedRiskManager:
                 violations.append(f"Correlation exposure too high: {portfolio_risk['correlation_risk']:.2%}")
 
         except Exception as e:
-            logger.error(f"❌ Error checking risk limits: {e}")
+            logger.error(f"# X Error checking risk limits: {e}")
             violations.append(f"Risk check error: {e}")
 
         return violations
@@ -547,7 +539,7 @@ class EnhancedRiskManager:
             return report
 
         except Exception as e:
-            logger.error(f"❌ Error generating risk report: {e}")
+            logger.error(f"# X Error generating risk report: {e}")
             return {'error': str(e)}
 
     def _generate_risk_recommendations(self, violations: List[str], portfolio_risk: Dict[str, Any]) -> List[str]:
@@ -559,7 +551,7 @@ class EnhancedRiskManager:
             if portfolio_risk['overall_risk_level'] in [RiskLevel.EXTREME, RiskLevel.VERY_HIGH]:
                 recommendations.append("🚨 HIGH RISK: Consider reducing position sizes immediately")
                 recommendations.append("📉 Implement trailing stops on all positions")
-                recommendations.append("⚠️ Avoid opening new positions until risk levels decrease")
+                recommendations.append("# Warning Avoid opening new positions until risk levels decrease")
 
             # Risk violation recommendations
             if violations:
@@ -576,16 +568,16 @@ class EnhancedRiskManager:
 
             # Portfolio concentration recommendations
             if portfolio_risk.get('concentration_risk', 0) > 0.5:
-                recommendations.append("🎯 HIGH CONCENTRATION: Diversify across more assets")
+                recommendations.append("# Target HIGH CONCENTRATION: Diversify across more assets")
 
             # Default recommendations
             if not recommendations:
-                recommendations.append("✅ Risk levels within acceptable parameters")
-                recommendations.append("📊 Continue monitoring market conditions")
+                recommendations.append("# Check Risk levels within acceptable parameters")
+                recommendations.append("# Chart Continue monitoring market conditions")
 
         except Exception as e:
-            logger.warning(f"⚠️ Error generating recommendations: {e}")
-            recommendations.append("🔧 Risk monitoring system needs attention")
+            logger.warning(f"# Warning Error generating recommendations: {e}")
+            recommendations.append("# Tool Risk monitoring system needs attention")
 
         return recommendations
 
@@ -602,8 +594,6 @@ async def test_enhanced_risk_manager():
         portfolio_value=10000
     )
 
-    print("🧪 Enhanced Risk Manager Test")
-    print("=" * 40)
     print(f"Position Size Calculation: {position_calc}")
 
     # Test portfolio risk assessment

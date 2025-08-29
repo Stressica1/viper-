@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Task Scheduler Service
+# Rocket VIPER Task Scheduler Service
 Advanced job and task management for the VIPER trading system
 Features:
 - Distributed task scheduling
@@ -105,7 +105,7 @@ class TaskScheduler:
         # Setup routes
         self.setup_routes()
         
-        logger.info("🚀 VIPER Task Scheduler initialized")
+        logger.info("# Rocket VIPER Task Scheduler initialized")
 
     def setup_routes(self):
         """Setup FastAPI routes"""
@@ -128,7 +128,7 @@ class TaskScheduler:
                 )
                 
             except Exception as e:
-                logger.error(f"❌ Error creating task: {e}")
+                logger.error(f"# X Error creating task: {e}")
                 raise HTTPException(status_code=500, detail=str(e))
         
         @self.app.get("/tasks/{task_id}")
@@ -155,7 +155,7 @@ class TaskScheduler:
             except HTTPException:
                 raise
             except Exception as e:
-                logger.error(f"❌ Error getting task: {e}")
+                logger.error(f"# X Error getting task: {e}")
                 raise HTTPException(status_code=500, detail=str(e))
         
         @self.app.delete("/tasks/{task_id}")
@@ -171,7 +171,7 @@ class TaskScheduler:
             except HTTPException:
                 raise
             except Exception as e:
-                logger.error(f"❌ Error cancelling task: {e}")
+                logger.error(f"# X Error cancelling task: {e}")
                 raise HTTPException(status_code=500, detail=str(e))
         
         @self.app.get("/status")
@@ -216,7 +216,7 @@ class TaskScheduler:
         try:
             self.redis_client = redis.from_url(REDIS_URL, decode_responses=True)
             await asyncio.get_event_loop().run_in_executor(None, self.redis_client.ping)
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
             
             # Initialize task queues
             for task_type in TaskType:
@@ -226,7 +226,7 @@ class TaskScheduler:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     async def schedule_task(self, task_type: TaskType, priority: int = 5, 
@@ -292,7 +292,7 @@ class TaskScheduler:
             return Task(**task_dict)
             
         except Exception as e:
-            logger.error(f"❌ Error getting task status: {e}")
+            logger.error(f"# X Error getting task status: {e}")
             return None
 
     async def update_task_status(self, task_id: str, status: TaskStatus, 
@@ -334,7 +334,7 @@ class TaskScheduler:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Error updating task status: {e}")
+            logger.error(f"# X Error updating task status: {e}")
             return False
 
     async def get_next_task(self, task_types: List[TaskType]) -> Optional[Task]:
@@ -356,7 +356,7 @@ class TaskScheduler:
             return None
             
         except Exception as e:
-            logger.error(f"❌ Error getting next task: {e}")
+            logger.error(f"# X Error getting next task: {e}")
             return None
 
     async def get_queue_size(self, task_type: TaskType) -> int:
@@ -367,7 +367,7 @@ class TaskScheduler:
                 None, self.redis_client.llen, queue_name
             )
             return size or 0
-        except:
+        except Exception:
             return 0
 
     async def cancel_task(self, task_id: str) -> bool:
@@ -381,7 +381,7 @@ class TaskScheduler:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Error cancelling task: {e}")
+            logger.error(f"# X Error cancelling task: {e}")
             return False
 
     async def cleanup_completed_tasks(self):
@@ -391,7 +391,7 @@ class TaskScheduler:
             # For now, Redis TTL handles most cleanup
             pass
         except Exception as e:
-            logger.error(f"❌ Error in cleanup: {e}")
+            logger.error(f"# X Error in cleanup: {e}")
 
     async def health_check(self):
         """Health check endpoint logic"""
@@ -404,13 +404,13 @@ class TaskScheduler:
 
     async def start_scheduler(self):
         """Start the task scheduler"""
-        logger.info("🚀 Starting VIPER Task Scheduler")
+        logger.info("# Rocket Starting VIPER Task Scheduler")
         self.is_running = True
         
         # Background task for cleanup
         asyncio.create_task(self.periodic_cleanup())
         
-        logger.info("✅ Task Scheduler started successfully")
+        logger.info("# Check Task Scheduler started successfully")
 
     async def periodic_cleanup(self):
         """Periodic cleanup of old tasks and workers"""
@@ -434,7 +434,7 @@ class TaskScheduler:
                 await asyncio.sleep(300)  # Cleanup every 5 minutes
                 
             except Exception as e:
-                logger.error(f"❌ Error in periodic cleanup: {e}")
+                logger.error(f"# X Error in periodic cleanup: {e}")
                 await asyncio.sleep(60)
 
     async def stop_scheduler(self):
@@ -448,7 +448,7 @@ async def create_app():
     
     # Connect to Redis
     if not await scheduler.connect_redis():
-        logger.error("❌ Failed to connect to Redis")
+        logger.error("# X Failed to connect to Redis")
         return None
     
     # Start scheduler
@@ -471,11 +471,11 @@ async def main():
         )
         
         server = uvicorn.Server(config)
-        logger.info(f"🚀 Starting Task Scheduler on port {PORT}")
+        logger.info(f"# Rocket Starting Task Scheduler on port {PORT}")
         await server.serve()
         
     except Exception as e:
-        logger.error(f"❌ Failed to start Task Scheduler: {e}")
+        logger.error(f"# X Failed to start Task Scheduler: {e}")
 
 if __name__ == "__main__":
     asyncio.run(main())

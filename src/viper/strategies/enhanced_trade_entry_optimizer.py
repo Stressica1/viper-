@@ -1,29 +1,24 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED TRADE ENTRY SIGNALING OPTIMIZER
+# Rocket ENHANCED TRADE ENTRY SIGNALING OPTIMIZER
 Advanced multi-indicator, multi-timeframe trade entry system with superior signaling
 
 Features:
-✅ Multi-timeframe trend confluence analysis
-✅ Advanced technical indicator combinations
-✅ Dynamic risk-adjusted entry scoring
-✅ Market regime detection and adaptation
-✅ Real-time signal quality assessment
-✅ Volume profile and order flow analysis
-✅ Inter-market correlation analysis
-✅ Machine learning-based signal validation
+# Check Multi-timeframe trend confluence analysis
+# Check Advanced technical indicator combinations
+# Check Dynamic risk-adjusted entry scoring
+# Check Market regime detection and adaptation
+# Check Real-time signal quality assessment
+# Check Volume profile and order flow analysis
+# Check Inter-market correlation analysis
+# Check Machine learning-based signal validation
 """
 
 import os
-import sys
-import time
-import json
 import logging
 import asyncio
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from enum import Enum
 import ccxt
@@ -161,10 +156,10 @@ class EnhancedTradeEntryOptimizer:
             })
 
             self.exchange.load_markets()
-            logger.info("✅ Enhanced Entry Optimizer initialized with Bitget exchange")
+            logger.info("# Check Enhanced Entry Optimizer initialized with Bitget exchange")
 
         except Exception as e:
-            logger.error(f"❌ Exchange initialization failed: {e}")
+            logger.error(f"# X Exchange initialization failed: {e}")
             self.exchange = None
 
     async def generate_enhanced_entry_signals(self, symbols: List[str]) -> List[EnhancedEntrySignal]:
@@ -192,7 +187,7 @@ class EnhancedTradeEntryOptimizer:
         filtered_signals = self._filter_signals_by_quality(signals)
         ranked_signals = self._rank_signals_by_confidence(filtered_signals)
 
-        logger.info(f"🎯 Generated {len(ranked_signals)} enhanced entry signals")
+        logger.info(f"# Target Generated {len(ranked_signals)} enhanced entry signals")
         return ranked_signals
 
     def _analyze_symbol_entry(self, symbol: str) -> List[EnhancedEntrySignal]:
@@ -763,8 +758,7 @@ class EnhancedTradeEntryOptimizer:
 # Example usage and testing functions
 async def main():
     """Main function for testing the enhanced entry optimizer"""
-    print("🚀 Enhanced Trade Entry Signaling Optimizer")
-    print("=" * 80)
+    print("# Rocket Enhanced Trade Entry Signaling Optimizer")
 
     optimizer = EnhancedTradeEntryOptimizer()
 
@@ -777,13 +771,11 @@ async def main():
         'DOT/USDT:USDT'
     ]
 
-    print(f"📊 Analyzing {len(test_symbols)} symbols for entry signals...")
 
     # Generate signals
     signals = await optimizer.generate_enhanced_entry_signals(test_symbols)
 
-    print(f"\\n🎯 Generated {len(signals)} enhanced entry signals")
-    print("-" * 80)
+    print(f"\\n# Target Generated {len(signals)} enhanced entry signals")
 
     # Display top signals
     for i, signal in enumerate(signals[:10], 1):
@@ -792,16 +784,12 @@ async def main():
         print(f"   Entry: ${signal.entry_price:.4f} | SL: ${signal.stop_loss:.4f} | TP: ${signal.take_profit:.4f}")
         print(f"   Risk/Reward: {signal.risk_reward_ratio:.2f} | Regime: {signal.market_regime.value}")
         print(f"   Expires: {signal.expires_at.strftime('%H:%M:%S')}")
-        print()
 
     # Get performance metrics
     metrics = await optimizer.get_signal_performance_metrics()
-    print("📈 Performance Metrics:")
     print(f"   Total Signals: {metrics['total_signals']}")
-    print(f"   Win Rate: {metrics['win_rate']:.1f}%")
     print(f"   Profit Factor: {metrics['profit_factor']:.2f}")
 
-    print("\\n✅ Enhanced Entry Optimizer Test Complete!")
 
 if __name__ == "__main__":
     asyncio.run(main())

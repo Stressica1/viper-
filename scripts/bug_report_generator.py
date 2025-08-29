@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-📊 COMPREHENSIVE BUG REPORT GENERATOR - VIPER Quality Assurance
+# Chart COMPREHENSIVE BUG REPORT GENERATOR - VIPER Quality Assurance
 ===============================================================
 
 Generates detailed, actionable reports from bug scan results with:
@@ -73,7 +73,6 @@ class ComprehensiveBugReportGenerator:
 
     def generate_comprehensive_report(self) -> str:
         """Generate comprehensive HTML report"""
-        print("📊 GENERATING COMPREHENSIVE BUG REPORT")
 
         # Load scan results
         with open(self.scan_results_path, 'r', encoding='utf-8') as f:
@@ -103,14 +102,11 @@ class ComprehensiveBugReportGenerator:
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
 
-        print(f"✅ HTML Report saved to: {html_path}")
 
         # Generate PDF report (if weka is available)
         try:
             pdf_path = self._generate_pdf_report(html_content)
-            print(f"✅ PDF Report saved to: {pdf_path}")
         except Exception as e:
-            print(f"⚠️  PDF generation skipped: {e}")
 
         return str(html_path)
 
@@ -217,7 +213,7 @@ class ComprehensiveBugReportGenerator:
 
             <div class="summary-grid">
                 <div class="summary-item">
-                    <h3>🎯 Overall Code Quality Score</h3>
+                    <h3># Target Overall Code Quality Score</h3>
                     <div class="quality-score {self._get_quality_class(quality_score)}">
                         {quality_score:.1f}/100
                     </div>
@@ -225,7 +221,7 @@ class ComprehensiveBugReportGenerator:
                 </div>
 
                 <div class="summary-item">
-                    <h3>📊 Scan Coverage</h3>
+                    <h3># Chart Scan Coverage</h3>
                     <ul>
                         <li><strong>{metrics.total_files}</strong> Python files analyzed</li>
                         <li><strong>{metrics.total_lines:,}</strong> lines of code scanned</li>
@@ -254,7 +250,7 @@ class ComprehensiveBugReportGenerator:
             </div>
 
             <div class="key-insights">
-                <h3>🔍 Key Insights</h3>
+                <h3># Search Key Insights</h3>
                 <ul>
                     <li><strong>Most Problematic File:</strong> {metrics.most_problematic_file}</li>
                     <li><strong>Most Common Issue:</strong> {metrics.most_common_issue_type}</li>
@@ -365,7 +361,7 @@ class ComprehensiveBugReportGenerator:
 
         return f"""
         <div class="category-analysis">
-            <h2>📊 Category Analysis</h2>
+            <h2># Chart Category Analysis</h2>
             <div class="category-grid">
                 {''.join([f'''
                 <div class="category-card">
@@ -460,7 +456,7 @@ class ComprehensiveBugReportGenerator:
 
         return f"""
         <div class="issue-patterns">
-            <h2>🔍 Issue Pattern Analysis</h2>
+            <h2># Search Issue Pattern Analysis</h2>
             <p>Most common issues found across the codebase</p>
 
             <table class="patterns-table">
@@ -498,7 +494,7 @@ class ComprehensiveBugReportGenerator:
 
         return f"""
         <div class="recommendations">
-            <h2>💡 Recommendations</h2>
+            <h2># Idea Recommendations</h2>
 
             <div class="recommendations-grid">
                 <div class="priority-recommendations">
@@ -560,10 +556,10 @@ class ComprehensiveBugReportGenerator:
 
             <div class="trend-insights">
                 <div class="trend-item">
-                    <h3>🎯 Quality Score Trend</h3>
+                    <h3># Target Quality Score Trend</h3>
                     <p>Track code quality improvements over time</p>
                     <div class="trend-placeholder">
-                        <p>📊 Historical trend data will be available after multiple scans</p>
+                        <p># Chart Historical trend data will be available after multiple scans</p>
                     </div>
                 </div>
 
@@ -1082,8 +1078,8 @@ def main():
         generator.output_dir = Path(args.output)
 
     report_path = generator.generate_comprehensive_report()
-    print(f"\n🎉 Comprehensive bug report generated successfully!")
-    print(f"📊 View the detailed report at: {report_path}")
+    print(f"\n# Party Comprehensive bug report generated successfully!")
+    print(f"# Chart View the detailed report at: {report_path}")
 
 if __name__ == '__main__':
     main()

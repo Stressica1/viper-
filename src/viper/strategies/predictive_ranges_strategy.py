@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 """
-🚀 PREDICTIVE RANGES TRADING STRATEGY
+# Rocket PREDICTIVE RANGES TRADING STRATEGY
 LuxAlgo-inspired predictive support/resistance levels for optimal trade entries
 
 This strategy implements:
-✅ Predictive Range Projections - Forecast future S/R levels
-✅ Dynamic Range Calculations - Volatility-adjusted projections
-✅ Multi-Timeframe Analysis - Confluence across timeframes
-✅ Entry Signal Optimization - Precise entry timing
-✅ Risk Management Integration - ATR-based stops and targets
+# Check Predictive Range Projections - Forecast future S/R levels
+# Check Dynamic Range Calculations - Volatility-adjusted projections
+# Check Multi-Timeframe Analysis - Confluence across timeframes
+# Check Entry Signal Optimization - Precise entry timing
+# Check Risk Management Integration - ATR-based stops and targets
 """
 
 import numpy as np
 import pandas as pd
 import talib as ta
-from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
 from datetime import datetime
 import logging
@@ -64,7 +63,7 @@ class PredictiveRangesStrategy:
         self.price_history: Dict[str, pd.DataFrame] = {}
         self.predictive_ranges: Dict[str, List[PredictiveRange]] = {}
 
-        logger.info("🚀 Predictive Ranges Strategy initialized")
+        logger.info("# Rocket Predictive Ranges Strategy initialized")
 
     def _get_default_config(self) -> Dict[str, Any]:
         """Get default configuration for predictive ranges"""
@@ -181,10 +180,10 @@ class PredictiveRangesStrategy:
             # Store ranges for this symbol
             self.predictive_ranges[symbol] = ranges
 
-            logger.info(f"✅ Calculated {len(ranges)} predictive ranges for {symbol} on {timeframe}")
+            logger.info(f"# Check Calculated {len(ranges)} predictive ranges for {symbol} on {timeframe}")
 
         except Exception as e:
-            logger.error(f"❌ Error calculating predictive ranges for {symbol}: {e}")
+            logger.error(f"# X Error calculating predictive ranges for {symbol}: {e}")
 
         return ranges
 
@@ -277,10 +276,10 @@ class PredictiveRangesStrategy:
             # Sort by confluence score
             signals.sort(key=lambda x: x.confluence_score, reverse=True)
 
-            logger.info(f"🎯 Found {len(signals)} optimal entry signals for {symbol}")
+            logger.info(f"# Target Found {len(signals)} optimal entry signals for {symbol}")
 
         except Exception as e:
-            logger.error(f"❌ Error finding optimal entries for {symbol}: {e}")
+            logger.error(f"# X Error finding optimal entries for {symbol}: {e}")
 
         return signals
 
@@ -438,8 +437,6 @@ def get_predictive_strategy() -> PredictiveRangesStrategy:
 # Example usage and testing
 async def main():
     """Test predictive ranges strategy"""
-    print("🚀 PREDICTIVE RANGES STRATEGY TEST")
-    print("=" * 60)
 
     strategy = get_predictive_strategy()
 
@@ -457,12 +454,11 @@ async def main():
 
     # Calculate predictive ranges
     ranges = strategy.calculate_predictive_ranges(sample_data, symbol, timeframe)
-    print(f"📊 Calculated {len(ranges)} predictive ranges")
+    print(f"# Chart Calculated {len(ranges)} predictive ranges")
 
     # Find optimal entries
     current_price = 100.0
     signals = strategy.find_optimal_entries(symbol, current_price)
-    print(f"🎯 Found {len(signals)} entry signals")
 
     # Get forecast
     forecast = strategy.get_range_forecast(symbol)

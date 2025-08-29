@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Pre-commit Hook - Repository Structure Enforcer
+# Rocket VIPER Pre-commit Hook - Repository Structure Enforcer
 Prevents commits that violate repository organization rules
 """
 
@@ -76,7 +76,7 @@ def check_naming_conventions():
 
 def main():
     """Main pre-commit check"""
-    print("🔍 Running VIPER repository structure checks...")
+    print("# Search Running VIPER repository structure checks...")
     
     violations = []
     
@@ -91,17 +91,10 @@ def main():
         violations.extend(naming_violations)
     
     if violations:
-        print("❌ Repository structure violations found:")
         for violation in violations:
-            print(f"   - {violation}")
-        print()
-        print("💡 To fix these issues:")
         print("   1. Run: python tools/repo_organizer.py --fix")
-        print("   2. Add the organized files: git add .")
-        print("   3. Commit again")
         sys.exit(1)
     
-    print("✅ Repository structure is clean!")
     sys.exit(0)
 
 if __name__ == "__main__":

@@ -30,14 +30,9 @@ from pathlib import Path
 from typing import Dict, List, Tuple, Set, Any, Optional
 from dataclasses import dataclass, asdict
 from collections import defaultdict, Counter
-import subprocess
-import importlib.util
-import tempfile
-import hashlib
 
 # Third-party imports
 try:
-    import requests
     HAS_REQUESTS = True
 except ImportError:
     HAS_REQUESTS = False
@@ -49,7 +44,6 @@ except ImportError:
     HAS_SPELLCHECKER = False
 
 try:
-    import astroid
     HAS_ASTROID = True
 except ImportError:
     HAS_ASTROID = False
@@ -181,11 +175,7 @@ class ComprehensiveBugDetector:
 
     def scan_repository(self) -> ScanResults:
         """Main scanning function"""
-        print("🔍 COMPREHENSIVE BUG DETECTOR")
-        print("=" * 50)
-        print(f"📂 Scanning repository: {self.repo_path}")
         print(f"⏰ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print()
 
         # Get all Python files
         python_files = self._get_python_files()
@@ -196,7 +186,6 @@ class ComprehensiveBugDetector:
 
         for file_path in python_files:
             try:
-                print(f"🔍 Scanning: {file_path.name}")
                 findings, lines = self._scan_file(file_path)
                 self.findings.extend(findings)
                 total_lines += lines
@@ -204,7 +193,7 @@ class ComprehensiveBugDetector:
 
                 # Show progress
                 if processed_files % 10 == 0:
-                    print(f"  📊 Progress: {processed_files}/{len(python_files)} files")
+                    print(f"  # Chart Progress: {processed_files}/{len(python_files)} files")
 
             except Exception as e:
                 self.findings.append(BugFinding(
@@ -235,17 +224,10 @@ class ComprehensiveBugDetector:
             recommendations=recommendations
         )
 
-        print("\n" + "=" * 50)
-        print("🎯 SCAN COMPLETE")
-        print("=" * 50)
-        print(f"📊 Total files scanned: {processed_files}")
-        print(f"📝 Total lines scanned: {total_lines}")
+        print(f"# Chart Total files scanned: {processed_files}")
         print(f"⏱️  Execution time: {execution_time:.2f} seconds")
-        print(f"🚨 Total findings: {len(self.findings)}")
         print(f"🔴 Critical: {summary.get('critical_count', 0)}")
-        print(f"🟠 High: {summary.get('high_count', 0)}")
         print(f"🟡 Medium: {summary.get('medium_count', 0)}")
-        print(f"🟢 Low: {summary.get('low_count', 0)}")
         print(f"ℹ️  Info: {summary.get('info_count', 0)}")
 
         return results
@@ -454,7 +436,7 @@ class ComprehensiveBugDetector:
                         suggestion='Remove unused import or use it in the code'
                     ))
 
-        except:
+        except Exception:
             pass  # Skip AST analysis if parsing fails
 
         return findings
@@ -534,7 +516,7 @@ class ComprehensiveBugDetector:
         if summary['critical_count'] > 0:
             recommendations.append("🚨 CRITICAL: Fix all critical issues immediately - these may prevent the code from running")
         if summary['high_count'] > 0:
-            recommendations.append("⚠️ HIGH PRIORITY: Address high-severity issues that could cause runtime errors or security problems")
+            recommendations.append("# Warning HIGH PRIORITY: Address high-severity issues that could cause runtime errors or security problems")
         if summary['medium_count'] > 0:
             recommendations.append("📋 MEDIUM: Review medium-severity issues for code quality and maintainability improvements")
 
@@ -601,14 +583,12 @@ def main():
     output_path = args.output or f"reports/bug_scan_report.{args.format}"
     saved_path = detector.save_report(results, Path(output_path))
 
-    print(f"\n📄 Report saved to: {saved_path}")
 
     # Exit with error code if critical issues found
     if results.summary.get('critical_count', 0) > 0:
-        print("❌ Critical issues found - review and fix before proceeding")
+        print("# X Critical issues found - review and fix before proceeding")
         sys.exit(1)
     else:
-        print("✅ No critical issues found")
         sys.exit(0)
 
 if __name__ == '__main__':

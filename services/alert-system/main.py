@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Alert System
+# Rocket VIPER Trading Bot - Alert System
 Automated notification and alert management service
 
 Features:
@@ -17,8 +17,6 @@ import logging
 import asyncio
 import threading
 import smtplib
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import redis
@@ -96,9 +94,9 @@ class AlertSystem:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             raise
 
     def setup_notification_channels(self):
@@ -156,7 +154,7 @@ VIPER Trading Bot Alert System
             logger.info(f"📧 Email alert sent for {alert['type']}")
 
         except Exception as e:
-            logger.error(f"❌ Failed to send email alert: {e}")
+            logger.error(f"# X Failed to send email alert: {e}")
 
     def send_telegram_alert(self, alert: Dict):
         """Send alert via Telegram"""
@@ -189,10 +187,10 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
                     if response.status_code == 200:
                         logger.info(f"📱 Telegram alert sent to {chat_id}")
                     else:
-                        logger.error(f"❌ Failed to send Telegram alert: {response.text}")
+                        logger.error(f"# X Failed to send Telegram alert: {response.text}")
 
         except Exception as e:
-            logger.error(f"❌ Failed to send Telegram alert: {e}")
+            logger.error(f"# X Failed to send Telegram alert: {e}")
 
     def send_alert(self, alert_type: AlertType, severity: AlertSeverity, message: str, data: Optional[Dict] = None):
         """Send alert through all configured channels"""
@@ -232,7 +230,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
             logger.info(f"🚨 Alert sent: {alert_type.value} - {severity.value}")
 
         except Exception as e:
-            logger.error(f"❌ Failed to send alert: {e}")
+            logger.error(f"# X Failed to send alert: {e}")
 
     def process_trading_signals(self, signal_data: Dict):
         """Process trading signals and generate alerts"""
@@ -248,7 +246,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
             self.send_alert(AlertType.TRADING_SIGNAL, severity, message, signal_data)
 
         except Exception as e:
-            logger.error(f"❌ Failed to process trading signal: {e}")
+            logger.error(f"# X Failed to process trading signal: {e}")
 
     def process_risk_alerts(self, risk_data: Dict):
         """Process risk management alerts"""
@@ -273,7 +271,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
             self.send_alert(AlertType.RISK_ALERT, severity, message, risk_data)
 
         except Exception as e:
-            logger.error(f"❌ Failed to process risk alert: {e}")
+            logger.error(f"# X Failed to process risk alert: {e}")
 
     def process_system_status(self, status_data: Dict):
         """Process system status updates and generate health alerts"""
@@ -292,7 +290,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
                 self.send_alert(AlertType.SYSTEM_WARNING, severity, message, status_data)
 
         except Exception as e:
-            logger.error(f"❌ Failed to process system status: {e}")
+            logger.error(f"# X Failed to process system status: {e}")
 
     def monitor_system_health(self):
         """Monitor overall system health and generate alerts"""
@@ -316,7 +314,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
                 asyncio.run(asyncio.sleep(30))  # Check every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Health monitoring error: {e}")
+                logger.error(f"# X Health monitoring error: {e}")
                 asyncio.run(asyncio.sleep(60))
 
     def subscribe_to_alerts(self):
@@ -353,10 +351,10 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
                             self.process_system_status(data)
 
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode alert message: {e}")
+                        logger.error(f"# X Failed to decode alert message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in alert subscription: {e}")
+            logger.error(f"# X Error in alert subscription: {e}")
 
     def start_background_monitoring(self):
         """Start background monitoring threads"""
@@ -379,7 +377,7 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
     def start(self):
         """Start the alert system"""
         try:
-            logger.info("🚀 Starting Alert System...")
+            logger.info("# Rocket Starting Alert System...")
 
             # Connect to Redis
             self.connect_redis()
@@ -407,13 +405,13 @@ Details: {json.dumps(alert.get('data', {}), indent=2)}
             logger.info("⏹️ Stopping Alert System...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Alert System error: {e}")
+            logger.error(f"# X Alert System error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the alert system"""
         self.is_running = False
-        logger.info("✅ Alert System stopped")
+        logger.info("# Check Alert System stopped")
 
 def create_app():
     """Create FastAPI application for health checks and API"""

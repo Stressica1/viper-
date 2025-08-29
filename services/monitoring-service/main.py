@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Monitoring Service
+# Rocket VIPER Trading Bot - Monitoring Service
 System metrics collection, alerting, and performance monitoring
 
 Features:
@@ -19,16 +19,11 @@ import time
 import logging
 import asyncio
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
-from fastapi import FastAPI, HTTPException, Query, Request, BackgroundTasks
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
-from pathlib import Path
-import threading
 import httpx
 import psutil
-import socket
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -80,17 +75,17 @@ class MonitoringService:
         self.metrics_history = {}
         self.active_alerts = []
 
-        logger.info("🏗️ Initializing Monitoring Service...")
+        logger.info("# Construction Initializing Monitoring Service...")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     async def check_service_health(self, service_name: str) -> Dict:
@@ -196,7 +191,7 @@ class MonitoringService:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error collecting system metrics: {e}")
+            logger.error(f"# X Error collecting system metrics: {e}")
             return {'error': str(e), 'timestamp': datetime.now().isoformat()}
 
     async def collect_all_service_metrics(self) -> Dict:
@@ -296,7 +291,7 @@ class MonitoringService:
                     })
 
         except Exception as e:
-            logger.error(f"❌ Error checking alerts: {e}")
+            logger.error(f"# X Error checking alerts: {e}")
             alerts.append({
                 'type': 'monitoring_error',
                 'severity': 'critical',
@@ -333,7 +328,7 @@ class MonitoringService:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error checking alert cooldown: {e}")
+            logger.error(f"# X Error checking alert cooldown: {e}")
             return True  # Default to triggering alert on error
 
     def get_dashboard_data(self) -> Dict:
@@ -352,7 +347,7 @@ class MonitoringService:
             for alert in alerts:
                 try:
                     recent_alerts.append(json.loads(alert))
-                except:
+                except Exception:
                     recent_alerts.append({'raw': alert})
 
             # Get service status summary
@@ -392,7 +387,7 @@ class MonitoringService:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error getting dashboard data: {e}")
+            logger.error(f"# X Error getting dashboard data: {e}")
             return {'error': str(e), 'timestamp': datetime.now().isoformat()}
 
     def get_system_uptime(self) -> str:
@@ -405,12 +400,12 @@ class MonitoringService:
                 hours = uptime_timedelta.seconds // 3600
                 minutes = (uptime_timedelta.seconds % 3600) // 60
                 return f"{days}d {hours}h {minutes}m"
-        except:
+        except Exception:
             return "unknown"
 
     async def start_monitoring(self):
         """Start monitoring loop"""
-        logger.info("🚀 Starting monitoring loop...")
+        logger.info("# Rocket Starting monitoring loop...")
         self.is_running = True
 
         while self.is_running:
@@ -450,7 +445,7 @@ class MonitoringService:
                 await asyncio.sleep(30)  # Check every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Error in monitoring loop: {e}")
+                logger.error(f"# X Error in monitoring loop: {e}")
                 await asyncio.sleep(10)
 
     def stop(self):
@@ -471,12 +466,12 @@ monitor = MonitoringService()
 async def startup_event():
     """Initialize services on startup"""
     if not monitor.initialize_redis():
-        logger.error("❌ Failed to initialize Redis. Exiting...")
+        logger.error("# X Failed to initialize Redis. Exiting...")
         return
 
     # Start monitoring in background task
     asyncio.create_task(monitor.start_monitoring())
-    logger.info("✅ Monitoring Service started successfully")
+    logger.info("# Check Monitoring Service started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -558,7 +553,7 @@ async def get_alerts(limit: int = Query(50, description="Number of alerts to ret
         for alert in alerts:
             try:
                 parsed_alerts.append(json.loads(alert))
-            except:
+            except Exception:
                 parsed_alerts.append({'raw': alert})
 
         return {'alerts': parsed_alerts, 'count': len(parsed_alerts)}
@@ -590,7 +585,7 @@ async def get_metrics_history(hours: int = Query(24, description="Hours of histo
                     data = monitor.redis_client.get(key)
                     if data:
                         history_data.append(json.loads(data))
-            except:
+            except Exception:
                 continue
 
         # Sort by timestamp

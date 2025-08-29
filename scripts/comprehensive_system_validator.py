@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔍 COMPREHENSIVE SYSTEM VALIDATOR - VALIDATE EVERY FUNCTION
+# Search COMPREHENSIVE SYSTEM VALIDATOR - VALIDATE EVERY FUNCTION
 ===========================================================
 
 Deep validation of the entire VIPER trading system.
@@ -29,12 +29,9 @@ import importlib
 import importlib.util
 import traceback
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Set
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from collections import defaultdict
-import subprocess
-import asyncio
 from concurrent.futures import ThreadPoolExecutor
 import logging
 
@@ -116,7 +113,7 @@ class ComprehensiveSystemValidator:
             'validation_end_time': None
         }
         
-        logger.info("🔍 Comprehensive System Validator initialized")
+        logger.info("# Search Comprehensive System Validator initialized")
     
     def discover_all_python_files(self) -> List[Path]:
         """Discover all Python files in the repository"""
@@ -245,7 +242,7 @@ class ComprehensiveSystemValidator:
                     self.stats['total_functions'] += 1
         
         except Exception as e:
-            logger.warning(f"⚠️ Error extracting functions from {file_path}: {e}")
+            logger.warning(f"# Warning Error extracting functions from {file_path}: {e}")
         
         return function_validations
     
@@ -292,11 +289,11 @@ class ComprehensiveSystemValidator:
     
     def validate_microservices(self) -> List[MicroserviceValidation]:
         """Validate all microservices in the services directory"""
-        logger.info("🏗️ Validating microservices...")
+        logger.info("# Construction Validating microservices...")
         
         services_dir = self.project_root / "services"
         if not services_dir.exists():
-            logger.error("❌ Services directory not found")
+            logger.error("# X Services directory not found")
             return []
         
         microservice_validations = []
@@ -308,7 +305,7 @@ class ComprehensiveSystemValidator:
                 self.stats['total_microservices'] += 1
         
         self.microservice_validations = microservice_validations
-        logger.info(f"🏗️ Validated {len(microservice_validations)} microservices")
+        logger.info(f"# Construction Validated {len(microservice_validations)} microservices")
         
         return microservice_validations
     
@@ -391,7 +388,7 @@ class ComprehensiveSystemValidator:
             ]
             
             return any(pattern in content for pattern in port_patterns)
-        except:
+        except Exception:
             return False
     
     def _check_service_dependencies(self, service_dir: Path) -> bool:
@@ -402,7 +399,7 @@ class ComprehensiveSystemValidator:
     
     def fix_critical_issues(self):
         """Fix critical issues found during validation"""
-        logger.info("🔧 Fixing critical issues...")
+        logger.info("# Tool Fixing critical issues...")
         
         # Fix 1: Create missing .env file if .env.example exists
         self._fix_missing_env_file()
@@ -413,7 +410,7 @@ class ComprehensiveSystemValidator:
         # Fix 3: Fix import path issues
         self._fix_import_paths()
         
-        logger.info(f"🔧 Applied {len(self.fixes_applied)} fixes")
+        logger.info(f"# Tool Applied {len(self.fixes_applied)} fixes")
     
     def _fix_missing_env_file(self):
         """Create .env file from .env.example if missing"""
@@ -426,9 +423,9 @@ class ComprehensiveSystemValidator:
                 import shutil
                 shutil.copy2(env_example, env_file)
                 self.fixes_applied.append("Created .env file from .env.example")
-                logger.info("✅ Created .env file from .env.example")
+                logger.info("# Check Created .env file from .env.example")
             except Exception as e:
-                logger.warning(f"⚠️ Failed to create .env file: {e}")
+                logger.warning(f"# Warning Failed to create .env file: {e}")
     
     def _fix_missing_init_files(self):
         """Add missing __init__.py files to make packages importable"""
@@ -465,7 +462,7 @@ class ComprehensiveSystemValidator:
     
     def run_comprehensive_validation(self) -> Dict[str, Any]:
         """Run the complete validation suite"""
-        logger.info("🚀 Starting comprehensive system validation...")
+        logger.info("# Rocket Starting comprehensive system validation...")
         self.stats['validation_start_time'] = datetime.now().isoformat()
         
         # Step 1: Discover all Python files
@@ -475,7 +472,7 @@ class ComprehensiveSystemValidator:
         self.fix_critical_issues()
         
         # Step 3: Validate all files
-        logger.info("🔍 Validating Python files...")
+        logger.info("# Search Validating Python files...")
         
         with ThreadPoolExecutor(max_workers=4) as executor:
             # Validate syntax for all files
@@ -506,7 +503,7 @@ class ComprehensiveSystemValidator:
     
     def _generate_comprehensive_report(self) -> Dict[str, Any]:
         """Generate comprehensive validation report"""
-        logger.info("📊 Generating comprehensive report...")
+        logger.info("# Chart Generating comprehensive report...")
         
         # Calculate statistics
         syntax_passed = len([r for r in self.validation_results if r.check_type == 'syntax' and r.passed])
@@ -569,7 +566,7 @@ class ComprehensiveSystemValidator:
         # Save human-readable report
         self._save_human_readable_report(report)
         
-        logger.info(f"📊 Report saved to {report_file}")
+        logger.info(f"# Chart Report saved to {report_file}")
         
         return report
     
@@ -578,17 +575,17 @@ class ComprehensiveSystemValidator:
         report_file = self.results_dir / f"validation_summary_{int(time.time())}.md"
         
         with open(report_file, 'w', encoding='utf-8') as f:
-            f.write("# 🔍 VIPER System Comprehensive Validation Report\n\n")
+            f.write("# # Search VIPER System Comprehensive Validation Report\n\n")
             f.write(f"**Generated:** {report['validation_summary']['timestamp']}\n")
             f.write(f"**Duration:** {report['validation_summary']['duration_seconds']:.2f} seconds\n\n")
             
-            f.write("## 📊 Summary Statistics\n\n")
+            f.write("## # Chart Summary Statistics\n\n")
             f.write(f"- **Total Python Files:** {report['validation_summary']['total_files']}\n")
             f.write(f"- **Total Functions:** {report['validation_summary']['total_functions']}\n") 
             f.write(f"- **Total Microservices:** {report['validation_summary']['total_microservices']}\n")
             f.write(f"- **Fixes Applied:** {report['validation_summary']['fixes_applied']}\n\n")
             
-            f.write("## ✅ Validation Results\n\n")
+            f.write("## # Check Validation Results\n\n")
             f.write(f"### Syntax Validation\n")
             f.write(f"- **Success Rate:** {report['syntax_validation']['success_rate']:.1f}%\n")
             f.write(f"- **Passed:** {report['syntax_validation']['passed']}/{report['syntax_validation']['total']}\n\n")
@@ -610,19 +607,19 @@ class ComprehensiveSystemValidator:
             f.write(f"- **With Health Endpoints:** {report['microservice_validation']['with_health_endpoint']}\n\n")
             
             # List microservice details
-            f.write("## 🏗️ Microservice Status\n\n")
+            f.write("## # Construction Microservice Status\n\n")
             for service in report['microservice_details']:
-                status = "✅" if not service['issues'] else "❌"
+                status = "# Check" if not service['issues'] else "# X"
                 f.write(f"{status} **{service['service_name']}**\n")
                 if service['issues']:
                     for issue in service['issues']:
-                        f.write(f"  - ⚠️ {issue}\n")
+                        f.write(f"  - # Warning {issue}\n")
                 f.write("\n")
             
             if report['fixes_applied']:
-                f.write("## 🔧 Fixes Applied\n\n")
+                f.write("## # Tool Fixes Applied\n\n")
                 for fix in report['fixes_applied']:
-                    f.write(f"- ✅ {fix}\n")
+                    f.write(f"- # Check {fix}\n")
                 f.write("\n")
             
             f.write("---\n")
@@ -631,38 +628,30 @@ class ComprehensiveSystemValidator:
 
 def main():
     """Main entry point"""
-    print("🔍 VIPER COMPREHENSIVE SYSTEM VALIDATOR")
-    print("=" * 80)
     print("Validating EVERY function and microservice in the system...")
-    print()
     
     try:
         validator = ComprehensiveSystemValidator()
         report = validator.run_comprehensive_validation()
         
-        print("\n" + "=" * 80)
-        print("📊 VALIDATION COMPLETE!")
-        print("=" * 80)
-        print(f"✅ Files Validated: {report['validation_summary']['total_files']}")
-        print(f"🔧 Functions Validated: {report['validation_summary']['total_functions']}")
-        print(f"🏗️ Microservices Validated: {report['validation_summary']['total_microservices']}")
+        print(f"# Check Files Validated: {report['validation_summary']['total_files']}")
+        print(f"# Tool Functions Validated: {report['validation_summary']['total_functions']}")
+        print(f"# Construction Microservices Validated: {report['validation_summary']['total_microservices']}")
         print(f"🔨 Fixes Applied: {report['validation_summary']['fixes_applied']}")
-        print()
         print(f"📈 Syntax Success Rate: {report['syntax_validation']['success_rate']:.1f}%")
         print(f"📈 Import Success Rate: {report['import_validation']['success_rate']:.1f}%") 
         print(f"📈 Function Success Rate: {report['function_validation']['success_rate']:.1f}%")
         print(f"📈 Microservice Success Rate: {report['microservice_validation']['success_rate']:.1f}%")
-        print()
         
         if report['validation_summary']['fixes_applied'] > 0:
-            print("🎯 System issues have been automatically fixed!")
+            print("# Target System issues have been automatically fixed!")
         else:
-            print("🎯 No critical issues found - system is healthy!")
+            print("# Target No critical issues found - system is healthy!")
             
         return 0
         
     except Exception as e:
-        logger.error(f"❌ Validation failed: {e}")
+        logger.error(f"# X Validation failed: {e}")
         traceback.print_exc()
         return 1
 

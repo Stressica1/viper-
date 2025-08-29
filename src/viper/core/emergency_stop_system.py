@@ -224,10 +224,10 @@ class EmergencyStopSystem:
             }
 
             await github_mcp.create_performance_issue(emergency_report)
-            logger.info("✅ Emergency notification sent to GitHub")
+            logger.info("# Check Emergency notification sent to GitHub")
 
         except Exception as e:
-            logger.error(f"❌ Failed to send GitHub notification: {e}")
+            logger.error(f"# X Failed to send GitHub notification: {e}")
 
     async def _send_telegram_notification(self):
         """Send emergency notification to Telegram"""
@@ -247,25 +247,25 @@ class EmergencyStopSystem:
         # Update configuration to prevent auto-restart
         await self._update_configuration()
 
-        logger.info("✅ Emergency procedures completed")
+        logger.info("# Check Emergency procedures completed")
 
     async def _close_all_positions(self):
         """Close all open positions"""
-        logger.info("📊 Closing all open positions...")
+        logger.info("# Chart Closing all open positions...")
         # Implementation would integrate with exchange connector
-        logger.info("✅ All positions closed")
+        logger.info("# Check All positions closed")
 
     async def _cancel_all_orders(self):
         """Cancel all pending orders"""
         logger.info("📋 Cancelling all pending orders...")
         # Implementation would integrate with exchange connector
-        logger.info("✅ All orders cancelled")
+        logger.info("# Check All orders cancelled")
 
     async def _update_configuration(self):
         """Update configuration to prevent auto-restart"""
         logger.info("⚙️ Updating configuration for safety...")
         # Implementation would update system configuration
-        logger.info("✅ Configuration updated")
+        logger.info("# Check Configuration updated")
 
     async def check_system_health(self) -> Dict[str, Any]:
         """Check overall system health"""
@@ -292,7 +292,7 @@ class EmergencyStopSystem:
                 condition.triggered_at = None
                 condition.current_value = 0.0
 
-                logger.info(f"✅ Emergency condition reset: {condition.name}")
+                logger.info(f"# Check Emergency condition reset: {condition.name}")
 
     async def manual_emergency_stop(self, reason: str = "Manual activation"):
         """Manually activate emergency stop"""
@@ -329,7 +329,7 @@ class EmergencyStopSystem:
         self.is_emergency_stop_active = False
         self.emergency_stop_time = None
 
-        logger.info("✅ Trading operations resumed")
+        logger.info("# Check Trading operations resumed")
         return True
 
     def get_emergency_report(self) -> Dict[str, Any]:
@@ -366,8 +366,6 @@ def get_emergency_system() -> EmergencyStopSystem:
 
 async def main():
     """Test emergency stop system"""
-    print("🚨 VIPER EMERGENCY STOP SYSTEM TEST")
-    print("=" * 50)
 
     emergency_system = get_emergency_system()
 
@@ -380,17 +378,15 @@ async def main():
         'api_errors_last_hour': 6
     }
 
-    print("🧪 Testing emergency conditions...")
     emergency_triggered = await emergency_system.check_emergency_conditions(test_data)
 
     if emergency_triggered:
-        print("✅ Emergency conditions detected and handled")
+        print("# Check Emergency conditions detected and handled")
     else:
-        print("ℹ️ No emergency conditions triggered")
 
     # Get system health
     health = await emergency_system.check_system_health()
-    print(f"📊 System Health: {health['system_status']}")
+    print(f"# Chart System Health: {health['system_status']}")
 
     # Get emergency report
     report = emergency_system.get_emergency_report()

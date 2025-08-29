@@ -8,11 +8,6 @@ import os
 import json
 import logging
 import httpx
-from typing import Optional, Dict, Any
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-import base64
 import redis
 
 logger = logging.getLogger(__name__)
@@ -42,7 +37,7 @@ class CredentialClient:
                 cached_data = self.redis_client.get(cache_key)
                 if cached_data:
                     cached_cred = json.loads(cached_data)
-                    logger.info(f"✅ Retrieved cached credential for {service}:{key}")
+                    logger.info(f"# Check Retrieved cached credential for {service}:{key}")
                     return cached_cred['value']
 
             # Retrieve from vault
@@ -69,14 +64,14 @@ class CredentialClient:
                         }
                         self.redis_client.setex(cache_key, 3600, json.dumps(cache_data))
 
-                    logger.info(f"✅ Retrieved credential for {service}:{key}")
+                    logger.info(f"# Check Retrieved credential for {service}:{key}")
                     return value
                 else:
-                    logger.error(f"❌ Failed to retrieve credential {service}:{key}: {response.text}")
+                    logger.error(f"# X Failed to retrieve credential {service}:{key}: {response.text}")
                     return None
 
         except Exception as e:
-            logger.error(f"❌ Error retrieving credential {service}:{key}: {e}")
+            logger.error(f"# X Error retrieving credential {service}:{key}: {e}")
             return None
 
     async def get_bitget_credentials(self) -> Dict[str, str]:
@@ -102,9 +97,9 @@ class CredentialClient:
                 'api_secret': api_secret,
                 'api_password': api_password
             }
-            logger.info("✅ Retrieved Bitget API credentials")
+            logger.info("# Check Retrieved Bitget API credentials")
         else:
-            logger.warning("❌ Could not retrieve complete Bitget credentials")
+            logger.warning("# X Could not retrieve complete Bitget credentials")
 
         return credentials
 
@@ -116,9 +111,9 @@ class CredentialClient:
             token = await self.get_credential('api-server', 'GITHUB_PAT')
 
         if token:
-            logger.info("✅ Retrieved GitHub token")
+            logger.info("# Check Retrieved GitHub token")
         else:
-            logger.warning("❌ Could not retrieve GitHub token")
+            logger.warning("# X Could not retrieve GitHub token")
 
         return token
 
@@ -128,7 +123,7 @@ class CredentialClient:
             import asyncio
             return asyncio.run(self.get_credential(service, key))
         except Exception as e:
-            logger.error(f"❌ Sync credential retrieval failed: {e}")
+            logger.error(f"# X Sync credential retrieval failed: {e}")
             return None
 
     def get_bitget_credentials_sync(self) -> Dict[str, str]:
@@ -137,7 +132,7 @@ class CredentialClient:
             import asyncio
             return asyncio.run(self.get_bitget_credentials())
         except Exception as e:
-            logger.error(f"❌ Sync Bitget credentials retrieval failed: {e}")
+            logger.error(f"# X Sync Bitget credentials retrieval failed: {e}")
             return {}
 
     def get_github_token_sync(self) -> Optional[str]:
@@ -146,7 +141,7 @@ class CredentialClient:
             import asyncio
             return asyncio.run(self.get_github_token())
         except Exception as e:
-            logger.error(f"❌ Sync GitHub token retrieval failed: {e}")
+            logger.error(f"# X Sync GitHub token retrieval failed: {e}")
             return None
 
 # Global instance for easy access
@@ -201,14 +196,14 @@ def initialize_access_token(service_name: str = None):
             if service_index < len(tokens):
                 access_token = tokens[service_index].strip()
                 _credential_client = CredentialClient(access_token=access_token)
-                logger.info(f"✅ Initialized credential client for {service}")
+                logger.info(f"# Check Initialized credential client for {service}")
                 return True
         except ValueError:
             pass
 
     # Fallback: create client without specific token
     _credential_client = CredentialClient()
-    logger.warning(f"⚠️ Could not find access token for {service}, using fallback")
+    logger.warning(f"# Warning Could not find access token for {service}, using fallback")
     return False
 
 # Initialize on import if SERVICE_NAME is set

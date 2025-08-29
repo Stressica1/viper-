@@ -4,11 +4,11 @@
 Automated performance logging and reporting for MCP Trading System
 
 This tracker provides:
-✅ Real-time performance monitoring
-✅ Automated GitHub performance reports
-✅ Risk metrics calculation
-✅ Performance analytics and insights
-✅ Automated alerts and notifications
+# Check Real-time performance monitoring
+# Check Automated GitHub performance reports
+# Check Risk metrics calculation
+# Check Performance analytics and insights
+# Check Automated alerts and notifications
 """
 
 import os
@@ -115,11 +115,11 @@ class MCPPerformanceTracker:
                 if self.portfolio_value > self.peak_portfolio_value:
                     self.peak_portfolio_value = self.portfolio_value
 
-            logger.info(f"📊 Trade recorded: {trade.symbol} {trade.side} {trade.quantity} @ {trade.price}")
+            logger.info(f"# Chart Trade recorded: {trade.symbol} {trade.side} {trade.quantity} @ {trade.price}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to record trade: {e}")
+            logger.error(f"# X Failed to record trade: {e}")
             return False
 
     def calculate_performance_metrics(self, trades: List[TradeRecord] = None) -> PerformanceMetrics:
@@ -187,7 +187,7 @@ class MCPPerformanceTracker:
             )
 
         except Exception as e:
-            logger.error(f"❌ Performance calculation error: {e}")
+            logger.error(f"# X Performance calculation error: {e}")
             return PerformanceMetrics()
 
     def get_daily_performance(self, date: str = None) -> PerformanceMetrics:
@@ -201,7 +201,7 @@ class MCPPerformanceTracker:
         # Calculate for the day
         day_trades = [
             t for t in self.trades
-            if t.timestamp.strftime('%Y-%m-%d') == date and t.status == 'closed'
+            if t.timestamp.strftime('%Y-%m-%d') == date and t.status == 'closed':
         ]
 
         metrics = self.calculate_performance_metrics(day_trades)
@@ -242,7 +242,7 @@ class MCPPerformanceTracker:
             })
 
             if success:
-                logger.info(f"✅ Daily performance report submitted to GitHub: {date}")
+                logger.info(f"# Check Daily performance report submitted to GitHub: {date}")
 
             # Check for alerts
             await self.check_performance_alerts(daily_metrics, cumulative_metrics)
@@ -250,7 +250,7 @@ class MCPPerformanceTracker:
             return report
 
         except Exception as e:
-            logger.error(f"❌ Daily report generation failed: {e}")
+            logger.error(f"# X Daily report generation failed: {e}")
             return None
 
     async def check_performance_alerts(self, daily_metrics: PerformanceMetrics, cumulative_metrics: PerformanceMetrics):
@@ -292,7 +292,7 @@ class MCPPerformanceTracker:
                 await self.create_performance_alert_issue(alert)
 
         except Exception as e:
-            logger.error(f"❌ Alert check failed: {e}")
+            logger.error(f"# X Alert check failed: {e}")
 
     async def create_performance_alert_issue(self, alert: Dict[str, Any]):
         """Create GitHub issue for performance alert"""
@@ -336,7 +336,7 @@ class MCPPerformanceTracker:
             logger.warning(f"🚨 Performance alert issue created: {alert['type']}")
 
         except Exception as e:
-            logger.error(f"❌ Alert issue creation failed: {e}")
+            logger.error(f"# X Alert issue creation failed: {e}")
 
     async def export_performance_data(self, filename: str = None):
         """Export performance data to JSON file"""
@@ -370,11 +370,11 @@ class MCPPerformanceTracker:
             with open(filename, 'w') as f:
                 json.dump(export_data, f, indent=2, default=str)
 
-            logger.info(f"✅ Performance data exported: {filename}")
+            logger.info(f"# Check Performance data exported: {filename}")
             return filename
 
         except Exception as e:
-            logger.error(f"❌ Export failed: {e}")
+            logger.error(f"# X Export failed: {e}")
             return None
 
     async def import_performance_data(self, filename: str):
@@ -407,11 +407,11 @@ class MCPPerformanceTracker:
                 metrics = PerformanceMetrics(**metrics_data)
                 self.daily_metrics[date] = metrics
 
-            logger.info(f"✅ Performance data imported: {filename}")
+            logger.info(f"# Check Performance data imported: {filename}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Import failed: {e}")
+            logger.error(f"# X Import failed: {e}")
             return False
 
 # Standalone functions for external integration
@@ -437,7 +437,6 @@ async def export_performance(filename: str = None):
 
 async def test_performance_tracker():
     """Test performance tracker functionality"""
-    print("🧪 Testing MCP Performance Tracker...")
 
     tracker = MCPPerformanceTracker()
 
@@ -470,18 +469,11 @@ async def test_performance_tracker():
 
     # Calculate metrics
     metrics = tracker.calculate_performance_metrics()
-    print(f"📊 Performance Metrics:")
-    print(f"   Total Trades: {metrics.total_trades}")
-    print(f"   Win Rate: {metrics.win_rate:.2f}%")
-    print(f"   Total P&L: ${metrics.total_pnl:.2f}")
-    print(f"   Net P&L: ${metrics.net_pnl:.2f}")
 
     # Generate report
     report = await tracker.generate_daily_report()
     if report:
-        print("✅ Daily report generated successfully")
 
-    print("✅ Performance tracker test completed")
 
 if __name__ == "__main__":
     asyncio.run(test_performance_tracker())

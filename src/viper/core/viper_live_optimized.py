@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER LIVE OPTIMIZED TRADING BOT
+# Rocket VIPER LIVE OPTIMIZED TRADING BOT
 Complete AI/ML-powered trading system with live optimization
 """
 
@@ -58,7 +58,7 @@ class ViperLiveOptimized:
         self.daily_loss_limit = 0.03
         self.max_drawdown_limit = 0.15
 
-        logger.info("🚀 VIPER Live Optimized Trading Bot initialized")
+        logger.info("# Rocket VIPER Live Optimized Trading Bot initialized")
 
     def signal_handler(self, signum, frame):
         """Handle shutdown signals"""
@@ -68,7 +68,6 @@ class ViperLiveOptimized:
 
     async def check_system_readiness(self) -> bool:
         """Check if all required services are ready"""
-        print("🔍 CHECKING SYSTEM READINESS...")
 
         services = {
             'API Server': 'http://localhost:8000/health',
@@ -85,27 +84,23 @@ class ViperLiveOptimized:
                 import requests
                 response = requests.get(url, timeout=5)
                 if response.status_code == 200:
-                    print(f"   ✅ {name}: Ready")
                     ready_services += 1
                 else:
-                    print(f"   ❌ {name}: HTTP {response.status_code}")
+                    print(f"   # X {name}: HTTP {response.status_code}")
             except Exception as e:
-                print(f"   ❌ {name}: {e}")
 
         readiness = ready_services / len(services)
-        print(f"   📊 System Readiness: {ready_services}/{len(services)} ({readiness:.1%})")
+        print(f"   # Chart System Readiness: {ready_services}/{len(services)} ({readiness:.1%})")
 
         return readiness >= 0.8  # 80% readiness threshold
 
     async def run_initial_backtest(self) -> Dict[str, Any]:
         """Run initial comprehensive backtest to establish baseline"""
-        print("🔬 RUNNING INITIAL COMPREHENSIVE BACKTEST...")
 
         try:
             backtest_results = self.backtester.run_multi_scenario_backtest()
 
             if 'error' in backtest_results:
-                print(f"❌ Initial backtest failed: {backtest_results['error']}")
                 return {}
 
             # Extract best performing scenario
@@ -113,8 +108,6 @@ class ViperLiveOptimized:
             if best_scenario and best_scenario in backtest_results.get('scenario_results', {}):
                 best_result = backtest_results['scenario_results'][best_scenario]
 
-                print("🎯 BEST BASELINE SCENARIO FOUND:")
-                print(f"   Scenario: {best_scenario}")
                 print(f"   Win Rate: {best_result.get('win_rate', 0):.1%}")
                 print(f"   Total Return: {best_result.get('total_return', 0):.2%}")
                 print(f"   Sharpe Ratio: {best_result.get('sharpe_ratio', 0):.2f}")
@@ -122,11 +115,11 @@ class ViperLiveOptimized:
 
                 return best_result
             else:
-                print("⚠️ No optimal baseline found, using default parameters")
+                print("# Warning No optimal baseline found, using default parameters")
                 return {}
 
         except Exception as e:
-            logger.error(f"❌ Error in initial backtest: {e}")
+            logger.error(f"# X Error in initial backtest: {e}")
             return {}
 
     async def optimize_parameters(self) -> Dict[str, Any]:
@@ -137,7 +130,7 @@ class ViperLiveOptimized:
             # Collect current market data
             market_data = self.ai_optimizer.collect_market_data()
             if market_data.empty:
-                print("⚠️ No market data available for optimization")
+                print("# Warning No market data available for optimization")
                 return self.current_parameters
 
             # Run AI/ML optimization
@@ -161,7 +154,6 @@ class ViperLiveOptimized:
                 if 'trailing_stop_percent' in optimized_params and 'trailing_stop_percent' in tp_sl_opt:
                     optimized_params['trailing_stop_percent'] = tp_sl_opt.get('trailing_stop_percent', 0.01)
 
-            print("🎯 OPTIMIZATION RESULTS:")
             print(f"   Entry Threshold: {optimized_params['entry_threshold']:.2f}")
             print(f"   Stop Loss: {optimized_params['stop_loss_percent']:.1%}")
             print(f"   Take Profit: {optimized_params['take_profit_percent']:.1%}")
@@ -171,12 +163,11 @@ class ViperLiveOptimized:
             return optimized_params
 
         except Exception as e:
-            logger.error(f"❌ Error in parameter optimization: {e}")
+            logger.error(f"# X Error in parameter optimization: {e}")
             return self.current_parameters
 
     async def validate_optimization(self, optimized_params: Dict[str, Any]) -> bool:
         """Validate optimized parameters through quick backtest"""
-        print("🔍 VALIDATING OPTIMIZED PARAMETERS...")
 
         try:
             # Create validation scenario
@@ -195,7 +186,7 @@ class ViperLiveOptimized:
             validation_result = self.backtester.run_single_backtest("BTCUSDT", validation_scenario)
 
             if 'error' in validation_result:
-                print(f"❌ Validation failed: {validation_result['error']}")
+                print(f"# X Validation failed: {validation_result['error']}")
                 return False
 
             # Check if performance meets minimum criteria
@@ -209,20 +200,18 @@ class ViperLiveOptimized:
                 max_drawdown <= 0.20  # Maximum 20% drawdown
             )
 
-            print("📊 VALIDATION RESULTS:")
-            print(f"   Win Rate: {win_rate:.1%} {'✅' if win_rate >= 0.50 else '❌'}")
-            print(f"   Sharpe Ratio: {sharpe_ratio:.2f} {'✅' if sharpe_ratio >= 0.5 else '❌'}")
-            print(f"   Max Drawdown: {max_drawdown:.1%} {'✅' if max_drawdown <= 0.20 else '❌'}")
+            print(f"   Win Rate: {win_rate:.1%} {'# Check' if win_rate >= 0.50 else '# X'}")
+            print(f"   Sharpe Ratio: {sharpe_ratio:.2f} {'# Check' if sharpe_ratio >= 0.5 else '# X'}")
+            print(f"   Max Drawdown: {max_drawdown:.1%} {'# Check' if max_drawdown <= 0.20 else '# X'}")
 
             if validation_passed:
-                print("✅ OPTIMIZED PARAMETERS VALIDATED!")
                 return True
             else:
-                print("❌ Validation failed - reverting to previous parameters")
+                print("# X Validation failed - reverting to previous parameters")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error in validation: {e}")
+            logger.error(f"# X Error in validation: {e}")
             return False
 
     async def apply_trading_parameters(self, parameters: Dict[str, Any]) -> bool:
@@ -248,9 +237,8 @@ class ViperLiveOptimized:
             )
 
             if response.status_code == 200:
-                print("✅ Risk manager parameters updated")
             else:
-                print(f"⚠️ Risk manager update failed: {response.status_code}")
+                print(f"# Warning Risk manager update failed: {response.status_code}")
 
             # Update signal processor entry threshold
             signal_config = {
@@ -265,15 +253,14 @@ class ViperLiveOptimized:
             )
 
             if response.status_code == 200:
-                print("✅ Signal processor parameters updated")
             else:
-                print(f"⚠️ Signal processor update failed: {response.status_code}")
+                print(f"# Warning Signal processor update failed: {response.status_code}")
 
-            print("🎯 TRADING PARAMETERS SUCCESSFULLY APPLIED!")
+            print("# Target TRADING PARAMETERS SUCCESSFULLY APPLIED!")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error applying parameters: {e}")
+            logger.error(f"# X Error applying parameters: {e}")
             return False
 
     async def monitor_performance(self) -> Dict[str, Any]:
@@ -319,7 +306,7 @@ class ViperLiveOptimized:
             return performance_data
 
         except Exception as e:
-            logger.error(f"❌ Error monitoring performance: {e}")
+            logger.error(f"# X Error monitoring performance: {e}")
             return {}
 
     async def check_risk_limits(self) -> bool:
@@ -343,7 +330,7 @@ class ViperLiveOptimized:
             return False
 
         except Exception as e:
-            logger.error(f"❌ Error checking risk limits: {e}")
+            logger.error(f"# X Error checking risk limits: {e}")
             return False
 
     async def continuous_optimization_loop(self):
@@ -359,10 +346,10 @@ class ViperLiveOptimized:
                     break
 
                 # Run periodic optimization
-                if (self.last_optimization is None or
+                if (self.last_optimization is None or:
                     (current_time - self.last_optimization).total_seconds() >= self.optimization_interval):
 
-                    print(f"\n🔧 RUNNING PERIODIC OPTIMIZATION ({current_time.strftime('%H:%M:%S')})")
+                    print(f"\n# Tool RUNNING PERIODIC OPTIMIZATION ({current_time.strftime('%H:%M:%S')})")
 
                     # Optimize parameters
                     optimized_params = await self.optimize_parameters()
@@ -372,18 +359,14 @@ class ViperLiveOptimized:
                         # Apply optimized parameters
                         if await self.apply_trading_parameters(optimized_params):
                             self.last_optimization = current_time
-                            print("✅ OPTIMIZATION CYCLE COMPLETED")
                         else:
-                            print("⚠️ Failed to apply optimized parameters")
                     else:
-                        print("⚠️ Optimization validation failed")
 
                 # Monitor performance
                 performance = await self.monitor_performance()
 
                 # Display status update every 5 minutes
                 if int(time.time()) % 300 == 0:
-                    print("📊 STATUS UPDATE:")
                     print(f"   Balance: ${performance.get('account_balance', 0):.2f}")
                     print(f"   Active Positions: {performance.get('active_positions', 0)}")
                     print(f"   Last Optimization: {self.last_optimization.strftime('%H:%M:%S') if self.last_optimization else 'Never'}")
@@ -392,15 +375,12 @@ class ViperLiveOptimized:
                 await asyncio.sleep(60)  # Check every minute
 
             except Exception as e:
-                logger.error(f"❌ Error in optimization loop: {e}")
+                logger.error(f"# X Error in optimization loop: {e}")
                 await asyncio.sleep(60)
 
     async def run_live_trading_system(self):
         """Run the complete live trading system"""
-        print("🚀 VIPER LIVE OPTIMIZED TRADING SYSTEM")
-        print("=" * 60)
-        print("🤖 AI/ML-Powered | 📊 Real-Time Optimization | 🛡️ Risk Management")
-        print("=" * 60)
+        print("🤖 AI/ML-Powered | # Chart Real-Time Optimization | 🛡️ Risk Management")
 
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.signal_handler)
@@ -409,32 +389,26 @@ class ViperLiveOptimized:
         try:
             # Step 1: Check system readiness
             if not await self.check_system_readiness():
-                print("❌ System not ready. Please ensure all services are running.")
+                print("# X System not ready. Please ensure all services are running.")
                 return
 
             # Step 2: Run initial comprehensive backtest
             baseline_results = await self.run_initial_backtest()
             if baseline_results:
-                print("📈 BASELINE PERFORMANCE ESTABLISHED")
                 print(f"   Expected Win Rate: {baseline_results.get('win_rate', 0):.1%}")
                 print(f"   Expected Return: {baseline_results.get('total_return', 0):.2%}")
                 print(f"   Risk (Max Drawdown): {baseline_results.get('max_drawdown', 0):.2%}")
 
             # Step 3: Initial AI/ML optimization
-            print("🎯 INITIAL AI/ML OPTIMIZATION...")
             initial_params = await self.optimize_parameters()
 
             if await self.validate_optimization(initial_params):
                 await self.apply_trading_parameters(initial_params)
-                print("✅ INITIAL OPTIMIZATION COMPLETED")
             else:
-                print("⚠️ Using default parameters for initial setup")
+                print("# Warning Using default parameters for initial setup")
 
             # Step 4: Start continuous optimization
-            print("🔄 STARTING CONTINUOUS OPTIMIZATION...")
-            print("📊 System will optimize parameters every hour")
-            print("🛑 Emergency stop: Ctrl+C")
-            print("-" * 60)
+            print("# Chart System will optimize parameters every hour")
 
             self.is_running = True
             self.last_optimization = datetime.now()
@@ -443,33 +417,25 @@ class ViperLiveOptimized:
             await self.continuous_optimization_loop()
 
         except KeyboardInterrupt:
-            print("⏹️ System shutdown requested by user")
         except Exception as e:
-            logger.error(f"❌ Fatal error in live trading system: {e}")
-            print(f"\n❌ System error: {e}")
+            logger.error(f"# X Fatal error in live trading system: {e}")
         finally:
             self.is_running = False
 
-            print("\n" + "=" * 60)
             print("🛑 VIPER LIVE OPTIMIZED TRADING SYSTEM SHUTDOWN")
-            print("=" * 60)
 
             # Generate final performance report
             if self.performance_history:
-                print("📊 FINAL PERFORMANCE SUMMARY:")
                 initial_balance = self.performance_history[0].get('account_balance', 0)
                 final_balance = self.performance_history[-1].get('account_balance', 0)
 
                 if initial_balance > 0:
                     total_return = (final_balance - initial_balance) / initial_balance
                     print(f"   Initial Balance: ${initial_balance:.2f}")
-                    print(f"   Final Balance: ${final_balance:.2f}")
-                    print(f"   Total Return: {total_return:.2%}")
 
                 print(f"   Total Monitoring Points: {len(self.performance_history)}")
                 print(f"   Optimization Cycles: {1 if self.last_optimization else 0}")
 
-            print("✅ SYSTEM SAFELY SHUTDOWN")
 
 def main():
     """Main entry point"""

@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
 """
-🚀 MASTER STRATEGY ANALYSIS RUNNER
+# Rocket MASTER STRATEGY ANALYSIS RUNNER
 Complete workflow for comprehensive strategy backtesting and visualization
 
 This script:
-✅ Runs comprehensive backtesting for lower timeframes (30min and under)
-✅ Analyzes and ranks all strategies
-✅ Creates enhanced interactive dashboards
-✅ Generates detailed performance reports
-✅ Provides best strategy recommendations for live trading
+# Check Runs comprehensive backtesting for lower timeframes (30min and under)
+# Check Analyzes and ranks all strategies
+# Check Creates enhanced interactive dashboards
+# Check Generates detailed performance reports
+# Check Provides best strategy recommendations for live trading
 """
 
 import asyncio
 import sys
-import os
 from pathlib import Path
 import logging
 from datetime import datetime
@@ -32,7 +31,6 @@ try:
     from comprehensive_strategy_backtester import ComprehensiveStrategyBacktester
     from enhanced_strategy_dashboard import EnhancedStrategyDashboard, create_enhanced_summary_report
 except ImportError as e:
-    print(f"Import error: {e}")
     print("Please ensure all required dependencies are installed")
     sys.exit(1)
 
@@ -60,16 +58,16 @@ class StrategyAnalysisWorkflow:
         self.results_path = Path("backtest_results")
         self.results_path.mkdir(exist_ok=True)
         
-        console.print("🚀 Strategy Analysis Workflow initialized")
+        console.print("# Rocket Strategy Analysis Workflow initialized")
     
     async def run_complete_analysis(self) -> dict:
         """Run the complete strategy analysis workflow"""
         
         # Display welcome message
         welcome_text = Text()
-        welcome_text.append("🚀 COMPREHENSIVE STRATEGY ANALYSIS\n", style="bold blue")
-        welcome_text.append("🎯 Focus: Lower Timeframes (30min and under)\n", style="yellow")
-        welcome_text.append("📊 Testing multiple strategies with advanced metrics\n", style="green")
+        welcome_text.append("# Rocket COMPREHENSIVE STRATEGY ANALYSIS\n", style="bold blue")
+        welcome_text.append("# Target Focus: Lower Timeframes (30min and under)\n", style="yellow")
+        welcome_text.append("# Chart Testing multiple strategies with advanced metrics\n", style="green")
         welcome_text.append("🎨 Creating enhanced visualizations and reports", style="magenta")
         
         console.print(Panel(welcome_text, title="VIPER STRATEGY ANALYSIS", border_style="blue"))
@@ -85,51 +83,51 @@ class StrategyAnalysisWorkflow:
         ) as progress:
             
             # Step 1: Initialize backtester
-            task1 = progress.add_task("🔧 Initializing backtesting engine...", total=None)
+            task1 = progress.add_task("# Tool Initializing backtesting engine...", total=None)
             self.backtester = ComprehensiveStrategyBacktester()
-            progress.update(task1, description="✅ Backtesting engine ready")
+            progress.update(task1, description="# Check Backtesting engine ready")
             
             # Step 2: Run comprehensive backtesting
             task2 = progress.add_task("🔄 Running comprehensive backtests...", total=None)
             backtest_results = await self.backtester.run_comprehensive_backtest()
-            progress.update(task2, description="✅ Backtesting completed")
+            progress.update(task2, description="# Check Backtesting completed")
             
             # Step 3: Initialize dashboard
             task3 = progress.add_task("🎨 Setting up visualization dashboard...", total=None)
             self.dashboard = EnhancedStrategyDashboard()
-            progress.update(task3, description="✅ Dashboard initialized")
+            progress.update(task3, description="# Check Dashboard initialized")
             
             # Step 4: Load results into dashboard
-            task4 = progress.add_task("📊 Loading results for visualization...", total=None)
+            task4 = progress.add_task("# Chart Loading results for visualization...", total=None)
             # Find the latest results file
             results_files = list(self.results_path.glob("comprehensive_backtest_report_*.json"))
             if results_files:
                 latest_file = max(results_files, key=lambda x: x.stat().st_mtime)
                 self.dashboard.load_backtest_results(str(latest_file))
-            progress.update(task4, description="✅ Results loaded")
+            progress.update(task4, description="# Check Results loaded")
             
             # Step 5: Create interactive dashboard
             task5 = progress.add_task("🌐 Creating interactive dashboard...", total=None)
             dashboard_file = self.dashboard.create_interactive_dashboard()
-            progress.update(task5, description="✅ Interactive dashboard created")
+            progress.update(task5, description="# Check Interactive dashboard created")
             
             # Step 6: Generate final report
             task6 = progress.add_task("📄 Generating comprehensive report...", total=None)
             final_report = await self._generate_final_report()
-            progress.update(task6, description="✅ Final report generated")
+            progress.update(task6, description="# Check Final report generated")
         
         execution_time = (datetime.now() - start_time).total_seconds()
         
         # Display completion message
         completion_text = Text()
-        completion_text.append("🎉 ANALYSIS COMPLETED SUCCESSFULLY!\n\n", style="bold green")
+        completion_text.append("# Party ANALYSIS COMPLETED SUCCESSFULLY!\n\n", style="bold green")
         completion_text.append(f"⏱️  Total Execution Time: {execution_time:.2f} seconds\n", style="blue")
-        completion_text.append(f"📊 Total Backtests: {backtest_results.get('total_backtests', 'N/A')}\n", style="cyan")
+        completion_text.append(f"# Chart Total Backtests: {backtest_results.get('total_backtests', 'N/A')}\n", style="cyan")
         completion_text.append(f"🏆 Best Strategy: {backtest_results.get('best_strategy', {}).get('overall_best', {}).get('strategy_name', 'N/A')}\n", style="yellow")
         completion_text.append(f"🌐 Dashboard: {dashboard_file}\n", style="magenta")
         completion_text.append(f"📄 Report: {final_report.get('report_file', 'N/A')}", style="green")
         
-        console.print(Panel(completion_text, title="✅ ANALYSIS COMPLETE", border_style="green"))
+        console.print(Panel(completion_text, title="# Check ANALYSIS COMPLETE", border_style="green"))
         
         return {
             'backtest_results': backtest_results,
@@ -142,7 +140,7 @@ class StrategyAnalysisWorkflow:
         """Generate comprehensive final report"""
         
         # Display strategy performance table
-        console.print("\n📊 [bold blue]DETAILED STRATEGY PERFORMANCE[/bold blue]")
+        console.print("\n# Chart [bold blue]DETAILED STRATEGY PERFORMANCE[/bold blue]")
         if self.dashboard and self.dashboard.backtest_results:
             table = self.dashboard.generate_strategy_report_table()
             console.print(table)
@@ -237,18 +235,18 @@ class StrategyAnalysisWorkflow:
         
         # Display recommendations
         rec_text = Text()
-        rec_text.append("🎯 LIVE TRADING RECOMMENDATIONS\n\n", style="bold green")
+        rec_text.append("# Target LIVE TRADING RECOMMENDATIONS\n\n", style="bold green")
         rec_text.append(f"🏆 OVERALL BEST: {overall_best['strategy_name']} ({overall_best['timeframe']})\n", style="bold cyan")
         rec_text.append(f"📈 Expected Return: {overall_best['total_return']:.2%}\n", style="blue")
         rec_text.append(f"📉 Max Drawdown: {overall_best['max_drawdown']:.2%}\n", style="red")
-        rec_text.append(f"🎯 Win Rate: {overall_best['win_rate']:.1%}\n", style="green")
-        rec_text.append(f"📊 Sharpe Ratio: {overall_best['sharpe_ratio']:.2f}\n\n", style="magenta")
+        rec_text.append(f"# Target Win Rate: {overall_best['win_rate']:.1%}\n", style="green")
+        rec_text.append(f"# Chart Sharpe Ratio: {overall_best['sharpe_ratio']:.2f}\n\n", style="magenta")
         
         rec_text.append("📋 IMPLEMENTATION CHECKLIST:\n", style="bold yellow")
         for note in recommendations['overall_best']['implementation_notes']:
-            rec_text.append(f"   ✅ {note}\n", style="dim")
+            rec_text.append(f"   # Check {note}\n", style="dim")
         
-        console.print(Panel(rec_text, title="🚀 READY FOR LIVE TRADING", border_style="green"))
+        console.print(Panel(rec_text, title="# Rocket READY FOR LIVE TRADING", border_style="green"))
         
         return recommendations
 
@@ -261,32 +259,26 @@ async def main():
         
         # Final success message
         console.print("\n" + "="*60)
-        console.print("🎉 [bold green]COMPREHENSIVE STRATEGY ANALYSIS COMPLETE![/bold green]")
+        console.print("# Party [bold green]COMPREHENSIVE STRATEGY ANALYSIS COMPLETE![/bold green]")
         console.print("="*60)
         console.print(f"🌐 [cyan]Interactive Dashboard: {results['dashboard_file']}[/cyan]")
         console.print(f"📄 [yellow]Final Report: {results['final_report']['report_file']}[/yellow]")
         console.print(f"⏱️  [blue]Total Time: {results['execution_time']:.2f} seconds[/blue]")
-        console.print(f"🚀 [green]Ready for live trading deployment![/green]")
+        console.print(f"# Rocket [green]Ready for live trading deployment![/green]")
         console.print("="*60)
         
         return results
         
     except Exception as e:
         logger.error(f"Error in strategy analysis: {e}")
-        console.print(f"❌ [bold red]Analysis failed: {e}[/bold red]")
+        console.print(f"# X [bold red]Analysis failed: {e}[/bold red]")
         return None
 
 if __name__ == "__main__":
     # Ensure required dependencies
     try:
-        import numpy as np
-        import pandas as pd
-        import matplotlib.pyplot as plt
-        import plotly.graph_objects as go
-        import seaborn as sns
         from rich.console import Console
     except ImportError as e:
-        print(f"Missing required dependency: {e}")
         print("Please install with: pip install numpy pandas matplotlib plotly seaborn rich")
         sys.exit(1)
     

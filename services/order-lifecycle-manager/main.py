@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Order Lifecycle Manager
+# Rocket VIPER Trading Bot - Order Lifecycle Manager
 Complete order management from signal to execution and monitoring
 
 Features:
@@ -23,7 +23,6 @@ from enum import Enum
 from dataclasses import dataclass
 import redis
 import requests
-import ccxt
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
@@ -116,15 +115,15 @@ class OrderLifecycleManager:
             # Connect to Redis
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
 
             # Load exchange credentials
             self.load_exchange_credentials()
 
-            logger.info("✅ Connected to all services")
+            logger.info("# Check Connected to all services")
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect services: {e}")
+            logger.error(f"# X Failed to connect services: {e}")
             raise
 
     def load_exchange_credentials(self):
@@ -148,10 +147,10 @@ class OrderLifecycleManager:
             )
             self.api_password = response.json().get('value')
 
-            logger.info("✅ Loaded exchange credentials from vault")
+            logger.info("# Check Loaded exchange credentials from vault")
 
         except Exception as e:
-            logger.error(f"❌ Failed to load credentials: {e}")
+            logger.error(f"# X Failed to load credentials: {e}")
             raise
 
     def validate_signal(self, signal: Dict) -> bool:
@@ -160,31 +159,31 @@ class OrderLifecycleManager:
             required_fields = ['symbol', 'type', 'price', 'viper_score', 'confidence', 'timestamp']
             for field in required_fields:
                 if field not in signal:
-                    logger.error(f"❌ Missing required field: {field}")
+                    logger.error(f"# X Missing required field: {field}")
                     return False
 
             # Check VIPER score threshold
             viper_threshold = float(os.getenv('VIPER_THRESHOLD', '85'))
             if signal.get('viper_score', 0) < viper_threshold:
-                logger.info(f"📊 Signal rejected: VIPER score {signal['viper_score']} < {viper_threshold}")
+                logger.info(f"# Chart Signal rejected: VIPER score {signal['viper_score']} < {viper_threshold}")
                 return False
 
             # Check confidence threshold
             confidence_threshold = float(os.getenv('CONFIDENCE_THRESHOLD', '80'))
             if signal.get('confidence', 0) < confidence_threshold:
-                logger.info(f"📊 Signal rejected: Confidence {signal['confidence']} < {confidence_threshold}")
+                logger.info(f"# Chart Signal rejected: Confidence {signal['confidence']} < {confidence_threshold}")
                 return False
 
             # Check symbol is supported
             supported_symbols = self.get_supported_symbols()
             if signal['symbol'] not in supported_symbols:
-                logger.error(f"❌ Symbol not supported: {signal['symbol']}")
+                logger.error(f"# X Symbol not supported: {signal['symbol']}")
                 return False
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error validating signal: {e}")
+            logger.error(f"# X Error validating signal: {e}")
             return False
 
     def get_supported_symbols(self) -> List[str]:
@@ -209,7 +208,7 @@ class OrderLifecycleManager:
             return ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'ADA/USDT:USDT']
 
         except Exception as e:
-            logger.error(f"❌ Error getting supported symbols: {e}")
+            logger.error(f"# X Error getting supported symbols: {e}")
             return ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'ADA/USDT:USDT']
 
     def calculate_position_size(self, signal: Dict) -> float:
@@ -238,14 +237,14 @@ class OrderLifecycleManager:
                 max_position = result.get('max_position_size', 0)
                 position_size = min(position_size, max_position * (1 - MAX_SLIPPAGE))
 
-                logger.info(f"📊 Calculated position size: {position_size} for {signal['symbol']}")
+                logger.info(f"# Chart Calculated position size: {position_size} for {signal['symbol']}")
                 return position_size
             else:
-                logger.error(f"❌ Risk manager error: {response.text}")
+                logger.error(f"# X Risk manager error: {response.text}")
                 return 0
 
         except Exception as e:
-            logger.error(f"❌ Error calculating position size: {e}")
+            logger.error(f"# X Error calculating position size: {e}")
             return 0
 
     def create_order(self, signal: Dict, position_size: float) -> Dict:
@@ -271,7 +270,7 @@ class OrderLifecycleManager:
             return order
 
         except Exception as e:
-            logger.error(f"❌ Error creating order: {e}")
+            logger.error(f"# X Error creating order: {e}")
             return None
 
     def submit_order(self, order: Dict) -> bool:
@@ -317,16 +316,16 @@ class OrderLifecycleManager:
                     logger.info(f"📤 Order submitted: {order['order_id']} -> {exchange_order_id}")
                     return True
                 else:
-                    logger.error(f"❌ No exchange order ID received: {result}")
+                    logger.error(f"# X No exchange order ID received: {result}")
                     order['status'] = OrderStatus.REJECTED.value
                     return False
             else:
-                logger.error(f"❌ Exchange submission failed: {response.text}")
+                logger.error(f"# X Exchange submission failed: {response.text}")
                 order['status'] = OrderStatus.REJECTED.value
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error submitting order: {e}")
+            logger.error(f"# X Error submitting order: {e}")
             order['status'] = OrderStatus.REJECTED.value
             return False
 
@@ -370,18 +369,18 @@ class OrderLifecycleManager:
                         'timestamp': datetime.now().isoformat()
                     }))
 
-                    logger.info(f"✅ Order filled: {order['order_id']} - {filled_amount}/{order['amount']}")
+                    logger.info(f"# Check Order filled: {order['order_id']} - {filled_amount}/{order['amount']}")
 
                 elif current_status in ['canceled', 'cancelled']:
                     order['status'] = OrderStatus.CANCELLED.value
                     order['cancelled_at'] = datetime.now().isoformat()
-                    logger.info(f"❌ Order cancelled: {order['order_id']}")
+                    logger.info(f"# X Order cancelled: {order['order_id']}")
 
                 elif current_status == 'partial':
                     order['status'] = OrderStatus.PARTIAL.value
                     order['filled_amount'] = filled_amount
                     order['remaining_amount'] = remaining_amount
-                    logger.info(f"📊 Order partial: {order['order_id']} - {filled_amount}/{order['amount']}")
+                    logger.info(f"# Chart Order partial: {order['order_id']} - {filled_amount}/{order['amount']}")
 
                 # Publish order update
                 self.redis_client.publish('order_updates', json.dumps({
@@ -393,33 +392,33 @@ class OrderLifecycleManager:
                 }))
 
         except Exception as e:
-            logger.error(f"❌ Error monitoring order {order.get('order_id')}: {e}")
+            logger.error(f"# X Error monitoring order {order.get('order_id')}: {e}")
 
     def process_signal(self, signal_data: Dict):
         """Process incoming trading signal through complete lifecycle"""
         try:
-            logger.info(f"🎯 Processing signal: {signal_data.get('symbol')} {signal_data.get('type')}")
+            logger.info(f"# Target Processing signal: {signal_data.get('symbol')} {signal_data.get('type')}")
 
             # Step 1: Validate signal
             if not self.validate_signal(signal_data):
-                logger.info("❌ Signal validation failed")
+                logger.info("# X Signal validation failed")
                 return
 
             # Step 2: Calculate position size
             position_size = self.calculate_position_size(signal_data)
             if position_size <= 0:
-                logger.info("❌ Invalid position size calculated")
+                logger.info("# X Invalid position size calculated")
                 return
 
             # Step 3: Create order
             order = self.create_order(signal_data, position_size)
             if not order:
-                logger.error("❌ Failed to create order")
+                logger.error("# X Failed to create order")
                 return
 
             # Step 4: Submit order
             if not self.submit_order(order):
-                logger.error("❌ Failed to submit order")
+                logger.error("# X Failed to submit order")
                 return
 
             # Step 5: Monitor order execution
@@ -434,10 +433,10 @@ class OrderLifecycleManager:
             # Update statistics
             self.stats['orders_processed'] += 1
 
-            logger.info(f"🚀 Order lifecycle started: {order['order_id']}")
+            logger.info(f"# Rocket Order lifecycle started: {order['order_id']}")
 
         except Exception as e:
-            logger.error(f"❌ Error processing signal: {e}")
+            logger.error(f"# X Error processing signal: {e}")
 
     def monitor_order_execution(self, order: Dict):
         """Monitor order until completion or timeout"""
@@ -456,7 +455,7 @@ class OrderLifecycleManager:
                 asyncio.run(asyncio.sleep(5))
 
             except Exception as e:
-                logger.error(f"❌ Error in order monitoring: {e}")
+                logger.error(f"# X Error in order monitoring: {e}")
                 break
 
         # Handle timeout
@@ -493,10 +492,10 @@ class OrderLifecycleManager:
                         signal_data = json.loads(message['data'])
                         self.process_signal(signal_data)
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode signal: {e}")
+                        logger.error(f"# X Failed to decode signal: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in signal subscription: {e}")
+            logger.error(f"# X Error in signal subscription: {e}")
 
     def start_background_processing(self):
         """Start background order processing"""
@@ -505,7 +504,7 @@ class OrderLifecycleManager:
 
         thread = threading.Thread(target=run_signal_processor, daemon=True)
         thread.start()
-        logger.info("🎯 Order lifecycle processing started")
+        logger.info("# Target Order lifecycle processing started")
 
     def get_order_status(self, order_id: str) -> Optional[Dict]:
         """Get status of specific order"""
@@ -571,7 +570,7 @@ class OrderLifecycleManager:
                 results['main_order'] = main_order_id
                 self.active_orders[main_order_id] = order
                 results['success'] = True
-                logger.info(f"✅ Placed main order for {order.symbol}: {main_order_id}")
+                logger.info(f"# Check Placed main order for {order.symbol}: {main_order_id}")
             else:
                 results['errors'].append("Failed to place main order")
                 return results
@@ -590,7 +589,7 @@ class OrderLifecycleManager:
                 sl_order_id = self.submit_stop_order(sl_order_data)
                 if sl_order_id:
                     results['stop_loss_order'] = sl_order_id
-                    logger.info(f"✅ Placed SL order for {order.symbol}: {sl_order_id}")
+                    logger.info(f"# Check Placed SL order for {order.symbol}: {sl_order_id}")
                 else:
                     results['errors'].append("Failed to place stop loss order")
 
@@ -607,7 +606,7 @@ class OrderLifecycleManager:
                 tp_order_id = self.submit_limit_order(tp_order_data)
                 if tp_order_id:
                     results['take_profit_order'] = tp_order_id
-                    logger.info(f"✅ Placed TP order for {order.symbol}: {tp_order_id}")
+                    logger.info(f"# Check Placed TP order for {order.symbol}: {tp_order_id}")
                 else:
                     results['errors'].append("Failed to place take profit order")
 
@@ -623,7 +622,7 @@ class OrderLifecycleManager:
             return results
 
         except Exception as e:
-            logger.error(f"❌ Error placing TP/SL/TSL orders: {e}")
+            logger.error(f"# X Error placing TP/SL/TSL orders: {e}")
             return {
                 'success': False,
                 'errors': [str(e)]
@@ -642,11 +641,11 @@ class OrderLifecycleManager:
                 result = response.json()
                 return result.get('order_id')
             else:
-                logger.error(f"❌ Failed to submit market order: {response.text}")
+                logger.error(f"# X Failed to submit market order: {response.text}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Error submitting market order: {e}")
+            logger.error(f"# X Error submitting market order: {e}")
             return None
 
     def submit_limit_order(self, order_data: Dict) -> Optional[str]:
@@ -662,11 +661,11 @@ class OrderLifecycleManager:
                 result = response.json()
                 return result.get('order_id')
             else:
-                logger.error(f"❌ Failed to submit limit order: {response.text}")
+                logger.error(f"# X Failed to submit limit order: {response.text}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Error submitting limit order: {e}")
+            logger.error(f"# X Error submitting limit order: {e}")
             return None
 
     def submit_stop_order(self, order_data: Dict) -> Optional[str]:
@@ -682,11 +681,11 @@ class OrderLifecycleManager:
                 result = response.json()
                 return result.get('order_id')
             else:
-                logger.error(f"❌ Failed to submit stop order: {response.text}")
+                logger.error(f"# X Failed to submit stop order: {response.text}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Error submitting stop order: {e}")
+            logger.error(f"# X Error submitting stop order: {e}")
             return None
 
     def update_trailing_stop(self, symbol: str, current_price: float) -> Optional[str]:
@@ -736,11 +735,11 @@ class OrderLifecycleManager:
                 result = response.json()
                 return result.get('order_id')
             else:
-                logger.error(f"❌ Failed to update stop order: {response.text}")
+                logger.error(f"# X Failed to update stop order: {response.text}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Error updating stop order: {e}")
+            logger.error(f"# X Error updating stop order: {e}")
             return None
 
     def cancel_tp_sl_orders(self, symbol: str) -> Dict[str, Any]:
@@ -794,14 +793,14 @@ class OrderLifecycleManager:
             )
 
             if response.status_code == 200:
-                logger.info(f"✅ Cancelled order: {order_id}")
+                logger.info(f"# Check Cancelled order: {order_id}")
                 return True
             else:
-                logger.error(f"❌ Failed to cancel order {order_id}: {response.text}")
+                logger.error(f"# X Failed to cancel order {order_id}: {response.text}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error cancelling order {order_id}: {e}")
+            logger.error(f"# X Error cancelling order {order_id}: {e}")
             return False
 
     def get_tp_sl_status(self, symbol: str) -> Optional[Dict]:
@@ -830,7 +829,7 @@ class OrderLifecycleManager:
     def start(self):
         """Start the order lifecycle manager"""
         try:
-            logger.info("🚀 Starting Order Lifecycle Manager...")
+            logger.info("# Rocket Starting Order Lifecycle Manager...")
 
             # Connect to services
             self.connect_services()
@@ -858,13 +857,13 @@ class OrderLifecycleManager:
             logger.info("⏹️ Stopping Order Lifecycle Manager...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Order Lifecycle Manager error: {e}")
+            logger.error(f"# X Order Lifecycle Manager error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the order lifecycle manager"""
         self.is_running = False
-        logger.info("✅ Order Lifecycle Manager stopped")
+        logger.info("# Check Order Lifecycle Manager stopped")
 
 def create_app():
     """Create FastAPI application for health checks and API"""
@@ -945,7 +944,7 @@ def create_app():
             }
 
         except Exception as e:
-            logger.error(f"❌ Error creating TP/SL/TSL order: {e}")
+            logger.error(f"# X Error creating TP/SL/TSL order: {e}")
             return {"error": str(e)}, 500
 
     @app.post("/api/tp-sl-tsl/update-price")
@@ -966,7 +965,7 @@ def create_app():
             }
 
         except Exception as e:
-            logger.error(f"❌ Error updating trailing stop: {e}")
+            logger.error(f"# X Error updating trailing stop: {e}")
             return {"error": str(e)}, 500
 
     @app.get("/api/tp-sl-tsl/status/{symbol}")

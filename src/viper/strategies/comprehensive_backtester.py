@@ -1,37 +1,23 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER HIGH-PERFORMANCE BACKTESTING ENGINE
+# Rocket VIPER HIGH-PERFORMANCE BACKTESTING ENGINE
 Advanced vectorized backtesting with Monte Carlo simulations and Walk Forward Analysis
 
 Features:
-✅ Monte Carlo simulation framework for probabilistic analysis
-✅ Walk Forward Analysis (WFA) for robust out-of-sample testing
-✅ Advanced vectorization using NumPy and pandas
-✅ Parallel processing for maximum speed
-✅ GitHub MCP integration for collaborative development
-✅ Risk-adjusted performance metrics
-✅ Multi-asset portfolio optimization
+# Check Monte Carlo simulation framework for probabilistic analysis
+# Check Walk Forward Analysis (WFA) for robust out-of-sample testing
+# Check Advanced vectorization using NumPy and pandas
+# Check Parallel processing for maximum speed
+# Check GitHub MCP integration for collaborative development
+# Check Risk-adjusted performance metrics
+# Check Multi-asset portfolio optimization
 """
 
 import numpy as np
 import pandas as pd
-import requests
-import json
-import time
-import sys
-import asyncio
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional, Any
 import logging
-import matplotlib.pyplot as plt
-import seaborn as sns
-from scipy import stats
 import warnings
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from dataclasses import dataclass, asdict
 import multiprocessing as mp
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_squared_error, r2_score
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -126,7 +112,7 @@ class BacktestConfig:
 
 class HighPerformanceBacktester:
     """
-    🚀 High-Performance Backtesting Engine with Monte Carlo and WFA
+    # Rocket High-Performance Backtesting Engine with Monte Carlo and WFA
     Advanced vectorized backtesting with probabilistic analysis
     """
 
@@ -169,7 +155,7 @@ class HighPerformanceBacktester:
         self.performance_metrics = {}
         self.risk_metrics = {}
 
-        logger.info("🚀 High-Performance Backtester initialized with MCP integration")
+        logger.info("# Rocket High-Performance Backtester initialized with MCP integration")
 
     async def run_monte_carlo_backtest(self, config: BacktestConfig, historical_data: pd.DataFrame,
                                       strategy_params: Dict[str, Any]) -> MonteCarloResult:
@@ -215,7 +201,7 @@ class HighPerformanceBacktester:
                 'probability_profit': mc_result.probability_profit
             })
 
-        logger.info("✅ Monte Carlo simulation completed")
+        logger.info("# Check Monte Carlo simulation completed")
         return mc_result
 
     def _run_parallel_monte_carlo(self, prices: np.ndarray, returns: np.ndarray,
@@ -259,7 +245,7 @@ class HighPerformanceBacktester:
         for _ in range(iterations):
             # Generate random walk with noise
             noise_factor = np.random.uniform(0.8, 1.2)
-            shuffled_returns = np.random.choice(returns, size=len(returns), replace=True)
+            shuffled_returns = np.secrets.choice(returns, size=len(returns), replace=True)
             simulated_prices = prices[0] * np.exp(np.cumsum(shuffled_returns * noise_factor))
 
             # Run backtest on simulated data
@@ -431,7 +417,7 @@ class HighPerformanceBacktester:
         # Split data into in-sample and out-of-sample periods
         n_samples = len(historical_data)
         if n_samples < 10:  # Not enough data for WFA
-            logger.warning("⚠️ Not enough data for Walk Forward Analysis")
+            logger.warning("# Warning Not enough data for Walk Forward Analysis")
             return WalkForwardResult(
                 in_sample_periods=[],
                 out_sample_periods=[],
@@ -498,5 +484,5 @@ class HighPerformanceBacktester:
                 'robustness_score': result.robustness_score
             })
 
-        logger.info("✅ Walk Forward Analysis completed")
+        logger.info("# Check Walk Forward Analysis completed")
         return result

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED STRATEGY OPTIMIZER - ADDRESSING "45% WIN RATE IS A JOKE"
+# Rocket ENHANCED STRATEGY OPTIMIZER - ADDRESSING "45% WIN RATE IS A JOKE"
 Direct response to user feedback with comprehensive TP/SL optimization
 
 ADDRESSING USER REQUIREMENTS:
-✅ "OPTIMISE THE STRATEGIES FARTHER" - Comprehensive optimization with 1000+ parameter combinations
-✅ "45% WIN RATE IS A JOKE" - Target minimum 60% win rate with aggressive optimization
-✅ "DIFF TP/SL SETTTINGS" - Extensive TP/SL ratio testing from 1:1 to 1:6 
-✅ "DIFF CONFIGS FOR LENGTH AND MULTS" - Complete parameter sweep for all technical indicators
+# Check "OPTIMISE THE STRATEGIES FARTHER" - Comprehensive optimization with 1000+ parameter combinations
+# Check "45% WIN RATE IS A JOKE" - Target minimum 60% win rate with aggressive optimization
+# Check "DIFF TP/SL SETTTINGS" - Extensive TP/SL ratio testing from 1:1 to 1:6 
+# Check "DIFF CONFIGS FOR LENGTH AND MULTS" - Complete parameter sweep for all technical indicators
 
 Goal: Transform 45% win rate strategies into 60%+ high-performance configurations
 """
@@ -106,8 +106,8 @@ class SuperiorStrategyOptimizer:
         self.symbols = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'SOLUSDT', 'DOTUSDT']
         self.optimization_results = []
         
-        console.print("🚀 [bold red]SUPERIOR STRATEGY OPTIMIZER LOADED[/bold red]")
-        console.print("🎯 [yellow]MISSION: Transform 45% joke performance into 60%+ elite strategies[/yellow]")
+        console.print("# Rocket [bold red]SUPERIOR STRATEGY OPTIMIZER LOADED[/bold red]")
+        console.print("# Target [yellow]MISSION: Transform 45% joke performance into 60%+ elite strategies[/yellow]")
     
     def _create_comprehensive_tp_sl_ranges(self) -> Dict[str, List[float]]:
         """Create comprehensive TP/SL ranges as requested by user"""
@@ -146,9 +146,9 @@ class SuperiorStrategyOptimizer:
     async def optimize_strategies_to_superior_performance(self) -> Dict[str, Any]:
         """Run comprehensive optimization to achieve 60%+ win rates"""
         
-        console.print("\n🚀 [bold blue]SUPERIOR STRATEGY OPTIMIZATION INITIATED[/bold blue]")
-        console.print("🎯 [red]ELIMINATING 45% 'JOKE' PERFORMANCE FOREVER[/red]")
-        console.print(f"📊 Target: {self.target_win_rate:.0%} win rate, {self.min_sharpe_ratio:.1f}+ Sharpe ratio")
+        console.print("\n# Rocket [bold blue]SUPERIOR STRATEGY OPTIMIZATION INITIATED[/bold blue]")
+        console.print("# Target [red]ELIMINATING 45% 'JOKE' PERFORMANCE FOREVER[/red]")
+        console.print(f"# Chart Target: {self.target_win_rate:.0%} win rate, {self.min_sharpe_ratio:.1f}+ Sharpe ratio")
         
         start_time = datetime.now()
         
@@ -193,7 +193,7 @@ class SuperiorStrategyOptimizer:
         analysis = await self._analyze_superior_results()
         
         execution_time = (datetime.now() - start_time).total_seconds()
-        console.print(f"\n✅ [bold green]SUPERIOR OPTIMIZATION COMPLETED in {execution_time:.2f}s[/bold green]")
+        console.print(f"\n# Check [bold green]SUPERIOR OPTIMIZATION COMPLETED in {execution_time:.2f}s[/bold green]")
         
         # Show success metrics
         superior_strategies = [r for r in self.optimization_results if r.after_win_rate >= self.min_acceptable_win_rate]
@@ -287,7 +287,7 @@ class SuperiorStrategyOptimizer:
         tp_sl_combos = self._generate_tp_sl_combinations(max_combos=100)
         tech_combos = self._generate_technical_combinations(strategy_type, max_combos=50)
         
-        console.print(f"🔍 [dim]Testing {len(tp_sl_combos) * len(tech_combos)} parameter combinations...[/dim]")
+        console.print(f"# Search [dim]Testing {len(tp_sl_combos) * len(tech_combos)} parameter combinations...[/dim]")
         
         # Test all combinations
         for tp_sl in tp_sl_combos:
@@ -310,9 +310,9 @@ class SuperiorStrategyOptimizer:
                 tests_run += 1
                 
                 # Early termination if we found excellent performance
-                if (performance['win_rate'] >= self.target_win_rate and 
+                if (performance['win_rate'] >= self.target_win_rate and:
                     performance['sharpe_ratio'] >= self.min_sharpe_ratio):
-                    console.print(f"🎯 [green]Early success: {performance['win_rate']:.1%} win rate achieved![/green]")
+                    console.print(f"# Target [green]Early success: {performance['win_rate']:.1%} win rate achieved![/green]")
                     break
         
         best_config['total_tests'] = tests_run
@@ -782,7 +782,7 @@ class SuperiorStrategyOptimizer:
 
     async def _analyze_superior_results(self) -> Dict[str, Any]:
         """Analyze optimization results and create comprehensive report"""
-        console.print("\n📊 [bold blue]ANALYZING SUPERIOR OPTIMIZATION RESULTS[/bold blue]")
+        console.print("\n# Chart [bold blue]ANALYZING SUPERIOR OPTIMIZATION RESULTS[/bold blue]")
         
         if not self.optimization_results:
             return {"error": "No optimization results"}
@@ -884,9 +884,9 @@ class SuperiorStrategyOptimizer:
         best_strategy = max(results, key=lambda x: x.after_win_rate)
         
         transformation_text = Text()
-        transformation_text.append("🚀 MISSION ACCOMPLISHED: 45% JOKE PERFORMANCE ELIMINATED!\n\n", style="bold green")
+        transformation_text.append("# Rocket MISSION ACCOMPLISHED: 45% JOKE PERFORMANCE ELIMINATED!\n\n", style="bold green")
         
-        transformation_text.append(f"📊 AVERAGE PERFORMANCE TRANSFORMATION:\n", style="bold blue")
+        transformation_text.append(f"# Chart AVERAGE PERFORMANCE TRANSFORMATION:\n", style="bold blue")
         transformation_text.append(f"   Before Optimization: {avg_before_win_rate:.1%} win rate (the joke)\n", style="red")
         transformation_text.append(f"   After Optimization:  {avg_after_win_rate:.1%} win rate (superior!)\n", style="green")
         transformation_text.append(f"   Average Improvement: +{avg_win_rate_boost:.1%}\n\n", style="blue")
@@ -901,12 +901,12 @@ class SuperiorStrategyOptimizer:
         elite_count = len([r for r in results if r.after_win_rate >= self.target_win_rate])
         superior_count = len([r for r in results if r.after_win_rate >= self.min_acceptable_win_rate])
         
-        transformation_text.append(f"✅ SUCCESS METRICS:\n", style="bold yellow")
+        transformation_text.append(f"# Check SUCCESS METRICS:\n", style="bold yellow")
         transformation_text.append(f"   Elite Strategies (65%+): {elite_count}/{total_strategies} ({elite_count/total_strategies:.1%})\n", style="green")
         transformation_text.append(f"   Superior Strategies (60%+): {superior_count}/{total_strategies} ({superior_count/total_strategies:.1%})\n", style="yellow")
         transformation_text.append(f"   Mission Success Rate: {superior_count/total_strategies:.1%}", style="bold green")
         
-        console.print(Panel(transformation_text, title="🎯 TRANSFORMATION COMPLETE", border_style="green"))
+        console.print(Panel(transformation_text, title="# Target TRANSFORMATION COMPLETE", border_style="green"))
 
     def _analyze_winning_parameters(self) -> Dict[str, Any]:
         """Analyze parameters of winning strategies"""
@@ -928,15 +928,15 @@ class SuperiorStrategyOptimizer:
 async def main():
     """Main execution - Transform 45% joke into 60%+ elite performance"""
     try:
-        console.print("\n🚀 [bold blue]SUPERIOR STRATEGY OPTIMIZER - ELIMINATING 45% JOKE PERFORMANCE[/bold blue]")
-        console.print("🎯 [yellow]MISSION: Transform weak strategies into 60%+ elite performers[/yellow]\n")
+        console.print("\n# Rocket [bold blue]SUPERIOR STRATEGY OPTIMIZER - ELIMINATING 45% JOKE PERFORMANCE[/bold blue]")
+        console.print("# Target [yellow]MISSION: Transform weak strategies into 60%+ elite performers[/yellow]\n")
         
         optimizer = SuperiorStrategyOptimizer()
         
         # Run comprehensive optimization
         report = await optimizer.optimize_strategies_to_superior_performance()
         
-        console.print("\n✅ [bold green]OPTIMIZATION MISSION COMPLETED![/bold green]")
+        console.print("\n# Check [bold green]OPTIMIZATION MISSION COMPLETED![/bold green]")
         
         # Show final summary
         if report and 'optimization_summary' in report:
@@ -946,13 +946,13 @@ async def main():
             console.print(f"   Elite Performers (65%+): {summary['elite_performers']}")
             console.print(f"   Superior Performers (60%+): {summary['superior_performers']}")
             console.print(f"   Success Rate: {summary['success_rate']:.1%}")
-            console.print(f"\n🎯 [green]NO MORE 45% JOKES - MISSION ACCOMPLISHED![/green]")
+            console.print(f"\n# Target [green]NO MORE 45% JOKES - MISSION ACCOMPLISHED![/green]")
         
         return report
         
     except Exception as e:
         logger.error(f"Error in optimization: {e}")
-        console.print(f"❌ [bold red]Error: {e}[/bold red]")
+        console.print(f"# X [bold red]Error: {e}[/bold red]")
         return None
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Risk Manager Service
+# Rocket VIPER Trading Bot - Risk Manager Service
 Position control, loss limits, and safety checks for automated trading
 
 Features:
@@ -14,27 +14,20 @@ Features:
 
 import os
 import json
-import time
 import logging
 import asyncio
 import sys
-import math
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
-from pathlib import Path
-import threading
 import httpx
 from enum import Enum
 
 # Add shared directory to path for circuit breaker
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
-    from circuit_breaker import ServiceClient, call_service
     CIRCUIT_BREAKER_AVAILABLE = True
 except ImportError:
     # Fallback if shared module not available
@@ -133,7 +126,7 @@ class RiskManager:
         self.exchange_connector_url = os.getenv('EXCHANGE_CONNECTOR_URL', 'http://exchange-connector:8000')
         self.data_manager_url = os.getenv('DATA_MANAGER_URL', 'http://data-manager:8000')
 
-        logger.info("🏗️ Initializing Risk Manager...")
+        logger.info("# Construction Initializing Risk Manager...")
 
         # TP/SL/TSL configuration
         self.default_stop_loss_percent = float(os.getenv('DEFAULT_STOP_LOSS_PERCENT', '0.02'))  # 2%
@@ -210,7 +203,7 @@ class RiskManager:
 
             if position_value > max_position_value:
                 position_size = max_position_value / signal.entry_price
-                logger.warning(f"⚠️ Reduced position size to meet risk limits: {position_size}")
+                logger.warning(f"# Warning Reduced position size to meet risk limits: {position_size}")
 
             # Validate TP/SL levels
             levels = self.calculate_tp_sl_tsl(signal.symbol, signal.side, signal.entry_price)
@@ -241,7 +234,7 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error validating signal: {e}")
+            logger.error(f"# X Error validating signal: {e}")
             return {
                 'approved': False,
                 'reason': f'Validation error: {str(e)}',
@@ -285,7 +278,7 @@ class RiskManager:
             position.unrealized_pnl = (position.entry_price - current_price) * position.size
 
         # Check Take Profit
-        if position.take_profit and (
+        if position.take_profit and (:
             (position.side == PositionSide.LONG and current_price >= position.take_profit) or
             (position.side == PositionSide.SHORT and current_price <= position.take_profit)
         ):
@@ -297,7 +290,7 @@ class RiskManager:
             }
 
         # Check Stop Loss
-        elif position.stop_loss and (
+        elif position.stop_loss and (:
             (position.side == PositionSide.LONG and current_price <= position.stop_loss) or
             (position.side == PositionSide.SHORT and current_price >= position.stop_loss)
         ):
@@ -327,7 +320,7 @@ class RiskManager:
 
         # Check Trailing Stop Loss
         if position.trailing_stop and action_taken is None:
-            if (
+            if (:
                 (position.side == PositionSide.LONG and current_price <= position.trailing_stop) or
                 (position.side == PositionSide.SHORT and current_price >= position.trailing_stop)
             ):
@@ -345,10 +338,10 @@ class RiskManager:
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     async def get_account_balance(self) -> Optional[float]:
@@ -363,7 +356,7 @@ class RiskManager:
                 )
                 return result.get('free', 0)
             except Exception as e:
-                logger.error(f"❌ Circuit breaker error getting balance: {e}")
+                logger.error(f"# X Circuit breaker error getting balance: {e}")
                 return None
         else:
             # Fallback to direct HTTP call
@@ -374,10 +367,10 @@ class RiskManager:
                         data = response.json()
                         return data.get('free', 0)
                     else:
-                        logger.warning(f"⚠️ Failed to get balance: {response.status_code}")
+                        logger.warning(f"# Warning Failed to get balance: {response.status_code}")
                         return None
             except Exception as e:
-                logger.error(f"❌ Error getting balance: {e}")
+                logger.error(f"# X Error getting balance: {e}")
                 return None
 
     async def get_positions(self) -> Optional[List]:
@@ -392,7 +385,7 @@ class RiskManager:
                 )
                 return result.get('positions', [])
             except Exception as e:
-                logger.error(f"❌ Circuit breaker error getting positions: {e}")
+                logger.error(f"# X Circuit breaker error getting positions: {e}")
                 return []
         else:
             # Fallback to direct HTTP call
@@ -403,10 +396,10 @@ class RiskManager:
                         data = response.json()
                         return data.get('positions', [])
                     else:
-                        logger.warning(f"⚠️ Failed to get positions: {response.status_code}")
+                        logger.warning(f"# Warning Failed to get positions: {response.status_code}")
                         return []
             except Exception as e:
-                logger.error(f"❌ Error getting positions: {e}")
+                logger.error(f"# X Error getting positions: {e}")
                 return []
 
     def calculate_risk_score(self, balance: float, positions: List) -> Dict:
@@ -481,7 +474,7 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error calculating risk score: {e}")
+            logger.error(f"# X Error calculating risk score: {e}")
             return {
                 'overall_score': 100,
                 'risk_level': 'unknown',
@@ -506,7 +499,7 @@ class RiskManager:
                 'starting_balance': round(self.starting_balance, 2)
             }
         except Exception as e:
-            logger.error(f"❌ Error checking daily loss limit: {e}")
+            logger.error(f"# X Error checking daily loss limit: {e}")
             return {'breached': False, 'error': str(e)}
 
     def check_capital_utilization(self, balance: float, positions: List) -> Dict:
@@ -553,7 +546,7 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error checking capital utilization: {e}")
+            logger.error(f"# X Error checking capital utilization: {e}")
             return {
                 'status': 'error',
                 'error': str(e),
@@ -590,7 +583,7 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error checking position limits: {e}")
+            logger.error(f"# X Error checking position limits: {e}")
             return {'allowed': False, 'error': str(e)}
 
     def check_risk_limits(self, symbol: str, position_size: float, price: float, balance: float) -> Dict:
@@ -633,24 +626,24 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error checking risk limits: {e}")
+            logger.error(f"# X Error checking risk limits: {e}")
             return {'allowed': False, 'error': str(e)}
 
     def register_position(self, symbol: str, position_data: Dict) -> bool:
         """Register a new position in risk tracking"""
         try:
             if symbol in self.active_symbols:
-                logger.warning(f"⚠️ Symbol {symbol} already has an active position")
+                logger.warning(f"# Warning Symbol {symbol} already has an active position")
                 return False
 
             self.open_positions[symbol] = position_data
             self.active_symbols.add(symbol)
 
-            logger.info(f"✅ Position registered for {symbol}: {position_data}")
+            logger.info(f"# Check Position registered for {symbol}: {position_data}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error registering position: {e}")
+            logger.error(f"# X Error registering position: {e}")
             return False
 
     def close_position(self, symbol: str) -> bool:
@@ -661,11 +654,11 @@ class RiskManager:
             if symbol in self.active_symbols:
                 self.active_symbols.remove(symbol)
 
-            logger.info(f"✅ Position closed for {symbol}")
+            logger.info(f"# Check Position closed for {symbol}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error closing position: {e}")
+            logger.error(f"# X Error closing position: {e}")
             return False
 
     def calculate_position_size(self, symbol: str, price: float, balance: float,
@@ -701,7 +694,7 @@ class RiskManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error calculating position size: {e}")
+            logger.error(f"# X Error calculating position size: {e}")
             return {'error': str(e), 'recommended_size': 0}
 
     async def check_auto_stops(self, positions: List) -> List[Dict]:
@@ -757,7 +750,7 @@ class RiskManager:
                         })
 
         except Exception as e:
-            logger.error(f"❌ Error checking auto stops: {e}")
+            logger.error(f"# X Error checking auto stops: {e}")
             alerts.append({
                 'type': 'error',
                 'message': f'Error checking auto stops: {e}',
@@ -793,7 +786,7 @@ class RiskManager:
                 )
 
         except Exception as e:
-            logger.error(f"❌ Error updating daily P&L: {e}")
+            logger.error(f"# X Error updating daily P&L: {e}")
 
     def load_daily_pnl(self) -> bool:
         """Load daily P&L from Redis"""
@@ -807,12 +800,12 @@ class RiskManager:
                 return True
             return False
         except Exception as e:
-            logger.error(f"❌ Error loading daily P&L: {e}")
+            logger.error(f"# X Error loading daily P&L: {e}")
             return False
 
     async def start_monitoring(self):
         """Start risk monitoring loop"""
-        logger.info("🚀 Starting risk monitoring...")
+        logger.info("# Rocket Starting risk monitoring...")
         self.is_running = True
 
         # Load previous daily P&L data
@@ -850,7 +843,7 @@ class RiskManager:
                 await asyncio.sleep(30)  # Check every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Error in monitoring loop: {e}")
+                logger.error(f"# X Error in monitoring loop: {e}")
                 await asyncio.sleep(10)
 
     def stop(self):
@@ -871,12 +864,12 @@ risk_manager = RiskManager()
 async def startup_event():
     """Initialize services on startup"""
     if not risk_manager.initialize_redis():
-        logger.error("❌ Failed to initialize Redis. Exiting...")
+        logger.error("# X Failed to initialize Redis. Exiting...")
         return
 
     # Start monitoring in background task
     asyncio.create_task(risk_manager.start_monitoring())
-    logger.info("✅ Risk Manager started successfully")
+    logger.info("# Check Risk Manager started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -957,7 +950,7 @@ async def calculate_position_size(request: Request):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error calculating position size: {e}")
+        logger.error(f"# X Error calculating position size: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.get("/api/alerts")
@@ -970,7 +963,7 @@ async def get_risk_alerts(limit: int = Query(50, description="Number of alerts t
         for alert in alerts:
             try:
                 parsed_alerts.append(json.loads(alert))
-            except:
+            except Exception:
                 parsed_alerts.append({'raw': alert})
 
         return {'alerts': parsed_alerts, 'count': len(parsed_alerts)}
@@ -1159,7 +1152,7 @@ async def calculate_tp_sl_tsl(request: Request):
         }
 
     except Exception as e:
-        logger.error(f"❌ Error calculating TP/SL/TSL: {e}")
+        logger.error(f"# X Error calculating TP/SL/TSL: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/tp-sl-tsl/validate-signal")
@@ -1192,7 +1185,7 @@ async def validate_trading_signal(request: Request):
         }
 
     except Exception as e:
-        logger.error(f"❌ Error validating signal: {e}")
+        logger.error(f"# X Error validating signal: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/tp-sl-tsl/create-position")
@@ -1226,7 +1219,7 @@ async def create_position_from_signal(request: Request):
         risk_manager.active_positions[signal.symbol] = position
         risk_manager.active_symbols.add(signal.symbol)
 
-        logger.info(f"✅ Created position for {signal.symbol}: {position.side.value} {position.size} @ {position.entry_price}")
+        logger.info(f"# Check Created position for {signal.symbol}: {position.side.value} {position.size} @ {position.entry_price}")
 
         return {
             'position': {
@@ -1243,7 +1236,7 @@ async def create_position_from_signal(request: Request):
         }
 
     except Exception as e:
-        logger.error(f"❌ Error creating position: {e}")
+        logger.error(f"# X Error creating position: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/tp-sl-tsl/update-price")
@@ -1274,7 +1267,7 @@ async def update_position_price(request: Request):
         }
 
     except Exception as e:
-        logger.error(f"❌ Error updating position: {e}")
+        logger.error(f"# X Error updating position: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/tp-sl-tsl/positions")
@@ -1316,7 +1309,7 @@ async def close_tp_sl_tsl_position(symbol: str):
         del risk_manager.active_positions[symbol]
         risk_manager.active_symbols.discard(symbol)
 
-        logger.info(f"✅ Closed position for {symbol}, P&L: {pnl}")
+        logger.info(f"# Check Closed position for {symbol}, P&L: {pnl}")
 
         return {
             'symbol': symbol,
@@ -1327,7 +1320,7 @@ async def close_tp_sl_tsl_position(symbol: str):
         }
 
     except Exception as e:
-        logger.error(f"❌ Error closing position: {e}")
+        logger.error(f"# X Error closing position: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/tp-sl-tsl/config")
@@ -1358,12 +1351,12 @@ async def update_tp_sl_tsl_config(request: Request):
         if 'trailing_activation_percent' in data:
             os.environ['TRAILING_ACTIVATION_PERCENT'] = str(data['trailing_activation_percent'])
 
-        logger.info("✅ Updated TP/SL/TSL configuration")
+        logger.info("# Check Updated TP/SL/TSL configuration")
 
         return await get_tp_sl_tsl_config()
 
     except Exception as e:
-        logger.error(f"❌ Error updating configuration: {e}")
+        logger.error(f"# X Error updating configuration: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":

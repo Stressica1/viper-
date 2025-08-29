@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Live Trading Engine
+# Rocket VIPER Trading Bot - Live Trading Engine
 Real-time automated trading with Bitget API integration
 
 Features:
@@ -82,8 +82,8 @@ class LiveTradingEngine:
         self.active_trades = []
 
         logger.info("🚫 REAL DATA ONLY MODE ENABLED")
-        logger.info("📊 Only real OHLCV data will be used")
-        logger.info("❌ No simulation or mock data allowed")
+        logger.info("# Chart Only real OHLCV data will be used")
+        logger.info("# X No simulation or mock data allowed")
 
     def load_credentials_from_env(self):
         """Load credentials directly from environment variables"""
@@ -95,10 +95,10 @@ class LiveTradingEngine:
             self.api_password = os.getenv('BITGET_API_PASSWORD', '')
             self.symbol = os.getenv('TARGET_SYMBOL', 'BTCUSDT')
             
-            logger.info("✅ Credentials loaded from environment")
+            logger.info("# Check Credentials loaded from environment")
 
         except Exception as e:
-            logger.error(f"❌ Error loading credentials: {e}")
+            logger.error(f"# X Error loading credentials: {e}")
             raise Exception(f"🚫 Failed to load credentials: {e}")
 
     def initialize_exchange(self):
@@ -119,12 +119,12 @@ class LiveTradingEngine:
             # Load markets
             logger.info("📡 Loading markets...")
             self.exchange.load_markets()
-            logger.info("✅ Markets loaded successfully")
-            logger.info("✅ Bitget USDT swap connection established")
+            logger.info("# Check Markets loaded successfully")
+            logger.info("# Check Bitget USDT swap connection established")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize Bitget exchange: {e}")
+            logger.error(f"# X Failed to initialize Bitget exchange: {e}")
             return False
 
     def initialize_redis(self):
@@ -133,16 +133,16 @@ class LiveTradingEngine:
             redis_url = os.getenv('REDIS_URL', 'redis://redis:6379')
             self.redis_client = redis.Redis.from_url(redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def get_market_data(self):
         """Get current market data - Bitget USDT swaps only"""
         try:
-            logger.info("📊 BITGET DATA: Fetching live USDT swap market data...")
+            logger.info("# Chart BITGET DATA: Fetching live USDT swap market data...")
             ticker = self.exchange.fetch_ticker(self.symbol)
 
             if not ticker or 'last' not in ticker:
@@ -158,11 +158,11 @@ class LiveTradingEngine:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"📊 REAL DATA: Current price: ${market_data['price']:.2f}")
+            logger.info(f"# Chart REAL DATA: Current price: ${market_data['price']:.2f}")
             return market_data
 
         except Exception as e:
-            logger.error(f"❌ REAL DATA ONLY: Failed to fetch market data: {e}")
+            logger.error(f"# X REAL DATA ONLY: Failed to fetch market data: {e}")
             return None
 
     async def get_account_balance(self) -> float:
@@ -175,10 +175,10 @@ class LiveTradingEngine:
                 logger.info(f"💰 Swap Wallet Balance: ${usdt_balance:.2f} USDT (available)")
                 return usdt_balance
             else:
-                logger.error("❌ USDT balance not found in swap wallet")
+                logger.error("# X USDT balance not found in swap wallet")
                 return 0.0
         except Exception as e:
-            logger.error(f"❌ Failed to fetch swap wallet balance: {e}")
+            logger.error(f"# X Failed to fetch swap wallet balance: {e}")
             # Check if it's an API key issue
             if "Apikey does not exist" in str(e):
                 logger.error("🚫 REAL DATA ONLY: Invalid API key - cannot proceed with real trading")
@@ -187,7 +187,7 @@ class LiveTradingEngine:
                 logger.error("   2. Create a new API key with trading permissions")
                 logger.error("   3. Update BITGET_API_KEY, BITGET_API_SECRET, and BITGET_API_PASSWORD in .env")
                 logger.error("   4. Restart the live trading engine")
-                logger.error("❌ System will not operate with invalid API credentials")
+                logger.error("# X System will not operate with invalid API credentials")
                 raise Exception("REAL DATA ONLY: Invalid API credentials - exiting")
             return 0.0
 
@@ -202,7 +202,7 @@ class LiveTradingEngine:
             loop.close()
             return result
         except Exception as e:
-            logger.error(f"❌ Error in sync balance check: {e}")
+            logger.error(f"# X Error in sync balance check: {e}")
             return 0.0
 
     def calculate_position_size(self, price: float, balance: float, leverage: int = 50):
@@ -226,7 +226,7 @@ class LiveTradingEngine:
             min_contract_size = 0.001  # 0.001 BTC minimum
             position_size = max(leveraged_position_size, min_contract_size)
 
-            logger.info(f"🎯 Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
                        f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
                        f"({leverage}x leverage) → Final Size={position_size:.6f}")
@@ -234,18 +234,18 @@ class LiveTradingEngine:
             return position_size
 
         except Exception as e:
-            logger.error(f"❌ Error calculating position size: {e}")
+            logger.error(f"# X Error calculating position size: {e}")
             # Fallback to minimum size
             return 0.001
 
     def execute_trade(self, side: str, size: float, price: Optional[float] = None):
         """Execute a trade on Bitget USDT swaps"""
         try:
-            logger.info(f"🚀 EXECUTING BITGET {side.upper()} ORDER: {size:.6f} USDT on {self.symbol}")
+            logger.info(f"# Rocket EXECUTING BITGET {side.upper()} ORDER: {size:.6f} USDT on {self.symbol}")
 
             # Ensure size meets minimum requirements (0.0001 BTC)
             if size < 0.0001:
-                logger.error(f"❌ Position size {size:.8f} BTC below minimum 0.0001 BTC")
+                logger.error(f"# X Position size {size:.8f} BTC below minimum 0.0001 BTC")
                 return None
 
             # Use hedge mode parameters for Bitget USDT swaps
@@ -268,7 +268,7 @@ class LiveTradingEngine:
                     params={'tradeSide': 'open'}  # Open short position in hedge mode
                 )
 
-            logger.info(f"✅ BITGET {side.upper()} order executed successfully: ID {order.get('id', 'N/A')}")
+            logger.info(f"# Check BITGET {side.upper()} order executed successfully: ID {order.get('id', 'N/A')}")
 
             # Store trade in Redis
             trade_data = {
@@ -288,14 +288,14 @@ class LiveTradingEngine:
                     86400,  # 24 hours
                     json.dumps(trade_data)
                 )
-                logger.info("✅ Trade data stored in Redis")
+                logger.info("# Check Trade data stored in Redis")
             except Exception as redis_e:
-                logger.warning(f"⚠️ Failed to store trade in Redis: {redis_e}")
+                logger.warning(f"# Warning Failed to store trade in Redis: {redis_e}")
 
             return order
 
         except Exception as e:
-            logger.error(f"❌ Failed to execute {side} trade: {e}")
+            logger.error(f"# X Failed to execute {side} trade: {e}")
 
             # Check for API credential issues
             if "Apikey does not exist" in str(e):
@@ -309,7 +309,7 @@ class LiveTradingEngine:
     def check_risk_limits(self, symbol: str, position_size: float, price: float, balance: float) -> Dict:
         """Check risk limits with risk manager service"""
         try:
-            logger.info(f"🔍 Checking risk limits for {symbol}: size={position_size:.6f}, price=${price:.2f}, balance=${balance:.2f}")
+            logger.info(f"# Search Checking risk limits for {symbol}: size={position_size:.6f}, price=${price:.2f}, balance=${balance:.2f}")
 
             # Prepare request data
             request_data = {
@@ -329,22 +329,22 @@ class LiveTradingEngine:
             if response.status_code == 200:
                 result = response.json()
                 if result.get('allowed', False):
-                    logger.info("✅ Risk check passed - trade allowed")
+                    logger.info("# Check Risk check passed - trade allowed")
                     return result
                 else:
-                    logger.warning(f"⚠️ Risk check failed: {result.get('reason', 'Unknown reason')}")
+                    logger.warning(f"# Warning Risk check failed: {result.get('reason', 'Unknown reason')}")
                     return result
             else:
-                logger.error(f"❌ Risk manager returned status {response.status_code}: {response.text}")
+                logger.error(f"# X Risk manager returned status {response.status_code}: {response.text}")
                 return {'allowed': False, 'error': f'HTTP {response.status_code}'}
 
         except requests.exceptions.RequestException as e:
-            logger.error(f"❌ Failed to connect to risk manager: {e}")
+            logger.error(f"# X Failed to connect to risk manager: {e}")
             # Allow trade if risk manager is unavailable (fail-safe)
-            logger.warning("⚠️ Risk manager unavailable - allowing trade (fail-safe mode)")
+            logger.warning("# Warning Risk manager unavailable - allowing trade (fail-safe mode)")
             return {'allowed': True, 'warning': 'Risk manager unavailable'}
         except Exception as e:
-            logger.error(f"❌ Error checking risk limits: {e}")
+            logger.error(f"# X Error checking risk limits: {e}")
             return {'allowed': False, 'error': str(e)}
 
     def register_position(self, symbol: str, position_data: Dict) -> bool:
@@ -362,14 +362,14 @@ class LiveTradingEngine:
             )
 
             if response.status_code == 200:
-                logger.info(f"✅ Position registered for {symbol}")
+                logger.info(f"# Check Position registered for {symbol}")
                 return True
             else:
-                logger.error(f"❌ Failed to register position: {response.status_code} - {response.text}")
+                logger.error(f"# X Failed to register position: {response.status_code} - {response.text}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error registering position: {e}")
+            logger.error(f"# X Error registering position: {e}")
             return False
 
     def close_position(self, symbol: str) -> bool:
@@ -383,14 +383,14 @@ class LiveTradingEngine:
             )
 
             if response.status_code == 200:
-                logger.info(f"✅ Position closed for {symbol}")
+                logger.info(f"# Check Position closed for {symbol}")
                 return True
             else:
-                logger.error(f"❌ Failed to close position: {response.status_code} - {response.text}")
+                logger.error(f"# X Failed to close position: {response.status_code} - {response.text}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error closing position: {e}")
+            logger.error(f"# X Error closing position: {e}")
             return False
 
     def get_viper_signal_from_service(self):
@@ -403,7 +403,7 @@ class LiveTradingEngine:
             # Fetch current market data
             response = requests.get(f"{market_data_manager_url}/api/market/{self.symbol}", timeout=5)
             if response.status_code != 200:
-                logger.warning(f"⚠️ Cannot fetch market data for {self.symbol}")
+                logger.warning(f"# Warning Cannot fetch market data for {self.symbol}")
                 return None
 
             market_data = response.json()
@@ -420,17 +420,17 @@ class LiveTradingEngine:
             if response.status_code == 200:
                 signal_data = response.json()
                 if 'signal' in signal_data and signal_data['signal'] in ['LONG', 'SHORT']:
-                    logger.info(f"🎯 Received {signal_data['signal']} signal from VIPER service")
+                    logger.info(f"# Target Received {signal_data['signal']} signal from VIPER service")
                     return signal_data
                 else:
-                    logger.debug(f"📊 No actionable signal for {self.symbol}")
+                    logger.debug(f"# Chart No actionable signal for {self.symbol}")
                     return None
             else:
-                logger.warning(f"⚠️ VIPER service returned status {response.status_code}")
+                logger.warning(f"# Warning VIPER service returned status {response.status_code}")
                 return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting signal from VIPER service: {e}")
+            logger.error(f"# X Error getting signal from VIPER service: {e}")
             return None
 
     def get_viper_signal(self):
@@ -440,7 +440,7 @@ class LiveTradingEngine:
             return self.get_viper_signal_from_service()
 
         except Exception as e:
-            logger.error(f"❌ Error in signal generation: {e}")
+            logger.error(f"# X Error in signal generation: {e}")
             return None
 
     def listen_for_trading_signals(self):
@@ -468,12 +468,12 @@ class LiveTradingEngine:
                             self.process_emergency_stop(event_data)
 
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode message: {e}")
+                        logger.error(f"# X Failed to decode message: {e}")
                     except Exception as e:
-                        logger.error(f"❌ Error processing message: {e}")
+                        logger.error(f"# X Error processing message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in signal listener: {e}")
+            logger.error(f"# X Error in signal listener: {e}")
 
     def process_trading_signal(self, event_data: Dict):
         """Process a trading signal from the event system"""
@@ -484,30 +484,30 @@ class LiveTradingEngine:
             if symbol != self.symbol:
                 return  # Not for this symbol
 
-            logger.info(f"🎯 Processing signal: {signal.get('type', 'UNKNOWN')} for {symbol}")
+            logger.info(f"# Target Processing signal: {signal.get('type', 'UNKNOWN')} for {symbol}")
 
             # Validate signal has required fields
             if not all(key in signal for key in ['type', 'price', 'confidence']):
-                logger.error("❌ Invalid signal format")
+                logger.error("# X Invalid signal format")
                 return
 
             # Check account balance
             balance = self.check_account_balance()
             if balance < 10:
-                logger.warning(f"⚠️ Insufficient balance: ${balance:.2f}")
+                logger.warning(f"# Warning Insufficient balance: ${balance:.2f}")
                 return
 
             # Calculate position size with 3% risk and 50x leverage
             position_size = self.calculate_position_size(signal['price'], balance, leverage=50)
             if position_size < 0.0001:
-                logger.warning(f"⚠️ Position size too small: {position_size:.8f} BTC")
+                logger.warning(f"# Warning Position size too small: {position_size:.8f} BTC")
                 return
 
             # Execute trade with enhanced error handling
             self.execute_position(signal, position_size, balance)
 
         except Exception as e:
-            logger.error(f"❌ Error processing trading signal: {e}")
+            logger.error(f"# X Error processing trading signal: {e}")
 
     def process_risk_validation(self, event_data: Dict):
         """Process risk validation requests"""
@@ -541,7 +541,7 @@ class LiveTradingEngine:
             self.redis_client.publish('risk_validation_result', json.dumps(validation_result))
 
         except Exception as e:
-            logger.error(f"❌ Error in risk validation: {e}")
+            logger.error(f"# X Error in risk validation: {e}")
 
     def process_emergency_stop(self, event_data: Dict):
         """Process emergency stop signals"""
@@ -555,7 +555,7 @@ class LiveTradingEngine:
             self.emergency_close_all_positions()
 
         except Exception as e:
-            logger.error(f"❌ Error processing emergency stop: {e}")
+            logger.error(f"# X Error processing emergency stop: {e}")
 
     def execute_position(self, signal: Dict, position_size: float, balance: float):
         """Execute a position with comprehensive error handling and logging"""
@@ -565,7 +565,7 @@ class LiveTradingEngine:
             price = signal.get('price', 0)
             confidence = signal.get('confidence', 0)
 
-            logger.info(f"🚀 Executing {signal_type} position: {position_size:.6f} BTC at ${price:.2f}")
+            logger.info(f"# Rocket Executing {signal_type} position: {position_size:.6f} BTC at ${price:.2f}")
 
             # Execute the trade
             order = self.execute_trade(signal_type, position_size, price)
@@ -574,7 +574,7 @@ class LiveTradingEngine:
                 order_id = order.get('id', 'unknown')
                 executed_price = order.get('average', order.get('price', price))
 
-                logger.info(f"✅ Trade executed successfully: {order_id}")
+                logger.info(f"# Check Trade executed successfully: {order_id}")
 
                 # Register position with risk manager
                 position_data = {
@@ -601,10 +601,10 @@ class LiveTradingEngine:
 
                     self.redis_client.publish('position_updates', json.dumps(trade_event))
                 else:
-                    logger.warning(f"⚠️ Failed to register position with risk manager")
+                    logger.warning(f"# Warning Failed to register position with risk manager")
 
             else:
-                logger.error("❌ Trade execution failed")
+                logger.error("# X Trade execution failed")
 
                 # Publish trade failure event
                 failure_event = {
@@ -618,7 +618,7 @@ class LiveTradingEngine:
                 self.redis_client.publish('trading_errors', json.dumps(failure_event))
 
         except Exception as e:
-            logger.error(f"❌ Error executing position: {e}")
+            logger.error(f"# X Error executing position: {e}")
 
             # Publish error event
             error_event = {
@@ -668,11 +668,11 @@ class LiveTradingEngine:
             self.redis_client.publish('system_events', json.dumps(completed_event))
 
         except Exception as e:
-            logger.error(f"❌ Error in emergency close: {e}")
+            logger.error(f"# X Error in emergency close: {e}")
 
     def run_trading_loop(self):
         """Main trading loop - now event-driven"""
-        logger.info("🚀 Starting VIPER Live Trading Engine (Event-Driven)...")
+        logger.info("# Rocket Starting VIPER Live Trading Engine (Event-Driven)...")
         self.is_running = True
 
         try:
@@ -702,14 +702,14 @@ class LiveTradingEngine:
                     time.sleep(60)
 
                 except Exception as e:
-                    logger.error(f"❌ Error in main loop: {e}")
+                    logger.error(f"# X Error in main loop: {e}")
                     time.sleep(30)
 
         except KeyboardInterrupt:
             logger.info("🛑 Trading loop interrupted by user")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Fatal error in trading loop: {e}")
+            logger.error(f"# X Fatal error in trading loop: {e}")
             self.stop()
 
     def stop(self):
@@ -723,11 +723,11 @@ def main():
 
     # Initialize connections
     if not engine.initialize_exchange():
-        logger.error("❌ Failed to initialize exchange. Exiting...")
+        logger.error("# X Failed to initialize exchange. Exiting...")
         return
 
     if not engine.initialize_redis():
-        logger.warning("⚠️ Redis connection failed. Continuing without caching...")
+        logger.warning("# Warning Redis connection failed. Continuing without caching...")
 
     try:
         # Start trading loop

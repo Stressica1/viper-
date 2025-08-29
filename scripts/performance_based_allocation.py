@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 PERFORMANCE-BASED ALLOCATION - Dynamic Capital Distribution
+# Target PERFORMANCE-BASED ALLOCATION - Dynamic Capital Distribution
 ===========================================================
 
 Advanced system for allocating capital based on strategy performance metrics.
@@ -22,7 +22,6 @@ import sys
 import json
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
 
 # Import our components
@@ -66,8 +65,7 @@ class PerformanceBasedAllocator:
 
     def optimize_allocation(self) -> AllocationResult:
         """Optimize capital allocation based on performance"""
-        print("🎯 VIPER PERFORMANCE-BASED ALLOCATION OPTIMIZATION")
-        print("=" * 60)
+        print("# Target VIPER PERFORMANCE-BASED ALLOCATION OPTIMIZATION")
 
         strategies = self.dashboard.strategies
         original_allocation = {}
@@ -184,14 +182,9 @@ class PerformanceBasedAllocator:
 
     def display_allocation_results(self, result: AllocationResult):
         """Display allocation optimization results"""
-        print(f"\n🎯 ALLOCATION OPTIMIZATION RESULTS - ${self.portfolio_value:.0f} PORTFOLIO")
-        print("=" * 80)
-        print(f"📅 Timestamp: {result.timestamp}")
+        print(f"\n# Target ALLOCATION OPTIMIZATION RESULTS - ${self.portfolio_value:.0f} PORTFOLIO")
 
-        print(f"\n📊 CAPITAL ALLOCATION COMPARISON")
-        print("-" * 50)
         print(f"{'Strategy':<25} {'Original':>10} {'Optimized':>10} {'Change':>8}")
-        print("-" * 53)
 
         total_original = 0
         total_optimized = 0
@@ -206,11 +199,8 @@ class PerformanceBasedAllocator:
 
             print(f"{strategy_name[:24]:<25} ${original:>8.2f} ${optimized:>8.2f} ${change:>+7.2f}")
 
-        print("-" * 53)
         print(f"{'TOTAL':<25} ${total_original:>8.2f} ${total_optimized:>8.2f} ${total_optimized-total_original:>+7.2f}")
 
-        print(f"\n🏆 PERFORMANCE SCORES & ALLOCATIONS")
-        print("-" * 45)
 
         # Sort by performance score
         sorted_by_score = sorted(result.performance_scores.items(), key=lambda x: x[1], reverse=True)
@@ -219,8 +209,6 @@ class PerformanceBasedAllocator:
             allocation = result.capital_allocation.get(name, 0)
             weight = result.optimized_allocation.get(name, 0)
 
-            print(f"{i}. {name}")
-            print(f"   Performance Score: {score:.1f}/100")
             print(f"   Allocation: ${allocation:.2f} ({weight:.1f}%)")
 
             # Show key metrics
@@ -228,8 +216,6 @@ class PerformanceBasedAllocator:
             if strategy:
                 print(f"   Sharpe: {strategy.sharpe_ratio:.2f} | Win Rate: {strategy.win_rate:.1f}% | Return: {strategy.total_return:.1f}%")
 
-        print(f"\n💡 ALLOCATION STRATEGY")
-        print("-" * 25)
         print("• Top performer gets maximum allocation (up to $12.00)")
         print("• Second best gets medium allocation (up to $9.00)")
         print("• Third best gets smaller allocation (up to $6.00)")
@@ -303,16 +289,14 @@ def main():
             report_path = allocator.export_allocation_report(result)
             print(f"\n📄 Allocation report saved: {report_path}")
 
-        print("\n✅ Performance-based allocation optimization completed!")
+        print("\n# Check Performance-based allocation optimization completed!")
         print(f"💰 Portfolio: ${allocator.portfolio_value:.2f}")
-        print("🎯 Capital allocated based on strategy performance metrics")
+        print("# Target Capital allocated based on strategy performance metrics")
     else:
-        print("🎯 VIPER Performance-Based Allocation System")
-        print("=" * 50)
+        print("# Target VIPER Performance-Based Allocation System")
         print(f"💰 Portfolio Value: ${allocator.portfolio_value:.2f}")
         print("\nUse --optimize to run performance-based allocation")
         print("Use --export to save detailed allocation report")
-        print("\nExample:")
         print("  python scripts/performance_based_allocation.py --optimize --export")
 
 if __name__ == '__main__':
