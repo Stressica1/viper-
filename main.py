@@ -1,13 +1,31 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER LIVE TRADING BOT WITH JOB MANAGER INTEGRATION
+🚀 VIPER LIVE TRADING BOT WITH MANDATORY DOCKER & MCP ENFORCEMENT
 MAX 10 POSITIONS | MAX 3% RISK PER TRADE | PROPER MARGIN CALCULATION
+
+⚠️  CRITICAL: This module now operates through MANDATORY Docker & MCP enforcement
+All operations require Docker services and MCP integration to be active
 """
 
 import os
 import sys
 import time
 import logging
+from pathlib import Path
+
+# Add project root to path
+project_root = Path(__file__).parent
+sys.path.append(str(project_root))
+
+# MANDATORY ENFORCEMENT IMPORT
+try:
+    from mandatory_docker_mcp_wrapper import execute_module, start_system_with_enforcement
+    ENFORCEMENT_AVAILABLE = True
+except ImportError:
+    print("⚠️ WARNING: Mandatory enforcement system not available - running in legacy mode")
+    ENFORCEMENT_AVAILABLE = False
+
+# Legacy imports (for backward compatibility)
 import ccxt
 import asyncio
 from datetime import datetime
@@ -421,7 +439,40 @@ class SimpleVIPERTrader:
 
 
 def main():
-    """Main entry point"""
+    """
+    MAIN ENTRY POINT WITH MANDATORY DOCKER & MCP ENFORCEMENT
+    
+    ⚠️  CRITICAL: All operations now require Docker services and MCP integration
+    The system will automatically validate and enforce requirements before proceeding
+    """
+    
+    if ENFORCEMENT_AVAILABLE:
+        print("🔒 VIPER TRADING BOT - MANDATORY DOCKER & MCP ENFORCEMENT ACTIVE")
+        print("=" * 70)
+        print("🚀 Starting system with mandatory Docker & MCP validation...")
+        
+        # Start system with enforcement
+        if not start_system_with_enforcement():
+            print("💀 SYSTEM STARTUP FAILED - ENFORCEMENT REQUIREMENTS NOT MET")
+            sys.exit(1)
+        
+        print("✅ Enforcement validation passed - starting trading bot...")
+        
+        # Execute through mandatory wrapper
+        try:
+            result = execute_module('main', 'run_legacy_trading')
+            print("🎉 Trading bot execution completed!")
+            return result
+        except SystemExit:
+            print("💀 Trading bot execution blocked by enforcement!")
+            sys.exit(1)
+    else:
+        print("⚠️ WARNING: Running in LEGACY MODE without enforcement")
+        print("🚀 VIPER LIVE TRADING BOT STARTING...")
+        return run_legacy_trading()
+
+def run_legacy_trading():
+    """Legacy trading function (used when enforcement is disabled or for fallback)"""
     logger.info("🚀 VIPER ALL-PAIRS TRADING BOT STARTING...")
     logger.info("📊 Scanning 50+ cryptocurrency pairs for opportunities")
 
