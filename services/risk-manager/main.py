@@ -18,8 +18,10 @@ import time
 import logging
 import asyncio
 import sys
+import math
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Union
+from dataclasses import dataclass
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
@@ -27,6 +29,7 @@ import redis
 from pathlib import Path
 import threading
 import httpx
+from enum import Enum
 
 # Add shared directory to path for circuit breaker
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
@@ -51,6 +54,58 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+class PositionSide(Enum):
+    LONG = "LONG"
+    SHORT = "SHORT"
+
+class OrderType(Enum):
+    MARKET = "MARKET"
+    LIMIT = "LIMIT"
+    STOP = "STOP"
+    STOP_LIMIT = "STOP_LIMIT"
+    TRAILING_STOP = "TRAILING_STOP"
+
+class RiskLevel(Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+
+@dataclass
+class Position:
+    """Position data structure with TP/SL/TSL support"""
+    symbol: str
+    side: PositionSide
+    size: float
+    entry_price: float
+    current_price: float
+    unrealized_pnl: float
+    stop_loss: Optional[float] = None
+    take_profit: Optional[float] = None
+    trailing_stop: Optional[float] = None
+    trailing_activation: Optional[float] = None
+    timestamp: datetime = None
+
+    def __post_init__(self):
+        if self.timestamp is None:
+            self.timestamp = datetime.now()
+
+@dataclass
+class TradeSignal:
+    """Trading signal with TP/SL/TSL parameters"""
+    symbol: str
+    side: PositionSide
+    size: float
+    entry_price: float
+    stop_loss: float
+    take_profit: float
+    trailing_stop: Optional[float] = None
+    confidence: float = 0.0
+    timestamp: datetime = None
+
+    def __post_init__(self):
+        if self.timestamp is None:
+            self.timestamp = datetime.now()
 
 class RiskManager:
     """Risk manager for position control and safety checks"""
@@ -79,6 +134,211 @@ class RiskManager:
         self.data_manager_url = os.getenv('DATA_MANAGER_URL', 'http://data-manager:8000')
 
         logger.info("🏗️ Initializing Risk Manager...")
+
+        # TP/SL/TSL configuration
+        self.default_stop_loss_percent = float(os.getenv('DEFAULT_STOP_LOSS_PERCENT', '0.02'))  # 2%
+        self.default_take_profit_percent = float(os.getenv('DEFAULT_TAKE_PROFIT_PERCENT', '0.06'))  # 6%
+        self.default_trailing_stop_percent = float(os.getenv('DEFAULT_TRAILING_STOP_PERCENT', '0.01'))  # 1%
+        self.trailing_activation_percent = float(os.getenv('TRAILING_ACTIVATION_PERCENT', '0.02'))  # 2%
+
+        # Active positions with TP/SL/TSL
+        self.active_positions: Dict[str, Position] = {}
+        self.pending_signals: List[TradeSignal] = []
+
+    def calculate_tp_sl_tsl(self, symbol: str, side: PositionSide, entry_price: float,
+                          stop_loss_percent: Optional[float] = None,
+                          take_profit_percent: Optional[float] = None,
+                          trailing_stop_percent: Optional[float] = None) -> Dict[str, float]:
+        """Calculate Take Profit, Stop Loss, and Trailing Stop levels"""
+        # Use defaults if not specified
+        sl_percent = stop_loss_percent or self.default_stop_loss_percent
+        tp_percent = take_profit_percent or self.default_take_profit_percent
+        tsl_percent = trailing_stop_percent or self.default_trailing_stop_percent
+
+        if side == PositionSide.LONG:
+            stop_loss = entry_price * (1 - sl_percent)
+            take_profit = entry_price * (1 + tp_percent)
+            trailing_stop = entry_price * (1 - tsl_percent)
+            trailing_activation = entry_price * (1 + self.trailing_activation_percent)
+        else:  # SHORT
+            stop_loss = entry_price * (1 + sl_percent)
+            take_profit = entry_price * (1 - tp_percent)
+            trailing_stop = entry_price * (1 + tsl_percent)
+            trailing_activation = entry_price * (1 - self.trailing_activation_percent)
+
+        return {
+            'stop_loss': stop_loss,
+            'take_profit': take_profit,
+            'trailing_stop': trailing_stop,
+            'trailing_activation': trailing_activation
+        }
+
+    async def validate_trade_signal(self, signal: TradeSignal) -> Dict[str, Any]:
+        """Validate trading signal with TP/SL/TSL and risk management rules"""
+        try:
+            # Check if we already have a position in this symbol
+            if signal.symbol in self.active_symbols:
+                return {
+                    'approved': False,
+                    'reason': f'Position already exists for {signal.symbol}',
+                    'risk_level': RiskLevel.HIGH.value
+                }
+
+            # Check position limit
+            if len(self.open_positions) >= self.max_positions:
+                return {
+                    'approved': False,
+                    'reason': f'Maximum positions ({self.max_positions}) reached',
+                    'risk_level': RiskLevel.HIGH.value
+                }
+
+            # Get current balance
+            balance = await self.get_account_balance()
+            if not balance or balance <= 0:
+                return {
+                    'approved': False,
+                    'reason': 'Unable to retrieve account balance',
+                    'risk_level': RiskLevel.HIGH.value
+                }
+
+            # Calculate position size based on risk per trade
+            position_size = (balance * self.risk_per_trade) / signal.entry_price
+
+            # Ensure position size is reasonable
+            max_position_value = balance * self.max_position_size_percent
+            position_value = position_size * signal.entry_price
+
+            if position_value > max_position_value:
+                position_size = max_position_value / signal.entry_price
+                logger.warning(f"⚠️ Reduced position size to meet risk limits: {position_size}")
+
+            # Validate TP/SL levels
+            levels = self.calculate_tp_sl_tsl(signal.symbol, signal.side, signal.entry_price)
+
+            # Check if SL is too tight (less than 0.5% for longs, more than 0.5% for shorts)
+            if signal.side == PositionSide.LONG:
+                sl_distance = (signal.entry_price - levels['stop_loss']) / signal.entry_price
+                if sl_distance < 0.005:  # Less than 0.5%
+                    return {
+                        'approved': False,
+                        'reason': 'Stop loss too tight (< 0.5%)',
+                        'risk_level': RiskLevel.HIGH.value
+                    }
+            else:
+                sl_distance = (levels['stop_loss'] - signal.entry_price) / signal.entry_price
+                if sl_distance < 0.005:  # Less than 0.5%
+                    return {
+                        'approved': False,
+                        'reason': 'Stop loss too tight (< 0.5%)',
+                        'risk_level': RiskLevel.HIGH.value
+                    }
+
+            return {
+                'approved': True,
+                'position_size': position_size,
+                'levels': levels,
+                'risk_level': RiskLevel.LOW.value if signal.confidence > 0.8 else RiskLevel.MEDIUM.value
+            }
+
+        except Exception as e:
+            logger.error(f"❌ Error validating signal: {e}")
+            return {
+                'approved': False,
+                'reason': f'Validation error: {str(e)}',
+                'risk_level': RiskLevel.HIGH.value
+            }
+
+    def create_position_from_signal(self, signal: TradeSignal, validation: Dict) -> Position:
+        """Create a position from a validated trading signal"""
+        levels = validation['levels']
+
+        position = Position(
+            symbol=signal.symbol,
+            side=signal.side,
+            size=validation['position_size'],
+            entry_price=signal.entry_price,
+            current_price=signal.entry_price,
+            unrealized_pnl=0.0,
+            stop_loss=levels['stop_loss'],
+            take_profit=levels['take_profit'],
+            trailing_stop=levels['trailing_stop'],
+            trailing_activation=levels['trailing_activation']
+        )
+
+        return position
+
+    def update_position_tp_sl_tsl(self, symbol: str, current_price: float) -> Optional[Dict[str, Any]]:
+        """Update position TP/SL/TSL levels based on current price"""
+        if symbol not in self.active_positions:
+            return None
+
+        position = self.active_positions[symbol]
+        action_taken = None
+
+        # Update current price
+        position.current_price = current_price
+
+        # Calculate P&L
+        if position.side == PositionSide.LONG:
+            position.unrealized_pnl = (current_price - position.entry_price) * position.size
+        else:
+            position.unrealized_pnl = (position.entry_price - current_price) * position.size
+
+        # Check Take Profit
+        if position.take_profit and (
+            (position.side == PositionSide.LONG and current_price >= position.take_profit) or
+            (position.side == PositionSide.SHORT and current_price <= position.take_profit)
+        ):
+            action_taken = {
+                'action': 'TAKE_PROFIT',
+                'symbol': symbol,
+                'price': current_price,
+                'pnl': position.unrealized_pnl
+            }
+
+        # Check Stop Loss
+        elif position.stop_loss and (
+            (position.side == PositionSide.LONG and current_price <= position.stop_loss) or
+            (position.side == PositionSide.SHORT and current_price >= position.stop_loss)
+        ):
+            action_taken = {
+                'action': 'STOP_LOSS',
+                'symbol': symbol,
+                'price': current_price,
+                'pnl': position.unrealized_pnl
+            }
+
+        # Update Trailing Stop if activated
+        elif position.trailing_stop and position.trailing_activation:
+            if position.side == PositionSide.LONG:
+                # For longs, activate trailing stop if price has moved up
+                if current_price >= position.trailing_activation:
+                    new_trailing_stop = current_price * (1 - self.default_trailing_stop_percent)
+                    if new_trailing_stop > position.trailing_stop:
+                        position.trailing_stop = new_trailing_stop
+                        logger.info(f"📈 Updated trailing stop for {symbol}: {position.trailing_stop}")
+            else:
+                # For shorts, activate trailing stop if price has moved down
+                if current_price <= position.trailing_activation:
+                    new_trailing_stop = current_price * (1 + self.default_trailing_stop_percent)
+                    if new_trailing_stop < position.trailing_stop:
+                        position.trailing_stop = new_trailing_stop
+                        logger.info(f"📉 Updated trailing stop for {symbol}: {position.trailing_stop}")
+
+        # Check Trailing Stop Loss
+        if position.trailing_stop and action_taken is None:
+            if (
+                (position.side == PositionSide.LONG and current_price <= position.trailing_stop) or
+                (position.side == PositionSide.SHORT and current_price >= position.trailing_stop)
+            ):
+                action_taken = {
+                    'action': 'TRAILING_STOP',
+                    'symbol': symbol,
+                    'price': current_price,
+                    'pnl': position.unrealized_pnl
+                }
+
+        return action_taken
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
@@ -860,6 +1120,251 @@ async def get_position_status():
         'open_positions': risk_manager.open_positions,
         'available_slots': risk_manager.max_positions - len(risk_manager.open_positions)
     }
+
+# TP/SL/TSL Management Endpoints
+@app.post("/api/tp-sl-tsl/calculate")
+async def calculate_tp_sl_tsl(request: Request):
+    """Calculate TP/SL/TSL levels for a trade"""
+    try:
+        data = await request.json()
+        symbol = data.get('symbol')
+        side = data.get('side')  # 'LONG' or 'SHORT'
+        entry_price = data.get('entry_price')
+        stop_loss_percent = data.get('stop_loss_percent')
+        take_profit_percent = data.get('take_profit_percent')
+        trailing_stop_percent = data.get('trailing_stop_percent')
+
+        if not all([symbol, side, entry_price]):
+            raise HTTPException(status_code=400, detail="Missing required fields: symbol, side, entry_price")
+
+        side_enum = PositionSide.LONG if side.upper() == 'LONG' else PositionSide.SHORT
+
+        levels = risk_manager.calculate_tp_sl_tsl(
+            symbol=symbol,
+            side=side_enum,
+            entry_price=float(entry_price),
+            stop_loss_percent=float(stop_loss_percent) if stop_loss_percent else None,
+            take_profit_percent=float(take_profit_percent) if take_profit_percent else None,
+            trailing_stop_percent=float(trailing_stop_percent) if trailing_stop_percent else None
+        )
+
+        return {
+            'symbol': symbol,
+            'side': side,
+            'entry_price': entry_price,
+            'levels': levels,
+            'default_sl_percent': float(os.getenv('STOP_LOSS_PERCENT', '0.02')),
+            'default_tp_percent': float(os.getenv('TAKE_PROFIT_PERCENT', '0.06')),
+            'default_tsl_percent': float(os.getenv('TRAILING_STOP_PERCENT', '0.01'))
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Error calculating TP/SL/TSL: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/tp-sl-tsl/validate-signal")
+async def validate_trading_signal(request: Request):
+    """Validate a trading signal with TP/SL/TSL"""
+    try:
+        data = await request.json()
+        signal = TradeSignal(
+            symbol=data['symbol'],
+            side=PositionSide.LONG if data['side'].upper() == 'LONG' else PositionSide.SHORT,
+            size=float(data['size']),
+            entry_price=float(data['entry_price']),
+            stop_loss=float(data.get('stop_loss', 0)),
+            take_profit=float(data.get('take_profit', 0)),
+            trailing_stop=float(data.get('trailing_stop', 0)) if data.get('trailing_stop') else None,
+            confidence=float(data.get('confidence', 0.0))
+        )
+
+        validation = await risk_manager.validate_trade_signal(signal)
+
+        return {
+            'signal': {
+                'symbol': signal.symbol,
+                'side': signal.side.value,
+                'size': signal.size,
+                'entry_price': signal.entry_price,
+                'confidence': signal.confidence
+            },
+            'validation': validation
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Error validating signal: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/tp-sl-tsl/create-position")
+async def create_position_from_signal(request: Request):
+    """Create a position from a validated signal"""
+    try:
+        data = await request.json()
+
+        # First validate the signal
+        signal_data = data['signal']
+        signal = TradeSignal(
+            symbol=signal_data['symbol'],
+            side=PositionSide.LONG if signal_data['side'].upper() == 'LONG' else PositionSide.SHORT,
+            size=float(signal_data['size']),
+            entry_price=float(signal_data['entry_price']),
+            stop_loss=float(signal_data.get('stop_loss', 0)),
+            take_profit=float(signal_data.get('take_profit', 0)),
+            trailing_stop=float(signal_data.get('trailing_stop', 0)) if signal_data.get('trailing_stop') else None,
+            confidence=float(signal_data.get('confidence', 0.0))
+        )
+
+        validation = await risk_manager.validate_trade_signal(signal)
+
+        if not validation['approved']:
+            raise HTTPException(status_code=400, detail=validation['reason'])
+
+        # Create position
+        position = risk_manager.create_position_from_signal(signal, validation)
+
+        # Store position
+        risk_manager.active_positions[signal.symbol] = position
+        risk_manager.active_symbols.add(signal.symbol)
+
+        logger.info(f"✅ Created position for {signal.symbol}: {position.side.value} {position.size} @ {position.entry_price}")
+
+        return {
+            'position': {
+                'symbol': position.symbol,
+                'side': position.side.value,
+                'size': position.size,
+                'entry_price': position.entry_price,
+                'stop_loss': position.stop_loss,
+                'take_profit': position.take_profit,
+                'trailing_stop': position.trailing_stop,
+                'trailing_activation': position.trailing_activation
+            },
+            'validation': validation
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Error creating position: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/tp-sl-tsl/update-price")
+async def update_position_price(request: Request):
+    """Update position prices and check for TP/SL/TSL triggers"""
+    try:
+        data = await request.json()
+        symbol = data.get('symbol')
+        current_price = float(data.get('current_price'))
+
+        if not symbol or not current_price:
+            raise HTTPException(status_code=400, detail="Missing required fields: symbol, current_price")
+
+        action = risk_manager.update_position_tp_sl_tsl(symbol, current_price)
+
+        return {
+            'symbol': symbol,
+            'current_price': current_price,
+            'action_taken': action,
+            'position': {
+                'symbol': risk_manager.active_positions[symbol].symbol,
+                'current_price': risk_manager.active_positions[symbol].current_price,
+                'unrealized_pnl': risk_manager.active_positions[symbol].unrealized_pnl,
+                'stop_loss': risk_manager.active_positions[symbol].stop_loss,
+                'take_profit': risk_manager.active_positions[symbol].take_profit,
+                'trailing_stop': risk_manager.active_positions[symbol].trailing_stop
+            } if symbol in risk_manager.active_positions else None
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Error updating position: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/tp-sl-tsl/positions")
+async def get_tp_sl_tsl_positions():
+    """Get all positions with TP/SL/TSL information"""
+    positions = {}
+    for symbol, position in risk_manager.active_positions.items():
+        positions[symbol] = {
+            'symbol': position.symbol,
+            'side': position.side.value,
+            'size': position.size,
+            'entry_price': position.entry_price,
+            'current_price': position.current_price,
+            'unrealized_pnl': position.unrealized_pnl,
+            'stop_loss': position.stop_loss,
+            'take_profit': position.take_profit,
+            'trailing_stop': position.trailing_stop,
+            'trailing_activation': position.trailing_activation,
+            'timestamp': position.timestamp.isoformat()
+        }
+
+    return {
+        'positions': positions,
+        'total_positions': len(positions),
+        'total_exposure': sum(p.unrealized_pnl for p in risk_manager.active_positions.values())
+    }
+
+@app.delete("/api/tp-sl-tsl/position/{symbol}")
+async def close_tp_sl_tsl_position(symbol: str):
+    """Close a position and remove TP/SL/TSL tracking"""
+    try:
+        if symbol not in risk_manager.active_positions:
+            raise HTTPException(status_code=404, detail=f"Position not found for {symbol}")
+
+        position = risk_manager.active_positions[symbol]
+        pnl = position.unrealized_pnl
+
+        # Remove from tracking
+        del risk_manager.active_positions[symbol]
+        risk_manager.active_symbols.discard(symbol)
+
+        logger.info(f"✅ Closed position for {symbol}, P&L: {pnl}")
+
+        return {
+            'symbol': symbol,
+            'final_pnl': pnl,
+            'entry_price': position.entry_price,
+            'exit_price': position.current_price,
+            'position_closed': True
+        }
+
+    except Exception as e:
+        logger.error(f"❌ Error closing position: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/tp-sl-tsl/config")
+async def get_tp_sl_tsl_config():
+    """Get current TP/SL/TSL configuration"""
+    return {
+        'default_stop_loss_percent': float(os.getenv('STOP_LOSS_PERCENT', '0.02')),
+        'default_take_profit_percent': float(os.getenv('TAKE_PROFIT_PERCENT', '0.06')),
+        'default_trailing_stop_percent': float(os.getenv('TRAILING_STOP_PERCENT', '0.01')),
+        'trailing_activation_percent': float(os.getenv('TRAILING_ACTIVATION_PERCENT', '0.02')),
+        'max_positions': risk_manager.max_positions,
+        'risk_per_trade': float(os.getenv('RISK_PER_TRADE', '0.02')),
+        'max_position_size_percent': risk_manager.max_position_size_percent
+    }
+
+@app.post("/api/tp-sl-tsl/config")
+async def update_tp_sl_tsl_config(request: Request):
+    """Update TP/SL/TSL configuration"""
+    try:
+        data = await request.json()
+
+        if 'default_stop_loss_percent' in data:
+            os.environ['STOP_LOSS_PERCENT'] = str(data['default_stop_loss_percent'])
+        if 'default_take_profit_percent' in data:
+            os.environ['TAKE_PROFIT_PERCENT'] = str(data['default_take_profit_percent'])
+        if 'default_trailing_stop_percent' in data:
+            os.environ['TRAILING_STOP_PERCENT'] = str(data['default_trailing_stop_percent'])
+        if 'trailing_activation_percent' in data:
+            os.environ['TRAILING_ACTIVATION_PERCENT'] = str(data['trailing_activation_percent'])
+
+        logger.info("✅ Updated TP/SL/TSL configuration")
+
+        return await get_tp_sl_tsl_config()
+
+    except Exception as e:
+        logger.error(f"❌ Error updating configuration: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     port = int(os.getenv("RISK_MANAGER_PORT", 8000))

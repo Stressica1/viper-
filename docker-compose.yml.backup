@@ -1,0 +1,740 @@
+# 🚀 VIPER Trading Bot - Microservices Stack
+# Ultra High-Performance Containerized Trading Platform
+# Fixed: Removed deprecated version, added comprehensive health checks
+
+services:
+  # 🌐 API Server - FastAPI Web Dashboard
+  api-server:
+    build:
+      context: services/api-server
+      dockerfile: Dockerfile
+    ports:
+      - "${API_SERVER_PORT:-8000}:8000"
+    environment:
+      - DOCKER_MODE=true
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - SERVICE_NAME=api-server
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-manager:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🧪 Ultra Backtester - Strategy Testing Engine
+  ultra-backtester:
+    build:
+      context: services/ultra-backtester
+      dockerfile: Dockerfile
+    ports:
+      - "${ULTRA_BACKTESTER_PORT:-8001}:8000"
+    environment:
+      - WORKERS=${BACKTEST_WORKERS:-4}
+      - RISK_PER_TRADE=${RISK_PER_TRADE:-0.02}
+      - VIPER_THRESHOLD=${VIPER_THRESHOLD:-85}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=ultra-backtester
+    volumes:
+      - ./backtest_results:/app/backtest_results
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-manager:
+        condition: service_healthy
+      risk-manager:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🎯 Strategy Optimizer - Parameter Tuning
+  strategy-optimizer:
+    build:
+      context: services/strategy-optimizer
+      dockerfile: Dockerfile
+    ports:
+      - "${STRATEGY_OPTIMIZER_PORT:-8004}:8000"
+    environment:
+      - OPTIMIZATION_METHODS=grid_search,genetic,walk_forward
+      - MAX_ITERATIONS=1000
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=strategy-optimizer
+    volumes:
+      - ./backtest_results:/app/backtest_results
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      ultra-backtester:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🔥 Live Trading Engine - Production Trading
+  live-trading-engine:
+    build:
+      context: services/live-trading-engine
+      dockerfile: Dockerfile
+    ports:
+      - "${LIVE_TRADING_ENGINE_PORT:-8007}:8000"
+    environment:
+      - MAX_LEVERAGE=${MAX_LEVERAGE:-50}
+      - RISK_PER_TRADE=${RISK_PER_TRADE:-0.02}
+      - MAX_POSITIONS=${MAX_POSITIONS:-15}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=live-trading-engine
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_LIVE_TRADING_ENGINE}
+      - EXCHANGE_CONNECTOR_URL=http://exchange-connector:8000
+      - RISK_MANAGER_URL=http://risk-manager:8000
+      - DATA_MANAGER_URL=http://data-manager:8000
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      exchange-connector:
+        condition: service_healthy
+      risk-manager:
+        condition: service_healthy
+      monitoring-service:
+        condition: service_healthy
+      credential-vault:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 💾 Data Manager - Market Data Synchronization
+  data-manager:
+    build:
+      context: services/data-manager
+      dockerfile: Dockerfile
+    ports:
+      - "${DATA_MANAGER_PORT:-8003}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - CACHE_TTL=${CACHE_TTL_SECONDS:-300}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=data-manager
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🔗 Exchange Connector - Bitget API Client
+  exchange-connector:
+    build:
+      context: services/exchange-connector
+      dockerfile: Dockerfile
+    ports:
+      - "${EXCHANGE_CONNECTOR_PORT:-8005}:8000"
+    environment:
+      - RATE_LIMIT_BUFFER=0.1
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=exchange-connector
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_EXCHANGE_CONNECTOR}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      credential-vault:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🚨 Risk Manager - Position Control & Safety
+  risk-manager:
+    build:
+      context: services/risk-manager
+      dockerfile: Dockerfile
+    ports:
+      - "${RISK_MANAGER_PORT:-8002}:8000"
+    environment:
+      - DAILY_LOSS_LIMIT=${DAILY_LOSS_LIMIT:-0.03}
+      - MAX_POSITION_SIZE=${MAX_POSITION_SIZE_PERCENT:-0.1}
+      - MAX_POSITIONS=${MAX_POSITIONS:-15}
+      - ENABLE_AUTO_STOPS=${ENABLE_AUTO_STOPS:-true}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=risk-manager
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      exchange-connector:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 📊 Monitoring Service - System Analytics
+  monitoring-service:
+    build:
+      context: services/monitoring-service
+      dockerfile: Dockerfile
+    ports:
+      - "${MONITORING_SERVICE_PORT:-8006}:8000"
+    environment:
+      - PROMETHEUS_ENDPOINT=${PROMETHEUS_PORT:-9090}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=monitoring-service
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🔐 Credential Vault - Secure Secrets Management
+  credential-vault:
+    build:
+      context: services/credential-vault
+      dockerfile: Dockerfile
+    ports:
+      - "${CREDENTIAL_VAULT_PORT:-8008}:8008"
+    environment:
+      - VAULT_MASTER_KEY=${VAULT_MASTER_KEY}
+      - VAULT_ACCESS_TOKENS=${VAULT_ACCESS_TOKENS}
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=credential-vault
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8008))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 💾 Redis Cache - High-Performance Caching
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - viper-network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
+
+  # 📈 Prometheus - Metrics Collection
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - prometheus_data:/prometheus
+    command:
+      - '--storage.tsdb.path=/prometheus'
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 📊 Grafana - Dashboard & Visualization
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "${GRAFANA_PORT:-3000}:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=viper_admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana:/etc/grafana/provisioning
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 3000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 📡 Market Data Streamer - Real-time Data Feed
+  market-data-streamer:
+    build:
+      context: ..
+      dockerfile: services/market-data-streamer/Dockerfile
+    ports:
+      - "${MARKET_DATA_STREAMER_PORT:-8010}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=market-data-streamer
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_MARKET_DATA_STREAMER}
+      - UPDATE_INTERVAL=${UPDATE_INTERVAL:-1.0}
+      - MAX_RECONNECT_ATTEMPTS=${MAX_RECONNECT_ATTEMPTS:-5}
+      - RECONNECT_DELAY=${RECONNECT_DELAY:-5.0}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      credential-vault:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🎯 Signal Processor - Trading Signal Generation
+  signal-processor:
+    build:
+      context: ..
+      dockerfile: services/signal-processor/Dockerfile
+    ports:
+      - "${SIGNAL_PROCESSOR_PORT:-8011}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=signal-processor
+      - VIPER_THRESHOLD=${VIPER_THRESHOLD:-85}
+      - SIGNAL_COOLDOWN=${SIGNAL_COOLDOWN:-300}
+      - ATR_PERIOD=${ATR_PERIOD:-200}
+      - SMA_PERIOD=${SMA_PERIOD:-20}
+      - RSI_PERIOD=${RSI_PERIOD:-14}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      market-data-streamer:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🚨 Alert System - Notification & Monitoring
+  alert-system:
+    build:
+      context: ..
+      dockerfile: services/alert-system/Dockerfile
+    ports:
+      - "${ALERT_SYSTEM_PORT:-8012}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=alert-system
+      - SMTP_SERVER=${SMTP_SERVER:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
+      - FROM_EMAIL=${FROM_EMAIL:-viper@tradingbot.com}
+      - TO_EMAILS=${TO_EMAILS}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_IDS=${TELEGRAM_CHAT_IDS}
+      - MAX_DAILY_LOSS=${MAX_DAILY_LOSS:-0.03}
+      - MAX_POSITION_SIZE=${MAX_POSITION_SIZE_PERCENT:-0.1}
+      - MAX_OPEN_POSITIONS=${MAX_OPEN_POSITIONS:-15}
+      - SIGNAL_COOLDOWN=${SIGNAL_COOLDOWN:-300}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 📋 Order Lifecycle Manager - Complete Order Management
+  order-lifecycle-manager:
+    build:
+      context: ..
+      dockerfile: services/order-lifecycle-manager/Dockerfile
+    ports:
+      - "${ORDER_LIFECYCLE_MANAGER_PORT:-8013}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=order-lifecycle-manager
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_ORDER_LIFECYCLE_MANAGER}
+      - RISK_MANAGER_URL=http://risk-manager:8000
+      - EXCHANGE_CONNECTOR_URL=http://exchange-connector:8000
+      - DATA_MANAGER_URL=http://data-manager:8000
+      - MAX_SLIPPAGE=${MAX_SLIPPAGE:-0.001}
+      - ORDER_TIMEOUT=${ORDER_TIMEOUT:-300}
+      - RETRY_ATTEMPTS=${RETRY_ATTEMPTS:-3}
+      - VIPER_THRESHOLD=${VIPER_THRESHOLD:-85}
+      - CONFIDENCE_THRESHOLD=${CONFIDENCE_THRESHOLD:-80}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      signal-processor:
+        condition: service_healthy
+      exchange-connector:
+        condition: service_healthy
+      risk-manager:
+        condition: service_healthy
+      credential-vault:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🔄 Position Synchronizer - Real-time Position Sync
+  position-synchronizer:
+    build:
+      context: ..
+      dockerfile: services/position-synchronizer/Dockerfile
+    ports:
+      - "${POSITION_SYNCHRONIZER_PORT:-8014}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=position-synchronizer
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_POSITION_SYNCHRONIZER}
+      - EXCHANGE_CONNECTOR_URL=http://exchange-connector:8000
+      - RISK_MANAGER_URL=http://risk-manager:8000
+      - DATA_MANAGER_URL=http://data-manager:8000
+      - SYNC_INTERVAL=${SYNC_INTERVAL:-30}
+      - RECONCILIATION_INTERVAL=${RECONCILIATION_INTERVAL:-300}
+      - MAX_POSITION_DRIFT=${MAX_POSITION_DRIFT:-0.001}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      exchange-connector:
+        condition: service_healthy
+      risk-manager:
+        condition: service_healthy
+      credential-vault:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 📊 Centralized Logger - Unified Log Aggregation
+  centralized-logger:
+    build:
+      context: services/centralized-logger
+      dockerfile: Dockerfile
+    ports:
+      - "${CENTRALIZED_LOGGER_PORT:-8015}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=centralized-logger
+      - ELASTICSEARCH_URL=${ELASTICSEARCH_URL:-http://elasticsearch:9200}
+      - LOG_RETENTION_DAYS=${LOG_RETENTION_DAYS:-30}
+      - MAX_LOGS_PER_SERVICE=${MAX_LOGS_PER_SERVICE:-1000}
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🔍 Elasticsearch - Log Search and Analytics
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    ports:
+      - "${ELASTICSEARCH_PORT:-9200}:9200"
+      - "9300:9300"
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 📥 Logstash - Log Processing Pipeline
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.11.0
+    ports:
+      - "${LOGSTASH_PORT:-5044}:5044"
+      - "9600:9600"
+    volumes:
+      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9600/_node/stats || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 📊 Kibana - Log Visualization Dashboard
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    ports:
+      - "${KIBANA_PORT:-5601}:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # 🤖 MCP Server - Model Context Protocol Integration
+  mcp-server:
+    build:
+      context: services/mcp-server
+      dockerfile: Dockerfile
+    ports:
+      - "${MCP_SERVER_PORT:-8015}:8000"
+    environment:
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - SERVICE_NAME=mcp-server
+      - VAULT_URL=http://credential-vault:8008
+      - VAULT_ACCESS_TOKEN=${VAULT_ACCESS_TOKEN_MCP_SERVER}
+      - API_SERVER_URL=http://api-server:8000
+      - ULTRA_BACKTESTER_URL=http://ultra-backtester:8000
+      - RISK_MANAGER_URL=http://risk-manager:8000
+      - DATA_MANAGER_URL=http://data-manager:8000
+      - EXCHANGE_CONNECTOR_URL=http://exchange-connector:8000
+      - SIGNAL_PROCESSOR_URL=http://signal-processor:8000
+      - ALERT_SYSTEM_URL=http://alert-system:8000
+      - ORDER_LIFECYCLE_MANAGER_URL=http://order-lifecycle-manager:8000
+      - POSITION_SYNCHRONIZER_URL=http://position-synchronizer:8000
+    volumes:
+      - ./logs:/app/logs
+      - ./config:/app/config
+    depends_on:
+      redis:
+        condition: service_healthy
+      api-server:
+        condition: service_healthy
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 🤖 GitHub Manager MCP Server - GitHub Integration
+  github-manager:
+    build:
+      context: services/github-manager
+      dockerfile: Dockerfile
+    ports:
+      - "${GITHUB_MANAGER_PORT:-8001}:8000"
+    environment:
+      - DOCKER_MODE=true
+      - GITHUB_PAT=${GITHUB_PAT}
+      - GITHUB_OWNER=${GITHUB_OWNER}
+      - GITHUB_REPO=${GITHUB_REPO}
+      - SERVICE_NAME=github-manager
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 📊 Trading Optimizer MCP Server - Performance Analysis
+  trading-optimizer:
+    build:
+      context: services/trading-optimizer
+      dockerfile: Dockerfile
+    ports:
+      - "${TRADING_OPTIMIZER_PORT:-8002}:8000"
+    environment:
+      - DOCKER_MODE=true
+      - SERVICE_NAME=trading-optimizer
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - viper-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; socket.socket().connect(('localhost', 8000))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  redis_data:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:
+
+networks:
+  viper-network:
+    driver: bridge
