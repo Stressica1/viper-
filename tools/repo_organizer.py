@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Repository Structure Enforcer
+# Rocket VIPER Repository Structure Enforcer
 Maintains clean repository organization and prevents clutter
 """
 
@@ -88,7 +88,7 @@ class RepositoryOrganizer:
 
     def scan_violations(self) -> List[Dict]:
         """Scan repository for organization violations"""
-        print("🔍 Scanning repository for organization violations...")
+        print("# Search Scanning repository for organization violations...")
         
         violations = []
         
@@ -150,7 +150,7 @@ class RepositoryOrganizer:
 
     def organize_files(self, dry_run: bool = True) -> Dict:
         """Organize files according to structure rules"""
-        print(f"🎯 {'Simulating' if dry_run else 'Executing'} file organization...")
+        print(f"# Target {'Simulating' if dry_run else 'Executing'} file organization...")
         
         violations = self.scan_violations()
         moves = []
@@ -170,7 +170,7 @@ class RepositoryOrganizer:
                 if not dry_run:
                     destination_dir.mkdir(parents=True, exist_ok=True)
                     shutil.move(str(source), str(destination))
-                    print(f"✅ Moved {source.name} → {violation['suggested_location']}")
+                    print(f"# Check Moved {source.name} → {violation['suggested_location']}")
         
         # Create missing directories
         if not dry_run:
@@ -191,7 +191,7 @@ class RepositoryOrganizer:
         violations = self.scan_violations()
         
         report = f"""
-# 🚀 Repository Organization Report
+# # Rocket Repository Organization Report
 Generated: {datetime.now().isoformat()}
 
 ## Summary
@@ -252,7 +252,7 @@ if __name__ == "__main__":
             f.write(validator_script)
         
         validator_path.chmod(0o755)
-        print(f"✅ Created structure validator: {validator_path}")
+        print(f"# Check Created structure validator: {validator_path}")
 
 
 def main():
@@ -288,7 +288,7 @@ def main():
     print(f"  - Mode: {'EXECUTED' if not result['dry_run'] else 'SIMULATION'}")
     
     if result['files_moved'] > 0 and result['dry_run']:
-        print("\n💡 Run with --fix to actually move files")
+        print("\n# Idea Run with --fix to actually move files")
 
 
 if __name__ == "__main__":

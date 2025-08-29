@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 OPTIMIZED MARKET DATA STREAMER
+# Rocket OPTIMIZED MARKET DATA STREAMER
 High-performance market data fetching with advanced caching and optimization
 
 This optimized version includes:
@@ -105,7 +105,7 @@ class OptimizedMarketDataStreamer:
         self.prefetch_patterns = {}
         self.symbol_correlations = {}
 
-        logger.info(f"📊 Optimized Market Data Streamer initialized (Cache: {cache_size_mb}MB, Connections: {max_connections})")
+        logger.info(f"# Chart Optimized Market Data Streamer initialized (Cache: {cache_size_mb}MB, Connections: {max_connections})")
 
     async def initialize_exchanges(self) -> bool:
         """Initialize multiple exchanges with failover support"""
@@ -134,23 +134,23 @@ class OptimizedMarketDataStreamer:
                     self.exchanges[config['name']] = exchange
                     self.exchange_configs[config['name']] = config
 
-                    logger.info(f"✅ Exchange {config['name']} initialized")
+                    logger.info(f"# Check Exchange {config['name']} initialized")
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Failed to initialize {config['name']}: {e}")
+                    logger.warning(f"# Warning Failed to initialize {config['name']}: {e}")
 
             if not self.exchanges:
-                logger.error("❌ No exchanges successfully initialized")
+                logger.error("# X No exchanges successfully initialized")
                 return False
 
             # Set primary exchange
             self.primary_exchange = list(self.exchanges.keys())[0]
-            logger.info(f"🎯 Primary exchange set to: {self.primary_exchange}")
+            logger.info(f"# Target Primary exchange set to: {self.primary_exchange}")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error initializing exchanges: {e}")
+            logger.error(f"# X Error initializing exchanges: {e}")
             return False
 
     async def start_streaming(self):
@@ -167,10 +167,10 @@ class OptimizedMarketDataStreamer:
             asyncio.create_task(self._cache_maintenance())
             asyncio.create_task(self._metrics_updater())
 
-            logger.info(f"🚀 Streaming started with {len(self.processing_tasks)} processing tasks")
+            logger.info(f"# Rocket Streaming started with {len(self.processing_tasks)} processing tasks")
 
         except Exception as e:
-            logger.error(f"❌ Error starting streaming: {e}")
+            logger.error(f"# X Error starting streaming: {e}")
             self.is_running = False
 
     async def stop_streaming(self):
@@ -197,7 +197,7 @@ class OptimizedMarketDataStreamer:
             logger.info("🛑 Streaming stopped gracefully")
 
         except Exception as e:
-            logger.error(f"❌ Error stopping streaming: {e}")
+            logger.error(f"# X Error stopping streaming: {e}")
 
     async def fetch_market_data(self, symbol: str, timeframe: str = '1h',
                               limit: int = 100, use_cache: bool = True) -> Optional[pd.DataFrame]:
@@ -251,7 +251,7 @@ class OptimizedMarketDataStreamer:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error fetching market data: {e}")
+            logger.error(f"# X Error fetching market data: {e}")
             self.metrics['errors'] += 1
             return None
 
@@ -272,7 +272,7 @@ class OptimizedMarketDataStreamer:
                 self.request_queue.task_done()
 
             except Exception as e:
-                logger.error(f"❌ Error processing request: {e}")
+                logger.error(f"# X Error processing request: {e}")
                 continue
 
     async def _execute_data_request(self, request: DataRequest) -> Optional[pd.DataFrame]:
@@ -300,14 +300,14 @@ class OptimizedMarketDataStreamer:
                             logger.info(f"🔄 Failover successful with {name}")
                             return result
                     except Exception as e:
-                        logger.warning(f"⚠️ Failover to {name} failed: {e}")
+                        logger.warning(f"# Warning Failover to {name} failed: {e}")
                         continue
 
-            logger.warning(f"❌ All exchanges failed for {request.symbol}")
+            logger.warning(f"# X All exchanges failed for {request.symbol}")
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error executing data request: {e}")
+            logger.error(f"# X Error executing data request: {e}")
             return None
 
     async def _fetch_from_exchange(self, exchange: ccxt_async.Exchange,
@@ -341,7 +341,7 @@ class OptimizedMarketDataStreamer:
             return df
 
         except Exception as e:
-            logger.error(f"❌ Error fetching from exchange: {e}")
+            logger.error(f"# X Error fetching from exchange: {e}")
             return None
 
     def _add_basic_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -361,7 +361,7 @@ class OptimizedMarketDataStreamer:
             return df
 
         except Exception as e:
-            logger.warning(f"⚠️ Error adding basic indicators: {e}")
+            logger.warning(f"# Warning Error adding basic indicators: {e}")
             return df
 
     async def _get_cached_data(self, symbol: str, timeframe: str, limit: int) -> Optional[pd.DataFrame]:
@@ -394,7 +394,7 @@ class OptimizedMarketDataStreamer:
             return None
 
         except Exception as e:
-            logger.warning(f"⚠️ Error getting cached data: {e}")
+            logger.warning(f"# Warning Error getting cached data: {e}")
             return None
 
     async def _cache_data(self, symbol: str, timeframe: str, limit: int, data: pd.DataFrame):
@@ -443,7 +443,7 @@ class OptimizedMarketDataStreamer:
                 self.current_cache_size += data_size
 
         except Exception as e:
-            logger.warning(f"⚠️ Error caching data: {e}")
+            logger.warning(f"# Warning Error caching data: {e}")
 
     def _generate_cache_key(self, symbol: str, timeframe: str, limit: int) -> str:
         """Generate unique cache key"""
@@ -471,7 +471,7 @@ class OptimizedMarketDataStreamer:
         try:
             return gzip.compress(pickle.dumps(data))
         except Exception as e:
-            logger.warning(f"⚠️ Error compressing data: {e}")
+            logger.warning(f"# Warning Error compressing data: {e}")
             return None
 
     def _decompress_data(self, compressed_data: bytes) -> Optional[pd.DataFrame]:
@@ -479,7 +479,7 @@ class OptimizedMarketDataStreamer:
         try:
             return pickle.loads(gzip.decompress(compressed_data))
         except Exception as e:
-            logger.warning(f"⚠️ Error decompressing data: {e}")
+            logger.warning(f"# Warning Error decompressing data: {e}")
             return None
 
     def _calculate_data_hash(self, data: pd.DataFrame) -> str:
@@ -502,7 +502,7 @@ class OptimizedMarketDataStreamer:
                 self.metrics['avg_response_time'] = response_time
 
         except Exception as e:
-            logger.warning(f"⚠️ Error updating response time: {e}")
+            logger.warning(f"# Warning Error updating response time: {e}")
 
     async def _cache_maintenance(self):
         """Periodic cache maintenance"""
@@ -528,7 +528,7 @@ class OptimizedMarketDataStreamer:
                         logger.info(f"🧹 Cleaned {len(expired_keys)} expired cache entries")
 
             except Exception as e:
-                logger.warning(f"⚠️ Error in cache maintenance: {e}")
+                logger.warning(f"# Warning Error in cache maintenance: {e}")
 
     async def _update_prefetch_patterns(self, key: str, entry: CacheEntry):
         """Update prefetch patterns based on access patterns"""
@@ -556,7 +556,7 @@ class OptimizedMarketDataStreamer:
             pattern['last_access'] = entry.last_accessed
 
         except Exception as e:
-            logger.warning(f"⚠️ Error updating prefetch patterns: {e}")
+            logger.warning(f"# Warning Error updating prefetch patterns: {e}")
 
     async def _wait_for_request_result(self, request: DataRequest) -> Optional[pd.DataFrame]:
         """Wait for request result (placeholder for actual implementation)"""
@@ -589,7 +589,7 @@ class OptimizedMarketDataStreamer:
             return metrics
 
         except Exception as e:
-            logger.error(f"❌ Error getting metrics: {e}")
+            logger.error(f"# X Error getting metrics: {e}")
             return {'error': str(e)}
 
     async def _get_cache_info(self) -> Dict[str, Any]:
@@ -611,7 +611,7 @@ class OptimizedMarketDataStreamer:
                 }
 
         except Exception as e:
-            logger.warning(f"⚠️ Error getting cache info: {e}")
+            logger.warning(f"# Warning Error getting cache info: {e}")
             return {'error': str(e)}
 
 async def test_optimized_streamer():
@@ -643,8 +643,8 @@ async def test_optimized_streamer():
             second_fetch_time = time.time() - start_time
 
             if data is not None:
-                print(f"   ✅ First fetch: {first_fetch_time:.2f}s ({len(data)} bars)")
-                print(f"   ✅ Second fetch: {second_fetch_time:.2f}s (cached)")
+                print(f"   # Check First fetch: {first_fetch_time:.2f}s ({len(data)} bars)")
+                print(f"   # Check Second fetch: {second_fetch_time:.2f}s (cached)")
                 print(f"   📈 Price range: {data['close'].min():.2f} - {data['close'].max():.2f}")
             else:
 

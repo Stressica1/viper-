@@ -159,7 +159,7 @@ class LiveTradingManager:
             return False
 
         try:
-            self.logger.info("🚀 Starting live trading operations...")
+            self.logger.info("# Rocket Starting live trading operations...")
 
             # Get initial balance from live balance service
             try:
@@ -195,11 +195,11 @@ class LiveTradingManager:
                 }
             )
 
-            self.logger.info("✅ Live trading started successfully")
+            self.logger.info("# Check Live trading started successfully")
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Failed to start live trading: {e}")
+            self.logger.error(f"# X Failed to start live trading: {e}")
             return False
 
     def stop_live_trading(self, reason: str = "Manual stop") -> bool:
@@ -236,16 +236,16 @@ class LiveTradingManager:
                 }
             )
 
-            self.logger.info("✅ Live trading stopped successfully")
+            self.logger.info("# Check Live trading stopped successfully")
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Error stopping live trading: {e}")
+            self.logger.error(f"# X Error stopping live trading: {e}")
             return False
 
     def _monitoring_loop(self):
         """Main monitoring loop for live trading"""
-        self.logger.info("📊 Live trading monitoring started")
+        self.logger.info("# Chart Live trading monitoring started")
 
         while self.is_trading:
             try:
@@ -273,7 +273,7 @@ class LiveTradingManager:
                 self.logger.error(f"Monitoring error: {e}")
                 time.sleep(60)  # Wait before retrying
 
-        self.logger.info("📊 Live trading monitoring stopped")
+        self.logger.info("# Chart Live trading monitoring stopped")
 
     def _update_real_time_balance(self):
         """Update real-time balance from exchange API"""
@@ -342,7 +342,7 @@ import secrets
                     position.pnl_percentage = (position.pnl / (position.entry_price * position.quantity)) * 100
                     
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not update P&L for position {position.position_id}: {e}")
+                    logger.warning(f"# Warning Could not update P&L for position {position.position_id}: {e}")
                     # Continue with existing data
 
     def _check_risk_limits(self):
@@ -510,8 +510,8 @@ import secrets
 💰 LIVE TRADING REPORT
 {'='*50}
 
-📊 Session Status
-  Trading Active: {'✅ Yes' if status['is_trading'] else '❌ No'}
+# Chart Session Status
+  Trading Active: {'# Check Yes' if status['is_trading'] else '# X No'}
   Session ID: {status['session_id'] or 'None'}
   Session Start: {status['session_start'] or 'Not started'}
 
@@ -552,19 +552,19 @@ import secrets
 
         report += f"""
 
-🎯 Strategy Performance
+# Target Strategy Performance
 {'='*30}
 {self.strategy_dashboard.display_strategy_table()}
 
-⚠️  Risk Management
+# Warning  Risk Management
 {'='*20}
   Risk per Trade: {self.config['risk_per_trade']*100:.1f}%
   Max Daily Loss: ${self.config['max_daily_loss']:.2f}
   Max Positions: {self.config['max_positions']}
   Min Leverage: {self.config['min_leverage']}x
 
-📊 System Health
-  Monitoring: {'✅ Active' if self.is_trading else '❌ Inactive'}
+# Chart System Health
+  Monitoring: {'# Check Active' if self.is_trading else '# X Inactive'}
   Last Update: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 """
 
@@ -619,7 +619,7 @@ def main():
 
     elif args.status:
         status = manager.get_trading_status()
-        print(f"  Active: {'✅ Yes' if status['is_trading'] else '❌ No'}")
+        print(f"  Active: {'# Check Yes' if status['is_trading'] else '# X No'}")
         print(f"  Positions: {status['active_positions']}")
         print(f"  Total P&L: ${status['total_pnl']:,.2f}")
         print(f"  Current Balance: ${status['current_balance']:,.2f}")
@@ -631,7 +631,7 @@ def main():
         filepath = manager.export_trading_data(args.export)
 
     elif args.monitor:
-        print("🚀 Starting live trading and monitoring...")
+        print("# Rocket Starting live trading and monitoring...")
         if manager.start_live_trading():
             try:
                 while True:

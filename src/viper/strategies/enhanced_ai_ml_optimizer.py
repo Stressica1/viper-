@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED VIPER AI/ML Trading Optimizer
+# Rocket ENHANCED VIPER AI/ML Trading Optimizer
 Advanced optimization with ensemble methods and sophisticated feature engineering
 
 This enhanced version includes:
@@ -171,7 +171,7 @@ class EnhancedAIMLOptimizer:
             return df
 
         except Exception as e:
-            logger.error(f"❌ Error creating advanced features: {e}")
+            logger.error(f"# X Error creating advanced features: {e}")
             return df
 
     def detect_market_regime(self, df: pd.DataFrame) -> Dict[str, Any]:
@@ -204,7 +204,7 @@ class EnhancedAIMLOptimizer:
             return regime
 
         except Exception as e:
-            logger.error(f"❌ Error detecting market regime: {e}")
+            logger.error(f"# X Error detecting market regime: {e}")
             return {'regime': 'unknown', 'confidence': 0.5}
 
     def prepare_enhanced_ml_features(self, df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray]:
@@ -233,7 +233,7 @@ class EnhancedAIMLOptimizer:
             df_clean = df_enhanced.dropna()
 
             if len(df_clean) < 200:
-                logger.warning("⚠️ Insufficient data for enhanced ML training")
+                logger.warning("# Warning Insufficient data for enhanced ML training")
                 return np.array([]), np.array([])
 
             # Get all feature columns
@@ -254,13 +254,13 @@ class EnhancedAIMLOptimizer:
             # Feature selection
             X_selected = self.feature_selector.fit_transform(X_scaled, y_entry)
 
-            logger.info(f"🎯 Enhanced ML features prepared: {len(X_selected)} samples, {X_selected.shape[1]} selected features")
-            logger.info(f"📊 Market regime detected: {regime_info}")
+            logger.info(f"# Target Enhanced ML features prepared: {len(X_selected)} samples, {X_selected.shape[1]} selected features")
+            logger.info(f"# Chart Market regime detected: {regime_info}")
 
             return X_selected, y_entry, y_tp_sl
 
         except Exception as e:
-            logger.error(f"❌ Error preparing enhanced ML features: {e}")
+            logger.error(f"# X Error preparing enhanced ML features: {e}")
             return np.array([]), np.array([]), np.array([])
 
     def _advanced_feature_scaling(self, X: np.ndarray) -> np.ndarray:
@@ -282,7 +282,7 @@ class EnhancedAIMLOptimizer:
             return X_scaled
 
         except Exception as e:
-            logger.error(f"❌ Error in advanced scaling: {e}")
+            logger.error(f"# X Error in advanced scaling: {e}")
             return self.scaler.fit_transform(X)
 
     def create_ensemble_models(self) -> bool:
@@ -335,17 +335,17 @@ class EnhancedAIMLOptimizer:
                 final_estimator=GradientBoostingRegressor(n_estimators=50, random_state=42)
             )
 
-            logger.info("✅ Ensemble models created successfully")
+            logger.info("# Check Ensemble models created successfully")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error creating ensemble models: {e}")
+            logger.error(f"# X Error creating ensemble models: {e}")
             return False
 
     def train_enhanced_models(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Train enhanced ensemble models"""
         try:
-            logger.info("🚀 Starting enhanced model training...")
+            logger.info("# Rocket Starting enhanced model training...")
 
             # Prepare enhanced features
             X, y_entry, y_tp_sl = self.prepare_enhanced_ml_features(df)
@@ -363,11 +363,11 @@ class EnhancedAIMLOptimizer:
             )
 
             # Train entry ensemble
-            logger.info("🎯 Training entry ensemble...")
+            logger.info("# Target Training entry ensemble...")
             self.entry_ensemble.fit(X_train, y_entry_train)
 
             # Train TP/SL ensemble
-            logger.info("🎯 Training TP/SL ensemble...")
+            logger.info("# Target Training TP/SL ensemble...")
             self.tp_sl_ensemble.fit(X_train, y_tp_sl_train)
 
             # Evaluate models
@@ -407,18 +407,18 @@ class EnhancedAIMLOptimizer:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"✅ Enhanced models trained - Entry R²: {entry_r2:.4f}, TP/SL R²: {tp_sl_r2:.4f}")
+            logger.info(f"# Check Enhanced models trained - Entry R²: {entry_r2:.4f}, TP/SL R²: {tp_sl_r2:.4f}")
             return results
 
         except Exception as e:
-            logger.error(f"❌ Error training enhanced models: {e}")
+            logger.error(f"# X Error training enhanced models: {e}")
             return {'error': str(e)}
 
     def optimize_entry_points_enhanced(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Enhanced entry point optimization using ensemble models"""
         try:
             if self.entry_ensemble is None:
-                logger.error("❌ Entry ensemble not trained")
+                logger.error("# X Entry ensemble not trained")
                 return {}
 
             # Prepare features
@@ -485,11 +485,11 @@ class EnhancedAIMLOptimizer:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"🎯 Enhanced Entry Optimization: Signal={entry_signal:.3f}, Confidence={confidence:.3f}, Recommendation={recommendation}")
+            logger.info(f"# Target Enhanced Entry Optimization: Signal={entry_signal:.3f}, Confidence={confidence:.3f}, Recommendation={recommendation}")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Error in enhanced entry optimization: {e}")
+            logger.error(f"# X Error in enhanced entry optimization: {e}")
             return {
                 'error': str(e),
                 'recommendation': 'HOLD',
@@ -501,7 +501,7 @@ def main():
 
     optimizer = EnhancedAIMLOptimizer()
 
-    print("🎯 Features: Ensemble models, advanced features, market regime detection")
+    print("# Target Features: Ensemble models, advanced features, market regime detection")
 
 if __name__ == "__main__":
     main()

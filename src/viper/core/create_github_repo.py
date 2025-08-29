@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - GitHub Repository Creation & Upload Script
+# Rocket VIPER Trading Bot - GitHub Repository Creation & Upload Script
 Uses GitHub MCP server to create a new repository and upload the complete system
 """
 
@@ -26,12 +26,12 @@ class GitHubMCPCreator:
 
         # Validate configuration
         if not self.github_pat or self.github_pat == 'github_pat_your_personal_access_token_here':
-            print("❌ ERROR: Please set a valid GITHUB_PAT in your .env file")
+            print("# X ERROR: Please set a valid GITHUB_PAT in your .env file")
             print("   Get a token from: https://github.com/settings/tokens")
             sys.exit(1)
 
         if not self.github_owner or self.github_owner == 'your_github_username_here':
-            print("❌ ERROR: Please set a valid GITHUB_OWNER in your .env file")
+            print("# X ERROR: Please set a valid GITHUB_OWNER in your .env file")
             sys.exit(1)
 
     async def create_repository(self) -> Dict[str, Any]:
@@ -43,7 +43,7 @@ class GitHubMCPCreator:
                 # Create repository data
                 repo_data = {
                     "name": self.github_repo,
-                    "description": "🚀 Complete VIPER Trading Bot - Ultra High-Performance Algorithmic Trading Platform with 20 Microservices",
+                    "description": "# Rocket Complete VIPER Trading Bot - Ultra High-Performance Algorithmic Trading Platform with 20 Microservices",
                     "private": False,
                     "auto_init": True,
                     "license_template": "mit"
@@ -61,7 +61,7 @@ class GitHubMCPCreator:
                     print(f"   URL: https://github.com/{self.github_owner}/{self.github_repo}")
                     return resul
                 else:
-                    print(f"❌ Failed to create repository: {response.status_code}")
+                    print(f"# X Failed to create repository: {response.status_code}")
                     return {"error": response.text}
 
         except Exception as e:
@@ -112,9 +112,9 @@ class GitHubMCPCreator:
                         })
 
                     except Exception as e:
-                        print(f"⚠️  Warning: Could not read {file_path}: {e}")
+                        print(f"# Warning  Warning: Could not read {file_path}: {e}")
 
-        print(f"✅ Found {len(files_data)} files to upload")
+        print(f"# Check Found {len(files_data)} files to upload")
         return files_data
 
     async def upload_files(self, files_data: List[Dict[str, str]]) -> Dict[str, Any]:
@@ -136,7 +136,7 @@ class GitHubMCPCreator:
                         "repo": self.github_repo,
                         "branch": "main",
                         "files": batch,
-                        "message": f"🚀 VIPER Trading Bot - Complete System Upload (Batch {i//batch_size + 1})"
+                        "message": f"# Rocket VIPER Trading Bot - Complete System Upload (Batch {i//batch_size + 1})"
                     }
 
                     response = await client.post(
@@ -148,7 +148,7 @@ class GitHubMCPCreator:
                     if response.status_code == 200:
                         uploaded_count += len(batch)
                     else:
-                        print(f"❌ Failed to upload batch: {response.status_code}")
+                        print(f"# X Failed to upload batch: {response.status_code}")
                         return {"error": response.text}
 
                 return {
@@ -166,19 +166,19 @@ class GitHubMCPCreator:
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
                 task_data = {
-                    "title": "🚀 VIPER Trading Bot - Repository Setup Complete",
-                    "body": """## 🎉 VIPER Trading Bot Repository Created!
+                    "title": "# Rocket VIPER Trading Bot - Repository Setup Complete",
+                    "body": """## # Party VIPER Trading Bot Repository Created!
 
 This repository contains the complete VIPER Trading Bot system with 20 microservices.
 
-### 🏗️ **System Architecture:**
+### # Construction **System Architecture:**
 - **17 Microservices** - Complete trading pipeline
 - **Docker Containerization** - Production-ready deployment
 - **MCP Integration** - AI agent support
 - **Enterprise Security** - Encrypted vault and access control
 - **Real-time Processing** - Sub-second latency trading
 
-### 🚀 **Quick Start:**
+### # Rocket **Quick Start:**
 ```bash
 # Clone the repository
 git clone https://github.com/{self.github_owner}/{self.github_repo}.git
@@ -191,13 +191,13 @@ python main.py
 open http://localhost:8000
 ```
 
-### 📊 **Key Features:**
-- ✅ Ultra High-Performance Algorithmic Trading
-- ✅ Real-time Market Data Streaming
-- ✅ Advanced Risk Management (2% per trade rule)
-- ✅ Backtesting Engine with Predictive Ranges
-- ✅ 50x Leverage Support with Position Limits
-- ✅ Enterprise Logging & Monitoring
+### # Chart **Key Features:**
+- # Check Ultra High-Performance Algorithmic Trading
+- # Check Real-time Market Data Streaming
+- # Check Advanced Risk Management (2% per trade rule)
+- # Check Backtesting Engine with Predictive Ranges
+- # Check 50x Leverage Support with Position Limits
+- # Check Enterprise Logging & Monitoring
 
 ### 🤖 **AI Integration:**
 - MCP Server for AI agent communication
@@ -221,7 +221,7 @@ open http://localhost:8000
                 if response.status_code == 200:
                     return response.json()
                 else:
-                    print(f"⚠️  Warning: Could not create task: {response.status_code}")
+                    print(f"# Warning  Warning: Could not create task: {response.status_code}")
                     return {"warning": response.text}
 
         except Exception as e:
@@ -229,7 +229,7 @@ open http://localhost:8000
 
 async def main():
     """Main function to create repository and upload codebase"""
-    print("🚀 VIPER Trading Bot - GitHub Repository Creation & Upload")
+    print("# Rocket VIPER Trading Bot - GitHub Repository Creation & Upload")
 
     # Initialize GitHub MCP creator
     creator = GitHubMCPCreator()
@@ -238,7 +238,7 @@ async def main():
     repo_result = await creator.create_repository()
 
     if "error" in repo_result:
-        print("❌ Repository creation failed. Please check your GitHub PAT and try again.")
+        print("# X Repository creation failed. Please check your GitHub PAT and try again.")
         return
 
     # Step 2: Get all project files
@@ -257,9 +257,9 @@ async def main():
     await creator.create_readme_task()
 
     # Success summary
-    print("🎉 SUCCESS! VIPER Trading Bot repository created and uploaded!")
+    print("# Party SUCCESS! VIPER Trading Bot repository created and uploaded!")
     print(f"📁 Repository: https://github.com/{creator.github_owner}/{creator.github_repo}")
-    print(f"📊 Files uploaded: {upload_result.get('files_uploaded', 0)}")
+    print(f"# Chart Files uploaded: {upload_result.get('files_uploaded', 0)}")
     print("   4. Access dashboard: http://localhost:8000")
 
 if __name__ == "__main__":

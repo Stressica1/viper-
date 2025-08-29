@@ -199,7 +199,7 @@ class EnhancedMathematicalValidator:
             )
             
         except Exception as e:
-            logger.error(f"❌ Array validation error: {e}")
+            logger.error(f"# X Array validation error: {e}")
             return ValidationResult(
                 name=name, is_valid=False, risk_level=RiskLevel.CRITICAL,
                 confidence=0.0, issues=[f"Validation error: {e}"], warnings=[],
@@ -655,7 +655,7 @@ class EnhancedMathematicalValidator:
             )
             
         except Exception as e:
-            logger.error(f"❌ Trading calculation validation error: {e}")
+            logger.error(f"# X Trading calculation validation error: {e}")
             return ValidationResult(
                 name="trading_calculation", is_valid=False,
                 risk_level=RiskLevel.CRITICAL, confidence=0.0,
@@ -798,7 +798,7 @@ class EnhancedMathematicalValidator:
                 return result
             else:
                 # Scalar division
-                if (abs(denominator) > self.tolerance and 
+                if (abs(denominator) > self.tolerance and:
                     np.isfinite(denominator) and np.isfinite(numerator) and
                     abs(denominator) < self.max_safe_value and
                     abs(numerator) < self.max_safe_value):
@@ -903,14 +903,14 @@ def run_enhanced_mathematical_validation_tests():
     # Test array validation
     test_array = np.array([1, 2, 3, np.nan, 5, 100, -50, 2.5])
     result = validate_array(test_array, "test_array", ValidationLevel.COMPREHENSIVE)
-    print(f"✅ Enhanced array validation: {'PASSED' if result.confidence > 0.5 else 'NEEDS ATTENTION'}")
+    print(f"# Check Enhanced array validation: {'PASSED' if result.confidence > 0.5 else 'NEEDS ATTENTION'}")
     print(f"   Risk Level: {result.risk_level.value}, Confidence: {result.confidence:.2%}")
     
     # Test safe division
     numerators = np.array([10, 20, 30])
     denominators = np.array([2, 0, 5])  # Include division by zero
     safe_results = safe_divide(numerators, denominators, default=-999)
-    print(f"✅ Enhanced safe division: {safe_results}")
+    print(f"# Check Enhanced safe division: {safe_results}")
     
     # Test trading calculation validation
     def simple_return_calc(price_start, price_end):
@@ -922,12 +922,12 @@ def run_enhanced_mathematical_validation_tests():
         expected_range=(-1.0, 1.0),
         monte_carlo=True
     )
-    print(f"✅ Trading calculation validation: {'PASSED' if trading_result.is_valid else 'FAILED'}")
+    print(f"# Check Trading calculation validation: {'PASSED' if trading_result.is_valid else 'FAILED'}")
     
     # Test risk metrics validation
     sample_returns = np.random.normal(0.001, 0.02, 252)  # Daily returns for 1 year
     risk_result = validate_risk_metrics(sample_returns)
-    print(f"✅ Risk metrics validation: {'PASSED' if risk_result.is_valid else 'FAILED'}")
+    print(f"# Check Risk metrics validation: {'PASSED' if risk_result.is_valid else 'FAILED'}")
     
     # Test performance benchmarking
     def test_calculation(x, y):
@@ -938,7 +938,7 @@ def run_enhanced_mathematical_validation_tests():
         {'x': np.random.rand(1000), 'y': np.random.rand(1000)},
         iterations=100
     )
-    print(f"✅ Performance benchmark: {benchmark_result.get('operations_per_second', 0):.0f} ops/sec")
+    print(f"# Check Performance benchmark: {benchmark_result.get('operations_per_second', 0):.0f} ops/sec")
     
 
 if __name__ == "__main__":

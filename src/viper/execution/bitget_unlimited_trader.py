@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER BITGET UNLIMITED TRADER
+# Rocket VIPER BITGET UNLIMITED TRADER
 NO LIMITS - NO MINIMUM BALANCE - NO DAILY LOSS LIMITS
 PURE AGGRESSIVE TRADING WITH 50X LEVERAGE
 """
@@ -82,10 +82,10 @@ class BitgetUnlimitedTrader:
             }
         }
         
-        logger.info("🚀 VIPER BITGET UNLIMITED TRADER INITIALIZED")
+        logger.info("# Rocket VIPER BITGET UNLIMITED TRADER INITIALIZED")
         logger.info("⚡ NO LIMITS - NO MINIMUM BALANCE - NO LOSS LIMITS")
         logger.info("💥 PURE AGGRESSIVE 50X LEVERAGE TRADING")
-        logger.info(f"🎯 Max Leverage: {self.max_leverage}x EVERYWHERE")
+        logger.info(f"# Target Max Leverage: {self.max_leverage}x EVERYWHERE")
         logger.info(f"🔢 Max Positions: {self.max_positions} (NO LIMIT)")
 
     def connect_bitget_unlimited(self):
@@ -106,11 +106,11 @@ class BitgetUnlimitedTrader:
             
             # Load all markets
             markets = self.exchange.load_markets()
-            logger.info(f"✅ Bitget Connected - {len(markets)} markets loaded")
+            logger.info(f"# Check Bitget Connected - {len(markets)} markets loaded")
             
             # Get ALL swap pairs with any leverage
             for symbol, market in markets.items():
-                if (market.get('type') == 'swap' and 
+                if (market.get('type') == 'swap' and:
                     market.get('active', False) and
                     market.get('quote') == 'USDT'):
                     self.swap_pairs_50x.append(symbol)
@@ -120,7 +120,7 @@ class BitgetUnlimitedTrader:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Bitget: {e}")
+            logger.error(f"# X Failed to connect to Bitget: {e}")
             return False
 
     def get_real_balance_unlimited(self):
@@ -132,17 +132,17 @@ class BitgetUnlimitedTrader:
             
             if 'USDT' in balance:
                 self.real_balance = float(balance['USDT']['free'])
-                logger.info(f"✅ REAL Balance: ${self.real_balance:,.2f}")
+                logger.info(f"# Check REAL Balance: ${self.real_balance:,.2f}")
                 logger.info("💥 TRADING WITH ANY AMOUNT - NO MINIMUM LIMITS!")
                 
                 return self.real_balance
             else:
-                logger.warning("⚠️  No USDT found but CONTINUING ANYWAY!")
+                logger.warning("# Warning  No USDT found but CONTINUING ANYWAY!")
                 self.real_balance = 0.0
                 return 0.0
                 
         except Exception as e:
-            logger.error(f"❌ Error fetching balance: {e}")
+            logger.error(f"# X Error fetching balance: {e}")
             logger.info("💥 CONTINUING WITHOUT BALANCE CHECK!")
             return 0.0
 
@@ -189,7 +189,7 @@ class BitgetUnlimitedTrader:
             }
             
         except Exception as e:
-            logger.error(f"❌ Error calculating position for {symbol}: {e}")
+            logger.error(f"# X Error calculating position for {symbol}: {e}")
             # Return minimum viable position anyway
             return {
                 "symbol": symbol,
@@ -212,12 +212,12 @@ class BitgetUnlimitedTrader:
             position_calc = self.calculate_aggressive_position(symbol, current_price)
             
             logger.info(f"💥 EXECUTING UNLIMITED {side.upper()} ORDER")
-            logger.info(f"   📊 Symbol: {symbol}")
+            logger.info(f"   # Chart Symbol: {symbol}")
             logger.info(f"   💰 Price: ${current_price:.6f}")
             logger.info(f"   📏 Size: {position_calc['position_size']:.6f}")
             logger.info(f"   🔄 Leverage: {position_calc['leverage']}x")
             logger.info(f"   💵 Margin: ${position_calc['margin_required']:.2f}")
-            logger.info(f"   🎯 NO BALANCE CHECKS - EXECUTING ANYWAY!")
+            logger.info(f"   # Target NO BALANCE CHECKS - EXECUTING ANYWAY!")
             
             # Execute REAL order with correct Bitget parameters
             order = self.exchange.create_order(
@@ -233,7 +233,7 @@ class BitgetUnlimitedTrader:
                 }
             )
             
-            logger.info(f"✅ UNLIMITED ORDER EXECUTED: {order['id']}")
+            logger.info(f"# Check UNLIMITED ORDER EXECUTED: {order['id']}")
             
             # Store position
             self.active_positions[symbol] = {
@@ -253,7 +253,7 @@ class BitgetUnlimitedTrader:
             return order
             
         except Exception as e:
-            logger.error(f"❌ Failed to execute UNLIMITED trade for {symbol}: {e}")
+            logger.error(f"# X Failed to execute UNLIMITED trade for {symbol}: {e}")
             logger.info("💥 CONTINUING DESPITE ERROR!")
             return None
 
@@ -269,7 +269,7 @@ class BitgetUnlimitedTrader:
             try:
                 positions = self.exchange.fetch_positions()
             except Exception as e:
-                logger.warning(f"⚠️  Could not fetch positions: {e}")
+                logger.warning(f"# Warning  Could not fetch positions: {e}")
                 return
             
             for position in positions:
@@ -282,7 +282,7 @@ class BitgetUnlimitedTrader:
                     take_profit_pct = position_config['take_profit'] * 100
                     stop_loss_pct = position_config['stop_loss'] * 100
                     
-                    logger.info(f"📊 {symbol}: P&L ${unrealized_pnl:.2f} ({percentage:.2f}%)")
+                    logger.info(f"# Chart {symbol}: P&L ${unrealized_pnl:.2f} ({percentage:.2f}%)")
                     
                     # AGGRESSIVE profit taking
                     if percentage >= take_profit_pct:
@@ -295,7 +295,7 @@ class BitgetUnlimitedTrader:
                         self.close_unlimited_position(symbol, "STOP_LOSS")
                         
         except Exception as e:
-            logger.error(f"❌ Error monitoring positions: {e}")
+            logger.error(f"# X Error monitoring positions: {e}")
 
     def close_unlimited_position(self, symbol: str, reason: str):
         """Close position - NO RESTRICTIONS"""
@@ -319,14 +319,14 @@ class BitgetUnlimitedTrader:
                 }
             )
             
-            logger.info(f"✅ POSITION CLOSED: {symbol} ({reason})")
+            logger.info(f"# Check POSITION CLOSED: {symbol} ({reason})")
             logger.info(f"   📋 Close Order: {close_order['id']}")
             
             # Remove from active positions
             del self.active_positions[symbol]
             
         except Exception as e:
-            logger.error(f"❌ Error closing position {symbol}: {e}")
+            logger.error(f"# X Error closing position {symbol}: {e}")
             # Force remove from tracking anyway
             if symbol in self.active_positions:
                 del self.active_positions[symbol]
@@ -360,7 +360,7 @@ class BitgetUnlimitedTrader:
                     continue
                     
         except Exception as e:
-            logger.error(f"❌ Error scanning opportunities: {e}")
+            logger.error(f"# X Error scanning opportunities: {e}")
             
         return opportunities
 
@@ -376,10 +376,10 @@ class BitgetUnlimitedTrader:
         
         logger.info("=" * 100)
         logger.info("💥 VIPER UNLIMITED TRADING SYSTEM ACTIVATED!")
-        logger.info("📊 System Status: UNLIMITED LIVE TRADING")
+        logger.info("# Chart System Status: UNLIMITED LIVE TRADING")
         logger.info(f"💰 Balance: ${self.real_balance:.2f} (TRADING REGARDLESS)")
-        logger.info(f"🎯 Available Pairs: {len(self.swap_pairs_50x)}")
-        logger.info(f"📊 Aggressive Groups: {len(self.aggressive_groups)}")
+        logger.info(f"# Target Available Pairs: {len(self.swap_pairs_50x)}")
+        logger.info(f"# Chart Aggressive Groups: {len(self.aggressive_groups)}")
         logger.info("💥 NO DAILY LOSS LIMITS - NO POSITION LIMITS")
         logger.info("=" * 100)
         
@@ -400,7 +400,7 @@ class BitgetUnlimitedTrader:
                 opportunities = self.scan_unlimited_opportunities()
                 
                 if opportunities:
-                    logger.info(f"🎯 Found {len(opportunities)} opportunities: {opportunities[:10]}")
+                    logger.info(f"# Target Found {len(opportunities)} opportunities: {opportunities[:10]}")
                     
                     # Execute multiple trades per cycle - AGGRESSIVE
                     for symbol in opportunities[:5]:  # Up to 5 new trades per cycle
@@ -419,7 +419,7 @@ class BitgetUnlimitedTrader:
                                 time.sleep(1)  # Brief pause
                                 
                         except Exception as e:
-                            logger.error(f"❌ Error trading {symbol}: {e}")
+                            logger.error(f"# X Error trading {symbol}: {e}")
                             continue
                 
                 # Status update
@@ -435,7 +435,7 @@ class BitgetUnlimitedTrader:
                 logger.info("🛑 UNLIMITED trading interrupted")
                 break
             except Exception as e:
-                logger.error(f"❌ Error in UNLIMITED cycle: {e}")
+                logger.error(f"# X Error in UNLIMITED cycle: {e}")
                 logger.info("💥 CONTINUING DESPITE ERROR!")
                 time.sleep(10)
         
@@ -449,7 +449,7 @@ def main():
     trader = BitgetUnlimitedTrader()
     
     if not trader.connect_bitget_unlimited():
-        logger.error("❌ Failed to connect to Bitget.")
+        logger.error("# X Failed to connect to Bitget.")
         logger.info("💥 ATTEMPTING TO CONTINUE ANYWAY...")
     
     logger.info("\n" + "="*100)
@@ -467,10 +467,10 @@ def main():
     except KeyboardInterrupt:
         logger.info("🛑 UNLIMITED trading cancelled")
     except Exception as e:
-        logger.error(f"❌ Unexpected error: {e}")
+        logger.error(f"# X Unexpected error: {e}")
         logger.info("💥 SYSTEM WILL CONTINUE DESPITE ERRORS!")
     
-    logger.info("✅ UNLIMITED trader shutdown complete")
+    logger.info("# Check UNLIMITED trader shutdown complete")
 
 if __name__ == "__main__":
     main()

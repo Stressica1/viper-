@@ -4,13 +4,13 @@
 Complete GitHub integration using MCP (Model Context Protocol) server
 
 This module provides:
-✅ Repository management and version control
-✅ Automated code commits and pushes
-✅ Performance tracking and logging
-✅ Issue tracking and management
-✅ Release management and deployment
-✅ Collaboration and review workflows
-✅ Backup and recovery operations
+# Check Repository management and version control
+# Check Automated code commits and pushes
+# Check Performance tracking and logging
+# Check Issue tracking and management
+# Check Release management and deployment
+# Check Collaboration and review workflows
+# Check Backup and recovery operations
 """
 
 import os
@@ -24,7 +24,7 @@ import requests
 try:
     GIT_AVAILABLE = True
 except ImportError:
-    print("⚠️ GitPython not available - some GitHub features may be limited")
+    print("# Warning GitPython not available - some GitHub features may be limited")
     GIT_AVAILABLE = False
 
 # Configure logging
@@ -65,15 +65,15 @@ class GitHubMCPIntegration:
         """Initialize Git repository"""
         try:
             if not GIT_AVAILABLE:
-                logger.warning("⚠️ Git functionality disabled - GitPython not available")
+                logger.warning("# Warning Git functionality disabled - GitPython not available")
                 self.repo = None
                 return
                 
             self.repo = Repo(self.repo_path)
             self.remote_url = self._get_remote_url()
-            logger.info(f"✅ Git repository initialized: {self.repo_path}")
+            logger.info(f"# Check Git repository initialized: {self.repo_path}")
         except Exception as e:
-            logger.warning(f"⚠️ Repository initialization warning: {e}")
+            logger.warning(f"# Warning Repository initialization warning: {e}")
             self.repo = None
 
     def _get_remote_url(self) -> Optional[str]:
@@ -82,14 +82,14 @@ class GitHubMCPIntegration:
             if self.repo and self.repo.remotes and GIT_AVAILABLE:
                 return self.repo.remotes.origin.url
         except Exception as e:
-            logger.warning(f"⚠️ Could not get remote URL: {e}")
+            logger.warning(f"# Warning Could not get remote URL: {e}")
         return None
 
     async def commit_system_changes(self, message: str, files_to_commit: List[str] = None):
         """Commit system changes to GitHub"""
         try:
             if not self.repo:
-                logger.warning("⚠️  No Git repository available for commit")
+                logger.warning("# Warning  No Git repository available for commit")
                 return False
 
             # Add files to staging
@@ -113,11 +113,11 @@ class GitHubMCPIntegration:
             }
             self.commit_history.append(commit_data)
 
-            logger.info(f"✅ Changes committed: {commit.hexsha[:8]} - {message}")
+            logger.info(f"# Check Changes committed: {commit.hexsha[:8]} - {message}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Git commit failed: {e}")
+            logger.error(f"# X Git commit failed: {e}")
             return False
 
     async def push_to_github(self, branch: str = 'main'):
@@ -130,18 +130,18 @@ class GitHubMCPIntegration:
             origin = self.repo.remote('origin')
             origin.push(branch)
 
-            logger.info(f"✅ Changes pushed to GitHub: {branch}")
+            logger.info(f"# Check Changes pushed to GitHub: {branch}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Git push failed: {e}")
+            logger.error(f"# X Git push failed: {e}")
             return False
 
     async def create_performance_issue(self, performance_data: Dict[str, Any]):
         """Create GitHub issue for performance tracking"""
         try:
             if not self.github_token:
-                logger.warning("⚠️  No GitHub token available for issue creation")
+                logger.warning("# Warning  No GitHub token available for issue creation")
                 return False
 
             # Prepare issue data
@@ -193,15 +193,15 @@ class GitHubMCPIntegration:
 
                     if response.status_code == 201:
                         issue_number = response.json().get('number')
-                        logger.info(f"✅ Performance issue created: #{issue_number}")
+                        logger.info(f"# Check Performance issue created: #{issue_number}")
                         return True
                     else:
-                        logger.error(f"❌ GitHub API error: {response.status_code} - {response.text}")
+                        logger.error(f"# X GitHub API error: {response.status_code} - {response.text}")
 
             return False
 
         except Exception as e:
-            logger.error(f"❌ Performance issue creation failed: {e}")
+            logger.error(f"# X Performance issue creation failed: {e}")
             return False
 
     async def log_system_performance(self, performance_data: Dict[str, Any]):
@@ -229,11 +229,11 @@ class GitHubMCPIntegration:
             # Push to GitHub
             await self.push_to_github()
 
-            logger.info("✅ System performance logged to GitHub")
+            logger.info("# Check System performance logged to GitHub")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Performance logging failed: {e}")
+            logger.error(f"# X Performance logging failed: {e}")
             return False
 
     async def create_release(self, version: str, release_notes: str):
@@ -263,15 +263,15 @@ class GitHubMCPIntegration:
                     response = requests.post(api_url, headers=headers, json=release_data)
 
                     if response.status_code == 201:
-                        logger.info(f"✅ Release v{version} created on GitHub")
+                        logger.info(f"# Check Release v{version} created on GitHub")
                         return True
                     else:
-                        logger.error(f"❌ GitHub release creation failed: {response.status_code}")
+                        logger.error(f"# X GitHub release creation failed: {response.status_code}")
 
             return False
 
         except Exception as e:
-            logger.error(f"❌ Release creation failed: {e}")
+            logger.error(f"# X Release creation failed: {e}")
             return False
 
     async def backup_system_state(self, system_state: Dict[str, Any]):
@@ -292,11 +292,11 @@ class GitHubMCPIntegration:
             # Push to GitHub
             await self.push_to_github()
 
-            logger.info("✅ System state backed up to GitHub")
+            logger.info("# Check System state backed up to GitHub")
             return True
 
         except Exception as e:
-            logger.error(f"❌ System backup failed: {e}")
+            logger.error(f"# X System backup failed: {e}")
             return False
 
     async def track_system_changes(self, change_description: str, affected_files: List[str]):
@@ -320,11 +320,11 @@ class GitHubMCPIntegration:
             # Track the change
             self.commit_history.append(change_data)
 
-            logger.info(f"✅ System change tracked: {change_description}")
+            logger.info(f"# Check System change tracked: {change_description}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Change tracking failed: {e}")
+            logger.error(f"# X Change tracking failed: {e}")
             return False
 
     async def get_repository_status(self) -> Dict[str, Any]:
@@ -370,7 +370,7 @@ class GitHubMCPIntegration:
             return status
 
         except Exception as e:
-            logger.error(f"❌ Repository status check failed: {e}")
+            logger.error(f"# X Repository status check failed: {e}")
             return {'error': str(e)}
 
     async def create_feature_branch(self, feature_name: str) -> bool:
@@ -384,11 +384,11 @@ class GitHubMCPIntegration:
             new_branch = self.repo.create_head(branch_name)
             new_branch.checkout()
 
-            logger.info(f"✅ Feature branch created: {branch_name}")
+            logger.info(f"# Check Feature branch created: {branch_name}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Feature branch creation failed: {e}")
+            logger.error(f"# X Feature branch creation failed: {e}")
             return False
 
     async def merge_feature_branch(self, feature_branch: str, target_branch: str = 'main') -> bool:
@@ -406,11 +406,11 @@ class GitHubMCPIntegration:
             # Delete feature branch
             self.repo.git.branch('-d', feature_branch)
 
-            logger.info(f"✅ Feature branch merged: {feature_branch} -> {target_branch}")
+            logger.info(f"# Check Feature branch merged: {feature_branch} -> {target_branch}")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Branch merge failed: {e}")
+            logger.error(f"# X Branch merge failed: {e}")
             return False
 
     def _extract_repo_info(self, remote_url: str) -> Optional[Dict[str, str]]:
@@ -434,7 +434,7 @@ class GitHubMCPIntegration:
                     }
 
         except Exception as e:
-            logger.warning(f"⚠️  Could not extract repo info: {e}")
+            logger.warning(f"# Warning  Could not extract repo info: {e}")
 
         return None
 
@@ -457,7 +457,7 @@ class GitHubMCPIntegration:
             return commits
 
         except Exception as e:
-            logger.error(f"❌ Commit history retrieval failed: {e}")
+            logger.error(f"# X Commit history retrieval failed: {e}")
             return []
 
     async def create_pull_request(self, title: str, description: str, head_branch: str, base_branch: str = 'main') -> bool:
@@ -487,15 +487,15 @@ class GitHubMCPIntegration:
 
                     if response.status_code == 201:
                         pr_number = response.json().get('number')
-                        logger.info(f"✅ Pull request created: #{pr_number}")
+                        logger.info(f"# Check Pull request created: #{pr_number}")
                         return True
                     else:
-                        logger.error(f"❌ Pull request creation failed: {response.status_code}")
+                        logger.error(f"# X Pull request creation failed: {response.status_code}")
 
             return False
 
         except Exception as e:
-            logger.error(f"❌ Pull request creation failed: {e}")
+            logger.error(f"# X Pull request creation failed: {e}")
             return False
 
     async def commit_and_push(self, message: str, files: List[str] = None) -> bool:
@@ -511,7 +511,7 @@ class GitHubMCPIntegration:
         """
         try:
             if not self.repo:
-                logger.error("❌ Repository not initialized")
+                logger.error("# X Repository not initialized")
                 return False
 
             # Add files to staging
@@ -519,11 +519,11 @@ class GitHubMCPIntegration:
                 for file_path in files:
                     if os.path.exists(file_path):
                         self.repo.index.add([file_path])
-                        logger.info(f"✅ Added to staging: {file_path}")
+                        logger.info(f"# Check Added to staging: {file_path}")
             else:
                 # Add all changes
                 self.repo.git.add(A=True)
-                logger.info("✅ Added all changes to staging")
+                logger.info("# Check Added all changes to staging")
 
             # Check if there are changes to commit
             if not self.repo.is_dirty() and len(self.repo.untracked_files) == 0:
@@ -532,24 +532,24 @@ class GitHubMCPIntegration:
 
             # Create commit
             commit = self.repo.index.commit(message)
-            logger.info(f"✅ Changes committed: {commit.hexsha[:8]}")
+            logger.info(f"# Check Changes committed: {commit.hexsha[:8]}")
 
             # Push to remote
             if self.remote_url:
                 try:
                     origin = self.repo.remote('origin')
                     origin.push()
-                    logger.info("✅ Changes pushed to remote repository")
+                    logger.info("# Check Changes pushed to remote repository")
                     return True
                 except Exception as e:
-                    logger.error(f"❌ Push failed: {e}")
+                    logger.error(f"# X Push failed: {e}")
                     return False
             else:
-                logger.warning("⚠️ No remote repository configured")
+                logger.warning("# Warning No remote repository configured")
                 return True
 
         except Exception as e:
-            logger.error(f"❌ Commit and push failed: {e}")
+            logger.error(f"# X Commit and push failed: {e}")
             return False
 
 # Example usage and testing functions
@@ -561,7 +561,7 @@ async def test_github_integration():
 
     # Test repository status
     status = await github_mcp.get_repository_status()
-    print(f"📊 Repository Status: {json.dumps(status, indent=2)}")
+    print(f"# Chart Repository Status: {json.dumps(status, indent=2)}")
 
     # Test commit history
     commits = await github_mcp.get_commit_history(5)

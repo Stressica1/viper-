@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER INTEGRATED SYSTEM LAUNCHER
+# Rocket VIPER INTEGRATED SYSTEM LAUNCHER
 One-click launcher for the complete integrated VIPER trading system
 
 This launcher provides:
@@ -71,20 +71,20 @@ class IntegratedSystemLauncher:
             success = demo.run_full_system_demo()
 
             if success:
-                print("🎉 All system components are properly integrated!")
+                print("# Party All system components are properly integrated!")
             else:
-                print("❌ Demo failed - check system logs for details")
+                print("# X Demo failed - check system logs for details")
             return success
 
         except ImportError as e:
-            print("💡 Make sure all required modules are installed")
+            print("# Idea Make sure all required modules are installed")
             return False
         except Exception as e:
             return False
 
     def _launch_diagnostics(self) -> bool:
         """Launch comprehensive diagnostics"""
-        print("🔍 Running Comprehensive System Diagnostics...")
+        print("# Search Running Comprehensive System Diagnostics...")
         print("This will scan all components and provide detailed health reports")
 
         try:
@@ -111,7 +111,7 @@ class IntegratedSystemLauncher:
 
     def _launch_monitor(self) -> bool:
         """Launch real-time monitoring"""
-        print("📊 Starting Real-Time System Monitoring...")
+        print("# Chart Starting Real-Time System Monitoring...")
         print("This will continuously monitor system health")
 
         try:
@@ -136,7 +136,7 @@ class IntegratedSystemLauncher:
 
     def _launch_trading(self) -> bool:
         """Launch live trading system"""
-        print("⚠️  WARNING: This will execute real trades!")
+        print("# Warning  WARNING: This will execute real trades!")
         print("Make sure you have sufficient funds and understand the risks")
 
         # Safety confirmation
@@ -223,7 +223,7 @@ class IntegratedSystemLauncher:
 
             if total_healthy == total_components:
             else:
-                print(f"   ⚠️ SYSTEM PARTIALLY OPERATIONAL ({total_healthy}/{total_components} healthy)")
+                print(f"   # Warning SYSTEM PARTIALLY OPERATIONAL ({total_healthy}/{total_components} healthy)")
 
             return True
 

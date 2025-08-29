@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Exchange Connector Service
+# Rocket VIPER Trading Bot - Exchange Connector Service
 Unified Bitget API client with rate limiting, order management, and error handling
 
 Features:
@@ -102,12 +102,12 @@ class ExchangeConnector:
         self.supported_symbols = ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'BNB/USDT:USDT']
         self.active_orders = {}
 
-        logger.info("🏗️ Initializing Exchange Connector...")
+        logger.info("# Construction Initializing Exchange Connector...")
 
     async def load_credentials(self) -> bool:
         """Load API credentials from the credential vault"""
         if not CREDENTIAL_CLIENT_AVAILABLE or not self.credential_client:
-            logger.warning("⚠️ Credential client not available, using environment variables")
+            logger.warning("# Warning Credential client not available, using environment variables")
             self.api_key = os.getenv('BITGET_API_KEY', '')
             self.api_secret = os.getenv('BITGET_API_SECRET', '')
             self.api_password = os.getenv('BITGET_API_PASSWORD', '')
@@ -120,17 +120,17 @@ class ExchangeConnector:
                 self.api_key = credentials.get('api_key', '')
                 self.api_secret = credentials.get('api_secret', '')
                 self.api_password = credentials.get('api_password', '')
-                logger.info("✅ Successfully loaded credentials from vault")
+                logger.info("# Check Successfully loaded credentials from vault")
                 return True
             else:
-                logger.warning("⚠️ No credentials found in vault, using environment variables")
+                logger.warning("# Warning No credentials found in vault, using environment variables")
                 self.api_key = os.getenv('BITGET_API_KEY', '')
                 self.api_secret = os.getenv('BITGET_API_SECRET', '')
                 self.api_password = os.getenv('BITGET_API_PASSWORD', '')
                 return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to load credentials from vault: {e}")
+            logger.error(f"# X Failed to load credentials from vault: {e}")
             # Fallback to environment variables
             self.api_key = os.getenv('BITGET_API_KEY', '')
             self.api_secret = os.getenv('BITGET_API_SECRET', '')
@@ -140,7 +140,7 @@ class ExchangeConnector:
     def load_credentials_sync(self) -> bool:
         """Synchronous version for non-async contexts"""
         if not CREDENTIAL_CLIENT_AVAILABLE or not self.credential_client:
-            logger.warning("⚠️ Credential client not available, using environment variables")
+            logger.warning("# Warning Credential client not available, using environment variables")
             self.api_key = os.getenv('BITGET_API_KEY', '')
             self.api_secret = os.getenv('BITGET_API_SECRET', '')
             self.api_password = os.getenv('BITGET_API_PASSWORD', '')
@@ -153,17 +153,17 @@ class ExchangeConnector:
                 self.api_key = credentials.get('api_key', '')
                 self.api_secret = credentials.get('api_secret', '')
                 self.api_password = credentials.get('api_password', '')
-                logger.info("✅ Successfully loaded credentials from vault")
+                logger.info("# Check Successfully loaded credentials from vault")
                 return True
             else:
-                logger.warning("⚠️ No credentials found in vault, using environment variables")
+                logger.warning("# Warning No credentials found in vault, using environment variables")
                 self.api_key = os.getenv('BITGET_API_KEY', '')
                 self.api_secret = os.getenv('BITGET_API_SECRET', '')
                 self.api_password = os.getenv('BITGET_API_PASSWORD', '')
                 return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to load credentials from vault: {e}")
+            logger.error(f"# X Failed to load credentials from vault: {e}")
             # Fallback to environment variables
             self.api_key = os.getenv('BITGET_API_KEY', '')
             self.api_secret = os.getenv('BITGET_API_SECRET', '')
@@ -174,7 +174,7 @@ class ExchangeConnector:
         """Initialize Bitget exchange connection"""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
-                logger.warning("⚠️ API credentials not provided - running in read-only mode")
+                logger.warning("# Warning API credentials not provided - running in read-only mode")
                 self.exchange = ccxt.bitget({
                     'options': {
                         'defaultType': 'swap',
@@ -195,11 +195,11 @@ class ExchangeConnector:
                 })
 
             self.exchange.load_markets()
-            logger.info("✅ Exchange connection established")
+            logger.info("# Check Exchange connection established")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
+            logger.error(f"# X Failed to initialize exchange: {e}")
             return False
 
     def initialize_redis(self) -> bool:
@@ -207,10 +207,10 @@ class ExchangeConnector:
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def validate_symbol(self, symbol: str) -> bool:
@@ -232,7 +232,7 @@ class ExchangeConnector:
                 'timestamp': datetime.now().isoformat()
             }
         except Exception as e:
-            logger.error(f"❌ Failed to fetch balance: {e}")
+            logger.error(f"# X Failed to fetch balance: {e}")
             return None
 
     def get_positions(self) -> Optional[List]:
@@ -257,7 +257,7 @@ class ExchangeConnector:
 
             return formatted_positions
         except Exception as e:
-            logger.error(f"❌ Failed to fetch positions: {e}")
+            logger.error(f"# X Failed to fetch positions: {e}")
             return None
 
     def get_ticker(self, symbol: str) -> Optional[Dict]:
@@ -281,7 +281,7 @@ class ExchangeConnector:
                 'timestamp': datetime.now().isoformat()
             }
         except Exception as e:
-            logger.error(f"❌ Failed to fetch ticker for {symbol}: {e}")
+            logger.error(f"# X Failed to fetch ticker for {symbol}: {e}")
             return None
 
     def get_order_book(self, symbol: str, limit: int = 20) -> Optional[Dict]:
@@ -300,7 +300,7 @@ class ExchangeConnector:
                 'timestamp': datetime.now().isoformat()
             }
         except Exception as e:
-            logger.error(f"❌ Failed to fetch order book for {symbol}: {e}")
+            logger.error(f"# X Failed to fetch order book for {symbol}: {e}")
             return None
 
     def create_order(self, symbol: str, side: str, order_type: str,
@@ -310,7 +310,7 @@ class ExchangeConnector:
             return None
 
         if not all([self.api_key, self.api_secret, self.api_password]):
-            logger.error("❌ Cannot create orders without API credentials")
+            logger.error("# X Cannot create orders without API credentials")
             return None
 
         try:
@@ -337,7 +337,7 @@ class ExchangeConnector:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"✅ Order created: {order_id} - {side.upper()} {amount} {symbol}")
+            logger.info(f"# Check Order created: {order_id} - {side.upper()} {amount} {symbol}")
 
             return {
                 'order_id': order_id,
@@ -351,7 +351,7 @@ class ExchangeConnector:
             }
 
         except Exception as e:
-            logger.error(f"❌ Failed to create {side} order for {symbol}: {e}")
+            logger.error(f"# X Failed to create {side} order for {symbol}: {e}")
             return None
 
     def cancel_order(self, order_id: str, symbol: str) -> Optional[Dict]:
@@ -367,11 +367,11 @@ class ExchangeConnector:
             if order_id in self.active_orders:
                 del self.active_orders[order_id]
 
-            logger.info(f"✅ Order cancelled: {order_id}")
+            logger.info(f"# Check Order cancelled: {order_id}")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Failed to cancel order {order_id}: {e}")
+            logger.error(f"# X Failed to cancel order {order_id}: {e}")
             return None
 
     def get_order_status(self, order_id: str, symbol: str) -> Optional[Dict]:
@@ -398,7 +398,7 @@ class ExchangeConnector:
             }
 
         except Exception as e:
-            logger.error(f"❌ Failed to get order status for {order_id}: {e}")
+            logger.error(f"# X Failed to get order status for {order_id}: {e}")
             return None
 
     def get_open_orders(self, symbol: Optional[str] = None) -> Optional[List]:
@@ -423,12 +423,12 @@ class ExchangeConnector:
             return formatted_orders
 
         except Exception as e:
-            logger.error(f"❌ Failed to fetch open orders: {e}")
+            logger.error(f"# X Failed to fetch open orders: {e}")
             return None
 
     def start_monitoring(self):
         """Start order monitoring loop"""
-        logger.info("🚀 Starting order monitoring...")
+        logger.info("# Rocket Starting order monitoring...")
         self.is_running = True
 
         while self.is_running:
@@ -437,13 +437,13 @@ class ExchangeConnector:
                 for order_id, order_info in list(self.active_orders.items()):
                     status = self.get_order_status(order_id, order_info['symbol'])
                     if status and status['status'] in ['closed', 'canceled', 'expired']:
-                        logger.info(f"📊 Order {order_id} completed with status: {status['status']}")
+                        logger.info(f"# Chart Order {order_id} completed with status: {status['status']}")
                         del self.active_orders[order_id]
 
                 time.sleep(30)  # Check every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Error in monitoring loop: {e}")
+                logger.error(f"# X Error in monitoring loop: {e}")
                 time.sleep(10)
 
     def stop(self):
@@ -465,20 +465,20 @@ async def startup_event():
     """Initialize services on startup"""
     # Load credentials from vault first
     if not await connector.load_credentials():
-        logger.error("❌ Failed to load credentials. Exiting...")
+        logger.error("# X Failed to load credentials. Exiting...")
         return
 
     if not connector.initialize_exchange():
-        logger.error("❌ Failed to initialize exchange. Exiting...")
+        logger.error("# X Failed to initialize exchange. Exiting...")
         return
 
     if not connector.initialize_redis():
-        logger.warning("⚠️ Failed to initialize Redis. Continuing without caching...")
+        logger.warning("# Warning Failed to initialize Redis. Continuing without caching...")
 
     # Start monitoring in background thread
     thread = threading.Thread(target=connector.start_monitoring, daemon=True)
     thread.start()
-    logger.info("✅ Exchange Connector started successfully")
+    logger.info("# Check Exchange Connector started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -584,7 +584,7 @@ async def create_order(request: Request):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"❌ Error creating order: {e}")
+        logger.error(f"# X Error creating order: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
 @app.delete("/api/orders/{order_id}")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 SIMPLE VIPER TRADER - WORKING VERSION
+# Rocket SIMPLE VIPER TRADER - WORKING VERSION
 """
 
 import os
@@ -35,7 +35,7 @@ class SimpleVIPERTrader:
         """Connect to Bitget"""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
-                logger.error("❌ Missing API credentials")
+                logger.error("# X Missing API credentials")
                 return False
                 
             logger.info("🔌 Connecting to Bitget...")
@@ -48,11 +48,11 @@ class SimpleVIPERTrader:
             })
             
             markets = self.exchange.load_markets()
-            logger.info(f"✅ Connected - {len(markets)} markets loaded")
+            logger.info(f"# Check Connected - {len(markets)} markets loaded")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Connection failed: {e}")
+            logger.error(f"# X Connection failed: {e}")
             return False
 
     def get_signal(self):
@@ -70,7 +70,7 @@ class SimpleVIPERTrader:
             return None
             
         except Exception as e:
-            logger.error(f"❌ Signal error: {e}")
+            logger.error(f"# X Signal error: {e}")
             return None
 
     def execute_trade(self, side):
@@ -83,7 +83,7 @@ class SimpleVIPERTrader:
             position_value = self.position_size_usdt * self.max_leverage
             position_size = position_value / current_price
             
-            logger.info(f"🚀 Executing {side.upper()} order")
+            logger.info(f"# Rocket Executing {side.upper()} order")
             logger.info(f"   Price: ${current_price:.6f}")
             logger.info(f"   Size: {position_size:.6f}")
             
@@ -109,11 +109,11 @@ class SimpleVIPERTrader:
                 'timestamp': datetime.now().isoformat()
             }
             
-            logger.info(f"✅ Trade executed: {order['id']}")
+            logger.info(f"# Check Trade executed: {order['id']}")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Trade failed: {e}")
+            logger.error(f"# X Trade failed: {e}")
             return False
 
     def monitor_positions(self):
@@ -135,7 +135,7 @@ class SimpleVIPERTrader:
             else:
                 pnl_pct = (entry_price - current_price) / entry_price * 100
             
-            logger.info(f"📊 {self.symbol}: {pnl_pct:.2f}% P&L")
+            logger.info(f"# Chart {self.symbol}: {pnl_pct:.2f}% P&L")
             
             # Risk management
             if pnl_pct >= self.take_profit_pct:
@@ -146,7 +146,7 @@ class SimpleVIPERTrader:
                 self.close_position("STOP_LOSS")
                 
         except Exception as e:
-            logger.error(f"❌ Monitor error: {e}")
+            logger.error(f"# X Monitor error: {e}")
 
     def close_position(self, reason):
         """Close position"""
@@ -169,15 +169,15 @@ class SimpleVIPERTrader:
                 }
             )
             
-            logger.info(f"✅ Position closed: {self.symbol} ({reason})")
+            logger.info(f"# Check Position closed: {self.symbol} ({reason})")
             del self.active_positions[self.symbol]
             
         except Exception as e:
-            logger.error(f"❌ Close error: {e}")
+            logger.error(f"# X Close error: {e}")
 
     def run(self):
         """Main trading loop"""
-        logger.info("🚀 Starting VIPER Trading Bot")
+        logger.info("# Rocket Starting VIPER Trading Bot")
         logger.info("=" * 60)
         
         self.is_running = True
@@ -195,12 +195,12 @@ class SimpleVIPERTrader:
                 if self.symbol not in self.active_positions:
                     signal = self.get_signal()
                     if signal:
-                        logger.info(f"🎯 Signal: {signal.upper()}")
+                        logger.info(f"# Target Signal: {signal.upper()}")
                         self.execute_trade(signal)
                         time.sleep(2)
                 
                 # Status
-                logger.info(f"📊 Active positions: {len(self.active_positions)}")
+                logger.info(f"# Chart Active positions: {len(self.active_positions)}")
                 
                 # Wait
                 logger.info("⏰ Waiting 30 seconds...")
@@ -214,16 +214,16 @@ class SimpleVIPERTrader:
                 logger.info("🔄 Closing all positions...")
                 self.close_position("SHUTDOWN")
             
-            logger.info("✅ Trading bot shutdown complete")
+            logger.info("# Check Trading bot shutdown complete")
 
 def main():
     """Main entry point"""
-    logger.info("🚀 VIPER TRADING BOT STARTING...")
+    logger.info("# Rocket VIPER TRADING BOT STARTING...")
     
     trader = SimpleVIPERTrader()
     
     if not trader.connect():
-        logger.error("❌ Failed to connect")
+        logger.error("# X Failed to connect")
         return
     
     logger.info("⏳ Starting in 3 seconds...")
@@ -234,9 +234,9 @@ def main():
     except KeyboardInterrupt:
         logger.info("🛑 Cancelled by user")
     except Exception as e:
-        logger.error(f"❌ Error: {e}")
+        logger.error(f"# X Error: {e}")
     
-    logger.info("✅ Bot shutdown complete")
+    logger.info("# Check Bot shutdown complete")
 
 if __name__ == "__main__":
     main()

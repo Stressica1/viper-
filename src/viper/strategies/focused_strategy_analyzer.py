@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-🚀 FOCUSED STRATEGY ANALYSIS & RESULTS DISPLAY
+# Rocket FOCUSED STRATEGY ANALYSIS & RESULTS DISPLAY
 Simple, reliable backtesting focused on lower timeframes with clear results display
 
 This provides exactly what the user requested:
-✅ Thorough backtesting of strategies for lower timeframes (30min and under)
-✅ Pick the best strategy for each timeframe
-✅ Improved display of results
-✅ Clear recommendations for live trading
+# Check Thorough backtesting of strategies for lower timeframes (30min and under)
+# Check Pick the best strategy for each timeframe
+# Check Improved display of results
+# Check Clear recommendations for live trading
 """
 
 import asyncio
@@ -66,7 +66,7 @@ class FocusedStrategyAnalyzer:
         ]
         self.results = []
         
-        console.print("🚀 Focused Strategy Analyzer initialized")
+        console.print("# Rocket Focused Strategy Analyzer initialized")
     
     def generate_realistic_data(self, symbol: str, timeframe: str, days: int = 90) -> pd.DataFrame:
         """Generate realistic sample data for backtesting"""
@@ -244,9 +244,9 @@ class FocusedStrategyAnalyzer:
     async def run_comprehensive_analysis(self) -> Dict[str, Any]:
         """Run comprehensive strategy analysis"""
         
-        console.print("\n🚀 [bold blue]COMPREHENSIVE STRATEGY BACKTESTING STARTED[/bold blue]")
-        console.print("🎯 [yellow]Focus: Lower Timeframes (30min and under)[/yellow]")
-        console.print(f"📊 Testing {len(self.strategies)} strategies × {len(self.timeframes)} timeframes × {len(self.symbols)} symbols")
+        console.print("\n# Rocket [bold blue]COMPREHENSIVE STRATEGY BACKTESTING STARTED[/bold blue]")
+        console.print("# Target [yellow]Focus: Lower Timeframes (30min and under)[/yellow]")
+        console.print(f"# Chart Testing {len(self.strategies)} strategies × {len(self.timeframes)} timeframes × {len(self.symbols)} symbols")
         
         total_tests = len(self.strategies) * len(self.timeframes) * len(self.symbols)
         
@@ -282,14 +282,14 @@ class FocusedStrategyAnalyzer:
         # Analyze results
         analysis = self.analyze_results()
         
-        console.print(f"\n✅ [bold green]Backtesting completed! Analyzed {len(self.results)} results[/bold green]")
+        console.print(f"\n# Check [bold green]Backtesting completed! Analyzed {len(self.results)} results[/bold green]")
         
         return analysis
     
     def analyze_results(self) -> Dict[str, Any]:
         """Analyze results and find best strategies"""
         
-        console.print("\n📊 [bold blue]ANALYZING RESULTS AND RANKING STRATEGIES[/bold blue]")
+        console.print("\n# Chart [bold blue]ANALYZING RESULTS AND RANKING STRATEGIES[/bold blue]")
         
         # Group by strategy and timeframe
         strategy_performance = {}
@@ -403,7 +403,7 @@ class FocusedStrategyAnalyzer:
         console.print(table)
         
         # Best strategies by timeframe
-        console.print("\n🎯 [bold green]BEST STRATEGIES BY TIMEFRAME[/bold green]")
+        console.print("\n# Target [bold green]BEST STRATEGIES BY TIMEFRAME[/bold green]")
         
         best_by_tf = analysis['best_by_timeframe']
         
@@ -414,9 +414,9 @@ class FocusedStrategyAnalyzer:
                 strategy_text = Text()
                 strategy_text.append(f"⏰ {tf} TIMEFRAME: ", style="bold yellow")
                 strategy_text.append(f"{best['strategy']}\n", style="bold cyan")
-                strategy_text.append(f"   📊 Score: {best['composite_score']:.3f} | ", style="dim")
+                strategy_text.append(f"   # Chart Score: {best['composite_score']:.3f} | ", style="dim")
                 strategy_text.append(f"📈 Return: {best['avg_return']:.2%} | ", style="blue")
-                strategy_text.append(f"🎯 Win Rate: {best['avg_win_rate']:.1%}\n", style="green")
+                strategy_text.append(f"# Target Win Rate: {best['avg_win_rate']:.1%}\n", style="green")
                 strategy_text.append(f"   📉 Max DD: {best['avg_drawdown']:.2%} | ", style="red")
                 strategy_text.append(f"⚡ Sharpe: {best['avg_sharpe']:.2f} | ", style="magenta")
                 strategy_text.append(f"🔄 Trades: {best['total_trades']}", style="dim")
@@ -426,7 +426,7 @@ class FocusedStrategyAnalyzer:
         # Overall recommendation
         overall_best = analysis['overall_best']
         if overall_best:
-            console.print("\n🚀 [bold magenta]OVERALL BEST RECOMMENDATION[/bold magenta]")
+            console.print("\n# Rocket [bold magenta]OVERALL BEST RECOMMENDATION[/bold magenta]")
             
             rec_text = Text()
             rec_text.append("🏆 CHAMPION STRATEGY\n\n", style="bold gold1")
@@ -434,7 +434,7 @@ class FocusedStrategyAnalyzer:
             rec_text.append(f"Timeframe: {overall_best['timeframe']}\n", style="bold yellow")
             rec_text.append(f"Composite Score: {overall_best['composite_score']:.3f}\n\n", style="bold green")
             
-            rec_text.append("📊 PERFORMANCE METRICS:\n", style="bold blue")
+            rec_text.append("# Chart PERFORMANCE METRICS:\n", style="bold blue")
             rec_text.append(f"• Average Return: {overall_best['avg_return']:.2%}\n", style="blue")
             rec_text.append(f"• Win Rate: {overall_best['avg_win_rate']:.1%}\n", style="green")
             rec_text.append(f"• Max Drawdown: {overall_best['avg_drawdown']:.2%}\n", style="red")
@@ -442,7 +442,7 @@ class FocusedStrategyAnalyzer:
             rec_text.append(f"• Risk:Reward: {overall_best['avg_risk_reward']:.2f}\n", style="cyan")
             rec_text.append(f"• Total Trades: {overall_best['total_trades']}\n\n", style="dim")
             
-            rec_text.append("🚀 READY FOR LIVE DEPLOYMENT!", style="bold green blink")
+            rec_text.append("# Rocket READY FOR LIVE DEPLOYMENT!", style="bold green blink")
             
             console.print(Panel(rec_text, title="🏆 CHAMPION STRATEGY", border_style="gold1"))
 
@@ -474,7 +474,7 @@ async def main():
         
     except Exception as e:
         logger.error(f"Error in analysis: {e}")
-        console.print(f"❌ [bold red]Analysis failed: {e}[/bold red]")
+        console.print(f"# X [bold red]Analysis failed: {e}[/bold red]")
         return None
 
 if __name__ == "__main__":

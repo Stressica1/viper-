@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Score & Scan Functions Optimizer
+# Rocket VIPER Score & Scan Functions Optimizer
 Comprehensive performance optimization for scoring and scanning operations
 
 Optimization Targets:
@@ -274,7 +274,7 @@ class OptimizedScanningEngine:
         # Determine optimal batch size based on pair count
         optimal_batch_size = min(self.batch_size, max(10, total_pairs // self.max_workers))
         
-        logger.info(f"🚀 Scanning {total_pairs} pairs with {optimal_batch_size} batch size")
+        logger.info(f"# Rocket Scanning {total_pairs} pairs with {optimal_batch_size} batch size")
         
         # Process in batches
         for i in range(0, total_pairs, optimal_batch_size):
@@ -488,7 +488,7 @@ class ScoreScanOptimizer:
         
     def run_baseline_benchmark(self, test_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Run baseline performance benchmark"""
-        logger.info("🔍 Running baseline performance benchmark...")
+        logger.info("# Search Running baseline performance benchmark...")
         
         # Baseline scoring
         start_time = time.time()
@@ -508,12 +508,12 @@ class ScoreScanOptimizer:
             'memory_usage': self.memory_optimizer.get_memory_usage()
         }
         
-        logger.info(f"✅ Baseline benchmark completed: {self.baseline_metrics['total_time']:.3f}s")
+        logger.info(f"# Check Baseline benchmark completed: {self.baseline_metrics['total_time']:.3f}s")
         return self.baseline_metrics
     
     def run_optimized_benchmark(self, test_data: List[Dict[str, Any]]) -> Dict[str, Any]:
         """Run optimized performance benchmark"""
-        logger.info("🚀 Running optimized performance benchmark...")
+        logger.info("# Rocket Running optimized performance benchmark...")
         
         # Optimized scoring
         start_time = time.time()
@@ -533,7 +533,7 @@ class ScoreScanOptimizer:
             'memory_usage': self.memory_optimizer.get_memory_usage()
         }
         
-        logger.info(f"✅ Optimized benchmark completed: {self.optimized_metrics['total_time']:.3f}s")
+        logger.info(f"# Check Optimized benchmark completed: {self.optimized_metrics['total_time']:.3f}s")
         return self.optimized_metrics
     
     def _baseline_scoring(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -627,18 +627,18 @@ class ScoreScanOptimizer:
         recommendations = []
         
         if self.optimized_metrics['scoring_time'] < self.baseline_metrics['scoring_time']:
-            recommendations.append("✅ Vectorized scoring provides significant performance improvement")
+            recommendations.append("# Check Vectorized scoring provides significant performance improvement")
         
         if self.optimized_metrics['scanning_time'] < self.baseline_metrics['scanning_time']:
-            recommendations.append("✅ Parallel scanning with batching improves throughput")
+            recommendations.append("# Check Parallel scanning with batching improves throughput")
         
         if self.optimized_metrics['memory_usage']['rss'] < self.baseline_metrics['memory_usage']['rss']:
-            recommendations.append("✅ Memory optimization reduces resource usage")
+            recommendations.append("# Check Memory optimization reduces resource usage")
         
         recommendations.extend([
-            "🔧 Implement caching for frequently accessed data",
-            "🚀 Use async/await for I/O operations",
-            "📊 Monitor performance metrics in production",
+            "# Tool Implement caching for frequently accessed data",
+            "# Rocket Use async/await for I/O operations",
+            "# Chart Monitor performance metrics in production",
             "🔄 Regular performance profiling and optimization"
         ])
         
@@ -657,7 +657,7 @@ class ScoreScanOptimizer:
 
 def main():
     """Main optimization runner"""
-    logger.info("🚀 Starting VIPER Score & Scan Functions Optimization...")
+    logger.info("# Rocket Starting VIPER Score & Scan Functions Optimization...")
     
     # Create optimizer
     optimizer = ScoreScanOptimizer()
@@ -688,12 +688,12 @@ def main():
     report = optimizer.generate_optimization_report()
     
     # Print results
-    logger.info("📊 OPTIMIZATION RESULTS:")
+    logger.info("# Chart OPTIMIZATION RESULTS:")
     logger.info(f"Baseline Total Time: {baseline_results['total_time']:.3f}s")
     logger.info(f"Optimized Total Time: {optimized_results['total_time']:.3f}s")
     logger.info(f"Total Improvement: {report['improvements']['total_time']}")
     
-    logger.info("\n🎯 RECOMMENDATIONS:")
+    logger.info("\n# Target RECOMMENDATIONS:")
     for rec in report['recommendations']:
         logger.info(f"  {rec}")
     
@@ -709,7 +709,7 @@ def main():
         json.dump(report, f, indent=2, default=str)
     
     logger.info(f"📄 Detailed report saved to: {report_file}")
-    logger.info("✅ Optimization analysis completed!")
+    logger.info("# Check Optimization analysis completed!")
 
 if __name__ == "__main__":
     main()

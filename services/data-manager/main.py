@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Data Manager Service
+# Rocket VIPER Trading Bot - Data Manager Service
 Market data synchronization, caching, and persistence layer
 
 Features:
@@ -93,30 +93,30 @@ class DataManager:
                 if market['quote'] == 'USDT' and market['active']:
                     usdt_pairs.append(symbol)
 
-            logger.info(f"📊 Data Manager monitoring {len(usdt_pairs)} USDT trading pairs")
+            logger.info(f"# Chart Data Manager monitoring {len(usdt_pairs)} USDT trading pairs")
 
             # Limit to top 200 pairs for performance (can be adjusted)
             if len(usdt_pairs) > 200:
-                logger.info(f"📊 Limiting to top 200 pairs (found {len(usdt_pairs)} total)")
+                logger.info(f"# Chart Limiting to top 200 pairs (found {len(usdt_pairs)} total)")
                 usdt_pairs = usdt_pairs[:200]
 
             return sorted(usdt_pairs)
 
         except Exception as e:
-            logger.warning(f"❌ Error fetching trading pairs: {e}, using fallback")
+            logger.warning(f"# X Error fetching trading pairs: {e}, using fallback")
             return ['BTC/USDT:USDT', 'ETH/USDT:USDT', 'BNB/USDT:USDT']  # Fallback
 
-        logger.info("🏗️ Initializing Data Manager...")
+        logger.info("# Construction Initializing Data Manager...")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def initialize_exchange(self) -> bool:
@@ -129,10 +129,10 @@ class DataManager:
                 },
             })
             self.exchange.load_markets()
-            logger.info("✅ Exchange connection established")
+            logger.info("# Check Exchange connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
+            logger.error(f"# X Failed to initialize exchange: {e}")
             return False
 
     def cache_key(self, symbol: str, timeframe: str = None, data_type: str = "ticker") -> str:
@@ -162,7 +162,7 @@ class DataManager:
                 return data
             return None
         except Exception as e:
-            logger.error(f"❌ Failed to fetch ticker for {symbol}: {e}")
+            logger.error(f"# X Failed to fetch ticker for {symbol}: {e}")
             return None
 
     def fetch_ohlcv_data(self, symbol: str, timeframe: str, limit: int = 100) -> Optional[List]:
@@ -183,7 +183,7 @@ class DataManager:
                 return formatted_data
             return None
         except Exception as e:
-            logger.error(f"❌ Failed to fetch OHLCV for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Failed to fetch OHLCV for {symbol} {timeframe}: {e}")
             return None
 
     def update_ticker_cache(self, symbol: str) -> bool:
@@ -198,11 +198,11 @@ class DataManager:
                 # Cache metadata for monitoring
                 self._update_cache_metadata(cache_key, 'ticker', ttl)
 
-                logger.debug(f"📊 Updated ticker cache for {symbol} (TTL: {ttl}s)")
+                logger.debug(f"# Chart Updated ticker cache for {symbol} (TTL: {ttl}s)")
                 return True
             return False
         except Exception as e:
-            logger.error(f"❌ Failed to update ticker cache for {symbol}: {e}")
+            logger.error(f"# X Failed to update ticker cache for {symbol}: {e}")
             return False
 
     def update_ohlcv_cache(self, symbol: str, timeframe: str) -> bool:
@@ -221,11 +221,11 @@ class DataManager:
                 # Cache metadata for monitoring
                 self._update_cache_metadata(cache_key, f'ohlcv_{timeframe}', ttl)
 
-                logger.debug(f"📊 Updated OHLCV cache for {symbol} {timeframe} (TTL: {ttl}s)")
+                logger.debug(f"# Chart Updated OHLCV cache for {symbol} {timeframe} (TTL: {ttl}s)")
                 return True
             return False
         except Exception as e:
-            logger.error(f"❌ Failed to update OHLCV cache for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Failed to update OHLCV cache for {symbol} {timeframe}: {e}")
             return False
 
     def get_cached_data(self, cache_key: str) -> Optional[Any]:
@@ -241,7 +241,7 @@ class DataManager:
                 self._increment_cache_metric('misses')
                 return None
         except Exception as e:
-            logger.error(f"❌ Failed to get cached data for key {cache_key}: {e}")
+            logger.error(f"# X Failed to get cached data for key {cache_key}: {e}")
             self._increment_cache_metric('errors')
             return None
 
@@ -315,10 +315,10 @@ class DataManager:
                     self.update_ohlcv_cache(symbol, timeframe)
                     logger.debug(f"🔥 Warmed up OHLCV cache for {symbol} {timeframe}")
 
-            logger.info("✅ Cache warmup completed successfully")
+            logger.info("# Check Cache warmup completed successfully")
 
         except Exception as e:
-            logger.error(f"❌ Cache warmup failed: {e}")
+            logger.error(f"# X Cache warmup failed: {e}")
 
     def cleanup_expired_cache(self):
         """Clean up expired cache entries and optimize memory"""
@@ -342,14 +342,14 @@ class DataManager:
             # Log memory usage
             info = self.redis_client.info('memory')
             used_memory = info.get('used_memory_human', 'unknown')
-            logger.debug(f"📊 Redis memory usage: {used_memory}")
+            logger.debug(f"# Chart Redis memory usage: {used_memory}")
 
         except Exception as e:
-            logger.error(f"❌ Cache cleanup failed: {e}")
+            logger.error(f"# X Cache cleanup failed: {e}")
 
     def start_data_collection(self):
         """Start the data collection loop with cache optimization"""
-        logger.info("🚀 Starting optimized data collection loop...")
+        logger.info("# Rocket Starting optimized data collection loop...")
         self.is_running = True
 
         # Initial cache warmup
@@ -365,7 +365,7 @@ class DataManager:
         # Schedule periodic cache warmup (every hour)
         schedule.every(3600).seconds.do(self.warmup_cache)
 
-        logger.info("📊 Cache optimization enabled:")
+        logger.info("# Chart Cache optimization enabled:")
         logger.info(f"   • Cache warmup: Every 1 hour")
         logger.info(f"   • Cache cleanup: Every {self.cache_cleanup_interval}s")
         logger.info(f"   • Update interval: {self.update_interval}s")
@@ -376,13 +376,13 @@ class DataManager:
 
     def update_all_tickers(self):
         """Update all ticker data"""
-        logger.info("📊 Updating all ticker data...")
+        logger.info("# Chart Updating all ticker data...")
         for symbol in self.symbols:
             self.update_ticker_cache(symbol)
 
     def update_all_data(self):
         """Update all market data"""
-        logger.info("📊 Updating all market data...")
+        logger.info("# Chart Updating all market data...")
         for symbol in self.symbols:
             for timeframe in self.timeframes:
                 self.update_ohlcv_cache(symbol, timeframe)
@@ -405,17 +405,17 @@ data_manager = DataManager()
 async def startup_event():
     """Initialize services on startup"""
     if not data_manager.initialize_redis():
-        logger.error("❌ Failed to initialize Redis. Exiting...")
+        logger.error("# X Failed to initialize Redis. Exiting...")
         return
 
     if not data_manager.initialize_exchange():
-        logger.error("❌ Failed to initialize exchange. Exiting...")
+        logger.error("# X Failed to initialize exchange. Exiting...")
         return
 
     # Start data collection in background thread
     thread = threading.Thread(target=data_manager.start_data_collection, daemon=True)
     thread.start()
-    logger.info("✅ Data Manager started successfully")
+    logger.info("# Check Data Manager started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():

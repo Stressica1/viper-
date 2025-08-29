@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 VIPER System Setup Validator
+# Tool VIPER System Setup Validator
 Ensures all components are properly connected and aware of the new repository structure
 """
 
@@ -25,10 +25,10 @@ try:
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
-    def display_error(msg, details=None): print(f"❌ {msg}")
-    def display_success(msg, details=None): print(f"✅ {msg}")
-    def display_warning(msg, details=None): print(f"⚠️ {msg}")
-    def print_banner(): print("🔧 VIPER System Setup Validator")
+    def display_error(msg, details=None): print(f"# X {msg}")
+    def display_success(msg, details=None): print(f"# Check {msg}")
+    def display_warning(msg, details=None): print(f"# Warning {msg}")
+    def print_banner(): print("# Tool VIPER System Setup Validator")
     def display_config(config): print("Config:", config)
     def display_repo_structure(path): print(f"Repository at: {path}")
 
@@ -258,7 +258,7 @@ class ViperSetupValidator:
         """Run complete system validation"""
         if ENHANCED_DISPLAY:
             print_banner()
-            terminal.console.rule("[bold blue]🔧 System Validation Starting[/]")
+            terminal.console.rule("[bold blue]# Tool System Validation Starting[/]")
         else:
         
         # Run all validation checks

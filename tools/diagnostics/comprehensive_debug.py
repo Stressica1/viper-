@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 COMPREHENSIVE VIPER TRADING SYSTEM DEBUGGER
+# Rocket COMPREHENSIVE VIPER TRADING SYSTEM DEBUGGER
 Find and fix all issues in the trading flow
 
 This debugger will:
@@ -69,7 +69,7 @@ class ComprehensiveDebugger:
             self.generate_debug_report()
 
         except Exception as e:
-            logger.error(f"❌ Comprehensive debug failed: {e}")
+            logger.error(f"# X Comprehensive debug failed: {e}")
 
     def debug_environment_setup(self):
         """Debug environment setup and dependencies"""
@@ -102,7 +102,7 @@ class ComprehensiveDebugger:
 
         for env_var in required_env_vars:
             if os.getenv(env_var):
-                print(f"✅ {env_var}: Present")
+                print(f"# Check {env_var}: Present")
                 self.fixes_applied.append(f"Environment variable {env_var} loaded")
             else:
                 self.issues_found.append({
@@ -132,10 +132,15 @@ class ComprehensiveDebugger:
                         with open(file_path, 'r') as f:
                             content = f.read()
                             if 'BITGET_API_KEY=' in content:
+                                print(f"   # Check API credentials found in {file_path}")
+                                self.fixes_applied.append(f"API credentials found in {file_path}")
                             else:
+                                print(f"   # Warning No API credentials in {file_path}")
                     except Exception as e:
+                        print(f"   # X Error reading {file_path}: {e}")
 
             else:
+                print("   # Warning No .env file found")
                 self.issues_found.append({
                     'type': 'configuration',
                     'component': config_file,
@@ -161,7 +166,7 @@ class ComprehensiveDebugger:
             full_path = self.project_root / file_path
 
             if not full_path.exists():
-                print(f"❌ {class_name}: FILE MISSING ({file_path})")
+                print(f"# X {class_name}: FILE MISSING ({file_path})")
                 self.issues_found.append({
                     'type': 'component',
                     'component': class_name,
@@ -189,7 +194,7 @@ class ComprehensiveDebugger:
                 except Exception as import_error:
 
             except SyntaxError as syntax_error:
-                print(f"❌ {class_name}: SYNTAX ERROR - {syntax_error}")
+                print(f"# X {class_name}: SYNTAX ERROR - {syntax_error}")
                 self.issues_found.append({
                     'type': 'syntax',
                     'component': class_name,
@@ -412,7 +417,7 @@ class ComprehensiveDebugger:
         async_issues = self.check_async_sync_issues()
 
         if async_issues:
-            print(f"⚠️  Found {len(async_issues)} potential async/sync issues:")
+            print(f"# Warning  Found {len(async_issues)} potential async/sync issues:")
             for issue in async_issues:
                 print(f"   • {issue['component']}: {issue['issue']}")
         else:
@@ -478,11 +483,11 @@ class ComprehensiveDebugger:
 
         # Overall assessment
         if report['system_status'] == 'HEALTHY':
-            print("\n✅ SYSTEM STATUS: READY FOR LIVE TRADING")
+            print("\n# Check SYSTEM STATUS: READY FOR LIVE TRADING")
         elif report['system_status'] == 'WARNING':
-            print("\n⚠️  SYSTEM STATUS: READY WITH MINOR ISSUES")
+            print("\n# Warning  SYSTEM STATUS: READY WITH MINOR ISSUES")
         else:
-            print("\n❌ SYSTEM STATUS: CRITICAL ISSUES DETECTED")
+            print("\n# X SYSTEM STATUS: CRITICAL ISSUES DETECTED")
 
 def main():
     """Main debug function"""

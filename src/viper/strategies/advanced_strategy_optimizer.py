@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-🚀 ADVANCED STRATEGY OPTIMIZER - COMPREHENSIVE TP/SL & PARAMETER OPTIMIZATION
+# Rocket ADVANCED STRATEGY OPTIMIZER - COMPREHENSIVE TP/SL & PARAMETER OPTIMIZATION
 Addresses user feedback: "45% WIN RATE IS A JOKE" 
 
 This optimizer provides:
-✅ Comprehensive TP/SL ratio testing (1:1 to 1:5 risk-reward)
-✅ Technical indicator parameter sweeps (lengths, multipliers)
-✅ Multi-objective optimization targeting 55%+ win rates
-✅ Advanced parameter combinations testing
-✅ Real-time optimization progress with results
-✅ Automated best configuration selection
-✅ Detailed performance improvement comparisons
+# Check Comprehensive TP/SL ratio testing (1:1 to 1:5 risk-reward)
+# Check Technical indicator parameter sweeps (lengths, multipliers)
+# Check Multi-objective optimization targeting 55%+ win rates
+# Check Advanced parameter combinations testing
+# Check Real-time optimization progress with results
+# Check Automated best configuration selection
+# Check Detailed performance improvement comparisons
 
 Target: Achieve 55%+ win rates with optimized TP/SL and technical parameters
 """
@@ -101,7 +101,7 @@ class AdvancedStrategyOptimizer:
         self.symbols = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'SOLUSDT', 'DOTUSDT']
         self.backtest_days = 90
         
-        logger.info("🚀 Advanced Strategy Optimizer initialized - targeting 55%+ win rates")
+        logger.info("# Rocket Advanced Strategy Optimizer initialized - targeting 55%+ win rates")
     
     def _initialize_strategy_templates(self) -> Dict[str, Dict[str, Any]]:
         """Initialize strategy templates for optimization"""

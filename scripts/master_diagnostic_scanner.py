@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MASTER DIAGNOSTIC SCANNER
+# Rocket VIPER MASTER DIAGNOSTIC SCANNER
 Comprehensive system scanner using optimal MCP server configurations
 and enhanced mathematical validation
 
@@ -98,14 +98,14 @@ class MasterDiagnosticScanner:
     
     def run_comprehensive_scan(self) -> Dict[str, Any]:
         """Run the complete comprehensive system scan"""
-        print("║" + " 🚀 VIPER MASTER DIAGNOSTIC SCANNER - COMPREHENSIVE ANALYSIS ".center(78) + "║")
-        print("║" + " 🔍 Full System Scan | 🧮 Math Validation | 📊 Workflow Analysis ".center(78) + "║")
-        print("║" + " ⚡ Optimal MCP Config | 🎯 Entry Point Analysis | 📈 Performance ".center(78) + "║")
+        print("#" + " # Rocket VIPER MASTER DIAGNOSTIC SCANNER - COMPREHENSIVE ANALYSIS ".center(78) + "#")
+        print("#" + " # Search Full System Scan | 🧮 Math Validation | # Chart Workflow Analysis ".center(78) + "#")
+        print("#" + " ⚡ Optimal MCP Config | # Target Entry Point Analysis | 📈 Performance ".center(78) + "#")
         
         start_time = time.time()
         
         # Phase 1: System Services Diagnostic
-        print("📊 PHASE 1: COMPREHENSIVE SYSTEM SERVICES DIAGNOSTIC")
+        print("# Chart PHASE 1: COMPREHENSIVE SYSTEM SERVICES DIAGNOSTIC")
         self.scan_system_services()
         
         # Phase 2: MCP Server Optimization Analysis
@@ -121,7 +121,7 @@ class MasterDiagnosticScanner:
         self.analyze_workflows()
         
         # Phase 5: Entry Point Optimization Analysis
-        print("\n🎯 PHASE 5: ENTRY POINT OPTIMIZATION ANALYSIS")
+        print("\n# Target PHASE 5: ENTRY POINT OPTIMIZATION ANALYSIS")
         self.analyze_entry_points()
         
         # Phase 6: Performance Metrics Collection
@@ -129,7 +129,7 @@ class MasterDiagnosticScanner:
         self.collect_performance_metrics()
         
         # Phase 7: Generate Recommendations
-        print("\n💡 PHASE 7: GENERATING ACTIONABLE RECOMMENDATIONS")
+        print("\n# Idea PHASE 7: GENERATING ACTIONABLE RECOMMENDATIONS")
         self.generate_recommendations()
         
         # Finalize results
@@ -165,7 +165,7 @@ class MasterDiagnosticScanner:
                 if config['critical']:
                     self.scan_results['critical_issues'].append(f"Critical service {service_name} is DOWN")
         
-        print(f"📊 Services Summary: {services_scanned} scanned, {services_healthy} healthy, {services_degraded} degraded, {services_down} down")
+        print(f"# Chart Services Summary: {services_scanned} scanned, {services_healthy} healthy, {services_degraded} degraded, {services_down} down")
     
     def diagnose_service_advanced(self, service_name: str, config: Dict[str, Any]) -> Dict[str, Any]:
         """Advanced service diagnostics with optimal configurations"""
@@ -308,28 +308,28 @@ class MasterDiagnosticScanner:
         }
         
         self.scan_results['mcp_optimization'] = mcp_analysis
-        print(f"✅ MCP Optimization Score: {mcp_analysis['optimization_score']}/100")
+        print(f"# Check MCP Optimization Score: {mcp_analysis['optimization_score']}/100")
     
     def analyze_mcp_file_content(self, content: str, filename: str, analysis: Dict[str, Any]):
         """Analyze MCP file content for optimization opportunities"""
         
         # Check for async/await usage
         if 'async def' in content:
-            analysis['recommendations'].append(f"✅ {filename}: Good use of async operations")
+            analysis['recommendations'].append(f"# Check {filename}: Good use of async operations")
         else:
-            analysis['recommendations'].append(f"⚠️ {filename}: Consider using async operations for better performance")
+            analysis['recommendations'].append(f"# Warning {filename}: Consider using async operations for better performance")
         
         # Check for error handling
         if 'try:' in content and 'except' in content:
-            analysis['recommendations'].append(f"✅ {filename}: Error handling implemented")
+            analysis['recommendations'].append(f"# Check {filename}: Error handling implemented")
         else:
-            analysis['recommendations'].append(f"❌ {filename}: Missing comprehensive error handling")
+            analysis['recommendations'].append(f"# X {filename}: Missing comprehensive error handling")
         
         # Check for timeout configurations
         if 'timeout' in content:
-            analysis['recommendations'].append(f"✅ {filename}: Timeout configurations found")
+            analysis['recommendations'].append(f"# Check {filename}: Timeout configurations found")
         else:
-            analysis['recommendations'].append(f"⚠️ {filename}: Consider adding timeout configurations")
+            analysis['recommendations'].append(f"# Warning {filename}: Consider adding timeout configurations")
     
     def validate_mathematical_components(self):
         """Validate mathematical calculations in trading components"""
@@ -369,7 +369,7 @@ class MasterDiagnosticScanner:
                 math_validation['validation_score'] += result.get('quality_score', 0)
         
         self.scan_results['mathematical_validation'] = math_validation
-        print(f"✅ Mathematical Validation Score: {math_validation['validation_score']}/100")
+        print(f"# Check Mathematical Validation Score: {math_validation['validation_score']}/100")
     
     def validate_math_file(self, file_path: Path) -> Dict[str, Any]:
         """Validate mathematical formulas in a single file"""
@@ -407,9 +407,9 @@ class MasterDiagnosticScanner:
             for practice, found in good_practices:
                 if found:
                     validation['quality_score'] += 4
-                    validation['optimizations'].append(f"✅ Good practice: {practice}")
+                    validation['optimizations'].append(f"# Check Good practice: {practice}")
                 else:
-                    validation['issues'].append(f"⚠️ Consider adding: {practice}")
+                    validation['issues'].append(f"# Warning Consider adding: {practice}")
             
         except Exception as e:
             validation['issues'].append(f"Error reading file: {e}")
@@ -470,7 +470,7 @@ class MasterDiagnosticScanner:
         self.validate_github_workflow(workflow_analysis)
         
         self.scan_results['workflows'] = workflow_analysis
-        print(f"✅ Workflows Analyzed: {workflow_analysis['workflows_analyzed']}")
+        print(f"# Check Workflows Analyzed: {workflow_analysis['workflows_analyzed']}")
     
     def analyze_workflow_file(self, file_path: Path) -> Dict[str, Any]:
         """Analyze individual workflow file"""
@@ -557,12 +557,12 @@ class MasterDiagnosticScanner:
             for check_name, check_keyword in essential_checks:
                 # This is a simplified check - in practice you'd parse YAML properly
                 workflow_analysis['optimization_recommendations'].append(
-                    f"GitHub workflow includes {check_name}: {'✅' if check_keyword.lower() in str(github_workflow).lower() else '❌'}"
+                    f"GitHub workflow includes {check_name}: {'# Check' if check_keyword.lower() in str(github_workflow).lower() else '# X'}"
                 )
     
     def analyze_entry_points(self):
         """Analyze entry point configurations for optimization"""
-        print("🎯 Analyzing Entry Point Configurations...")
+        print("# Target Analyzing Entry Point Configurations...")
         
         entry_analysis = {
             'entry_files_found': [],
@@ -597,7 +597,7 @@ class MasterDiagnosticScanner:
         self.generate_entry_point_recommendations(entry_analysis)
         
         self.scan_results['entry_point_analysis'] = entry_analysis
-        print(f"✅ Entry Points Found: {len(entry_analysis['entry_files_found'])}")
+        print(f"# Check Entry Points Found: {len(entry_analysis['entry_files_found'])}")
     
     def analyze_entry_point_file(self, file_path: Path) -> Dict[str, Any]:
         """Analyze individual entry point file"""
@@ -702,7 +702,7 @@ class MasterDiagnosticScanner:
             metrics['recommendations'].append("Low disk space - clean up old logs and temporary files")
         
         self.scan_results['performance_metrics'] = metrics
-        print(f"📊 CPU: {metrics['system_resources']['cpu_percent']}%, Memory: {metrics['system_resources']['memory_percent']}%")
+        print(f"# Chart CPU: {metrics['system_resources']['cpu_percent']}%, Memory: {metrics['system_resources']['memory_percent']}%")
     
     def generate_recommendations(self):
         """Generate comprehensive actionable recommendations"""
@@ -717,9 +717,9 @@ class MasterDiagnosticScanner:
         
         # Service recommendations
         down_services = [name for name, service in self.scan_results['services'].items() 
-                        if service['status'] == 'DOWN']
+                        if service['status'] == 'DOWN']:
         if down_services:
-            recommendations.append("🔧 SERVICE RESTORATION:")
+            recommendations.append("# Tool SERVICE RESTORATION:")
             recommendations.append(f"   - Start these services: {', '.join(down_services)}")
             recommendations.append("   - Check Docker containers: docker-compose up -d")
             recommendations.append("")
@@ -741,7 +741,7 @@ class MasterDiagnosticScanner:
         # Entry point optimization
         entry_issues = self.scan_results['entry_point_analysis'].get('configuration_issues', [])
         if entry_issues:
-            recommendations.append("🎯 ENTRY POINT OPTIMIZATION:")
+            recommendations.append("# Target ENTRY POINT OPTIMIZATION:")
             recommendations.extend([f"   - {issue}" for issue in entry_issues[:3]])
             recommendations.append("")
         
@@ -761,11 +761,11 @@ class MasterDiagnosticScanner:
         
         # Count down services
         down_count = sum(1 for service in self.scan_results['services'].values() 
-                        if service['status'] == 'DOWN')
+                        if service['status'] == 'DOWN'):
         
         # Check critical services
         critical_services = [name for name, service in self.scan_results['services'].items() 
-                           if service.get('critical', False) and service['status'] == 'DOWN']
+                           if service.get('critical', False) and service['status'] == 'DOWN']:
         
         if len(critical_services) > 2:
             return 'SYSTEM_CRITICAL'
@@ -795,10 +795,10 @@ class MasterDiagnosticScanner:
         
         # Overall status
         status_icon = {
-            'OPERATIONAL': '✅',
-            'PARTIAL_OPERATION': '⚠️',
+            'OPERATIONAL': '# Check',
+            'PARTIAL_OPERATION': '# Warning',
             'NEEDS_ATTENTION': '🔶',
-            'DEGRADED': '❌',
+            'DEGRADED': '# X',
             'SYSTEM_CRITICAL': '🚨'
         }.get(self.scan_results['system_status'], '❓')
         
@@ -818,7 +818,7 @@ class MasterDiagnosticScanner:
         entry_score = self.scan_results['entry_point_analysis'].get('best_practices_score', 0)
         
         print(f"   🧮 Mathematical Validation: {math_score}/100")
-        print(f"   🎯 Entry Point Quality: {entry_score}/100")
+        print(f"   # Target Entry Point Quality: {entry_score}/100")
         
         # Top recommendations
         recommendations = self.scan_results['recommendations']

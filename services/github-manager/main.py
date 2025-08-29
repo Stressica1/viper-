@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - GitHub Project Management MCP Server
+# Rocket VIPER Trading Bot - GitHub Project Management MCP Server
 Dedicated MCP server for GitHub task management and project operations
 """
 

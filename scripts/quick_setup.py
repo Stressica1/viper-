@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Quick Setup Script
+# Rocket VIPER Quick Setup Script
 Automated setup script for AI to quickly configure the VIPER trading bot
 """
 
@@ -23,10 +23,10 @@ try:
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
-    def display_error(msg, details=None): print(f"❌ {msg}")
-    def display_success(msg, details=None): print(f"✅ {msg}")
-    def display_warning(msg, details=None): print(f"⚠️ {msg}")
-    def print_banner(): print("🚀 VIPER Quick Setup")
+    def display_error(msg, details=None): print(f"# X {msg}")
+    def display_success(msg, details=None): print(f"# Check {msg}")
+    def display_warning(msg, details=None): print(f"# Warning {msg}")
+    def print_banner(): print("# Rocket VIPER Quick Setup")
     def show_progress(tasks, title): print(f"{title}: {', '.join(tasks)}")
 
 def run_command(cmd, description, check=True):
@@ -164,7 +164,7 @@ def main():
     """Main setup function"""
     if ENHANCED_DISPLAY:
         print_banner()
-        terminal.console.rule("[bold blue]🚀 Automated VIPER Setup Starting[/]")
+        terminal.console.rule("[bold blue]# Rocket Automated VIPER Setup Starting[/]")
     else:
     
     setup_steps = [
@@ -175,7 +175,7 @@ def main():
     ]
     
     if ENHANCED_DISPLAY:
-        show_progress([step[0] for step in setup_steps], "🔧 Setup Steps")
+        show_progress([step[0] for step in setup_steps], "# Tool Setup Steps")
     
     success_count = 0
     
@@ -197,7 +197,7 @@ def main():
         display_success("You can now run the trading system!")
         
         if ENHANCED_DISPLAY:
-            terminal.console.print("\n[bold green]🎯 Next Steps:[/]")
+            terminal.console.print("\n[bold green]# Target Next Steps:[/]")
             terminal.console.print("1. Edit .env file with your API credentials")
             terminal.console.print("2. Run: python tools/setup_validator.py")
             terminal.console.print("3. Start system: python scripts/start_live_trading_mandatory.py")
@@ -210,7 +210,7 @@ def main():
                        "Review the messages above and fix any problems")
         
         if ENHANCED_DISPLAY:
-            terminal.console.print("\n[bold yellow]🔧 Troubleshooting:[/]")
+            terminal.console.print("\n[bold yellow]# Tool Troubleshooting:[/]")
             terminal.console.print("• Check the AI Setup Guide: docs/AI_SETUP_GUIDE.md")
             terminal.console.print("• Run validator: python tools/setup_validator.py")
             terminal.console.print("• Check logs in logs/ directory")

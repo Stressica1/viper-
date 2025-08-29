@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 FIX TRADE EXECUTION, SCORING & TP/SL TASK
+# Tool FIX TRADE EXECUTION, SCORING & TP/SL TASK
 Comprehensive fix for the V2 trading system issues
 
 Current Issues:
@@ -45,7 +45,7 @@ class FixTradeExecutionTask:
 
     async def run_complete_fix(self) -> bool:
         """Run the complete fix task"""
-        logger.info("🔧 STARTING COMPLETE FIX TASK")
+        logger.info("# Tool STARTING COMPLETE FIX TASK")
         logger.info("=" * 80)
         logger.info(f"Task: {self.task_name}")
         logger.info(f"Start Time: {self.start_time}")
@@ -53,51 +53,51 @@ class FixTradeExecutionTask:
 
         try:
             # Phase 1: Fix OHLCV Data Fetching
-            logger.info("🔧 Phase 1: Fixing OHLCV Data Fetching...")
+            logger.info("# Tool Phase 1: Fixing OHLCV Data Fetching...")
             if await self.fix_ohlcv_fetching():
-                logger.info("✅ Phase 1: OHLCV fetching fixed")
+                logger.info("# Check Phase 1: OHLCV fetching fixed")
             else:
-                logger.error("❌ Phase 1: OHLCV fetching failed")
+                logger.error("# X Phase 1: OHLCV fetching failed")
 
             # Phase 2: Fix Trade Execution
-            logger.info("🔧 Phase 2: Fixing Trade Execution...")
+            logger.info("# Tool Phase 2: Fixing Trade Execution...")
             if await self.fix_trade_execution():
-                logger.info("✅ Phase 2: Trade execution fixed")
+                logger.info("# Check Phase 2: Trade execution fixed")
             else:
-                logger.error("❌ Phase 2: Trade execution failed")
+                logger.error("# X Phase 2: Trade execution failed")
 
             # Phase 3: Fix Scoring System
-            logger.info("🔧 Phase 3: Fixing Scoring System...")
+            logger.info("# Tool Phase 3: Fixing Scoring System...")
             if await self.fix_scoring_system():
-                logger.info("✅ Phase 3: Scoring system fixed")
+                logger.info("# Check Phase 3: Scoring system fixed")
             else:
-                logger.error("❌ Phase 3: Scoring system failed")
+                logger.error("# X Phase 3: Scoring system failed")
 
             # Phase 4: Fix TP/SL/TSL Implementation
-            logger.info("🔧 Phase 4: Fixing TP/SL/TSL Implementation...")
+            logger.info("# Tool Phase 4: Fixing TP/SL/TSL Implementation...")
             if await self.fix_tp_sl_tsl():
-                logger.info("✅ Phase 4: TP/SL/TSL implementation fixed")
+                logger.info("# Check Phase 4: TP/SL/TSL implementation fixed")
             else:
-                logger.error("❌ Phase 4: TP/SL/TSL implementation failed")
+                logger.error("# X Phase 4: TP/SL/TSL implementation failed")
 
             # Phase 5: Integration Test
-            logger.info("🔧 Phase 5: Running Integration Test...")
+            logger.info("# Tool Phase 5: Running Integration Test...")
             if await self.run_integration_test():
-                logger.info("✅ Phase 5: Integration test passed")
+                logger.info("# Check Phase 5: Integration test passed")
             else:
-                logger.error("❌ Phase 5: Integration test failed")
+                logger.error("# X Phase 5: Integration test failed")
 
             # Generate final report
             await self.generate_final_report()
             return True
 
         except Exception as e:
-            logger.error(f"❌ Complete fix task failed: {e}")
+            logger.error(f"# X Complete fix task failed: {e}")
             return False
 
     async def fix_ohlcv_fetching(self) -> bool:
         """Fix OHLCV data fetching issues"""
-        logger.info("🔧 Fixing OHLCV data fetching...")
+        logger.info("# Tool Fixing OHLCV data fetching...")
 
         try:
             # Fix 1: Update advanced_trend_detector.py
@@ -108,14 +108,14 @@ async def get_ohlcv_data(self, symbol: str, timeframe: str = '1h', limit: int = 
     try:
         # Ensure exchange is connected
         if not self.exchange:
-            logger.error(f"❌ Exchange not connected for {symbol}")
+            logger.error(f"# X Exchange not connected for {symbol}")
             return None
 
         # Fetch OHLCV data
         ohlcv_data = self.exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
         
         if not ohlcv_data or len(ohlcv_data) == 0:
-            logger.warning(f"⚠️ No OHLCV data received for {symbol} {timeframe}")
+            logger.warning(f"# Warning No OHLCV data received for {symbol} {timeframe}")
             return None
 
         # Convert to DataFrame with proper error handling
@@ -130,21 +130,21 @@ async def get_ohlcv_data(self, symbol: str, timeframe: str = '1h', limit: int = 
             df = df.dropna()
             
             if len(df) == 0:
-                logger.warning(f"⚠️ No valid OHLCV data after cleaning for {symbol} {timeframe}")
+                logger.warning(f"# Warning No valid OHLCV data after cleaning for {symbol} {timeframe}")
                 return None
                 
             return df
             
         except Exception as e:
-            logger.error(f"❌ Error converting OHLCV data to DataFrame for {symbol}: {e}")
+            logger.error(f"# X Error converting OHLCV data to DataFrame for {symbol}: {e}")
             return None
 
     except Exception as e:
-        logger.error(f"❌ Error fetching OHLCV for {symbol} {timeframe}: {e}")
+        logger.error(f"# X Error fetching OHLCV for {symbol} {timeframe}: {e}")
         return None
 """
             self.fixes_applied.append("OHLCV data fetching fixed in advanced_trend_detector.py")
-            logger.info("✅ OHLCV fetching fix prepared")
+            logger.info("# Check OHLCV fetching fix prepared")
 
             # Fix 2: Update viper_async_trader.py scoring method
             scoring_fix = """
@@ -158,7 +158,7 @@ async def score_opportunity_data(self, data: Dict[str, Any]) -> Optional[Any]:
         change_24h = data.get('change', 0)
         
         if not symbol or price <= 0:
-            logger.warning(f"⚠️ Invalid data for scoring: {data}")
+            logger.warning(f"# Warning Invalid data for scoring: {data}")
             return None
 
         # Calculate basic scores
@@ -200,26 +200,26 @@ async def score_opportunity_data(self, data: Dict[str, Any]) -> Optional[Any]:
             'trend_score': trend_score
         })()
         
-        logger.info(f"🎯 Scored {symbol}: {total_score:.3f} ({recommended_side})")
+        logger.info(f"# Target Scored {symbol}: {total_score:.3f} ({recommended_side})")
         return opportunity
         
     except Exception as e:
-        logger.error(f"❌ Error scoring opportunity: {e}")
+        logger.error(f"# X Error scoring opportunity: {e}")
         return None
 """
             self.fixes_applied.append("Scoring method fixed in viper_async_trader.py")
-            logger.info("✅ Scoring method fix prepared")
+            logger.info("# Check Scoring method fix prepared")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error fixing OHLCV fetching: {e}")
+            logger.error(f"# X Error fixing OHLCV fetching: {e}")
             self.errors_fixed.append(f"OHLCV fetching: {e}")
             return False
 
     async def fix_trade_execution(self) -> bool:
         """Fix trade execution system"""
-        logger.info("🔧 Fixing trade execution system...")
+        logger.info("# Tool Fixing trade execution system...")
 
         try:
             # Fix 1: Update execute_trade_job method
@@ -229,13 +229,13 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
     \"\"\"Execute trade with proper error handling and validation\"\"\"
     try:
         if not self.exchange:
-            logger.error("❌ Exchange not connected")
+            logger.error("# X Exchange not connected")
             return {"error": "Exchange not connected"}
 
         # Get current balance
         balance = await self.get_account_balance()
         if balance <= 0:
-            logger.error(f"❌ Insufficient balance: ${balance:.2f}")
+            logger.error(f"# X Insufficient balance: ${balance:.2f}")
             return {"error": "Insufficient balance"}
 
         # Get current price
@@ -246,7 +246,7 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
         position_size = self.calculate_position_size(current_price, balance, self.max_leverage)
         
         if position_size <= 0:
-            logger.error(f"❌ Invalid position size: {position_size}")
+            logger.error(f"# X Invalid position size: {position_size}")
             return {"error": "Invalid position size"}
 
         # Get market info for validation
@@ -254,7 +254,7 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
         min_amount = market.get('limits', {}).get('amount', {}).get('min', 0.001)
         
         if position_size < min_amount:
-            logger.warning(f"⚠️ Position size {position_size} below minimum {min_amount}")
+            logger.warning(f"# Warning Position size {position_size} below minimum {min_amount}")
             position_size = min_amount
 
         # Calculate required margin
@@ -262,11 +262,11 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
         max_safe_margin = balance * 0.9  # 90% of balance
         
         if required_margin > max_safe_margin:
-            logger.warning(f"⚠️ Required margin ${required_margin:.2f} exceeds safe limit ${max_safe_margin:.2f}")
+            logger.warning(f"# Warning Required margin ${required_margin:.2f} exceeds safe limit ${max_safe_margin:.2f}")
             # Adjust position size
             safe_position_size = (max_safe_margin * self.max_leverage) / current_price * 0.8  # 80% safety factor
             position_size = max(safe_position_size, min_amount)
-            logger.info(f"🔧 Adjusted position size to {position_size:.6f}")
+            logger.info(f"# Tool Adjusted position size to {position_size:.6f}")
 
         # Execute the trade
         try:
@@ -283,7 +283,7 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
             )
             
             if order and order.get('id'):
-                logger.info(f"✅ Trade executed: {symbol} {side} {position_size:.6f} @ ${current_price:.4f}")
+                logger.info(f"# Check Trade executed: {symbol} {side} {position_size:.6f} @ ${current_price:.4f}")
                 
                 # Calculate TP/SL prices
                 take_profit_price = current_price * (1 + (self.take_profit_pct / 100)) if side == 'buy' else current_price * (1 - (self.take_profit_pct / 100))
@@ -301,30 +301,30 @@ async def execute_trade_job(self, symbol: str, side: str) -> Dict[str, Any]:
                     "margin_used": required_margin
                 }
             else:
-                logger.error(f"❌ Trade execution failed for {symbol}")
+                logger.error(f"# X Trade execution failed for {symbol}")
                 return {"error": "Trade execution failed"}
 
         except Exception as e:
-            logger.error(f"❌ Error creating order for {symbol}: {e}")
+            logger.error(f"# X Error creating order for {symbol}: {e}")
             return {"error": str(e)}
 
     except Exception as e:
-        logger.error(f"❌ Error in execute_trade_job: {e}")
+        logger.error(f"# X Error in execute_trade_job: {e}")
         return {"error": str(e)}
 """
             self.fixes_applied.append("Trade execution method fixed in viper_async_trader.py")
-            logger.info("✅ Trade execution fix prepared")
+            logger.info("# Check Trade execution fix prepared")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error fixing trade execution: {e}")
+            logger.error(f"# X Error fixing trade execution: {e}")
             self.errors_fixed.append(f"Trade execution: {e}")
             return False
 
     async def fix_scoring_system(self) -> bool:
         """Fix and optimize scoring system"""
-        logger.info("🔧 Fixing and optimizing scoring system...")
+        logger.info("# Tool Fixing and optimizing scoring system...")
 
         try:
             # Fix 1: Enhanced VIPER scoring algorithm
@@ -406,22 +406,22 @@ async def calculate_enhanced_viper_score(self, symbol: str, data: Dict[str, Any]
         }
         
     except Exception as e:
-        logger.error(f"❌ Error calculating enhanced VIPER score: {e}")
+        logger.error(f"# X Error calculating enhanced VIPER score: {e}")
         return None
 """
             self.fixes_applied.append("Enhanced VIPER scoring algorithm implemented")
-            logger.info("✅ Enhanced scoring fix prepared")
+            logger.info("# Check Enhanced scoring fix prepared")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error fixing scoring system: {e}")
+            logger.error(f"# X Error fixing scoring system: {e}")
             self.errors_fixed.append(f"Scoring system: {e}")
             return False
 
     async def fix_tp_sl_tsl(self) -> bool:
         """Fix TP/SL/TSL implementation"""
-        logger.info("🔧 Fixing TP/SL/TSL implementation...")
+        logger.info("# Tool Fixing TP/SL/TSL implementation...")
 
         try:
             # Fix 1: Complete TP/SL/TSL implementation
@@ -475,9 +475,9 @@ async def monitor_positions(self) -> Dict[str, Any]:
                     )
                     if close_order:
                         positions_closed += 1
-                        logger.info(f"🎯 Take Profit executed for {symbol}: {pnl_pct:.2f}% profit")
+                        logger.info(f"# Target Take Profit executed for {symbol}: {pnl_pct:.2f}% profit")
                 except Exception as e:
-                    logger.error(f"❌ Error executing take profit for {symbol}: {e}")
+                    logger.error(f"# X Error executing take profit for {symbol}: {e}")
             
             # Stop Loss Check
             elif pnl_pct <= -self.stop_loss_pct:
@@ -494,7 +494,7 @@ async def monitor_positions(self) -> Dict[str, Any]:
                         positions_closed += 1
                         logger.info(f"🛑 Stop Loss executed for {symbol}: {pnl_pct:.2f}% loss")
                 except Exception as e:
-                    logger.error(f"❌ Error executing stop loss for {symbol}: {e}")
+                    logger.error(f"# X Error executing stop loss for {symbol}: {e}")
             
             # Trailing Stop Loss Check
             elif pnl_pct >= self.trailing_activation_pct:
@@ -528,7 +528,7 @@ async def monitor_positions(self) -> Dict[str, Any]:
                                 logger.info(f"📉 Trailing Stop executed for {symbol}: ${trailing_stop:.4f}")
                                 del self.trailing_stops[symbol]
                         except Exception as e:
-                            logger.error(f"❌ Error executing trailing stop for {symbol}: {e}")
+                            logger.error(f"# X Error executing trailing stop for {symbol}: {e}")
             
             monitoring_results.append({
                 "symbol": symbol,
@@ -549,22 +549,22 @@ async def monitor_positions(self) -> Dict[str, Any]:
         }
         
     except Exception as e:
-        logger.error(f"❌ Error monitoring positions: {e}")
+        logger.error(f"# X Error monitoring positions: {e}")
         return {"error": str(e)}
 """
             self.fixes_applied.append("Complete TP/SL/TSL implementation added")
-            logger.info("✅ TP/SL/TSL fix prepared")
+            logger.info("# Check TP/SL/TSL fix prepared")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error fixing TP/SL/TSL: {e}")
+            logger.error(f"# X Error fixing TP/SL/TSL: {e}")
             self.errors_fixed.append(f"TP/SL/TSL: {e}")
             return False
 
     async def run_integration_test(self) -> bool:
         """Run integration test to verify fixes"""
-        logger.info("🔧 Running integration test...")
+        logger.info("# Tool Running integration test...")
 
         try:
             # Test 1: OHLCV fetching
@@ -583,16 +583,16 @@ async def monitor_positions(self) -> Dict[str, Any]:
             logger.info("🧪 Test 4: TP/SL/TSL...")
             # This would test the complete TP/SL/TSL implementation
             
-            logger.info("✅ All integration tests passed")
+            logger.info("# Check All integration tests passed")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Integration test failed: {e}")
+            logger.error(f"# X Integration test failed: {e}")
             return False
 
     async def generate_final_report(self):
         """Generate final fix task report"""
-        logger.info("📊 Generating final fix task report...")
+        logger.info("# Chart Generating final fix task report...")
         
         end_time = datetime.now()
         duration = end_time - self.start_time
@@ -610,7 +610,7 @@ async def monitor_positions(self) -> Dict[str, Any]:
 
 async def main():
     """Main execution function"""
-    print("🔧 FIX TRADE EXECUTION, SCORING & TP/SL TASK")
+    print("# Tool FIX TRADE EXECUTION, SCORING & TP/SL TASK")
     
     task = FixTradeExecutionTask()
     
@@ -623,7 +623,7 @@ async def main():
             return 1
 
     except Exception as e:
-        logger.error(f"❌ Fatal error in fix task: {e}")
+        logger.error(f"# X Fatal error in fix task: {e}")
         return 1
 
 if __name__ == "__main__":

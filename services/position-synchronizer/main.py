@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Position Synchronizer
+# Rocket VIPER Trading Bot - Position Synchronizer
 Real-time position synchronization across all services
 
 Features:
@@ -70,15 +70,15 @@ class PositionSynchronizer:
             # Connect to Redis
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
 
             # Load exchange credentials
             self.load_exchange_credentials()
 
-            logger.info("✅ Connected to all services")
+            logger.info("# Check Connected to all services")
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect services: {e}")
+            logger.error(f"# X Failed to connect services: {e}")
             raise
 
     def load_exchange_credentials(self):
@@ -96,10 +96,10 @@ class PositionSynchronizer:
             )
             self.api_secret = response.json().get('value')
 
-            logger.info("✅ Loaded exchange credentials from vault")
+            logger.info("# Check Loaded exchange credentials from vault")
 
         except Exception as e:
-            logger.error(f"❌ Failed to load credentials: {e}")
+            logger.error(f"# X Failed to load credentials: {e}")
             raise
 
     def get_exchange_positions(self) -> Dict[str, Dict]:
@@ -119,14 +119,14 @@ class PositionSynchronizer:
                     if symbol:
                         exchange_positions[symbol] = pos
 
-                logger.info(f"📊 Retrieved {len(exchange_positions)} positions from exchange")
+                logger.info(f"# Chart Retrieved {len(exchange_positions)} positions from exchange")
                 return exchange_positions
             else:
-                logger.error(f"❌ Failed to get exchange positions: {response.text}")
+                logger.error(f"# X Failed to get exchange positions: {response.text}")
                 return {}
 
         except Exception as e:
-            logger.error(f"❌ Error getting exchange positions: {e}")
+            logger.error(f"# X Error getting exchange positions: {e}")
             return {}
 
     def get_service_positions(self, service_url: str, service_name: str) -> Dict[str, Dict]:
@@ -141,14 +141,14 @@ class PositionSynchronizer:
                 data = response.json()
                 positions = data.get('positions', {})
 
-                logger.debug(f"📊 Retrieved {len(positions)} positions from {service_name}")
+                logger.debug(f"# Chart Retrieved {len(positions)} positions from {service_name}")
                 return positions
             else:
-                logger.warning(f"⚠️ Failed to get positions from {service_name}: {response.status_code}")
+                logger.warning(f"# Warning Failed to get positions from {service_name}: {response.status_code}")
                 return {}
 
         except Exception as e:
-            logger.error(f"❌ Error getting positions from {service_name}: {e}")
+            logger.error(f"# X Error getting positions from {service_name}: {e}")
             return {}
 
     def synchronize_positions(self):
@@ -194,7 +194,7 @@ class PositionSynchronizer:
                         })
 
                     synced_positions[symbol] = synced_pos
-                    logger.debug(f"✅ Synchronized position for {symbol}")
+                    logger.debug(f"# Check Synchronized position for {symbol}")
 
                 elif risk_pos:
                     # Use risk manager position if no exchange data
@@ -206,7 +206,7 @@ class PositionSynchronizer:
                         'data_manager': bool(data_pos)
                     }
                     synced_positions[symbol] = synced_pos
-                    logger.debug(f"⚠️ Using risk manager position for {symbol} (no exchange data)")
+                    logger.debug(f"# Warning Using risk manager position for {symbol} (no exchange data)")
 
             # Update internal position cache
             self.positions = synced_positions
@@ -229,17 +229,17 @@ class PositionSynchronizer:
             self.stats['total_exposure'] = total_exposure
 
             if discrepancies:
-                logger.warning(f"⚠️ Found {len(discrepancies)} position discrepancies")
+                logger.warning(f"# Warning Found {len(discrepancies)} position discrepancies")
 
-            logger.info(f"✅ Position synchronization completed: {len(synced_positions)} positions, {len(discrepancies)} discrepancies")
+            logger.info(f"# Check Position synchronization completed: {len(synced_positions)} positions, {len(discrepancies)} discrepancies")
 
         except Exception as e:
-            logger.error(f"❌ Error during position synchronization: {e}")
+            logger.error(f"# X Error during position synchronization: {e}")
 
     def reconcile_positions(self):
         """Perform detailed position reconciliation"""
         try:
-            logger.info("🔍 Starting position reconciliation...")
+            logger.info("# Search Starting position reconciliation...")
 
             # Get detailed position data from exchange
             exchange_response = requests.get(
@@ -248,7 +248,7 @@ class PositionSynchronizer:
             )
 
             if exchange_response.status_code != 200:
-                logger.error("❌ Failed to get detailed exchange positions")
+                logger.error("# X Failed to get detailed exchange positions")
                 return
 
             exchange_data = exchange_response.json()
@@ -318,10 +318,10 @@ class PositionSynchronizer:
             # Update statistics
             self.stats['reconciliations'] += 1
 
-            logger.info(f"✅ Position reconciliation completed: {reconciliation_results['matches']} matches, {total_mismatches} mismatches")
+            logger.info(f"# Check Position reconciliation completed: {reconciliation_results['matches']} matches, {total_mismatches} mismatches")
 
         except Exception as e:
-            logger.error(f"❌ Error during position reconciliation: {e}")
+            logger.error(f"# X Error during position reconciliation: {e}")
 
     def process_position_updates(self, update_data: Dict):
         """Process position update events"""
@@ -372,7 +372,7 @@ class PositionSynchronizer:
             self.redis_client.publish('position_updates', json.dumps(update_data))
 
         except Exception as e:
-            logger.error(f"❌ Error processing position update: {e}")
+            logger.error(f"# X Error processing position update: {e}")
 
     def subscribe_to_position_events(self):
         """Subscribe to position-related events"""
@@ -412,10 +412,10 @@ class PositionSynchronizer:
                                 })
 
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode position event: {e}")
+                        logger.error(f"# X Failed to decode position event: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in position event subscription: {e}")
+            logger.error(f"# X Error in position event subscription: {e}")
 
     def start_background_synchronization(self):
         """Start background synchronization threads"""
@@ -425,7 +425,7 @@ class PositionSynchronizer:
                     self.synchronize_positions()
                     asyncio.run(asyncio.sleep(SYNC_INTERVAL))
                 except Exception as e:
-                    logger.error(f"❌ Sync worker error: {e}")
+                    logger.error(f"# X Sync worker error: {e}")
                     asyncio.run(asyncio.sleep(10))
 
         def run_reconciliation_worker():
@@ -434,7 +434,7 @@ class PositionSynchronizer:
                     asyncio.run(asyncio.sleep(RECONCILIATION_INTERVAL))
                     self.reconcile_positions()
                 except Exception as e:
-                    logger.error(f"❌ Reconciliation worker error: {e}")
+                    logger.error(f"# X Reconciliation worker error: {e}")
 
         def run_event_processor():
             self.subscribe_to_position_events()
@@ -465,7 +465,7 @@ class PositionSynchronizer:
     def start(self):
         """Start the position synchronizer"""
         try:
-            logger.info("🚀 Starting Position Synchronizer...")
+            logger.info("# Rocket Starting Position Synchronizer...")
 
             # Connect to services
             self.connect_services()
@@ -494,13 +494,13 @@ class PositionSynchronizer:
             logger.info("⏹️ Stopping Position Synchronizer...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Position Synchronizer error: {e}")
+            logger.error(f"# X Position Synchronizer error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the position synchronizer"""
         self.is_running = False
-        logger.info("✅ Position Synchronizer stopped")
+        logger.info("# Check Position Synchronizer stopped")
 
 def create_app():
     """Create FastAPI application for health checks and API"""

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Signal Processor
+# Rocket VIPER Trading Bot - Signal Processor
 Event-driven signal processing and trading signal generation
 
 Features:
@@ -62,9 +62,9 @@ class SignalProcessor:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             raise
 
     def calculate_viper_score(self, symbol: str, market_data: Dict) -> float:
@@ -111,7 +111,7 @@ class SignalProcessor:
             return min(100, max(0, viper_score))
 
         except Exception as e:
-            logger.error(f"❌ Error calculating VIPER score for {symbol}: {e}")
+            logger.error(f"# X Error calculating VIPER score for {symbol}: {e}")
             return 0.0
 
     def generate_signal(self, symbol: str, market_data: Dict) -> Optional[Dict]:
@@ -170,12 +170,12 @@ class SignalProcessor:
             self.last_signal_time[symbol] = current_time
             self.signals[symbol] = signal
 
-            logger.info(f"🎯 Generated {signal_type.value} signal for {symbol} (Score: {viper_score:.2f})")
+            logger.info(f"# Target Generated {signal_type.value} signal for {symbol} (Score: {viper_score:.2f})")
 
             return signal
 
         except Exception as e:
-            logger.error(f"❌ Error generating signal for {symbol}: {e}")
+            logger.error(f"# X Error generating signal for {symbol}: {e}")
             return None
 
     def process_market_data(self, message: Dict):
@@ -209,7 +209,7 @@ class SignalProcessor:
                     logger.info(f"📡 Published {signal['type']} signal for {symbol}")
 
         except Exception as e:
-            logger.error(f"❌ Error processing market data: {e}")
+            logger.error(f"# X Error processing market data: {e}")
 
     def subscribe_to_market_data(self):
         """Subscribe to market data streams"""
@@ -237,10 +237,10 @@ class SignalProcessor:
                         data = json.loads(message['data'])
                         self.process_market_data(data)
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode message: {e}")
+                        logger.error(f"# X Failed to decode message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in market data subscription: {e}")
+            logger.error(f"# X Error in market data subscription: {e}")
 
     def start_background_processing(self):
         """Start signal processing in background thread"""
@@ -249,7 +249,7 @@ class SignalProcessor:
 
         thread = threading.Thread(target=run_processor, daemon=True)
         thread.start()
-        logger.info("🎯 Signal processing started in background")
+        logger.info("# Target Signal processing started in background")
 
     def get_active_signals(self) -> Dict[str, Dict]:
         """Get all active signals"""
@@ -262,7 +262,7 @@ class SignalProcessor:
     def start(self):
         """Start the signal processor"""
         try:
-            logger.info("🚀 Starting Signal Processor...")
+            logger.info("# Rocket Starting Signal Processor...")
 
             # Connect to Redis
             self.connect_redis()
@@ -289,13 +289,13 @@ class SignalProcessor:
             logger.info("⏹️ Stopping Signal Processor...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Signal Processor error: {e}")
+            logger.error(f"# X Signal Processor error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the signal processor"""
         self.is_running = False
-        logger.info("✅ Signal Processor stopped")
+        logger.info("# Check Signal Processor stopped")
 
 def create_app():
     """Create FastAPI application for health checks and API"""

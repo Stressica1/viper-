@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER ALL PAIRS SCANNER - Comprehensive Multi-Pair Trading Job
+# Rocket VIPER ALL PAIRS SCANNER - Comprehensive Multi-Pair Trading Job
 Scans ALL available Bitget swap pairs with advanced filtering and risk management
 
 This job provides:
@@ -64,7 +64,7 @@ class VIPERAllPairsScanner:
         self._discover_all_pairs()
         self._setup_signal_handlers()
 
-        logger.info("✅ VIPER All Pairs Scanner initialized successfully")
+        logger.info("# Check VIPER All Pairs Scanner initialized successfully")
 
     def _initialize_components(self):
         """Initialize all trading components"""
@@ -95,10 +95,10 @@ class VIPERAllPairsScanner:
                 logger.warning(f"AI Optimizer not available: {e}")
                 self.ai_optimizer = None
 
-            logger.info("✅ All components initialized")
+            logger.info("# Check All components initialized")
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             raise
 
     def _load_configuration(self):
@@ -136,10 +136,10 @@ class VIPERAllPairsScanner:
                 'max_loss_per_pair': float(os.getenv('MAX_LOSS_PER_PAIR', '10.0'))  # Max loss per pair
             }
 
-            logger.info("✅ Configuration loaded for all pairs scanning")
+            logger.info("# Check Configuration loaded for all pairs scanning")
 
         except Exception as e:
-            logger.error(f"❌ Configuration loading failed: {e}")
+            logger.error(f"# X Configuration loading failed: {e}")
             raise
 
     def _setup_exchange(self):
@@ -150,7 +150,7 @@ class VIPERAllPairsScanner:
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if not all([api_key, api_secret, api_password]):
-                logger.error("❌ LIVE MULTI-PAIR TRADING REQUIRES API CREDENTIALS")
+                logger.error("# X LIVE MULTI-PAIR TRADING REQUIRES API CREDENTIALS")
                 raise ValueError("Missing required API credentials")
 
             exchange_config = {
@@ -169,16 +169,16 @@ class VIPERAllPairsScanner:
 
             # Test connection and load markets
             self.exchange.load_markets()
-            logger.info("✅ LIVE Exchange connection established for multi-pair scanning")
+            logger.info("# Check LIVE Exchange connection established for multi-pair scanning")
 
         except Exception as e:
-            logger.error(f"❌ Exchange setup failed: {e}")
+            logger.error(f"# X Exchange setup failed: {e}")
             raise
 
     def _discover_all_pairs(self):
         """Discover ALL available swap pairs on Bitget"""
         try:
-            logger.info("🔍 Discovering ALL Bitget swap pairs...")
+            logger.info("# Search Discovering ALL Bitget swap pairs...")
 
             # Get all swap markets
             all_markets = self.exchange.markets
@@ -202,19 +202,19 @@ class VIPERAllPairsScanner:
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"📊 Found {len(self.all_pairs)} active USDT swap pairs on Bitget")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs on Bitget")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()
 
         except Exception as e:
-            logger.error(f"❌ Failed to discover pairs: {e}")
+            logger.error(f"# X Failed to discover pairs: {e}")
             raise
 
     def _filter_pairs_by_criteria(self):
         """Filter pairs based on volume, leverage, and other criteria"""
         try:
-            logger.info("🔍 Filtering pairs by trading criteria...")
+            logger.info("# Search Filtering pairs by trading criteria...")
 
             filtered_pairs = []
 
@@ -229,7 +229,7 @@ class VIPERAllPairsScanner:
                     leverage = pair.get('leverage', 1)
 
                     # Check criteria
-                    if (volume_24h >= self.trading_config['min_volume_threshold'] and
+                    if (volume_24h >= self.trading_config['min_volume_threshold'] and:
                         spread <= self.trading_config['max_spread_threshold'] and
                         leverage >= self.trading_config['min_leverage_required'] and
                         ticker.get('last', 0) > 0):
@@ -239,14 +239,14 @@ class VIPERAllPairsScanner:
                         pair['price'] = ticker.get('last', 0)
                         filtered_pairs.append(pair)
 
-                        logger.debug(f"✅ {pair['symbol']}: Vol=${volume_24h:,.0f}, Spread={spread:.4f}, Lev={leverage}x")
+                        logger.debug(f"# Check {pair['symbol']}: Vol=${volume_24h:,.0f}, Spread={spread:.4f}, Lev={leverage}x")
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not filter {pair['symbol']}: {e}")
+                    logger.warning(f"# Warning Could not filter {pair['symbol']}: {e}")
                     continue
 
             self.active_pairs = filtered_pairs
-            logger.info(f"🎯 Filtered to {len(self.active_pairs)} qualified pairs for trading")
+            logger.info(f"# Target Filtered to {len(self.active_pairs)} qualified pairs for trading")
 
             # Log top pairs by volume
             top_pairs = sorted(self.active_pairs, key=lambda x: x.get('volume_24h', 0), reverse=True)[:10]
@@ -255,7 +255,7 @@ class VIPERAllPairsScanner:
                 logger.info(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f}")
 
         except Exception as e:
-            logger.error(f"❌ Pair filtering failed: {e}")
+            logger.error(f"# X Pair filtering failed: {e}")
             self.active_pairs = self.all_pairs  # Fallback to all pairs
 
     def _setup_signal_handlers(self):
@@ -273,8 +273,8 @@ class VIPERAllPairsScanner:
             logger.warning("Scanner already running")
             return
 
-        logger.info("🚀 Starting VIPER All Pairs Scanner...")
-        logger.info(f"📊 Scanning {len(self.active_pairs)} pairs every {self.trading_config['scan_interval']} seconds")
+        logger.info("# Rocket Starting VIPER All Pairs Scanner...")
+        logger.info(f"# Chart Scanning {len(self.active_pairs)} pairs every {self.trading_config['scan_interval']} seconds")
         self.is_running = True
         self.trading_stats['start_time'] = datetime.now()
 
@@ -285,7 +285,7 @@ class VIPERAllPairsScanner:
         except KeyboardInterrupt:
             logger.info("🛑 Scanner stopped by user")
         except Exception as e:
-            logger.error(f"❌ Scanner error: {e}")
+            logger.error(f"# X Scanner error: {e}")
         finally:
             self._cleanup()
 
@@ -304,7 +304,7 @@ class VIPERAllPairsScanner:
         # Generate final report
         self._generate_final_report()
 
-        logger.info("✅ All pairs scanner cleanup completed")
+        logger.info("# Check All pairs scanner cleanup completed")
 
     async def _scanning_loop(self):
         """Main scanning loop for all pairs"""
@@ -350,7 +350,7 @@ class VIPERAllPairsScanner:
         opportunities = []
         total_pairs = len(self.active_pairs)
 
-        logger.info(f"📊 Scanning {total_pairs} pairs in batches of {batch_size}...")
+        logger.info(f"# Chart Scanning {total_pairs} pairs in batches of {batch_size}...")
 
         for i in range(0, total_pairs, batch_size):
             batch_pairs = self.active_pairs[i:i + batch_size]
@@ -360,7 +360,7 @@ class VIPERAllPairsScanner:
             # Small delay between batches to avoid rate limits
             await asyncio.sleep(0.1)
 
-        logger.info(f"📊 Found {len(opportunities)} opportunities across all pairs")
+        logger.info(f"# Chart Found {len(opportunities)} opportunities across all pairs")
         self.trading_stats['pairs_scanned'] += total_pairs
         self.trading_stats['opportunities_found'] += len(opportunities)
 
@@ -447,7 +447,7 @@ class VIPERAllPairsScanner:
             # Sort by score (highest first)
             scored_opportunities.sort(key=lambda x: x['overall_score'], reverse=True)
 
-            logger.info(f"🎯 Scored {len(scored_opportunities)} opportunities (min score: {self.trading_config['min_viper_score']})")
+            logger.info(f"# Target Scored {len(scored_opportunities)} opportunities (min score: {self.trading_config['min_viper_score']})")
             return scored_opportunities
 
         except Exception as e:
@@ -525,7 +525,7 @@ class VIPERAllPairsScanner:
                     continue
 
             if executed_trades:
-                logger.info(f"✅ Executed {len(executed_trades)} trades across pairs")
+                logger.info(f"# Check Executed {len(executed_trades)} trades across pairs")
 
             return executed_trades
 
@@ -593,7 +593,7 @@ class VIPERAllPairsScanner:
                 'order_id': order['id']
             }
 
-            logger.info(f"🚀 LIVE TRADE: {symbol} at ${order['price']:.4f} (Size: {position_size:.6f})")
+            logger.info(f"# Rocket LIVE TRADE: {symbol} at ${order['price']:.4f} (Size: {position_size:.6f})")
 
             # Track position
             self.positions[symbol] = {
@@ -778,7 +778,7 @@ class VIPERAllPairsScanner:
 
             # Check hourly trade limit
             trades_this_hour = sum(1 for pos in self.positions.values()
-                                 if (datetime.now() - pos['entry_time']).seconds < 3600)
+                                 if (datetime.now() - pos['entry_time']).seconds < 3600):
             if trades_this_hour >= self.emergency_config['max_trades_per_hour']:
                 return True
 
@@ -860,10 +860,10 @@ class VIPERAllPairsScanner:
             with open(report_path, 'w') as f:
                 json.dump(report, f, indent=2, default=str)
 
-            logger.info(f"📊 Final report saved to: {report_path}")
+            logger.info(f"# Chart Final report saved to: {report_path}")
             logger.info(f"💰 Session P&L: ${self.trading_stats['total_pnl']:.2f}")
             logger.info(f"📈 Win Rate: {self.trading_stats['win_rate']:.1%}")
-            logger.info(f"📊 Pairs Scanned: {self.trading_stats['pairs_scanned']}")
+            logger.info(f"# Chart Pairs Scanned: {self.trading_stats['pairs_scanned']}")
 
         except Exception as e:
             logger.error(f"Final report generation failed: {e}")
@@ -891,7 +891,7 @@ class VIPERAllPairsScanner:
 
 def main():
     """Main entry point for all pairs scanner"""
-    print("🚀 VIPER All Pairs Scanner - Comprehensive Multi-Pair Trading")
+    print("# Rocket VIPER All Pairs Scanner - Comprehensive Multi-Pair Trading")
 
     # Initialize scanner
     scanner = VIPERAllPairsScanner()
@@ -908,8 +908,8 @@ def main():
     for i, pair in enumerate(top_pairs, 1):
         print(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f} (Lev: {pair.get('leverage', 1)}x)")
 
-    print("\n🚀 Trading Mode: LIVE MULTI-PAIR TRADING")
-    print("⚠️  This will execute REAL trades across ALL qualified pairs")
+    print("\n# Rocket Trading Mode: LIVE MULTI-PAIR TRADING")
+    print("# Warning  This will execute REAL trades across ALL qualified pairs")
 
     # Confirm start
     confirm = input("\n🚨 Execute REAL LIVE TRADES across ALL PAIRS? (yes/no): ").lower().strip()
@@ -917,13 +917,13 @@ def main():
         return
 
     # Start scanner
-    print("\n🚀 Starting comprehensive all-pairs scanner...")
+    print("\n# Rocket Starting comprehensive all-pairs scanner...")
     try:
         scanner.start()
     except KeyboardInterrupt:
         print("\n⏹️ Scanner stopped by user")
     except Exception as e:
-        print(f"❌ Scanner error: {e}")
+        print(f"# X Scanner error: {e}")
 
 if __name__ == "__main__":
     main()

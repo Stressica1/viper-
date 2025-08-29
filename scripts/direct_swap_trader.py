@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Direct Swap Trader for All Pairs
+# Rocket VIPER Trading System - Direct Swap Trader for All Pairs
 Execute swap trades across all available Bitget pairs using direct API integration
 
 Features:
@@ -69,8 +69,8 @@ class DirectSwapTrader:
         self.min_volume_threshold = 1000000  # Minimum 24h volume
         self.min_order_size = 0.001  # Minimum order size in base currency
 
-        print(f"📊 Loaded {len(self.all_pairs)} swap pairs")
-        print(f"🎯 Risk per trade: {self.risk_per_trade*100}%")
+        print(f"# Chart Loaded {len(self.all_pairs)} swap pairs")
+        print(f"# Target Risk per trade: {self.risk_per_trade*100}%")
 
     def load_all_pairs(self) -> None:
         """Load all available swap pairs from Bitget"""
@@ -78,11 +78,11 @@ class DirectSwapTrader:
             markets = self.exchange.loadMarkets()
             self.all_pairs = [
                 symbol for symbol in markets.keys()
-                if markets[symbol]['active'] and
+                if markets[symbol]['active'] and:
                 markets[symbol]['type'] == 'swap' and
                 markets[symbol]['quote'] == 'USDT'
             ]
-            print(f"✅ Loaded {len(self.all_pairs)} active swap pairs")
+            print(f"# Check Loaded {len(self.all_pairs)} active swap pairs")
         except Exception as e:
             self.all_pairs = []
 
@@ -180,7 +180,7 @@ class DirectSwapTrader:
             return None
 
         except Exception as e:
-            print(f"❌ Error generating signal for {symbol}: {e}")
+            print(f"# X Error generating signal for {symbol}: {e}")
             return None
 
     def execute_swap_trade(self, signal: Dict) -> bool:
@@ -194,7 +194,7 @@ class DirectSwapTrader:
             usdt_balance = balance['USDT']['free']
 
             if usdt_balance < 10:  # Minimum balance check
-                print(f"⚠️  Insufficient balance for {symbol}: ${usdt_balance}")
+                print(f"# Warning  Insufficient balance for {symbol}: ${usdt_balance}")
                 return False
 
             # Calculate position size
@@ -209,11 +209,11 @@ class DirectSwapTrader:
                 'leverage': signal['leverage']
             }
 
-            print(f"📊 Executing {signal['signal']} order for {symbol}")
+            print(f"# Chart Executing {signal['signal']} order for {symbol}")
 
             # Execute order (in demo mode for safety)
             if not BITGET_API_KEY:
-                print("🎯 DEMO MODE: Would execute trade (no API keys provided)")
+                print("# Target DEMO MODE: Would execute trade (no API keys provided)")
                 self.trades_executed += 1
                 self.active_positions[symbol] = {
                     'signal': signal,
@@ -235,7 +235,7 @@ class DirectSwapTrader:
                     'position_size': position_size,
                     'order_id': order['id']
                 }
-                print(f"✅ Swap trade executed: {symbol} {signal['signal']} at ${signal['price']}")
+                print(f"# Check Swap trade executed: {symbol} {signal['signal']} at ${signal['price']}")
                 return True
             else:
                 return False
@@ -278,7 +278,7 @@ class DirectSwapTrader:
                 close_side = 'sell' if signal == 'LONG' else 'buy'
 
                 if not BITGET_API_KEY:
-                    print(f"🎯 DEMO MODE: Would close {symbol} position ({reason})")
+                    print(f"# Target DEMO MODE: Would close {symbol} position ({reason})")
                     del self.active_positions[symbol]
                     return
 
@@ -299,7 +299,7 @@ class DirectSwapTrader:
 
     def start_swap_trading(self) -> None:
         """Start direct swap trading for all pairs"""
-        print("\n🚀 STARTING DIRECT SWAP TRADING FOR ALL PAIRS...")
+        print("\n# Rocket STARTING DIRECT SWAP TRADING FOR ALL PAIRS...")
         print("🔥 Scanning and trading all available swap pairs")
         print("⚡ Using 50x leverage with comprehensive risk management")
 
@@ -312,11 +312,11 @@ class DirectSwapTrader:
         try:
             while self.is_running:
                 scan_count += 1
-                print(f"\n🔍 Market Scan #{scan_count} - {datetime.now().strftime('%H:%M:%S')}")
+                print(f"\n# Search Market Scan #{scan_count} - {datetime.now().strftime('%H:%M:%S')}")
 
                 # Limit concurrent positions
                 if len(self.active_positions) >= self.max_positions:
-                    print(f"📊 Max positions reached ({self.max_positions}). Monitoring existing positions...")
+                    print(f"# Chart Max positions reached ({self.max_positions}). Monitoring existing positions...")
                     self.monitor_positions()
                     time.sleep(30)
                     continue
@@ -344,7 +344,7 @@ class DirectSwapTrader:
                             signal = self.generate_signal(symbol, viper_score, market_data)
                             if signal:
                                 opportunities_found += 1
-                                print(f"    🎯 OPPORTUNITY: {signal['signal']} signal with {signal['confidence']:.2f} confidence")
+                                print(f"    # Target OPPORTUNITY: {signal['signal']} signal with {signal['confidence']:.2f} confidence")
 
                                 # Execute trade
                                 if self.execute_swap_trade(signal):
@@ -352,11 +352,11 @@ class DirectSwapTrader:
                     except Exception as e:
 
                 if opportunities_found == 0:
-                    print("  📊 No high-confidence trading opportunities found in this scan")
+                    print("  # Chart No high-confidence trading opportunities found in this scan")
 
                 # Monitor existing positions
                 if self.active_positions:
-                    print(f"\n📊 Active Positions: {len(self.active_positions)}")
+                    print(f"\n# Chart Active Positions: {len(self.active_positions)}")
                     for symbol, position in self.active_positions.items():
                         entry_price = position['entry_price']
                         current_data = self.get_market_data(symbol)
@@ -393,16 +393,16 @@ class DirectSwapTrader:
 
 def main():
     """Main entry point"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER DIRECT SWAP TRADER - ALL PAIRS TRADING                             ║
-║ 🔥 Automated Swap Trading | 📊 50x Leverage | 🎯 Direct API Integration     ║
-║ ⚡ Real-time Scanning | 🧠 VIPER Signals | 📈 Risk Management               ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER DIRECT SWAP TRADER - ALL PAIRS TRADING                             #
+# 🔥 Automated Swap Trading | # Chart 50x Leverage | # Target Direct API Integration     #
+# ⚡ Real-time Scanning | 🧠 VIPER Signals | 📈 Risk Management               #
+#==============================================================================#
     """)
 
     # Check API credentials
     if not all([BITGET_API_KEY, BITGET_API_SECRET, BITGET_API_PASSWORD]):
-        print("⚠️  Warning: API credentials not found in environment variables")
+        print("# Warning  Warning: API credentials not found in environment variables")
         print("   Running in DEMO MODE (no real trades will be executed)")
         print("   Trading signals will be generated and displayed\n")
 

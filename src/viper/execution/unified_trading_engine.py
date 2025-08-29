@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER UNIFIED TRADING ENGINE
+# Rocket VIPER UNIFIED TRADING ENGINE
 Complete integration of all trading components with optimal performance
 
 This unified engine provides:
@@ -51,7 +51,7 @@ class UnifiedTradingEngine:
 
     def _initialize_system(self):
         """Initialize all system components"""
-        logger.info("🚀 Initializing Unified Trading Engine...")
+        logger.info("# Rocket Initializing Unified Trading Engine...")
 
         # Load utility components
         self._load_mathematical_validator()
@@ -60,16 +60,16 @@ class UnifiedTradingEngine:
         self._load_ai_optimizer()
         self._load_diagnostic_system()
 
-        logger.info("✅ All system components initialized")
+        logger.info("# Check All system components initialized")
 
     def _load_mathematical_validator(self):
         """Load mathematical validation system"""
         try:
             from utils.mathematical_validator import MathematicalValidator
             self.components['math_validator'] = MathematicalValidator()
-            logger.info("✅ Mathematical Validator loaded")
+            logger.info("# Check Mathematical Validator loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Mathematical Validator: {e}")
+            logger.error(f"# X Failed to load Mathematical Validator: {e}")
 
     def _load_optimal_configurations(self):
         """Load optimal MCP and system configurations"""
@@ -87,18 +87,18 @@ class UnifiedTradingEngine:
                 'trading_pairs': os.getenv('TRADING_PAIRS', 'BTCUSDT,ETHUSDT').split(',')
             }
 
-            logger.info("✅ Optimal configurations loaded")
+            logger.info("# Check Optimal configurations loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load optimal configurations: {e}")
+            logger.error(f"# X Failed to load optimal configurations: {e}")
 
     def _load_entry_point_optimizer(self):
         """Load entry point optimization system"""
         try:
             from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             self.components['entry_optimizer'] = OptimalEntryPointManager()
-            logger.info("✅ Entry Point Optimizer loaded")
+            logger.info("# Check Entry Point Optimizer loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Entry Point Optimizer: {e}")
+            logger.error(f"# X Failed to load Entry Point Optimizer: {e}")
 
     def _load_ai_optimizer(self):
         """Load AI/ML optimization system"""
@@ -116,18 +116,18 @@ class UnifiedTradingEngine:
             else:
                 self.components['ai_optimizer'] = ai_optimizer_module
 
-            logger.info("✅ AI Optimizer loaded")
+            logger.info("# Check AI Optimizer loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load AI Optimizer: {e}")
+            logger.error(f"# X Failed to load AI Optimizer: {e}")
 
     def _load_diagnostic_system(self):
         """Load diagnostic and monitoring system"""
         try:
             from scripts.scoring_system_diagnostic import ScoringSystemDiagnostic
             self.components['diagnostic_system'] = ScoringSystemDiagnostic()
-            logger.info("✅ Diagnostic System loaded")
+            logger.info("# Check Diagnostic System loaded")
         except Exception as e:
-            logger.error(f"❌ Failed to load Diagnostic System: {e}")
+            logger.error(f"# X Failed to load Diagnostic System: {e}")
 
     def _load_configurations(self):
         """Load environment configurations"""
@@ -147,10 +147,10 @@ class UnifiedTradingEngine:
                     for key, value in env_vars.items():
                         os.environ[key] = value
 
-            logger.info("✅ Configuration loaded from .env file")
+            logger.info("# Check Configuration loaded from .env file")
 
         except Exception as e:
-            logger.warning(f"⚠️ Could not load .env file: {e}")
+            logger.warning(f"# Warning Could not load .env file: {e}")
 
     def _setup_exchange_connection(self):
         """Setup exchange connection with optimal settings"""
@@ -161,7 +161,7 @@ class UnifiedTradingEngine:
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if not all([api_key, api_secret, api_password]):
-                logger.warning("⚠️ Exchange credentials not found in environment")
+                logger.warning("# Warning Exchange credentials not found in environment")
                 self.exchange = None
                 return
 
@@ -179,10 +179,10 @@ class UnifiedTradingEngine:
             }
 
             self.exchange = ccxt.bitget(exchange_config)
-            logger.info("✅ Exchange connection established")
+            logger.info("# Check Exchange connection established")
 
         except Exception as e:
-            logger.error(f"❌ Failed to setup exchange connection: {e}")
+            logger.error(f"# X Failed to setup exchange connection: {e}")
             self.exchange = None
 
     async def start_trading_engine(self):
@@ -191,7 +191,7 @@ class UnifiedTradingEngine:
             logger.warning("Trading engine already active")
             return
 
-        logger.info("🚀 Starting Unified Trading Engine...")
+        logger.info("# Rocket Starting Unified Trading Engine...")
         self.trading_active = True
 
         try:
@@ -201,7 +201,7 @@ class UnifiedTradingEngine:
         except KeyboardInterrupt:
             logger.info("🛑 Trading engine stopped by user")
         except Exception as e:
-            logger.error(f"❌ Trading engine error: {e}")
+            logger.error(f"# X Trading engine error: {e}")
         finally:
             self.trading_active = False
 
@@ -268,7 +268,7 @@ class UnifiedTradingEngine:
                     logger.error(f"Error analyzing {symbol}: {e}")
                     continue
 
-            logger.info(f"📊 Found {len(entry_points)} optimized entry points")
+            logger.info(f"# Chart Found {len(entry_points)} optimized entry points")
             return entry_points
 
         except Exception as e:
@@ -278,7 +278,7 @@ class UnifiedTradingEngine:
     async def _scan_basic(self) -> List[Dict[str, Any]]:
         """Basic market scanning fallback"""
         # Implement basic scanning logic here
-        logger.info("🔍 Using basic market scanning")
+        logger.info("# Search Using basic market scanning")
         return []
 
     def _validate_signals_mathematically(self, signals: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -314,7 +314,7 @@ class UnifiedTradingEngine:
                     logger.error(f"Mathematical validation error for {signal['symbol']}: {e}")
                     continue
 
-            logger.info(f"✅ Validated {len(validated_signals)} signals mathematically")
+            logger.info(f"# Check Validated {len(validated_signals)} signals mathematically")
             return validated_signals
 
         except Exception as e:
@@ -362,7 +362,7 @@ class UnifiedTradingEngine:
             available_slots = max_positions - current_positions
 
             if available_slots <= 0:
-                logger.info(f"📊 Maximum positions ({max_positions}) reached")
+                logger.info(f"# Chart Maximum positions ({max_positions}) reached")
                 return
 
             # Execute trades for top signals
@@ -378,7 +378,7 @@ class UnifiedTradingEngine:
                     continue
 
             if executed_count > 0:
-                logger.info(f"✅ Executed {executed_count} trades")
+                logger.info(f"# Check Executed {executed_count} trades")
 
         except Exception as e:
             logger.error(f"Trade execution system failed: {e}")
@@ -411,7 +411,7 @@ class UnifiedTradingEngine:
             # Set up stop loss and take profit
             await self._setup_risk_management(symbol, entry_price, order['id'])
 
-            logger.info(f"✅ Executed trade: {symbol} at {entry_price} (Size: {position_size})")
+            logger.info(f"# Check Executed trade: {symbol} at {entry_price} (Size: {position_size})")
 
         except Exception as e:
             logger.error(f"Order execution failed for {symbol}: {e}")
@@ -524,7 +524,7 @@ class UnifiedTradingEngine:
                     amount=position['contracts']
                 )
 
-                logger.info(f"✅ Closed position: {symbol} (ID: {position_id})")
+                logger.info(f"# Check Closed position: {symbol} (ID: {position_id})")
 
         except Exception as e:
             logger.error(f"Failed to close position {position_id}: {e}")
@@ -534,7 +534,7 @@ class UnifiedTradingEngine:
         try:
             # Cancel existing TP/SL orders
             # Implementation would depend on exchange API
-            logger.info(f"🔧 Adjusting TP/SL for {symbol}: {adjustment}")
+            logger.info(f"# Tool Adjusting TP/SL for {symbol}: {adjustment}")
 
         except Exception as e:
             logger.error(f"Failed to adjust TP/SL for {symbol}: {e}")
@@ -578,8 +578,8 @@ async def main():
     # Display system status
     status = engine.get_system_status()
     print(f"   Components Loaded: {len(status['components_loaded'])}")
-    print(f"   Exchange Connected: {'✅' if status['exchange_connected'] else '❌'}")
-    print(f"   Trading Active: {'✅' if status['trading_active'] else '❌'}")
+    print(f"   Exchange Connected: {'# Check' if status['exchange_connected'] else '# X'}")
+    print(f"   Trading Active: {'# Check' if status['trading_active'] else '# X'}")
 
     # Run system check
     system_check = engine.run_system_check()
@@ -591,7 +591,7 @@ async def main():
             await engine.start_trading_engine()
         except KeyboardInterrupt:
     else:
-        print("💡 Use '--start-trading' flag to begin live trading")
+        print("# Idea Use '--start-trading' flag to begin live trading")
         print("   Example: python unified_trading_engine.py --start-trading")
 if __name__ == "__main__":
     asyncio.run(main())

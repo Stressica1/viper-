@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Automated Setup Script
+# Rocket VIPER Trading Bot - Automated Setup Script
 
 This script automates the complete installation and configuration of VIPER.
 Just run: python setup.py
 
 Features:
-- ✅ Automatic dependency installation
-- ✅ Environment configuration
-- ✅ Docker setup and validation
-- ✅ API key configuration wizard
-- ✅ System validation and testing
-- ✅ Step-by-step progress tracking
+- # Check Automatic dependency installation
+- # Check Environment configuration
+- # Check Docker setup and validation
+- # Check API key configuration wizard
+- # Check System validation and testing
+- # Check Step-by-step progress tracking
 """
 
 import os
@@ -49,7 +49,7 @@ class VIPERSetup:
     def print_header(self):
         """Print welcome header"""
 {Colors.HEADER}{Colors.BOLD}
-🚀 VIPER Trading Bot - Automated Setup
+# Rocket VIPER Trading Bot - Automated Setup
 =====================================
 Ultra High-Performance Algorithmic Trading Platform
 {Colors.ENDC}
@@ -72,10 +72,10 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
         # Check Python version
         python_version = sys.version_info
         if python_version >= (3, 11):
-            print(f"✅ Python {python_version.major}.{python_version.minor} - OK")
+            print(f"# Check Python {python_version.major}.{python_version.minor} - OK")
             checks.append(True)
         else:
-            print(f"❌ Python {python_version.major}.{python_version.minor} - Need 3.11+")
+            print(f"# X Python {python_version.major}.{python_version.minor} - Need 3.11+")
             checks.append(False)
         
         # Check Docker
@@ -94,7 +94,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             if result.returncode == 0:
                 checks.append(True)
             else:
-                print("❌ Docker daemon - Not running (Start Docker Desktop)")
+                print("# X Docker daemon - Not running (Start Docker Desktop)")
                 checks.append(False)
         except Exception:
             checks.append(False)
@@ -118,9 +118,9 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
         
         success = all(checks)
         if success:
-            print(f"\n{Colors.OKGREEN}✅ All prerequisites met!{Colors.ENDC}")
+            print(f"\n{Colors.OKGREEN}# Check All prerequisites met!{Colors.ENDC}")
         else:
-            print(f"\n{Colors.FAIL}❌ Please fix the issues above before continuing.{Colors.ENDC}")
+            print(f"\n{Colors.FAIL}# X Please fix the issues above before continuing.{Colors.ENDC}")
             
         return success
     
@@ -139,7 +139,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             result = subprocess.run([self.python_exe, '-m', 'pip', 'install', '-e', '.'], 
                                   capture_output=True, text=True)
             if result.returncode != 0:
-                print(f"❌ Failed to install core dependencies: {result.stderr}")
+                print(f"# X Failed to install core dependencies: {result.stderr}")
                 return False
             
             # Install MCP dependencies
@@ -148,7 +148,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             if result.returncode != 0:
                 print(f"Warning: Failed to install MCP dependencies: {result.stderr}")
             
-            print(f"{Colors.OKGREEN}✅ Dependencies installed successfully!{Colors.ENDC}")
+            print(f"{Colors.OKGREEN}# Check Dependencies installed successfully!{Colors.ENDC}")
             return True
             
         except Exception as e:
@@ -191,7 +191,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             if result.returncode != 0:
                 print(f"Warning: Some images may not have been pulled: {result.stderr}")
             
-            print(f"{Colors.OKGREEN}✅ Docker environment ready!{Colors.ENDC}")
+            print(f"{Colors.OKGREEN}# Check Docker environment ready!{Colors.ENDC}")
             return True
             
         except Exception as e:
@@ -222,23 +222,23 @@ You can skip this step and configure later if you want to test with demo data fi
                     result = subprocess.run([self.python_exe, str(script_path)], 
                                           cwd=self.root_dir)
                     if result.returncode == 0:
-                        print(f"{Colors.OKGREEN}✅ API keys configured successfully!{Colors.ENDC}")
+                        print(f"{Colors.OKGREEN}# Check API keys configured successfully!{Colors.ENDC}")
                         return True
                     else:
-                        print(f"{Colors.FAIL}❌ API configuration failed{Colors.ENDC}")
+                        print(f"{Colors.FAIL}# X API configuration failed{Colors.ENDC}")
                         return False
                 else:
-                    print(f"{Colors.FAIL}❌ API configuration script not found{Colors.ENDC}")
+                    print(f"{Colors.FAIL}# X API configuration script not found{Colors.ENDC}")
                     return False
             except Exception as e:
                 return False
         else:
-            print(f"{Colors.WARNING}⚠️ Skipping API configuration - demo mode only{Colors.ENDC}")
+            print(f"{Colors.WARNING}# Warning Skipping API configuration - demo mode only{Colors.ENDC}")
             return True
     
     def validate_installation(self) -> bool:
         """Validate the installation"""
-        print(f"\n{Colors.BOLD}✅ Validating Installation...{Colors.ENDC}")
+        print(f"\n{Colors.BOLD}# Check Validating Installation...{Colors.ENDC}")
         
         try:
             # Test Python imports
@@ -260,7 +260,7 @@ You can skip this step and configure later if you want to test with demo data fi
             except Exception as e:
                 return False
             
-            print(f"{Colors.OKGREEN}✅ Installation validation passed!{Colors.ENDC}")
+            print(f"{Colors.OKGREEN}# Check Installation validation passed!{Colors.ENDC}")
             return True
             
         except Exception as e:
@@ -269,7 +269,7 @@ You can skip this step and configure later if you want to test with demo data fi
     def print_next_steps(self):
         """Print next steps for the user"""
 {Colors.HEADER}{Colors.BOLD}
-🎉 VIPER Setup Complete!
+# Party VIPER Setup Complete!
 ========================{Colors.ENDC}
 
 {Colors.OKGREEN}Your VIPER Trading Bot is now installed and ready to use!{Colors.ENDC}
@@ -302,13 +302,13 @@ You can skip this step and configure later if you want to test with demo data fi
 - Run: python scripts/quick_validation.py
 - View Docker logs: docker-compose -f infrastructure/docker-compose.yml logs
 
-{Colors.WARNING}⚠️ Safety Reminder:
+{Colors.WARNING}# Warning Safety Reminder:
 - Start with paper trading
 - Test thoroughly before live trading  
 - Never risk more than you can afford to lose
 - Keep your API keys secure{Colors.ENDC}
 
-{Colors.HEADER}Happy Trading with VIPER! 🚀{Colors.ENDC}
+{Colors.HEADER}Happy Trading with VIPER! # Rocket{Colors.ENDC}
 """)
     
     def run_setup(self):
@@ -335,14 +335,14 @@ You can skip this step and configure later if you want to test with demo data fi
             try:
                 success = step_func()
                 if not success:
-                    print(f"\n{Colors.FAIL}❌ Setup failed at step: {step_name}{Colors.ENDC}")
+                    print(f"\n{Colors.FAIL}# X Setup failed at step: {step_name}{Colors.ENDC}")
                     print(f"{Colors.FAIL}Please check the error messages above and try again.{Colors.ENDC}")
                     return False
             except KeyboardInterrupt:
                 print(f"\n{Colors.WARNING}Setup interrupted by user.{Colors.ENDC}")
                 return False
             except Exception as e:
-                print(f"\n{Colors.FAIL}❌ Unexpected error in {step_name}: {e}{Colors.ENDC}")
+                print(f"\n{Colors.FAIL}# X Unexpected error in {step_name}: {e}{Colors.ENDC}")
                 return False
         
         # Success!
@@ -359,7 +359,7 @@ def main():
         print(f"\n{Colors.WARNING}Setup interrupted by user.{Colors.ENDC}")
         sys.exit(1)
     except Exception as e:
-        print(f"\n{Colors.FAIL}❌ Fatal error: {e}{Colors.ENDC}")
+        print(f"\n{Colors.FAIL}# X Fatal error: {e}{Colors.ENDC}")
         sys.exit(1)
 
 if __name__ == "__main__":

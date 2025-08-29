@@ -4,11 +4,11 @@
 Universal wrapper that enforces Docker/MCP requirements for ALL VIPER system operations
 
 This wrapper:
-✅ ENFORCES Docker and MCP requirements before ANY system operation
-✅ Integrates ALL modules through unified Docker/MCP framework
-✅ Prevents execution if mandatory requirements not met
-✅ Connects all trading operations through MCP GitHub integration
-✅ Provides unified entry point for all system features
+# Check ENFORCES Docker and MCP requirements before ANY system operation
+# Check Integrates ALL modules through unified Docker/MCP framework
+# Check Prevents execution if mandatory requirements not met
+# Check Connects all trading operations through MCP GitHub integration
+# Check Provides unified entry point for all system features
 
 EVERY MODULE MUST GO THROUGH THIS WRAPPER!
 """
@@ -167,7 +167,7 @@ class MandatoryDockerMCPWrapper:
         
         # STEP 4: Load and execute module with MCP integration
         try:
-            logger.info(f"🚀 EXECUTING {module_info['description']}")
+            logger.info(f"# Rocket EXECUTING {module_info['description']}")
             
             # Import and initialize module
             module = importlib.import_module(module_info['module'])
@@ -199,7 +199,7 @@ class MandatoryDockerMCPWrapper:
             # STEP 5: Log operation to GitHub MCP
             self._log_operation_to_github(module_name, operation, True)
             
-            logger.info(f"✅ {module_name}.{operation} COMPLETED SUCCESSFULLY")
+            logger.info(f"# Check {module_name}.{operation} COMPLETED SUCCESSFULLY")
             return result
             
         except Exception as e:
@@ -216,10 +216,10 @@ class MandatoryDockerMCPWrapper:
         try:
             import github_mcp_integration
             self.github_mcp = github_mcp_integration.GitHubMCPIntegration()
-            logger.info("✅ GitHub MCP Integration: INITIALIZED")
+            logger.info("# Check GitHub MCP Integration: INITIALIZED")
             return True
         except Exception as e:
-            logger.error(f"❌ GitHub MCP Integration failed: {e}")
+            logger.error(f"# X GitHub MCP Integration failed: {e}")
             return False
     
     def _inject_mcp_integration(self, instance: Any, module_name: str):
@@ -229,13 +229,13 @@ class MandatoryDockerMCPWrapper:
             if hasattr(instance, '__dict__'):
                 instance.github_mcp = self.github_mcp
                 instance.mcp_enforcer = self.enforcer
-                logger.info(f"✅ MCP integration injected into {module_name}")
+                logger.info(f"# Check MCP integration injected into {module_name}")
             
             # Add MCP logging wrapper to key methods
             self._wrap_methods_with_mcp_logging(instance, module_name)
             
         except Exception as e:
-            logger.warning(f"⚠️ MCP injection warning for {module_name}: {e}")
+            logger.warning(f"# Warning MCP injection warning for {module_name}: {e}")
     
     def _wrap_methods_with_mcp_logging(self, instance: Any, module_name: str):
         """Wrap instance methods with MCP logging"""
@@ -248,10 +248,10 @@ class MandatoryDockerMCPWrapper:
                     original_method = getattr(instance, method_name)
                     wrapped_method = self._create_mcp_logged_method(original_method, module_name, method_name)
                     setattr(instance, method_name, wrapped_method)
-                    logger.debug(f"✅ Wrapped {module_name}.{method_name} with MCP logging")
+                    logger.debug(f"# Check Wrapped {module_name}.{method_name} with MCP logging")
                     
         except Exception as e:
-            logger.warning(f"⚠️ Method wrapping warning for {module_name}: {e}")
+            logger.warning(f"# Warning Method wrapping warning for {module_name}: {e}")
     
     def _create_mcp_logged_method(self, original_method: Callable, module_name: str, method_name: str):
         """Create MCP-logged version of a method"""
@@ -324,11 +324,11 @@ class MandatoryDockerMCPWrapper:
                 self.operation_history.append(operation_data)
                 
                 # Commit to GitHub (async)
-                commit_message = f"{'✅' if success else '❌'} {module_name}.{operation} - {datetime.now().strftime('%Y%m%d_%H%M%S')}"
+                commit_message = f"{'# Check' if success else '# X'} {module_name}.{operation} - {datetime.now().strftime('%Y%m%d_%H%M%S')}"
                 asyncio.create_task(self.github_mcp.commit_system_changes(commit_message))
                 
         except Exception as e:
-            logger.warning(f"⚠️ GitHub logging warning: {e}")
+            logger.warning(f"# Warning GitHub logging warning: {e}")
     
     def start_docker_services(self) -> bool:
         """Start Docker services if not running"""
@@ -340,15 +340,15 @@ class MandatoryDockerMCPWrapper:
                                   capture_output=True, text=True, timeout=120)
             
             if result.returncode == 0:
-                logger.info("✅ Docker services started successfully")
+                logger.info("# Check Docker services started successfully")
                 time.sleep(30)  # Wait for services to initialize
                 return True
             else:
-                logger.error(f"❌ Docker services start failed: {result.stderr}")
+                logger.error(f"# X Docker services start failed: {result.stderr}")
                 return False
                 
         except Exception as e:
-            logger.error(f"❌ Error starting Docker services: {e}")
+            logger.error(f"# X Error starting Docker services: {e}")
             return False
     
     def get_available_modules(self) -> Dict[str, Any]:
@@ -401,7 +401,7 @@ def start_system_with_enforcement() -> bool:
         logger.error("💀 ENFORCEMENT FAILED - SYSTEM BLOCKED!")
         return False
     
-    logger.info("🎉 SYSTEM STARTED WITH MANDATORY ENFORCEMENT ACTIVE!")
+    logger.info("# Party SYSTEM STARTED WITH MANDATORY ENFORCEMENT ACTIVE!")
     return True
 
 if __name__ == "__main__":
@@ -419,7 +419,7 @@ if __name__ == "__main__":
     # Execute with enforcement
     try:
         result = execute_module(module_name, operation, *args)
-        print(f"✅ {module_name}.{operation} completed successfully!")
+        print(f"# Check {module_name}.{operation} completed successfully!")
         if result:
     except SystemExit:
         print(f"💀 {module_name}.{operation} execution blocked by enforcement!")

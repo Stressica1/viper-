@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Comprehensive Health Check & Diagnostic
+# Rocket VIPER Trading System - Comprehensive Health Check & Diagnostic
 Complete system analysis focusing on operational services
 """
 
@@ -39,8 +39,8 @@ class SystemHealthChecker:
             'mcp-server': {'port': 8015, 'name': 'MCP Server', 'critical': False}
         }
 
-        print("🔍 VIPER System Health Checker Initialized")
-        print(f"📊 Services to check: {len(self.services)}")
+        print("# Search VIPER System Health Checker Initialized")
+        print(f"# Chart Services to check: {len(self.services)}")
 
     def check_service_health(self, service_name: str, port: int, name: str) -> Dict[str, Any]:
         """Check individual service health"""
@@ -114,8 +114,8 @@ class SystemHealthChecker:
 
     def perform_comprehensive_health_check(self) -> Dict[str, Any]:
         """Perform comprehensive health check of all services"""
-        print("\n🚀 STARTING COMPREHENSIVE HEALTH CHECK...")
-        print("🔍 Checking all services and their connectivity")
+        print("\n# Rocket STARTING COMPREHENSIVE HEALTH CHECK...")
+        print("# Search Checking all services and their connectivity")
 
         health_report = {
             'timestamp': datetime.now().isoformat(),
@@ -177,7 +177,7 @@ class SystemHealthChecker:
         if health_report['critical_services_down'] > 0:
             down_critical = [
                 config['name'] for service, config in self.services.items()
-                if config['critical'] and
+                if config['critical'] and:
                 health_report['service_details'][service]['status'] == ServiceStatus.DOWN.value
             ]
             recommendations.append(f"🚨 CRITICAL: Restart these essential services: {', '.join(down_critical)}")
@@ -186,20 +186,20 @@ class SystemHealthChecker:
         if health_report['services_down'] > health_report['critical_services_down']:
             down_non_critical = [
                 config['name'] for service, config in self.services.items()
-                if not config['critical'] and
+                if not config['critical'] and:
                 health_report['service_details'][service]['status'] == ServiceStatus.DOWN.value
             ]
             if down_non_critical:
-                recommendations.append(f"⚠️ WARNING: These non-critical services are down: {', '.join(down_non_critical)}")
+                recommendations.append(f"# Warning WARNING: These non-critical services are down: {', '.join(down_non_critical)}")
 
         # Check for degraded services
         degraded_services = [
             config['name'] for service, config in self.services.items()
-            if health_report['service_details'][service]['status'] == ServiceStatus.DEGRADED.value
+            if health_report['service_details'][service]['status'] == ServiceStatus.DEGRADED.value:
         ]
 
         if degraded_services:
-            recommendations.append(f"🔧 PERFORMANCE: Investigate these slow/degraded services: {', '.join(degraded_services)}")
+            recommendations.append(f"# Tool PERFORMANCE: Investigate these slow/degraded services: {', '.join(degraded_services)}")
 
         # Check response times
         slow_services = []
@@ -213,11 +213,11 @@ class SystemHealthChecker:
 
         # Overall recommendations
         if health_report['overall_status'] == 'EXCELLENT':
-            recommendations.append("✅ SYSTEM EXCELLENT: All services operational and performing well")
+            recommendations.append("# Check SYSTEM EXCELLENT: All services operational and performing well")
         elif health_report['overall_status'] == 'GOOD':
-            recommendations.append("✅ SYSTEM GOOD: Core services operational with minor issues")
+            recommendations.append("# Check SYSTEM GOOD: Core services operational with minor issues")
         elif health_report['overall_status'] == 'DEGRADED':
-            recommendations.append("⚠️ SYSTEM DEGRADED: Some services need attention but system is functional")
+            recommendations.append("# Warning SYSTEM DEGRADED: Some services need attention but system is functional")
         else:
             recommendations.append("🚨 SYSTEM CRITICAL: Immediate maintenance required")
 
@@ -259,7 +259,7 @@ class SystemHealthChecker:
 
         # Determine overall connectivity
         connected_count = sum(1 for test in connectivity_report['connectivity_tests'].values()
-                            if test['status'] == 'CONNECTED')
+                            if test['status'] == 'CONNECTED'):
         total_tests = len(connectivity_report['connectivity_tests'])
 
         if connected_count == total_tests:
@@ -273,11 +273,11 @@ class SystemHealthChecker:
 
     def run_full_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       ║
-║ 🔍 Comprehensive Service Health | 🔗 Connectivity Testing | 📊 Performance   ║
-║ ⚡ Real-time Monitoring | 🧠 System Analysis | 📈 Health Reporting           ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       #
+# # Search Comprehensive Service Health | 🔗 Connectivity Testing | # Chart Performance   #
+# ⚡ Real-time Monitoring | 🧠 System Analysis | 📈 Health Reporting           #
+#==============================================================================#
         """)
 
         diagnostic_report = {
@@ -335,7 +335,7 @@ class SystemHealthChecker:
         # Analyze trading readiness
         critical_services = ['api-server', 'data-manager', 'exchange-connector', 'risk-manager', 'redis']
         critical_healthy = sum(1 for service in critical_services
-                             if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
+                             if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
 
         if critical_healthy == len(critical_services):
             analysis['trading_readiness'] = 'READY_FOR_TRADING'
@@ -347,7 +347,7 @@ class SystemHealthChecker:
         # Analyze infrastructure status
         infrastructure_services = ['redis', 'monitoring-service']
         infra_healthy = sum(1 for service in infrastructure_services
-                          if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
+                          if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
 
         if infra_healthy == len(infrastructure_services):
             analysis['infrastructure_status'] = 'INFRASTRUCTURE_SOLID'
@@ -357,7 +357,7 @@ class SystemHealthChecker:
         # Analyze monitoring coverage
         monitoring_services = ['monitoring-service']
         monitoring_healthy = sum(1 for service in monitoring_services
-                               if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
+                               if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
 
         if monitoring_healthy == len(monitoring_services):
             analysis['monitoring_coverage'] = 'FULL_MONITORING'
@@ -367,7 +367,7 @@ class SystemHealthChecker:
         # Analyze risk management
         risk_services = ['risk-manager', 'exchange-connector']
         risk_healthy = sum(1 for service in risk_services
-                         if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
+                         if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
 
         if risk_healthy == len(risk_services):
             analysis['risk_management'] = 'RISK_MANAGEMENT_ACTIVE'
@@ -383,20 +383,20 @@ class SystemHealthChecker:
         # Overall health
         health = report.get('overall_health', 'UNKNOWN')
         health_icon = {
-            'SYSTEM_OPERATIONAL': '🚀',
-            'SYSTEM_DEGRADED': '⚠️',
+            'SYSTEM_OPERATIONAL': '# Rocket',
+            'SYSTEM_DEGRADED': '# Warning',
             'SYSTEM_CRITICAL': '🚨',
-            'ERROR': '❌'
+            'ERROR': '# X'
         }.get(health, '❓')
 
         print(f"🏥 Overall System Health: {health_icon} {health}")
 
         # Health check results
         health_check = report.get('health_check', {})
-        print(f"📊 Services Checked: {health_check.get('services_checked', 0)}")
-        print(f"   ✅ Healthy: {health_check.get('services_healthy', 0)}")
-        print(f"   ⚠️ Degraded: {health_check.get('services_degraded', 0)}")
-        print(f"   ❌ Down: {health_check.get('services_down', 0)}")
+        print(f"# Chart Services Checked: {health_check.get('services_checked', 0)}")
+        print(f"   # Check Healthy: {health_check.get('services_healthy', 0)}")
+        print(f"   # Warning Degraded: {health_check.get('services_degraded', 0)}")
+        print(f"   # X Down: {health_check.get('services_down', 0)}")
         print(f"   🔴 Critical Down: {health_check.get('critical_services_down', 0)}")
 
         # Connectivity results
@@ -405,9 +405,9 @@ class SystemHealthChecker:
 
         # System analysis
         analysis = report.get('system_analysis', {})
-        print(f"🎯 Trading Readiness: {analysis.get('trading_readiness', 'UNKNOWN')}")
-        print(f"🏗️ Infrastructure: {analysis.get('infrastructure_status', 'UNKNOWN')}")
-        print(f"📊 Monitoring: {analysis.get('monitoring_coverage', 'UNKNOWN')}")
+        print(f"# Target Trading Readiness: {analysis.get('trading_readiness', 'UNKNOWN')}")
+        print(f"# Construction Infrastructure: {analysis.get('infrastructure_status', 'UNKNOWN')}")
+        print(f"# Chart Monitoring: {analysis.get('monitoring_coverage', 'UNKNOWN')}")
         print(f"🛡️ Risk Management: {analysis.get('risk_management', 'UNKNOWN')}")
 
         # Execution time
@@ -422,9 +422,9 @@ class SystemHealthChecker:
 
         # Action items based on health
         if health == 'SYSTEM_OPERATIONAL':
-            print("🎉 SYSTEM STATUS: FULLY OPERATIONAL - Ready for trading!")
+            print("# Party SYSTEM STATUS: FULLY OPERATIONAL - Ready for trading!")
         elif health == 'SYSTEM_DEGRADED':
-            print("⚠️ SYSTEM STATUS: DEGRADED - Limited functionality available")
+            print("# Warning SYSTEM STATUS: DEGRADED - Limited functionality available")
         else:
             print("🚨 SYSTEM STATUS: CRITICAL - Immediate maintenance required")
 

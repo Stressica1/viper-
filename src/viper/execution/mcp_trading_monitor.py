@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-📊 MCP TRADING MONITOR
+# Chart MCP TRADING MONITOR
 Real-time monitoring client for MCP Live Trading System
 
 This monitor provides:
-✅ Real-time trading status updates
-✅ Task management interface
-✅ Performance metrics dashboard
-✅ Emergency control panel
-✅ WebSocket-based communication
+# Check Real-time trading status updates
+# Check Task management interface
+# Check Performance metrics dashboard
+# Check Emergency control panel
+# Check WebSocket-based communication
 """
 
 import os
@@ -47,9 +47,9 @@ class MCPTradingMonitor:
             logger.info(f"🔗 Connecting to {self.websocket_url}")
             self.websocket = await websockets.connect(self.websocket_url)
             self.connected = True
-            logger.info("✅ Connected to MCP Trading System")
+            logger.info("# Check Connected to MCP Trading System")
         except Exception as e:
-            logger.error(f"❌ Connection failed: {e}")
+            logger.error(f"# X Connection failed: {e}")
             self.connected = False
 
     async def disconnect(self):
@@ -63,7 +63,7 @@ class MCPTradingMonitor:
         """Send command to MCP trading system"""
         try:
             if not self.connected:
-                logger.error("❌ Not connected to MCP system")
+                logger.error("# X Not connected to MCP system")
                 return None
 
             message = {
@@ -79,7 +79,7 @@ class MCPTradingMonitor:
             return json.loads(response)
 
         except Exception as e:
-            logger.error(f"❌ Command failed: {e}")
+            logger.error(f"# X Command failed: {e}")
             return None
 
     async def get_status(self):
@@ -120,13 +120,13 @@ class MCPTradingMonitor:
                     await asyncio.sleep(5)  # Update every 5 seconds
 
                 except websockets.exceptions.ConnectionClosed:
-                    logger.warning("⚠️ Connection lost, attempting reconnect...")
+                    logger.warning("# Warning Connection lost, attempting reconnect...")
                     await self.connect()
                     await asyncio.sleep(2)
 
         except KeyboardInterrupt:
         except Exception as e:
-            logger.error(f"❌ Monitoring error: {e}")
+            logger.error(f"# X Monitoring error: {e}")
         finally:
             await self.disconnect()
 
@@ -135,13 +135,13 @@ class MCPTradingMonitor:
         os.system('clear' if os.name == 'posix' else 'cls')  # Clear screen
 
         print(f"Timestamp: {status.get('timestamp', 'N/A')}")
-        print(f"MCP Connected: {'✅' if status.get('mcp_connected', False) else '❌'}")
-        print(f"Trading Active: {'✅' if status.get('trading_active', False) else '❌'}")
-        print(f"Emergency Stop: {'🚨' if status.get('emergency_stop', False) else '✅'}")
+        print(f"MCP Connected: {'# Check' if status.get('mcp_connected', False) else '# X'}")
+        print(f"Trading Active: {'# Check' if status.get('trading_active', False) else '# X'}")
+        print(f"Emergency Stop: {'🚨' if status.get('emergency_stop', False) else '# Check'}")
 
         print(f"Active Tasks: {status.get('active_tasks', 0)}")
         print(f"Total Tasks: {status.get('total_tasks', 0)}")
-        print(f"Components Ready: {'✅' if status.get('system_components', {}).get('components_ready', False) else '❌'}")
+        print(f"Components Ready: {'# Check' if status.get('system_components', {}).get('components_ready', False) else '# X'}")
 
         params = status.get('trading_parameters', {})
         print(f"Max Positions: {params.get('max_positions', 'N/A')}")
@@ -157,7 +157,7 @@ class MCPTradingMonitor:
                     'running': '🟡',
                     'scheduled': '🔵',
                     'stopped': '🔴',
-                    'error': '❌'
+                    'error': '# X'
                 }.get(task.get('status', 'unknown'), '⚪')
 
                 print(f"{status_icon} {task.get('id', 'N/A')} - {task.get('status', 'unknown')}")
@@ -219,7 +219,7 @@ async def interactive_monitor():
                 break
 
     except Exception as e:
-        logger.error(f"❌ Interactive monitor error: {e}")
+        logger.error(f"# X Interactive monitor error: {e}")
     finally:
         await monitor.disconnect()
 

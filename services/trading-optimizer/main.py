@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Trading Strategy Optimizer MCP Server
+# Rocket VIPER Trading Bot - Trading Strategy Optimizer MCP Server
 Dedicated MCP server for performance analysis and strategy optimization
 """
 

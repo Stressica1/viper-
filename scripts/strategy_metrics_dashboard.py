@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-📊 STRATEGY METRICS DASHBOARD - VIPER Trading Performance Analytics
+# Chart STRATEGY METRICS DASHBOARD - VIPER Trading Performance Analytics
 ================================================================
 
 Comprehensive trading strategy analytics and performance dashboard.
@@ -287,7 +287,7 @@ class StrategyMetricsDashboard:
         # Filter strategies
         filtered_strategies = [
             s for s in self.strategies.values()
-            if filter_status == 'all' or s.status == filter_status
+            if filter_status == 'all' or s.status == filter_status:
         ]
 
         if not filtered_strategies:
@@ -360,14 +360,14 @@ class StrategyMetricsDashboard:
         emergency_stop = -portfolio_value * 0.15       # 15.0%
 
         summary = f"""
-🎯 PORTFOLIO SUMMARY - LIVE BALANCE TRACKING
+# Target PORTFOLIO SUMMARY - LIVE BALANCE TRACKING
 {'='*50}
-📊 Total Strategies: {pm.total_strategies}
-✅ Active Strategies: {pm.active_strategies}
+# Chart Total Strategies: {pm.total_strategies}
+# Check Active Strategies: {pm.active_strategies}
 💰 Portfolio Value: ${pm.total_portfolio_value:,.2f}
 📈 Daily P&L: ${pm.daily_pnl:,.2f}
 💹 Total P&L: ${pm.total_pnl:,.2f} ({pm.total_pnl/pm.total_portfolio_value*100:.2f}%)
-📊 Portfolio Return: {pm.portfolio_return:.1f}%
+# Chart Portfolio Return: {pm.portfolio_return:.1f}%
 ⚡ Sharpe Ratio: {pm.portfolio_sharpe:.2f}
 📉 Max Drawdown: {pm.portfolio_drawdown:.1f}%
 🎚️ Risk-Adjusted Return: {pm.risk_adjusted_return:.2f}
@@ -376,7 +376,7 @@ class StrategyMetricsDashboard:
 
 🔗 BALANCE STATUS: {balance_status}
 
-💡 DYNAMIC RISK LIMITS (based on live ${portfolio_value:.0f} balance):
+# Idea DYNAMIC RISK LIMITS (based on live ${portfolio_value:.0f} balance):
    • Max Single Position Loss: ${max_position_loss:.2f} ({max_position_loss/portfolio_value*100:.1f}%)
    • Max Daily Loss: ${max_daily_loss:.2f} ({max_daily_loss/portfolio_value*100:.1f}%)
    • Circuit Breaker: ${circuit_breaker:.2f} ({circuit_breaker/portfolio_value*100:.1f}%)
@@ -393,10 +393,10 @@ class StrategyMetricsDashboard:
         strategy = self.strategies[strategy_name]
 
         details = f"""
-🔍 STRATEGY DETAILS: {strategy.strategy_name}
+# Search STRATEGY DETAILS: {strategy.strategy_name}
 {'='*60}
 
-📊 PERFORMANCE METRICS
+# Chart PERFORMANCE METRICS
   Win Rate: {strategy.win_rate:.1f}%
   Total Trades: {strategy.total_trades}
   Winning Trades: {strategy.winning_trades}
@@ -422,7 +422,7 @@ class StrategyMetricsDashboard:
   Status: {strategy.status}
   Last Updated: {strategy.last_updated}
 
-📊 RISK METRICS
+# Chart RISK METRICS
   Alpha: {strategy.alpha:.3f}
   Beta: {strategy.beta:.3f}
   Information Ratio: {strategy.information_ratio:.2f}
@@ -499,7 +499,7 @@ class StrategyMetricsDashboard:
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
         report = f"""
-📊 VIPER TRADING STRATEGY PERFORMANCE REPORT
+# Chart VIPER TRADING STRATEGY PERFORMANCE REPORT
 {'='*70}
 Generated: {timestamp}
 
@@ -507,7 +507,7 @@ Generated: {timestamp}
 
 {self.display_strategy_table()}
 
-🎯 RECOMMENDATIONS
+# Target RECOMMENDATIONS
 {'='*30}
 • Monitor strategies with Sharpe ratio < 1.5 for potential optimization
 • Rebalance portfolio weights quarterly based on performance
@@ -522,7 +522,7 @@ Generated: {timestamp}
 • Max Drawdown: Largest peak-to-valley decline (target: <10%)
 • Calmar Ratio: Annual return / Max drawdown (target: >5)
 
-⚠️  DISCLAIMER
+# Warning  DISCLAIMER
 {'='*15}
 This report contains simulated performance data for demonstration purposes.
 Actual trading results may vary significantly due to market conditions,
@@ -583,13 +583,13 @@ future results. Always perform your own due diligence and risk assessment.
             if strategy.status == 'active':
                 # Check for concerning metrics
                 if strategy.sharpe_ratio < 1.0:
-                    alerts.append(f"⚠️  Low Sharpe ratio for {strategy.strategy_name}: {strategy.sharpe_ratio:.2f}")
+                    alerts.append(f"# Warning  Low Sharpe ratio for {strategy.strategy_name}: {strategy.sharpe_ratio:.2f}")
 
                 if strategy.max_drawdown < -15:  # More than 15% drawdown
                     alerts.append(f"🚨 High drawdown for {strategy.strategy_name}: {strategy.max_drawdown:.1f}%")
 
                 if strategy.win_rate < 50:
-                    alerts.append(f"⚠️  Low win rate for {strategy.strategy_name}: {strategy.win_rate:.1f}%")
+                    alerts.append(f"# Warning  Low win rate for {strategy.strategy_name}: {strategy.win_rate:.1f}%")
 
         if alerts:
             for alert in alerts:

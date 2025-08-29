@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 COMPLETE LIVE TRADING SYSTEM - VIPER Full Automation
+# Rocket COMPLETE LIVE TRADING SYSTEM - VIPER Full Automation
 ======================================================
 
 Complete live trading system with strategy monitoring and GitHub MCP integration.
@@ -74,7 +74,7 @@ class CompleteLiveTradingSystem:
 
     def _signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
-        print(f"\n⚠️  Received signal {signum}, initiating graceful shutdown...")
+        print(f"\n# Warning  Received signal {signum}, initiating graceful shutdown...")
         self.stop_system()
 
     def initialize_system(self) -> bool:
@@ -82,7 +82,7 @@ class CompleteLiveTradingSystem:
         try:
 
             # Initialize strategy dashboard
-            print("  📊 Initializing strategy metrics dashboard...")
+            print("  # Chart Initializing strategy metrics dashboard...")
             self.strategy_dashboard = StrategyMetricsDashboard()
             self.status.strategies_loaded = len(self.strategy_dashboard.strategies)
 
@@ -124,7 +124,7 @@ class CompleteLiveTradingSystem:
 
             self.status.last_update = datetime.now().isoformat()
 
-            print("\n🎉 VIPER Live Trading System Started Successfully!")
+            print("\n# Party VIPER Live Trading System Started Successfully!")
 
             # Display initial status
             self.display_system_status()
@@ -132,7 +132,7 @@ class CompleteLiveTradingSystem:
             return True
 
         except Exception as e:
-            print(f"❌ Failed to start live trading system: {e}")
+            print(f"# X Failed to start live trading system: {e}")
             return False
 
     def stop_system(self) -> bool:
@@ -217,16 +217,16 @@ class CompleteLiveTradingSystem:
 
         # Trading status
         trading_status = self.trading_manager.get_trading_status() if self.trading_manager else {}
-        print(f"  Status: {'✅ Active' if self.status.live_trading_active else '❌ Inactive'}")
+        print(f"  Status: {'# Check Active' if self.status.live_trading_active else '# X Inactive'}")
         print(f"  Positions: {trading_status.get('active_positions', 0)}")
         print(f"  Total P&L: ${trading_status.get('total_pnl', 0):,.2f}")
 
         # Strategy monitoring
-        print(f"  Status: {'✅ Active' if self.status.monitoring_active else '❌ Inactive'}")
+        print(f"  Status: {'# Check Active' if self.status.monitoring_active else '# X Inactive'}")
         print(f"  Strategies Loaded: {self.status.strategies_loaded}")
 
         # GitHub MCP
-        print(f"  Status: {'✅ Connected' if self.status.github_mcp_connected else '❌ Disconnected'}")
+        print(f"  Status: {'# Check Connected' if self.status.github_mcp_connected else '# X Disconnected'}")
         if self.github_mcp:
             open_tasks = len(self.github_mcp.get_open_tasks())
 
@@ -323,7 +323,7 @@ def main():
             elif args.automated:
                 system.run_automated_mode(args.automated)
             else:
-                print("💡 System started. Use --interactive for command interface")
+                print("# Idea System started. Use --interactive for command interface")
                 print("   or --automated N for automated operation")
                 try:
                     while True:
@@ -342,7 +342,7 @@ def main():
         if system.initialize_system():
             system.display_system_status()
         else:
-            print("❌ Failed to initialize system for status check")
+            print("# X Failed to initialize system for status check")
 
     else:
         print("  Start interactive: python scripts/start_live_trading_complete.py --start --interactive")

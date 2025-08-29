@@ -1,5 +1,5 @@
 """
-🚀 VIPER Core Trading Systems
+# Rocket VIPER Core Trading Systems
 Contains the main trading engines and system components
 """
 

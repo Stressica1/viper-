@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-🚀 DIRECT RESPONSE TO USER FEEDBACK: "45% WIN RATE IS A JOKE"
+# Rocket DIRECT RESPONSE TO USER FEEDBACK: "45% WIN RATE IS A JOKE"
 Simple but comprehensive strategy optimization addressing ALL user requirements
 
 USER DEMANDS ADDRESSED:
-✅ "OPTIMISE THE STRATEGIES FARTHER" - Extensive optimization with 500+ combinations  
-✅ "45% WIN RATE IS A JOKE" - Target 60%+ win rates minimum
-✅ "DIFF TP/SL SETTTINGS" - Complete TP/SL ratio testing (1:1 to 1:6)
-✅ "DIFF CONFIGS FOR LENGTH AND MULTS" - All technical parameters optimized
+# Check "OPTIMISE THE STRATEGIES FARTHER" - Extensive optimization with 500+ combinations  
+# Check "45% WIN RATE IS A JOKE" - Target 60%+ win rates minimum
+# Check "DIFF TP/SL SETTTINGS" - Complete TP/SL ratio testing (1:1 to 1:6)
+# Check "DIFF CONFIGS FOR LENGTH AND MULTS" - All technical parameters optimized
 
 RESULTS: Transform joke 45% strategies into elite 60%+ performers
 """
@@ -90,15 +90,15 @@ class JokeEliminatorOptimizer:
         self.symbols = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT', 'SOLUSDT', 'DOTUSDT']
         self.results = []
         
-        console.print("🚀 [bold red]JOKE ELIMINATOR OPTIMIZER LOADED![/bold red]")
-        console.print("🎯 [yellow]TARGET: Eliminate 45% joke, achieve 60%+ elite performance[/yellow]")
+        console.print("# Rocket [bold red]JOKE ELIMINATOR OPTIMIZER LOADED![/bold red]")
+        console.print("# Target [yellow]TARGET: Eliminate 45% joke, achieve 60%+ elite performance[/yellow]")
     
     def run_comprehensive_optimization(self) -> Dict[str, Any]:
         """Run comprehensive optimization to eliminate joke performance"""
         
         console.print("\n🔥 [bold blue]COMPREHENSIVE OPTIMIZATION STARTED[/bold blue]")
-        console.print("❌ [red]ELIMINATING 45% WIN RATE JOKES FOREVER[/red]")
-        console.print(f"🎯 [yellow]TARGET: {self.minimum_target:.0%} minimum, {self.elite_target:.0%} elite[/yellow]")
+        console.print("# X [red]ELIMINATING 45% WIN RATE JOKES FOREVER[/red]")
+        console.print(f"# Target [yellow]TARGET: {self.minimum_target:.0%} minimum, {self.elite_target:.0%} elite[/yellow]")
         
         start_time = datetime.now()
         total_combinations = len(self.strategies) * len(self.timeframes) * len(self.symbols)
@@ -112,7 +112,7 @@ class JokeEliminatorOptimizer:
             transient=False,
         ) as progress:
             
-            main_task = progress.add_task(f"🔧 Optimizing {total_combinations} strategies...", total=total_combinations)
+            main_task = progress.add_task(f"# Tool Optimizing {total_combinations} strategies...", total=total_combinations)
             
             for strategy_name, strategy_type in self.strategies.items():
                 for timeframe in self.timeframes:
@@ -128,7 +128,7 @@ class JokeEliminatorOptimizer:
         analysis = self._analyze_joke_elimination_results()
         
         execution_time = (datetime.now() - start_time).total_seconds()
-        console.print(f"\n✅ [bold green]Optimization completed in {execution_time:.1f}s[/bold green]")
+        console.print(f"\n# Check [bold green]Optimization completed in {execution_time:.1f}s[/bold green]")
         
         return analysis
     
@@ -578,7 +578,7 @@ class JokeEliminatorOptimizer:
     def _analyze_joke_elimination_results(self) -> Dict[str, Any]:
         """Analyze results to see how well we eliminated joke performance"""
         
-        console.print("\n📊 [bold blue]ANALYZING JOKE ELIMINATION RESULTS[/bold blue]")
+        console.print("\n# Chart [bold blue]ANALYZING JOKE ELIMINATION RESULTS[/bold blue]")
         
         if not self.results:
             return {"error": "No optimization results"}
@@ -669,7 +669,7 @@ class JokeEliminatorOptimizer:
                                       improved_strategies: List[Dict[str, Any]]):
         """Display comprehensive transformation summary"""
         
-        console.print("\n🎯 [bold green]JOKE ELIMINATION MISSION SUMMARY[/bold green]")
+        console.print("\n# Target [bold green]JOKE ELIMINATION MISSION SUMMARY[/bold green]")
         
         # Calculate statistics
         total_strategies = len(all_results)
@@ -681,9 +681,9 @@ class JokeEliminatorOptimizer:
         biggest_improvement = max(all_results, key=lambda x: x['win_rate_improvement'])
         
         summary_text = Text()
-        summary_text.append("🚀 MISSION: ELIMINATE 45% WIN RATE JOKES\n\n", style="bold blue")
+        summary_text.append("# Rocket MISSION: ELIMINATE 45% WIN RATE JOKES\n\n", style="bold blue")
         
-        summary_text.append("📊 TRANSFORMATION RESULTS:\n", style="bold yellow")
+        summary_text.append("# Chart TRANSFORMATION RESULTS:\n", style="bold yellow")
         summary_text.append(f"   Average Baseline (Joke): {avg_baseline_win_rate:.1%}\n", style="red")
         summary_text.append(f"   Average Optimized: {avg_optimized_win_rate:.1%}\n", style="green") 
         summary_text.append(f"   Average Improvement: +{avg_improvement:.1%}\n\n", style="blue")
@@ -693,35 +693,35 @@ class JokeEliminatorOptimizer:
         summary_text.append(f"   Joke Eliminators (60%+): {len(joke_eliminators)}/{total_strategies} ({len(joke_eliminators)/total_strategies:.1%})\n", style="yellow")
         summary_text.append(f"   Strategies Improved: {len(improved_strategies)}/{total_strategies} ({len(improved_strategies)/total_strategies:.1%})\n\n", style="cyan")
         
-        summary_text.append("🎯 BEST ACHIEVEMENTS:\n", style="bold green")
+        summary_text.append("# Target BEST ACHIEVEMENTS:\n", style="bold green")
         summary_text.append(f"   Highest Win Rate: {best_performer['optimized_win_rate']:.1%} ({best_performer['strategy_name']})\n", style="green")
         summary_text.append(f"   Biggest Improvement: +{biggest_improvement['win_rate_improvement']:.1%} ({biggest_improvement['strategy_name']})\n", style="blue")
         
         # Mission status
-        summary_text.append("\n🚀 MISSION STATUS: ", style="bold blue")
+        summary_text.append("\n# Rocket MISSION STATUS: ", style="bold blue")
         if len(joke_eliminators) >= total_strategies * 0.3:  # 30% success rate
-            summary_text.append("SUCCESS - JOKES ELIMINATED! 🎉", style="bold green")
+            summary_text.append("SUCCESS - JOKES ELIMINATED! # Party", style="bold green")
         elif len(improved_strategies) >= total_strategies * 0.7:  # 70% improved
             summary_text.append("PARTIAL SUCCESS - MAJOR IMPROVEMENTS", style="bold yellow")
         else:
             summary_text.append("CONTINUE OPTIMIZATION NEEDED", style="bold red")
         
-        console.print(Panel(summary_text, title="🎯 JOKE ELIMINATION MISSION REPORT", border_style="green"))
+        console.print(Panel(summary_text, title="# Target JOKE ELIMINATION MISSION REPORT", border_style="green"))
 
 def main():
     """Main execution function"""
     try:
         console.print("\n🔥 [bold red]JOKE ELIMINATOR OPTIMIZER - ADDRESSING USER FEEDBACK[/bold red]")
-        console.print("❌ [yellow]USER: '45% WIN RATE IS A JOKE' - WE'RE FIXING THIS![/yellow]")
+        console.print("# X [yellow]USER: '45% WIN RATE IS A JOKE' - WE'RE FIXING THIS![/yellow]")
         
         optimizer = JokeEliminatorOptimizer()
         results = optimizer.run_comprehensive_optimization()
         
-        console.print("\n✅ [bold green]JOKE ELIMINATION OPTIMIZATION COMPLETED![/bold green]")
+        console.print("\n# Check [bold green]JOKE ELIMINATION OPTIMIZATION COMPLETED![/bold green]")
         
         if results and 'mission_summary' in results:
             summary = results['mission_summary']
-            console.print(f"\n🎯 [bold cyan]FINAL MISSION RESULTS:[/bold cyan]")
+            console.print(f"\n# Target [bold cyan]FINAL MISSION RESULTS:[/bold cyan]")
             console.print(f"   Elite Strategies (65%+): {summary['elite_performers_achieved']}")
             console.print(f"   Joke Eliminators (60%+): {summary['joke_eliminators_achieved']}")
             console.print(f"   Success Rate: {summary['joke_elimination_rate']:.1%}")
@@ -729,12 +729,12 @@ def main():
             if summary['joke_eliminators_achieved'] > 0:
                 console.print(f"\n🏆 [bold green]MISSION ACCOMPLISHED - NO MORE 45% JOKES![/bold green]")
             else:
-                console.print(f"\n⚠️ [yellow]MISSION PARTIAL - CONTINUE OPTIMIZATION[/yellow]")
+                console.print(f"\n# Warning [yellow]MISSION PARTIAL - CONTINUE OPTIMIZATION[/yellow]")
         
         return results
         
     except Exception as e:
-        console.print(f"\n❌ [bold red]Error: {e}[/bold red]")
+        console.print(f"\n# X [bold red]Error: {e}[/bold red]")
         import traceback
         traceback.print_exc()
         return None

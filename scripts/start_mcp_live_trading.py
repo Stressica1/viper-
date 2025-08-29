@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-🚀 START MCP LIVE TRADING
+# Rocket START MCP LIVE TRADING
 Simple launcher for MCP-powered live trading system
 
 This script provides:
-✅ Easy startup of MCP live trading connector
-✅ Task scheduling and management
-✅ Real-time monitoring dashboard
-✅ Emergency controls and safety features
+# Check Easy startup of MCP live trading connector
+# Check Task scheduling and management
+# Check Real-time monitoring dashboard
+# Check Emergency controls and safety features
 """
 
 import os
@@ -51,11 +51,11 @@ class MCPLiveTradingLauncher:
                 with open(config_path, 'r') as f:
                     config = json.load(f)
                     self.tasks_config = config.get('mcp_trading_tasks', {})
-                logger.info("✅ Task configuration loaded")
+                logger.info("# Check Task configuration loaded")
             else:
-                logger.warning("⚠️ Task configuration file not found")
+                logger.warning("# Warning Task configuration file not found")
         except Exception as e:
-            logger.error(f"❌ Failed to load task config: {e}")
+            logger.error(f"# X Failed to load task config: {e}")
 
     async def create_default_tasks(self):
         """Create default trading tasks from configuration"""
@@ -81,16 +81,16 @@ class MCPLiveTradingLauncher:
                     task_id = await create_live_trading_task(merged_config)
 
                     if task_id:
-                        logger.info(f"✅ Created task: {task_config['name']} ({task_id})")
+                        logger.info(f"# Check Created task: {task_config['name']} ({task_id})")
                     else:
-                        logger.error(f"❌ Failed to create task: {task_config['name']}")
+                        logger.error(f"# X Failed to create task: {task_config['name']}")
 
         except Exception as e:
-            logger.error(f"❌ Task creation failed: {e}")
+            logger.error(f"# X Task creation failed: {e}")
 
     async def start_trading_operations(self):
         """Start all active trading operations"""
-        logger.info("🚀 Starting trading operations...")
+        logger.info("# Rocket Starting trading operations...")
 
         try:
             # Initialize MCP connector
@@ -104,7 +104,7 @@ class MCPLiveTradingLauncher:
             await self.connector.run_mcp_trading_system()
 
         except Exception as e:
-            logger.error(f"❌ Failed to start trading operations: {e}")
+            logger.error(f"# X Failed to start trading operations: {e}")
             return False
 
         return True
@@ -174,7 +174,7 @@ def main():
     try:
         success = asyncio.run(run_launcher())
         if success:
-            print("✅ MCP Live Trading System completed successfully")
+            print("# Check MCP Live Trading System completed successfully")
             return 0
         else:
             return 1

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Comprehensive Diagnostic & Status Monitor
+# Rocket VIPER Trading System - Comprehensive Diagnostic & Status Monitor
 """
 
 import requests
@@ -158,7 +158,7 @@ class ViperDiagnostic:
         if healthy_percent < 80:
             recommendations.append("🚨 CRITICAL: Many services are unhealthy. Check Docker containers and logs.")
         elif healthy_percent < 100:
-            recommendations.append("⚠️  WARNING: Some services are unhealthy. Check individual service logs.")
+            recommendations.append("# Warning  WARNING: Some services are unhealthy. Check individual service logs.")
         
         # Trading functionality recommendations
         operational_percent = (analysis['trading_status']['operational'] / max(1, analysis['trading_status']['total'])) * 100
@@ -166,16 +166,16 @@ class ViperDiagnostic:
         if operational_percent < 50:
             recommendations.append("🚨 CRITICAL: Trading functionality is severely impaired.")
         elif operational_percent < 100:
-            recommendations.append("⚠️  WARNING: Some trading endpoints are not responding.")
+            recommendations.append("# Warning  WARNING: Some trading endpoints are not responding.")
         
         if not recommendations:
-            recommendations.append("✅ SYSTEM STATUS: All services operational and trading ready!")
+            recommendations.append("# Check SYSTEM STATUS: All services operational and trading ready!")
         
         return recommendations
     
     def print_diagnostic_report(self, report: Dict[str, Any]):
         """Print formatted diagnostic report"""
-        print(f"\n📊 DIAGNOSTIC REPORT - {report['diagnostic_time']}")
+        print(f"\n# Chart DIAGNOSTIC REPORT - {report['diagnostic_time']}")
         
         analysis = report['analysis']
         
@@ -195,10 +195,14 @@ class ViperDiagnostic:
         print(f"   Operational: {operational}/{total_trading} ({operational/max(1,total_trading)*100:.1f}%)")
         
         if analysis['warnings']:
+            print("# Warning WARNINGS:")
             for warning in analysis['warnings'][:3]:  # Show first 3
+                print(f"   • {warning}")
         
         # Recommendations
+        print("# Idea RECOMMENDATIONS:")
         for rec in report['recommendations']:
+            print(f"   • {rec}")
         
 
 if __name__ == "__main__":

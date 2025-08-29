@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 OPTIMAL ENTRY POINT MANAGER
+# Target OPTIMAL ENTRY POINT MANAGER
 Enhanced entry point optimization with mathematical validation and MCP integration
 
 This script provides:
@@ -171,10 +171,10 @@ class OptimalEntryPointManager:
             # Update performance tracking
             self.update_performance_metrics(entry_result)
             
-            logger.info(f"🎯 Entry Score: {entry_score:.3f}, Confidence: {confidence:.3f}, Recommendation: {entry_result['recommendation']}")
+            logger.info(f"# Target Entry Score: {entry_score:.3f}, Confidence: {confidence:.3f}, Recommendation: {entry_result['recommendation']}")
             
         except Exception as e:
-            logger.error(f"❌ Error calculating entry score: {e}")
+            logger.error(f"# X Error calculating entry score: {e}")
             entry_result['error'] = str(e)
             entry_result['recommendation'] = 'HOLD'
         
@@ -303,7 +303,7 @@ class OptimalEntryPointManager:
             return np.mean(scores)
             
         except Exception as e:
-            logger.warning(f"⚠️ Error in technical analysis score: {e}")
+            logger.warning(f"# Warning Error in technical analysis score: {e}")
             return 0.5  # Neutral score on error
     
     def calculate_bb_position(self, market_data: Dict[str, Any]) -> float:
@@ -355,7 +355,7 @@ class OptimalEntryPointManager:
             return np.mean(scores)
             
         except Exception as e:
-            logger.warning(f"⚠️ Error in trend strength score: {e}")
+            logger.warning(f"# Warning Error in trend strength score: {e}")
             return 0.5
     
     def calculate_volume_confirmation_score(self, market_data: Dict[str, Any]) -> float:
@@ -379,7 +379,7 @@ class OptimalEntryPointManager:
                 return 0.2  # Weak volume
                 
         except Exception as e:
-            logger.warning(f"⚠️ Error in volume confirmation score: {e}")
+            logger.warning(f"# Warning Error in volume confirmation score: {e}")
             return 0.5
     
     def calculate_execution_cost_score(self, market_data: Dict[str, Any]) -> float:
@@ -413,7 +413,7 @@ class OptimalEntryPointManager:
                 return 0.9  # Excellent execution conditions
             
         except Exception as e:
-            logger.warning(f"⚠️ Error in execution cost score: {e}")
+            logger.warning(f"# Warning Error in execution cost score: {e}")
             return 0.5  # Neutral score on error
     
     def calculate_market_regime_score(self, market_data: Dict[str, Any]) -> float:
@@ -438,7 +438,7 @@ class OptimalEntryPointManager:
                     return 0.4
                     
         except Exception as e:
-            logger.warning(f"⚠️ Error in market regime score: {e}")
+            logger.warning(f"# Warning Error in market regime score: {e}")
             return 0.5
     
     def calculate_entry_confidence(self, component_scores: Dict[str, float], 
@@ -470,7 +470,7 @@ class OptimalEntryPointManager:
             return np.clip(confidence, 0.0, 1.0)
             
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating confidence: {e}")
+            logger.warning(f"# Warning Error calculating confidence: {e}")
             return 0.5
     
     def generate_entry_recommendation(self, entry_score: float, confidence: float) -> str:
@@ -537,7 +537,7 @@ class OptimalEntryPointManager:
             risk_metrics['take_profit_suggestion'] = risk_metrics['stop_loss_suggestion'] * 3  # 3:1 ratio
             
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating risk metrics: {e}")
+            logger.warning(f"# Warning Error calculating risk metrics: {e}")
         
         return risk_metrics
     
@@ -553,23 +553,23 @@ class OptimalEntryPointManager:
             
             # Low confidence suggestions
             if confidence < self.entry_configs['confidence_min']:
-                suggestions.append("🔍 Wait for higher confidence signals before entering")
-                suggestions.append("📊 Consider additional technical indicators for confirmation")
+                suggestions.append("# Search Wait for higher confidence signals before entering")
+                suggestions.append("# Chart Consider additional technical indicators for confirmation")
             
             # Component-specific suggestions
             if component_scores.get('technical_analysis', 0.5) < 0.4:
                 suggestions.append("📈 Technical indicators not aligned - wait for better setup")
             
             if component_scores.get('volume_confirmation', 0.5) < 0.4:
-                suggestions.append("📊 Low volume confirmation - consider waiting for higher volume")
+                suggestions.append("# Chart Low volume confirmation - consider waiting for higher volume")
             
             if component_scores.get('risk_assessment', 0.5) < 0.4:
-                suggestions.append("⚠️ High volatility detected - reduce position size or wait")
+                suggestions.append("# Warning High volatility detected - reduce position size or wait")
             
             # Data quality suggestions
             data_quality = validation_results.get('data_quality_score', 1.0)
             if data_quality < 0.8:
-                suggestions.append("🔧 Improve data quality for better entry point analysis")
+                suggestions.append("# Tool Improve data quality for better entry point analysis")
             
             # Performance suggestions
             if self.performance_metrics['total_signals_generated'] > 10:
@@ -579,11 +579,11 @@ class OptimalEntryPointManager:
                     0.0
                 )
                 if success_rate < 0.6:
-                    suggestions.append("📊 Consider adjusting entry thresholds - success rate below 60%")
+                    suggestions.append("# Chart Consider adjusting entry thresholds - success rate below 60%")
             
         except Exception as e:
-            logger.warning(f"⚠️ Error generating suggestions: {e}")
-            suggestions.append("🔧 System optimization recommended")
+            logger.warning(f"# Warning Error generating suggestions: {e}")
+            suggestions.append("# Tool System optimization recommended")
         
         return suggestions
     
@@ -603,7 +603,7 @@ class OptimalEntryPointManager:
                 (old_avg * (count - 1) + new_confidence) / count
         
         except Exception as e:
-            logger.warning(f"⚠️ Error updating performance metrics: {e}")
+            logger.warning(f"# Warning Error updating performance metrics: {e}")
     
     def save_performance_report(self):
         """Save performance metrics to file"""
@@ -624,14 +624,14 @@ class OptimalEntryPointManager:
             with open(report_file, 'w') as f:
                 json.dump(performance_report, f, indent=2, default=str)
             
-            logger.info(f"📊 Performance report saved to: {report_file}")
+            logger.info(f"# Chart Performance report saved to: {report_file}")
             
         except Exception as e:
-            logger.error(f"❌ Error saving performance report: {e}")
+            logger.error(f"# X Error saving performance report: {e}")
 
 def main():
     """Run entry point optimization example"""
-    print("🎯 OPTIMAL ENTRY POINT MANAGER - EXAMPLE RUN")
+    print("# Target OPTIMAL ENTRY POINT MANAGER - EXAMPLE RUN")
     
     # Initialize manager
     manager = OptimalEntryPointManager()
@@ -658,9 +658,9 @@ def main():
     result = manager.calculate_optimal_entry_score(example_data)
     
     # Display results
-    print(f"🎯 Entry Score: {result['entry_score']:.3f}")
-    print(f"🔍 Confidence: {result['confidence']:.3f}")
-    print(f"📊 Recommendation: {result['recommendation']}")
+    print(f"# Target Entry Score: {result['entry_score']:.3f}")
+    print(f"# Search Confidence: {result['confidence']:.3f}")
+    print(f"# Chart Recommendation: {result['recommendation']}")
     for component, score in result['component_scores'].items():
     
     for metric, value in result['risk_metrics'].items():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 FINAL VIPER LIVE TRADING LAUNCHER
+# Target FINAL VIPER LIVE TRADING LAUNCHER
 Complete system with all components connected for live trading
 """
 
@@ -43,7 +43,7 @@ async def run_complete_live_system():
         # Import the enhanced trader
         from viper_async_trader import ViperAsyncTrader
 
-        print("🔧 Initializing Complete Trading System...")
+        print("# Tool Initializing Complete Trading System...")
         trader = ViperAsyncTrader()
 
         print(f"   • Risk per Trade: {trader.risk_per_trade*100}%")
@@ -66,7 +66,7 @@ async def run_complete_live_system():
         except Exception as e:
 
 
-        print("📊 Monitoring market for trading opportunities...")
+        print("# Chart Monitoring market for trading opportunities...")
 
         # Start the main trading loop
         cycle_count = 0
@@ -100,13 +100,13 @@ async def run_complete_live_system():
             except KeyboardInterrupt:
                 break
             except Exception as e:
-                logger.error(f"❌ System error in cycle {cycle_count}: {e}")
+                logger.error(f"# X System error in cycle {cycle_count}: {e}")
                 await asyncio.sleep(10)  # Shorter wait on error
 
-        print("🎉 Thank you for using VIPER Live Trading System!")
+        print("# Party Thank you for using VIPER Live Trading System!")
 
     except Exception as e:
-        logger.error(f"❌ Failed to start complete system: {e}")
+        logger.error(f"# X Failed to start complete system: {e}")
         return False
 
     return True

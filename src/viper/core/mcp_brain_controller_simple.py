@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MCP BRAIN CONTROLLER - SIMPLE VERSION
+# Rocket VIPER MCP BRAIN CONTROLLER - SIMPLE VERSION
 A working brain controller that actually starts and serves the web interface
 """
 
@@ -330,8 +330,8 @@ async def get_status():
 
 def main():
     """Start the brain controller"""
-    logger.info("🚀 Starting VIPER MCP Brain Controller...")
-    logger.info("📊 Dashboard will be available at: http://localhost:8080")
+    logger.info("# Rocket Starting VIPER MCP Brain Controller...")
+    logger.info("# Chart Dashboard will be available at: http://localhost:8080")
 
     try:
         uvicorn.run(
@@ -342,7 +342,7 @@ def main():
             reload=False
         )
     except Exception as e:
-        logger.error(f"❌ Failed to start brain controller: {e}")
+        logger.error(f"# X Failed to start brain controller: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

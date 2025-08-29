@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Live Trading Optimizer
+# Rocket VIPER Live Trading Optimizer
 Continuous live trading with real-time strategy optimization and risk management
 """
 
@@ -80,8 +80,8 @@ class LiveTradingOptimizer:
             'signal_confidence_threshold': 0.75
         }
 
-        logger.info("🚀 VIPER Live Trading Optimizer initialized")
-        logger.info(f"📊 Max Positions: {self.max_positions}")
+        logger.info("# Rocket VIPER Live Trading Optimizer initialized")
+        logger.info(f"# Chart Max Positions: {self.max_positions}")
         logger.info(f"⚖️ Risk per Trade: {self.risk_per_trade*100}%")
         logger.info(f"🛑 Daily Loss Limit: {self.daily_loss_limit*100}%")
 
@@ -106,14 +106,14 @@ class LiveTradingOptimizer:
             try:
                 response = requests.get(f"{url}/health", timeout=5)
                 if response.status_code != 200:
-                    logger.error(f"❌ {name} unhealthy: {response.status_code}")
+                    logger.error(f"# X {name} unhealthy: {response.status_code}")
                     all_healthy = False
             except Exception as e:
-                logger.error(f"❌ {name} unreachable: {e}")
+                logger.error(f"# X {name} unreachable: {e}")
                 all_healthy = False
 
         if all_healthy:
-            logger.info("✅ All services healthy")
+            logger.info("# Check All services healthy")
 
         return all_healthy
 
@@ -129,7 +129,7 @@ class LiveTradingOptimizer:
                 return balance
             return None
         except Exception as e:
-            logger.error(f"❌ Error getting balance: {e}")
+            logger.error(f"# X Error getting balance: {e}")
             return None
 
     async def check_emergency_conditions(self) -> bool:
@@ -162,7 +162,7 @@ class LiveTradingOptimizer:
             return False
 
         except Exception as e:
-            logger.error(f"❌ Error checking emergency conditions: {e}")
+            logger.error(f"# X Error checking emergency conditions: {e}")
             return False
 
     async def generate_trading_signals(self) -> List[Dict]:
@@ -181,14 +181,14 @@ class LiveTradingOptimizer:
                     if confidence >= self.strategy_params['signal_confidence_threshold']:
                         filtered_signals.append(signal)
 
-                logger.info(f"🎯 Generated {len(filtered_signals)} trading signals")
+                logger.info(f"# Target Generated {len(filtered_signals)} trading signals")
                 return filtered_signals
             else:
-                logger.warning(f"⚠️ Signal generation failed: {response.status_code}")
+                logger.warning(f"# Warning Signal generation failed: {response.status_code}")
                 return []
 
         except Exception as e:
-            logger.error(f"❌ Error generating signals: {e}")
+            logger.error(f"# X Error generating signals: {e}")
             return []
 
     async def validate_and_execute_signal(self, signal: Dict) -> bool:
@@ -214,7 +214,7 @@ class LiveTradingOptimizer:
                 validation = response.json()['validation']
 
                 if validation['approved']:
-                    logger.info(f"✅ Signal approved: {signal['symbol']} {signal['side']}")
+                    logger.info(f"# Check Signal approved: {signal['symbol']} {signal['side']}")
 
                     # Execute the trade
                     order_data = {
@@ -240,29 +240,29 @@ class LiveTradingOptimizer:
                         self.trades_executed += 1
                         return True
                     else:
-                        logger.error(f"❌ Order execution failed: {order_response.text}")
+                        logger.error(f"# X Order execution failed: {order_response.text}")
                         return False
                 else:
-                    logger.info(f"❌ Signal rejected: {validation['reason']}")
+                    logger.info(f"# X Signal rejected: {validation['reason']}")
                     return False
             else:
-                logger.error(f"❌ Risk validation failed: {response.status_code}")
+                logger.error(f"# X Risk validation failed: {response.status_code}")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Error processing signal: {e}")
+            logger.error(f"# X Error processing signal: {e}")
             return False
 
     async def optimize_strategy_parameters(self):
         """Optimize strategy parameters based on performance"""
         try:
-            logger.info("🔧 Starting strategy optimization...")
+            logger.info("# Tool Starting strategy optimization...")
 
             # Get performance data
             performance_data = await self.get_performance_metrics()
 
             if len(performance_data.get('trades', [])) < self.min_trades_for_optimization:
-                logger.info("📊 Not enough trades for optimization yet")
+                logger.info("# Chart Not enough trades for optimization yet")
                 return
 
             # Calculate current performance metrics
@@ -291,12 +291,12 @@ class LiveTradingOptimizer:
                 logger.info("🛑 Tightened stop loss due to high drawdown")
 
             # Log optimization results
-            logger.info("🎯 Strategy parameters optimized:")
+            logger.info("# Target Strategy parameters optimized:")
             for param, value in self.strategy_params.items():
                 logger.info(f"   {param}: {value}")
 
         except Exception as e:
-            logger.error(f"❌ Error optimizing strategy: {e}")
+            logger.error(f"# X Error optimizing strategy: {e}")
 
     async def get_performance_metrics(self) -> Dict:
         """Get current performance metrics"""
@@ -314,7 +314,7 @@ class LiveTradingOptimizer:
                     'max_drawdown': 0.02  # Placeholder
                 }
         except Exception as e:
-            logger.error(f"❌ Error getting performance metrics: {e}")
+            logger.error(f"# X Error getting performance metrics: {e}")
             return {}
 
     async def monitor_positions(self):
@@ -343,10 +343,10 @@ class LiveTradingOptimizer:
                     # Check for emergency exit conditions
                     current_drawdown = self.active_positions[symbol]['max_pnl'] - pnl
                     if current_drawdown > 0.03:  # 3% drawdown on position
-                        logger.warning(f"⚠️ Large drawdown on {symbol}: {current_drawdown*100:.2f}%")
+                        logger.warning(f"# Warning Large drawdown on {symbol}: {current_drawdown*100:.2f}%")
 
         except Exception as e:
-            logger.error(f"❌ Error monitoring positions: {e}")
+            logger.error(f"# X Error monitoring positions: {e}")
 
     async def log_system_status(self):
         """Log comprehensive system status"""
@@ -359,21 +359,21 @@ class LiveTradingOptimizer:
                 positions_data = positions_response.json()
                 positions_count = len(positions_data.get('positions', {}))
 
-            logger.info("📊 SYSTEM STATUS:")
+            logger.info("# Chart SYSTEM STATUS:")
             logger.info(f"   💰 Account Balance: ${balance:.2f}")
             logger.info(f"   📈 Daily P&L: ${self.daily_pnl:.2f}")
-            logger.info(f"   📊 Active Positions: {positions_count}")
-            logger.info(f"   🎯 Total Trades: {self.trades_executed}")
-            logger.info(f"   ✅ Successful Trades: {self.successful_trades}")
-            logger.info(f"   📊 Win Rate: {(self.successful_trades/max(1,self.trades_executed))*100:.1f}%")
+            logger.info(f"   # Chart Active Positions: {positions_count}")
+            logger.info(f"   # Target Total Trades: {self.trades_executed}")
+            logger.info(f"   # Check Successful Trades: {self.successful_trades}")
+            logger.info(f"   # Chart Win Rate: {(self.successful_trades/max(1,self.trades_executed))*100:.1f}%")
             logger.info(f"   💵 Total P&L: ${self.total_pnl:.2f}")
 
         except Exception as e:
-            logger.error(f"❌ Error logging system status: {e}")
+            logger.error(f"# X Error logging system status: {e}")
 
     async def run_live_trading_loop(self):
         """Main live trading loop with continuous optimization"""
-        logger.info("🚀 STARTING LIVE TRADING OPTIMIZATION LOOP")
+        logger.info("# Rocket STARTING LIVE TRADING OPTIMIZATION LOOP")
         logger.info("=" * 60)
 
         self.is_running = True
@@ -386,7 +386,7 @@ class LiveTradingOptimizer:
 
                 # Check system health
                 if not await self.check_system_health():
-                    logger.error("❌ System health check failed - pausing operations")
+                    logger.error("# X System health check failed - pausing operations")
                     await asyncio.sleep(30)
                     continue
 
@@ -407,12 +407,12 @@ class LiveTradingOptimizer:
                         current_positions = len(positions_data.get('positions', {}))
 
                         if current_positions >= self.max_positions:
-                            logger.info(f"📊 Position limit reached ({self.max_positions}) - skipping signal")
+                            logger.info(f"# Chart Position limit reached ({self.max_positions}) - skipping signal")
                             continue
 
                     # Validate and execute signal
                     if await self.validate_and_execute_signal(signal):
-                        logger.info(f"✅ Successfully executed trade for {signal['symbol']}")
+                        logger.info(f"# Check Successfully executed trade for {signal['symbol']}")
 
                 # Monitor positions
                 await self.monitor_positions()
@@ -433,7 +433,7 @@ class LiveTradingOptimizer:
         except KeyboardInterrupt:
             logger.info("⏹️ Live trading loop stopped by user")
         except Exception as e:
-            logger.error(f"❌ Error in live trading loop: {e}")
+            logger.error(f"# X Error in live trading loop: {e}")
         finally:
             logger.info("🛑 Live trading optimization stopped")
             await self.log_system_status()
@@ -464,7 +464,7 @@ class LiveTradingOptimizer:
                 await asyncio.sleep(30)  # Check every 30 seconds
 
             except Exception as e:
-                logger.error(f"❌ Emergency monitoring error: {e}")
+                logger.error(f"# X Emergency monitoring error: {e}")
                 await asyncio.sleep(10)
 
 async def main():

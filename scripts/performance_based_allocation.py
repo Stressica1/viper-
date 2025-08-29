@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 PERFORMANCE-BASED ALLOCATION - Dynamic Capital Distribution
+# Target PERFORMANCE-BASED ALLOCATION - Dynamic Capital Distribution
 ===========================================================
 
 Advanced system for allocating capital based on strategy performance metrics.
@@ -65,7 +65,7 @@ class PerformanceBasedAllocator:
 
     def optimize_allocation(self) -> AllocationResult:
         """Optimize capital allocation based on performance"""
-        print("🎯 VIPER PERFORMANCE-BASED ALLOCATION OPTIMIZATION")
+        print("# Target VIPER PERFORMANCE-BASED ALLOCATION OPTIMIZATION")
 
         strategies = self.dashboard.strategies
         original_allocation = {}
@@ -182,7 +182,7 @@ class PerformanceBasedAllocator:
 
     def display_allocation_results(self, result: AllocationResult):
         """Display allocation optimization results"""
-        print(f"\n🎯 ALLOCATION OPTIMIZATION RESULTS - ${self.portfolio_value:.0f} PORTFOLIO")
+        print(f"\n# Target ALLOCATION OPTIMIZATION RESULTS - ${self.portfolio_value:.0f} PORTFOLIO")
 
         print(f"{'Strategy':<25} {'Original':>10} {'Optimized':>10} {'Change':>8}")
 
@@ -289,11 +289,11 @@ def main():
             report_path = allocator.export_allocation_report(result)
             print(f"\n📄 Allocation report saved: {report_path}")
 
-        print("\n✅ Performance-based allocation optimization completed!")
+        print("\n# Check Performance-based allocation optimization completed!")
         print(f"💰 Portfolio: ${allocator.portfolio_value:.2f}")
-        print("🎯 Capital allocated based on strategy performance metrics")
+        print("# Target Capital allocated based on strategy performance metrics")
     else:
-        print("🎯 VIPER Performance-Based Allocation System")
+        print("# Target VIPER Performance-Based Allocation System")
         print(f"💰 Portfolio Value: ${allocator.portfolio_value:.2f}")
         print("\nUse --optimize to run performance-based allocation")
         print("Use --export to save detailed allocation report")

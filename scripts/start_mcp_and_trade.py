@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Start MCP Server and Execute Swap Trades
+# Rocket VIPER Trading System - Start MCP Server and Execute Swap Trades
 Automated startup of MCP server followed by comprehensive swap trading
 """
 
@@ -29,11 +29,11 @@ class MCPTradingOrchestrator:
 
     def print_header(self):
         """Print orchestrator header"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER MCP TRADING ORCHESTRATOR                                          ║
-║ 🔥 Automated MCP Server Startup | 📊 Swap Trading Execution                 ║
-║ ⚡ All Pairs Trading | 🧠 AI Integration | 📈 50x Leverage                   ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER MCP TRADING ORCHESTRATOR                                          #
+# 🔥 Automated MCP Server Startup | # Chart Swap Trading Execution                 #
+# ⚡ All Pairs Trading | 🧠 AI Integration | 📈 50x Leverage                   #
+#==============================================================================#
         """)
 
     def check_environment(self) -> bool:
@@ -51,7 +51,7 @@ class MCPTradingOrchestrator:
                 missing_vars.append(var)
 
         if missing_vars:
-            print(f"⚠️  Missing API credentials: {', '.join(missing_vars)}")
+            print(f"# Warning  Missing API credentials: {', '.join(missing_vars)}")
             print("   Trading will use demo mode (no real trades)")
 
         return True
@@ -103,7 +103,7 @@ class MCPTradingOrchestrator:
 
     def start_swap_trading(self) -> None:
         """Start comprehensive swap trading for all pairs"""
-        print("\n🚀 STARTING COMPREHENSIVE SWAP TRADING...")
+        print("\n# Rocket STARTING COMPREHENSIVE SWAP TRADING...")
         print("🔥 Executing trades for all available pairs via MCP")
         print("⚡ Using 50x leverage with risk management")
 
@@ -119,14 +119,14 @@ class MCPTradingOrchestrator:
             trading_thread.daemon = True
             trading_thread.start()
 
-            print("📊 Trading all available pairs with AI-powered signals")
+            print("# Chart Trading all available pairs with AI-powered signals")
             print("🛑 Press Ctrl+C to stop trading and close all positions")
 
             # Keep main thread alive for monitoring
             try:
                 while True:
                     time.sleep(60)
-                    print(f"📊 Status: {len(trader.active_positions)} active positions, {trader.trades_executed} trades executed")
+                    print(f"# Chart Status: {len(trader.active_positions)} active positions, {trader.trades_executed} trades executed")
             except KeyboardInterrupt:
                 print("\n\n🛑 Stopping trading and closing all positions...")
                 trader.stop()
@@ -149,13 +149,13 @@ class MCPTradingOrchestrator:
         self.print_header()
 
         if not self.check_environment():
-            print("❌ Environment check failed. Please configure your .env file.")
+            print("# X Environment check failed. Please configure your .env file.")
             return
 
         try:
             # Start MCP server
             if not self.start_mcp_server():
-                print("❌ Failed to start MCP server. Cannot proceed with trading.")
+                print("# X Failed to start MCP server. Cannot proceed with trading.")
                 return
 
             # Start swap trading

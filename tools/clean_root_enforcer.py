@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 Clean Root Enforcer
+# Rocket Clean Root Enforcer
 Automatically enforces a clean root directory by moving misplaced files
 """
 
@@ -118,7 +118,7 @@ class CleanRootEnforcer:
         if not violations:
             return
         
-        print(f"🔍 Found {len(violations)} files in root directory")
+        print(f"# Search Found {len(violations)} files in root directory")
         
         moves_executed = 0
         
@@ -133,14 +133,14 @@ class CleanRootEnforcer:
                 try:
                     dest_dir.mkdir(parents=True, exist_ok=True)
                     shutil.move(str(source), str(destination))
-                    print(f"✅ Moved: {source.name} → {violation['suggested_location']}")
+                    print(f"# Check Moved: {source.name} → {violation['suggested_location']}")
                     moves_executed += 1
                 except Exception as e:
         
         if dry_run:
-            print(f"\n💡 This was a dry run. Use --execute to actually move files.")
+            print(f"\n# Idea This was a dry run. Use --execute to actually move files.")
         else:
-            print(f"\n✅ Moved {moves_executed} files to proper locations!")
+            print(f"\n# Check Moved {moves_executed} files to proper locations!")
 
     def create_root_monitor(self):
         """Create a monitoring script to watch root directory"""
@@ -164,7 +164,7 @@ def monitor_root():
             violations = enforcer.scan_root_violations()
             
             if violations:
-                print(f"⚠️  Found {len(violations)} files in root directory:")
+                print(f"# Warning  Found {len(violations)} files in root directory:")
                 for violation in violations[:3]:  # Show first 3
                 
                 # Auto-clean if requested
