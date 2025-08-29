@@ -41,12 +41,12 @@ class MultiPairVIPERTrader:
         self.api_secret = os.getenv('BITGET_API_SECRET')
         self.api_password = os.getenv('BITGET_API_PASSWORD')
 
-        # Trading configuration
-        self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '10'))
-        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '50'))  # 50x as per your rules
+        # Trading configuration - REDUCED FOR SAFETY
+        self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '5'))  # Reduced from 10
+        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '5'))  # Reduced from 50
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '3.0'))
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '2.0'))
-        self.max_positions = int(os.getenv('MAX_POSITIONS', '15'))  # Max 15 positions as per rules
+        self.max_positions = int(os.getenv('MAX_POSITIONS', '3'))  # Reduced from 15 to 3
 
         self.exchange = None
         self.all_pairs = []
@@ -119,9 +119,9 @@ class MultiPairVIPERTrader:
             return False
 
     def generate_signal(self, symbol):
-        """Generate random trading signal for any pair"""
+        """Generate conservative trading signal for any pair"""
         signals = ['BUY', 'SELL', 'HOLD']
-        weights = [0.4, 0.4, 0.2]  # 40% chance each for BUY/SELL, 20% HOLD
+        weights = [0.1, 0.1, 0.8]  # 10% chance each for BUY/SELL, 80% HOLD (MUCH MORE CONSERVATIVE)
         return random.choices(signals, weights=weights)[0]
 
     def execute_trade(self, symbol, signal):
@@ -210,8 +210,8 @@ class MultiPairVIPERTrader:
             cycle += 1
             logger.info(f"\n🔄 Cycle #{cycle} - Scanning {len(self.all_pairs)} pairs")
 
-            # Scan random subset of pairs for trading opportunities
-            pairs_to_scan = min(50, len(self.all_pairs))  # Scan 50 pairs per cycle
+            # Scan SMALLER subset of pairs for trading opportunities
+            pairs_to_scan = min(10, len(self.all_pairs))  # Scan only 10 pairs per cycle (reduced from 50)
             scanned_pairs = random.sample(self.all_pairs, pairs_to_scan)
 
             trades_this_cycle = 0
@@ -219,6 +219,16 @@ class MultiPairVIPERTrader:
             for symbol in scanned_pairs:
                 if not self.is_running:
                     break
+
+                # CHECK POSITION LIMITS BEFORE TRADING
+                if len(self.active_positions) >= self.max_positions:
+                    logger.info(f"🚫 Position limit reached ({self.max_positions}). Skipping {symbol}")
+                    continue
+
+                # SKIP IF ALREADY HAVE POSITION IN THIS PAIR
+                if symbol in self.active_positions:
+                    logger.debug(f"📊 Skipping {symbol} - already have position")
+                    continue
 
                 signal = self.generate_signal(symbol)
 
@@ -240,6 +250,52 @@ class MultiPairVIPERTrader:
             logger.info("⏰ Waiting 30 seconds for next scan...")
 
             time.sleep(30)
+
+    def close_position(self, symbol, reason="manual"):
+        """Close a position"""
+        try:
+            if symbol not in self.active_positions:
+                logger.warning(f"⚠️ No active position found for {symbol}")
+                return False
+
+            position = self.active_positions[symbol]
+            opposite_signal = 'SELL' if position['signal'] == 'BUY' else 'BUY'
+
+            logger.info(f"🔄 Closing {symbol} position ({reason})")
+
+            # Close the position
+            if opposite_signal == 'SELL':
+                close_order = self.exchange.create_market_sell_order(
+                    symbol,
+                    position['quantity'],
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'close'
+                    }
+                )
+            else:
+                close_order = self.exchange.create_market_buy_order(
+                    symbol,
+                    position['quantity'],
+                    params={
+                        'leverage': self.max_leverage,
+                        'marginMode': 'isolated',
+                        'tradeSide': 'close'
+                    }
+                )
+
+            if close_order:
+                logger.info(f"✅ Position closed: {symbol} - {close_order['id']}")
+                del self.active_positions[symbol]
+                return True
+            else:
+                logger.error(f"❌ Failed to close position: {symbol}")
+                return False
+
+        except Exception as e:
+            logger.error(f"❌ Error closing position {symbol}: {e}")
+            return False
 
     def stop(self):
         """Stop trading"""
