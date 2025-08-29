@@ -60,8 +60,8 @@ class SystemIntegrationDemo:
             # Step 6: Display final system status
             self._display_final_status()
 
-            print("
-✅ System Integration Demo Completed Successfully!"            print("🎉 All components are properly integrated and operational!")
+            print("✅ System Integration Demo Completed Successfully!")
+            print("🎉 All components are properly integrated and operational!")
 
         except Exception as e:
             logger.error(f"❌ Demo failed: {e}")
@@ -72,14 +72,15 @@ class SystemIntegrationDemo:
 
     def _initialize_orchestrator(self):
         """Initialize the Master System Orchestrator"""
-        print("
-📊 Step 1: Initializing Master System Orchestrator..."        try:
+        print("📊 Step 1: Initializing Master System Orchestrator...")")
+            try:
             from master_system_orchestrator import MasterSystemOrchestrator
 
             self.orchestrator = MasterSystemOrchestrator()
             status = self.orchestrator.get_system_status()
 
-            print("   ✅ Orchestrator initialized"            print(f"   📊 Components loaded: {status['total_components']}")
+            print("   ✅ Orchestrator initialized")
+            print(f"   📊 Components loaded: {status['total_components']}")
             print(f"   🏥 Healthy components: {status['healthy_components']}")
             print(f"   ⚠️ Failed components: {status['failed_components']}")
 
@@ -89,14 +90,15 @@ class SystemIntegrationDemo:
 
     def _initialize_trading_engine(self):
         """Initialize the Unified Trading Engine"""
-        print("
-⚡ Step 2: Initializing Unified Trading Engine..."        try:
+        print("⚡ Step 2: Initializing Unified Trading Engine...")")
+            try:
             from unified_trading_engine import UnifiedTradingEngine
 
             self.trading_engine = UnifiedTradingEngine()
             status = self.trading_engine.get_system_status()
 
-            print("   ✅ Trading engine initialized"            print(f"   🔗 Components loaded: {len(status['components_loaded'])}")
+            print("   ✅ Trading engine initialized")
+            print(f"   🔗 Components loaded: {len(status['components_loaded'])}")
             print(f"   💱 Exchange connected: {'✅' if status.get('exchange_connected') else '❌'}")
 
         except Exception as e:
@@ -105,19 +107,21 @@ class SystemIntegrationDemo:
 
     def _run_system_diagnostics(self):
         """Run comprehensive system diagnostics"""
-        print("
-🔍 Step 3: Running Comprehensive System Diagnostics..."        try:
+        print("🔍 Step 3: Running Comprehensive System Diagnostics...")")
+            try:
             # Run orchestrator diagnostics
             orch_diagnostics = self.orchestrator.run_system_diagnostics()
 
-            print("   📊 Orchestrator Diagnostics:"            print(f"      System Health: {orch_diagnostics.get('system_health', 'unknown')}")
+            print("   📊 Orchestrator Diagnostics:")
+            print(f"      System Health: {orch_diagnostics.get('system_health', 'unknown')}")
             print(f"      Issues Found: {len(orch_diagnostics.get('issues', []))}")
             print(f"      Recommendations: {len(orch_diagnostics.get('recommendations', []))}")
 
             # Run trading engine diagnostics
             engine_check = self.trading_engine.run_system_check()
 
-            print("   ⚙️ Trading Engine Diagnostics:"            print(f"      Components: {len(engine_check.get('health_checks', {}))}")
+            print("   ⚙️ Trading Engine Diagnostics:")
+            print(f"      Components: {len(engine_check.get('health_checks', {}))}")
 
             # Show top issues if any
             issues = orch_diagnostics.get('issues', [])
@@ -132,8 +136,8 @@ class SystemIntegrationDemo:
 
     def _demonstrate_component_integration(self):
         """Demonstrate component integration and data flow"""
-        print("
-🔄 Step 4: Demonstrating Component Integration..."        try:
+        print("🔄 Step 4: Demonstrating Component Integration...")")
+            try:
             # Test mathematical validator integration
             if 'math_validator' in self.trading_engine.components:
                 print("   🧮 Testing Mathematical Validator...")
@@ -165,7 +169,7 @@ class SystemIntegrationDemo:
                 print("   🩺 Testing Diagnostic System...")
                 diagnostic = self.trading_engine.components['diagnostic_system']
 
-                print("      Diagnostic system loaded and ready"
+                print("      Diagnostic system loaded and ready")
             print("   ✅ Component integration verified!")
 
         except Exception as e:
@@ -174,12 +178,13 @@ class SystemIntegrationDemo:
 
     def _run_system_optimization(self):
         """Run system-wide optimization routines"""
-        print("
-⚡ Step 5: Running System-Wide Optimization..."        try:
+        print("⚡ Step 5: Running System-Wide Optimization...")")
+            try:
             # Run orchestrator optimization
             orch_optimization = self.orchestrator.optimize_system()
 
-            print("   🔧 Optimization Results:"            print(f"      Optimizations Applied: {len(orch_optimization.get('optimizations_applied', []))}")
+            print("   🔧 Optimization Results:")
+            print(f"      Optimizations Applied: {len(orch_optimization.get('optimizations_applied', []))}")
             print(f"      Performance Improvements: {len(orch_optimization.get('performance_improvements', []))}")
             print(f"      Errors: {len(orch_optimization.get('errors', []))}")
 
@@ -203,14 +208,15 @@ class SystemIntegrationDemo:
 
     def _display_final_status(self):
         """Display final comprehensive system status"""
-        print("
-🎯 Step 6: Final System Status Report"        print("-" * 50)
+        print("🎯 Step 6: Final System Status Report")")
+            print("-" * 50)
 
         try:
             # Get orchestrator status
             orch_status = self.orchestrator.get_system_status()
 
-            print("📊 MASTER SYSTEM ORCHESTRATOR:"            print(f"   Components: {orch_status['total_components']}")
+            print("📊 MASTER SYSTEM ORCHESTRATOR:")
+            print(f"   Components: {orch_status['total_components']}")
             print(f"   Healthy: {orch_status['healthy_components']}")
             print(f"   Failed: {orch_status['failed_components']}")
             print(f"   Monitoring: {'Active' if orch_status['monitoring_active'] else 'Inactive'}")
@@ -218,29 +224,32 @@ class SystemIntegrationDemo:
             # Get trading engine status
             engine_status = self.trading_engine.get_system_status()
 
-            print("
-⚡ UNIFIED TRADING ENGINE:"            print(f"   Components: {len(engine_status.get('components_loaded', []))}")
+            print("⚡ UNIFIED TRADING ENGINE:")")
+            print(f"   Components: {len(engine_status.get('components_loaded', []))}")
             print(f"   Exchange: {'Connected' if engine_status.get('exchange_connected') else 'Disconnected'}")
             print(f"   Trading: {'Active' if engine_status.get('trading_active') else 'Inactive'}")
 
             # Get system integrity
             integrity = self.orchestrator.validate_system_integrity()
 
-            print("
-🛡️ SYSTEM INTEGRITY:"            print(f"   Status: {integrity.get('integrity_status', 'unknown').upper()}")
+            print("🛡️ SYSTEM INTEGRITY:")")
+            print(f"   Status: {integrity.get('integrity_status', 'unknown').upper()}")
             print(f"   Validations: {len(integrity.get('validation_results', {}))}")
 
             if integrity.get('critical_issues'):
                 print(f"   Critical Issues: {len(integrity['critical_issues'])}")
 
             # Overall assessment
-            print("
-🎉 OVERALL ASSESSMENT:"            healthy_components = orch_status['healthy_components'] + len(engine_status.get('components_loaded', []))
+            print("🎉 OVERALL ASSESSMENT:")")
+            healthy_components = orch_status['healthy_components'] + len(engine_status.get('components_loaded', []))
             total_components = orch_status['total_components'] + len(engine_status.get('components_loaded', []))
 
             if healthy_components == total_components and integrity.get('integrity_status') == 'healthy':
-                print("   ✅ SYSTEM FULLY OPERATIONAL"                print("   ✅ ALL COMPONENTS INTEGRATED"                print("   ✅ READY FOR PRODUCTION TRADING"            else:
-                print("   ⚠️ SYSTEM PARTIALLY OPERATIONAL"                print(f"   📊 Health: {healthy_components}/{total_components} components healthy")
+                print("   ✅ SYSTEM FULLY OPERATIONAL")
+            print("   ✅ ALL COMPONENTS INTEGRATED"                print("   ✅ READY FOR PRODUCTION TRADING")
+            else:
+                print("   ⚠️ SYSTEM PARTIALLY OPERATIONAL")
+            print(f"   📊 Health: {healthy_components}/{total_components} components healthy")
 
         except Exception as e:
             print(f"   ❌ Final status check failed: {e}")
