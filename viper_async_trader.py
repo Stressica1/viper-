@@ -288,7 +288,8 @@ class ViperAsyncTrader:
                     
                 if result:
                     opportunity = await self.score_opportunity_data(result)
-                    if opportunity and opportunity.score > 0.6:  # Threshold for good opportunities
+                    logger.debug(f"Scored {result['symbol']}: opportunity={opportunity is not None}, score={opportunity.score if opportunity else 'N/A'}")
+                    if opportunity and opportunity.score > 0.2:  # Lower threshold for testing
                         opportunities.append(opportunity)
             
             # Sort by score
@@ -304,7 +305,7 @@ class ViperAsyncTrader:
     async def fetch_ticker_data(self, symbol: str) -> Optional[Dict]:
         """Fetch ticker data for a single symbol"""
         try:
-            ticker = await self.exchange.fetch_ticker(symbol)
+            ticker = self.exchange.fetch_ticker(symbol)  # Synchronous call
             return {
                 'symbol': symbol,
                 'price': ticker['last'],

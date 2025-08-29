@@ -28,12 +28,12 @@ RUN mkdir -p /app/logs
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-# Health check
+# Health check - use the correct port 8015
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD python -c "import socket; socket.socket().connect(('localhost', 8000))" || exit 1
+    CMD python -c "import socket; socket.socket().connect(('localhost', 8015))" || exit 1
 
-# Expose port
-EXPOSE 8000
+# Expose the correct MCP port
+EXPOSE 8015
 
 # Start the MCP server
 CMD ["python", "main.py"]

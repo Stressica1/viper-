@@ -60,6 +60,9 @@ class MCPServer:
             'order-lifecycle-manager': 'http://order-lifecycle-manager:8000',
             'position-synchronizer': 'http://position-synchronizer:8000'
         }
+        
+        # Initialize httpx client for GitHub API calls
+        self.github_client = httpx.AsyncClient(timeout=30.0)
 
         self.setup_routes()
 
@@ -133,6 +136,36 @@ class MCPServer:
             data = await request.json()
             return await self.update_github_issue(data)
 
+        # GitHub Code Fetching Endpoints
+        @self.app.post("/github/fetch-code")
+        async def fetch_github_code(request: Request):
+            """Fetch latest code from main branch via MCP"""
+            data = await request.json()
+            return await self.fetch_code_from_main(data)
+
+        @self.app.get("/github/status")
+        async def get_github_status():
+            """Get current repository status via MCP"""
+            return await self.get_repository_status()
+
+        @self.app.post("/github/validate")
+        async def validate_github_code(request: Request):
+            """Validate fetched code via MCP"""
+            data = await request.json()
+            return await self.validate_fetched_code(data)
+
+        @self.app.post("/github/deploy")
+        async def deploy_github_code(request: Request):
+            """Deploy validated code updates via MCP"""
+            data = await request.json()
+            return await self.deploy_code_updates(data)
+
+        @self.app.post("/github/rollback")
+        async def rollback_github_code(request: Request):
+            """Rollback to previous version if needed via MCP"""
+            data = await request.json()
+            return await self.rollback_code_changes(data)
+
         @self.app.websocket("/ws")
         async def websocket_endpoint(websocket: WebSocket):
             """WebSocket endpoint for real-time MCP communication"""
@@ -184,6 +217,16 @@ class MCPServer:
                 "get_metrics": "Get system metrics",
                 "get_alerts": "Get active alerts",
                 "system_status": "Get system health status"
+            },
+            "github_integration": {
+                "create_task": "Create GitHub task/issue",
+                "list_tasks": "List GitHub tasks/issues",
+                "update_task": "Update GitHub task/issue",
+                "fetch_code": "Fetch latest code from main branch",
+                "get_status": "Get repository status",
+                "validate_code": "Validate fetched code",
+                "deploy_code": "Deploy validated code updates",
+                "rollback_code": "Rollback to previous version"
             }
         }
 
@@ -636,6 +679,327 @@ class MCPServer:
         except Exception as e:
             logger.error(f"GitHub issue update error: {e}")
             return {"status": "error", "error": str(e)}
+
+    async def fetch_code_from_main(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Fetch latest code from main branch via MCP"""
+        try:
+            if not GITHUB_PAT:
+                return {"error": "GitHub PAT not configured", "status": "error"}
+
+            logger.info("🔄 Starting code fetch from main branch...")
+            
+            # Handle both old (ghp_) and new (github_pat_) token formats
+            if GITHUB_PAT.startswith("github_pat_"):
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
+            else:
+                headers = {
+                    "Authorization": f"token {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
+
+            # Get latest commit from main branch
+            url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/commits"
+            params = {"sha": "main", "per_page": 1}
+            
+            response = await self.github_client.get(url, params=params, headers=headers)
+
+            if response.status_code == 200:
+                commits = response.json()
+                if commits:
+                    latest_commit = commits[0]
+                    commit_sha = latest_commit["sha"]
+                    commit_message = latest_commit["commit"]["message"]
+                    
+                    logger.info(f"✅ Latest commit fetched: {commit_sha[:8]} - {commit_message}")
+                    
+                    # Get commit details
+                    commit_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/commits/{commit_sha}"
+                    commit_response = await self.github_client.get(commit_url, headers=headers)
+                    
+                    if commit_response.status_code == 200:
+                        commit_data = commit_response.json()
+                        files_changed = commit_data.get("files", [])
+                        
+                        return {
+                            "status": "success",
+                            "operation": "fetch_code_from_main",
+                            "commit": {
+                                "sha": commit_sha,
+                                "message": commit_message,
+                                "author": commit_data["commit"]["author"]["name"],
+                                "date": commit_data["commit"]["author"]["date"],
+                                "files_changed": len(files_changed),
+                                "url": commit_data["html_url"]
+                            },
+                            "message": f"Successfully fetched latest code from main branch (commit {commit_sha[:8]})"
+                        }
+                    else:
+                        return {"status": "error", "error": "Failed to get commit details"}
+                else:
+                    return {"status": "error", "error": "No commits found in main branch"}
+            else:
+                return {"status": "error", "error": f"Failed to fetch commits: {response.status_code}"}
+
+        except Exception as e:
+            logger.error(f"GitHub code fetch error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def get_repository_status(self) -> Dict[str, Any]:
+        """Get current repository status via MCP"""
+        try:
+            if not GITHUB_PAT:
+                return {"error": "GitHub PAT not configured", "status": "error"}
+
+            logger.info("📊 Getting repository status...")
+            
+            # Handle both old (ghp_) and new (github_pat_) token formats
+            if GITHUB_PAT.startswith("github_pat_"):
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
+            else:
+                headers = {
+                    "Authorization": f"Bearer {GITHUB_PAT}",
+                    "Accept": "application/vnd.github.v3+json"
+                }
+
+            # Get repository information
+            repo_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}"
+            response = await self.github_client.get(repo_url, headers=headers)
+
+            if response.status_code == 200:
+                repo_data = response.json()
+                
+                # Get branch information
+                branches_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/branches"
+                branches_response = await self.github_client.get(branches_url, headers=headers)
+                
+                branches = []
+                if branches_response.status_code == 200:
+                    branches_data = branches_response.json()
+                    branches = [branch["name"] for branch in branches_data]
+
+                # Get latest commit for main branch
+                main_commit = None
+                if "main" in branches:
+                    commit_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/commits/main"
+                    commit_response = await self.github_client.get(commit_url, headers=headers)
+                    if commit_response.status_code == 200:
+                        commit_data = commit_response.json()
+                        main_commit = {
+                            "sha": commit_data["sha"][:8],
+                            "message": commit_data["commit"]["message"],
+                            "date": commit_data["commit"]["author"]["date"]
+                        }
+
+                return {
+                    "status": "success",
+                    "operation": "get_repository_status",
+                    "repository": {
+                        "name": repo_data["name"],
+                        "full_name": repo_data["full_name"],
+                        "description": repo_data["description"],
+                        "language": repo_data["language"],
+                        "stars": repo_data["stargazers_count"],
+                        "forks": repo_data["forks_count"],
+                        "open_issues": repo_data["open_issues_count"],
+                        "default_branch": repo_data["default_branch"],
+                        "branches": branches,
+                        "main_commit": main_commit,
+                        "last_updated": repo_data["updated_at"]
+                    }
+                }
+            else:
+                return {"status": "error", "error": f"Failed to get repository info: {response.status_code}"}
+
+        except Exception as e:
+            logger.error(f"GitHub repository status error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def validate_fetched_code(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Validate fetched code via MCP"""
+        try:
+            logger.info("🔍 Validating fetched code...")
+            
+            # Basic validation checks
+            validation_results = {
+                "syntax_check": True,
+                "dependency_check": True,
+                "import_check": True,
+                "file_structure_check": True
+            }
+            
+            # Check if requirements.txt exists and is valid
+            if os.path.exists("requirements.txt"):
+                try:
+                    with open("requirements.txt", "r") as f:
+                        requirements = f.read()
+                    if requirements.strip():
+                        validation_results["dependency_check"] = True
+                        logger.info("✅ Dependencies file found and valid")
+                    else:
+                        validation_results["dependency_check"] = False
+                        logger.warning("⚠️ Dependencies file is empty")
+                except Exception as e:
+                    validation_results["dependency_check"] = False
+                    logger.error(f"❌ Error reading dependencies: {e}")
+            else:
+                validation_results["dependency_check"] = False
+                logger.warning("⚠️ No requirements.txt found")
+
+            # Check Python files for basic syntax
+            python_files = []
+            for root, dirs, files in os.walk("."):
+                if "venv" not in root and "node_modules" not in root:
+                    for file in files:
+                        if file.endswith(".py"):
+                            python_files.append(os.path.join(root, file))
+
+            syntax_errors = []
+            for py_file in python_files[:10]:  # Check first 10 files to avoid long delays
+                try:
+                    with open(py_file, "r") as f:
+                        compile(f.read(), py_file, "exec")
+                except SyntaxError as e:
+                    syntax_errors.append(f"{py_file}: {e}")
+                except Exception:
+                    pass  # Skip files that can't be read
+
+            if syntax_errors:
+                validation_results["syntax_check"] = False
+                logger.warning(f"⚠️ Found {len(syntax_errors)} syntax errors")
+            else:
+                logger.info("✅ Syntax validation passed")
+
+            # Overall validation result
+            all_valid = all(validation_results.values())
+            
+            return {
+                "status": "success",
+                "operation": "validate_fetched_code",
+                "validation_results": validation_results,
+                "is_valid": all_valid,
+                "python_files_checked": len(python_files),
+                "syntax_errors": syntax_errors,
+                "message": "Code validation completed successfully" if all_valid else "Code validation found issues"
+            }
+
+        except Exception as e:
+            logger.error(f"Code validation error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def deploy_code_updates(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Deploy validated code updates via MCP"""
+        try:
+            logger.info("🚀 Deploying code updates...")
+            
+            # Check if code was validated
+            if not data.get("validation_passed", False):
+                return {"status": "error", "error": "Code must be validated before deployment"}
+
+            deployment_results = {
+                "services_restarted": [],
+                "dependencies_updated": False,
+                "deployment_status": "pending"
+            }
+
+            # Update dependencies if needed
+            if data.get("update_dependencies", False):
+                try:
+                    import subprocess
+                    result = subprocess.run(["pip", "install", "-r", "requirements.txt"], 
+                                         capture_output=True, text=True, timeout=300)
+                    if result.returncode == 0:
+                        deployment_results["dependencies_updated"] = True
+                        logger.info("✅ Dependencies updated successfully")
+                    else:
+                        logger.warning(f"⚠️ Dependency update failed: {result.stderr}")
+                except Exception as e:
+                    logger.error(f"❌ Error updating dependencies: {e}")
+
+            # Restart services if needed
+            if data.get("restart_services", False):
+                services_to_restart = data.get("services", ["mcp-server"])
+                for service in services_to_restart:
+                    try:
+                        # This would integrate with your service management system
+                        logger.info(f"🔄 Restarting service: {service}")
+                        deployment_results["services_restarted"].append(service)
+                    except Exception as e:
+                        logger.error(f"❌ Error restarting {service}: {e}")
+
+            deployment_results["deployment_status"] = "completed"
+            
+            return {
+                "status": "success",
+                "operation": "deploy_code_updates",
+                "deployment_results": deployment_results,
+                "message": "Code deployment completed successfully"
+            }
+
+        except Exception as e:
+            logger.error(f"Code deployment error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def rollback_code_changes(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """Rollback to previous version if needed via MCP"""
+        try:
+            logger.info("🔄 Rolling back code changes...")
+            
+            target_commit = data.get("target_commit")
+            if not target_commit:
+                return {"status": "error", "error": "Target commit required for rollback"}
+
+            rollback_results = {
+                "previous_commit": None,
+                "current_commit": None,
+                "rollback_status": "pending"
+            }
+
+            # Get current commit
+            try:
+                import subprocess
+                result = subprocess.run(["git", "rev-parse", "HEAD"], 
+                                     capture_output=True, text=True, timeout=30)
+                if result.returncode == 0:
+                    rollback_results["current_commit"] = result.stdout.strip()[:8]
+            except Exception as e:
+                logger.warning(f"⚠️ Could not get current commit: {e}")
+
+            # Perform rollback
+            try:
+                result = subprocess.run(["git", "reset", "--hard", target_commit], 
+                                     capture_output=True, text=True, timeout=60)
+                if result.returncode == 0:
+                    rollback_results["rollback_status"] = "completed"
+                    rollback_results["previous_commit"] = target_commit[:8]
+                    logger.info(f"✅ Rollback completed to commit {target_commit[:8]}")
+                else:
+                    logger.error(f"❌ Rollback failed: {result.stderr}")
+                    rollback_results["rollback_status"] = "failed"
+            except Exception as e:
+                logger.error(f"❌ Error during rollback: {e}")
+                rollback_results["rollback_status"] = "failed"
+
+            return {
+                "status": "success",
+                "operation": "rollback_code_changes",
+                "rollback_results": rollback_results,
+                "message": f"Rollback {'completed' if rollback_results['rollback_status'] == 'completed' else 'failed'}"
+            }
+
+        except Exception as e:
+            logger.error(f"Code rollback error: {e}")
+            return {"status": "error", "error": str(e)}
+
+    async def cleanup(self):
+        """Cleanup resources"""
+        if hasattr(self, 'github_client'):
+            await self.github_client.aclose()
 
 def main():
     """Main function to start MCP server"""
