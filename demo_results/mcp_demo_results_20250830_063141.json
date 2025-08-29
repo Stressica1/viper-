@@ -1,0 +1,2364 @@
+{
+  "demo_metadata": {
+    "start_time": "2025-08-30T06:31:40.970397",
+    "end_time": "2025-08-30T06:31:41.036555",
+    "duration_minutes": 0.0011027666666666668,
+    "pairs_tested": [
+      "EURUSD",
+      "GBPUSD",
+      "USDJPY",
+      "GBPJPY"
+    ],
+    "timeframes_tested": [
+      "1m",
+      "5m",
+      "15m",
+      "30m"
+    ],
+    "configs_tested": [
+      "conservative",
+      "moderate",
+      "aggressive",
+      "breakout"
+    ],
+    "total_tests": 64
+  },
+  "results": {
+    "EURUSD": {
+      "1m": {
+        "conservative": {
+          "pair": "EURUSD",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 151,
+          "performance": {
+            "win_rate": 0.5827814569536424,
+            "total_pnl": 16686.0,
+            "profit_factor": 2.7657142857142856,
+            "sharpe_ratio": 0.8660516060477692,
+            "max_drawdown": 41.18706592818206,
+            "avg_win": 297.0,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 27.810000000000002,
+            "total_return_pct": 166.86
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 120,
+            "volume_confirmations": 105,
+            "multi_timeframe_alignments": 90,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.006533",
+          "success": true
+        },
+        "moderate": {
+          "pair": "EURUSD",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 137,
+          "performance": {
+            "win_rate": 0.6058394160583942,
+            "total_pnl": 26550.0,
+            "profit_factor": 3.4583333333333335,
+            "sharpe_ratio": 0.16833758281483668,
+            "max_drawdown": 32.46381881675553,
+            "avg_win": 450.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 44.24999999999999,
+            "total_return_pct": 265.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 109,
+            "volume_confirmations": 95,
+            "multi_timeframe_alignments": 82,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.007188",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "EURUSD",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 174,
+          "performance": {
+            "win_rate": 0.6264367816091954,
+            "total_pnl": 52420.0,
+            "profit_factor": 4.225846153846154,
+            "sharpe_ratio": -1.5210439160902451,
+            "max_drawdown": 38.80266704753873,
+            "avg_win": 630.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 87.36666666666667,
+            "total_return_pct": 524.2
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 139,
+            "volume_confirmations": 121,
+            "multi_timeframe_alignments": 104,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.007688",
+          "success": true
+        },
+        "breakout": {
+          "pair": "EURUSD",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 191,
+          "performance": {
+            "win_rate": 0.643979057591623,
+            "total_pnl": 79230.0,
+            "profit_factor": 4.883823529411765,
+            "sharpe_ratio": -0.17229871496675883,
+            "max_drawdown": 25.006720139922358,
+            "avg_win": 810.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 132.05,
+            "total_return_pct": 792.3
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 152,
+            "volume_confirmations": 133,
+            "multi_timeframe_alignments": 114,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.008232",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "EURUSD",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 119,
+          "performance": {
+            "win_rate": 0.6470588235294117,
+            "total_pnl": 19110.0,
+            "profit_factor": 4.033333333333333,
+            "sharpe_ratio": 1.55880405884208,
+            "max_drawdown": 36.0664766345414,
+            "avg_win": 330.0,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 31.85,
+            "total_return_pct": 191.1
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 95,
+            "volume_confirmations": 83,
+            "multi_timeframe_alignments": 71,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.008871",
+          "success": true
+        },
+        "moderate": {
+          "pair": "EURUSD",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 120,
+          "performance": {
+            "win_rate": 0.675,
+            "total_pnl": 32700.0,
+            "profit_factor": 5.1923076923076925,
+            "sharpe_ratio": -0.4925753882317465,
+            "max_drawdown": 23.486168911491255,
+            "avg_win": 500.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 54.50000000000001,
+            "total_return_pct": 327.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 96,
+            "volume_confirmations": 84,
+            "multi_timeframe_alignments": 72,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.009172",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "EURUSD",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 181,
+          "performance": {
+            "win_rate": 0.6961325966850829,
+            "total_pnl": 74449.99999999999,
+            "profit_factor": 6.414545454545453,
+            "sharpe_ratio": 1.8978462356336216,
+            "max_drawdown": 55.06318004492879,
+            "avg_win": 699.9999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 124.0833333333333,
+            "total_return_pct": 744.4999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 144,
+            "volume_confirmations": 126,
+            "multi_timeframe_alignments": 108,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.009483",
+          "success": true
+        },
+        "breakout": {
+          "pair": "EURUSD",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 133,
+          "performance": {
+            "win_rate": 0.7142857142857143,
+            "total_pnl": 74100.0,
+            "profit_factor": 7.5,
+            "sharpe_ratio": -0.5209431178232151,
+            "max_drawdown": 36.832023935413204,
+            "avg_win": 900.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 123.50000000000001,
+            "total_return_pct": 741.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 106,
+            "volume_confirmations": 93,
+            "multi_timeframe_alignments": 79,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.009808",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "EURUSD",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 173,
+          "performance": {
+            "win_rate": 0.6820809248554913,
+            "total_pnl": 32637.000000000007,
+            "profit_factor": 4.956000000000001,
+            "sharpe_ratio": 3.218484398652422,
+            "max_drawdown": 67.00346302088553,
+            "avg_win": 346.50000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 54.39500000000002,
+            "total_return_pct": 326.3700000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 138,
+            "volume_confirmations": 121,
+            "multi_timeframe_alignments": 103,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.010275",
+          "success": true
+        },
+        "moderate": {
+          "pair": "EURUSD",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 161,
+          "performance": {
+            "win_rate": 0.7080745341614907,
+            "total_pnl": 50450.0,
+            "profit_factor": 6.367021276595745,
+            "sharpe_ratio": 1.4346960040914871,
+            "max_drawdown": 38.70217621337564,
+            "avg_win": 525.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 84.08333333333333,
+            "total_return_pct": 504.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 128,
+            "volume_confirmations": 112,
+            "multi_timeframe_alignments": 96,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.010568",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "EURUSD",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 178,
+          "performance": {
+            "win_rate": 0.7303370786516854,
+            "total_pnl": 83550.0,
+            "profit_factor": 7.9625,
+            "sharpe_ratio": 0.9164203179376583,
+            "max_drawdown": 39.92346333021835,
+            "avg_win": 735.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 139.25,
+            "total_return_pct": 835.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 142,
+            "volume_confirmations": 124,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.010813",
+          "success": true
+        },
+        "breakout": {
+          "pair": "EURUSD",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 129,
+          "performance": {
+            "win_rate": 0.751937984496124,
+            "total_pnl": 82065.0,
+            "profit_factor": 9.5484375,
+            "sharpe_ratio": 0.9335515497871871,
+            "max_drawdown": 21.38677176561822,
+            "avg_win": 945.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 136.775,
+            "total_return_pct": 820.65
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 103,
+            "volume_confirmations": 90,
+            "multi_timeframe_alignments": 77,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.011066",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 123,
+          "performance": {
+            "win_rate": 0.7073170731707318,
+            "total_pnl": 26181.000000000004,
+            "profit_factor": 5.848333333333334,
+            "sharpe_ratio": 1.2816077845437073,
+            "max_drawdown": 42.20525628154426,
+            "avg_win": 363.00000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 43.635000000000005,
+            "total_return_pct": 261.81000000000006
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 98,
+            "volume_confirmations": 86,
+            "multi_timeframe_alignments": 73,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.011290",
+          "success": true
+        },
+        "moderate": {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 172,
+          "performance": {
+            "win_rate": 0.7441860465116279,
+            "total_pnl": 61600.0,
+            "profit_factor": 8.0,
+            "sharpe_ratio": -0.849748852228054,
+            "max_drawdown": 23.367809806095995,
+            "avg_win": 550.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 102.66666666666666,
+            "total_return_pct": 616.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 137,
+            "volume_confirmations": 120,
+            "multi_timeframe_alignments": 103,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.011612",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 124,
+          "performance": {
+            "win_rate": 0.7661290322580645,
+            "total_pnl": 65900.00000000001,
+            "profit_factor": 10.089655172413796,
+            "sharpe_ratio": -0.7787593115745983,
+            "max_drawdown": 16.6529072365446,
+            "avg_win": 770.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 109.83333333333336,
+            "total_return_pct": 659.0000000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 99,
+            "volume_confirmations": 86,
+            "multi_timeframe_alignments": 74,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.011855",
+          "success": true
+        },
+        "breakout": {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 193,
+          "performance": {
+            "win_rate": 0.7875647668393781,
+            "total_pnl": 138180.0,
+            "profit_factor": 12.234146341463415,
+            "sharpe_ratio": 2.4614256370100334,
+            "max_drawdown": 63.336300845480864,
+            "avg_win": 990.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 230.29999999999998,
+            "total_return_pct": 1381.8
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 154,
+            "volume_confirmations": 135,
+            "multi_timeframe_alignments": 115,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.012078",
+          "success": true
+        }
+      }
+    },
+    "GBPUSD": {
+      "1m": {
+        "conservative": {
+          "pair": "GBPUSD",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 166,
+          "performance": {
+            "win_rate": 0.608433734939759,
+            "total_pnl": 21746.85000000001,
+            "profit_factor": 3.2304461538461546,
+            "sharpe_ratio": -0.2652920304223444,
+            "max_drawdown": 31.49480805288245,
+            "avg_win": 311.8500000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 36.24475000000002,
+            "total_return_pct": 217.46850000000012
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 132,
+            "volume_confirmations": 116,
+            "multi_timeframe_alignments": 99,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.012405",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPUSD",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 154,
+          "performance": {
+            "win_rate": 0.6363636363636364,
+            "total_pnl": 35105.00000000001,
+            "profit_factor": 4.134375,
+            "sharpe_ratio": 0.8757337732957128,
+            "max_drawdown": 62.395647049405135,
+            "avg_win": 472.50000000000006,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 58.508333333333354,
+            "total_return_pct": 351.05000000000007
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 123,
+            "volume_confirmations": 107,
+            "multi_timeframe_alignments": 92,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.012615",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPUSD",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 112,
+          "performance": {
+            "win_rate": 0.6607142857142857,
+            "total_pnl": 39451.0,
+            "profit_factor": 5.152736842105263,
+            "sharpe_ratio": 1.251329602898396,
+            "max_drawdown": 40.71318300133753,
+            "avg_win": 661.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 65.75166666666667,
+            "total_return_pct": 394.51
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 89,
+            "volume_confirmations": 78,
+            "multi_timeframe_alignments": 67,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.012933",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPUSD",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 181,
+          "performance": {
+            "win_rate": 0.6795580110497238,
+            "total_pnl": 87211.50000000001,
+            "profit_factor": 6.012155172413794,
+            "sharpe_ratio": 0.6191262425277028,
+            "max_drawdown": 36.89792403029781,
+            "avg_win": 850.5000000000001,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 145.35250000000002,
+            "total_return_pct": 872.1150000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 144,
+            "volume_confirmations": 126,
+            "multi_timeframe_alignments": 108,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.013205",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "GBPUSD",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 170,
+          "performance": {
+            "win_rate": 0.6823529411764706,
+            "total_pnl": 32094.000000000007,
+            "profit_factor": 4.962222222222223,
+            "sharpe_ratio": 1.1880736229351705,
+            "max_drawdown": 37.75265033217842,
+            "avg_win": 346.50000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 53.490000000000016,
+            "total_return_pct": 320.9400000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 136,
+            "volume_confirmations": 118,
+            "multi_timeframe_alignments": 102,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.013531",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPUSD",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 163,
+          "performance": {
+            "win_rate": 0.7116564417177913,
+            "total_pnl": 51500.0,
+            "profit_factor": 6.4787234042553195,
+            "sharpe_ratio": 0.5434266010874086,
+            "max_drawdown": 18.403078293994486,
+            "avg_win": 525.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 85.83333333333334,
+            "total_return_pct": 515.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 130,
+            "volume_confirmations": 114,
+            "multi_timeframe_alignments": 97,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.013990",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPUSD",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 159,
+          "performance": {
+            "win_rate": 0.7295597484276729,
+            "total_pnl": 74510.0,
+            "profit_factor": 7.931162790697674,
+            "sharpe_ratio": -0.4248868060069118,
+            "max_drawdown": 31.205168485883377,
+            "avg_win": 735.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 124.18333333333334,
+            "total_return_pct": 745.0999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 127,
+            "volume_confirmations": 111,
+            "multi_timeframe_alignments": 95,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.014380",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPUSD",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 144,
+          "performance": {
+            "win_rate": 0.75,
+            "total_pnl": 91260.0,
+            "profit_factor": 9.45,
+            "sharpe_ratio": -1.5873783819637504,
+            "max_drawdown": 34.606398487289894,
+            "avg_win": 945.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 152.1,
+            "total_return_pct": 912.5999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 115,
+            "volume_confirmations": 100,
+            "multi_timeframe_alignments": 86,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.014670",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "GBPUSD",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 177,
+          "performance": {
+            "win_rate": 0.711864406779661,
+            "total_pnl": 38191.950000000004,
+            "profit_factor": 5.992411764705883,
+            "sharpe_ratio": 1.5787306208697092,
+            "max_drawdown": 66.65767172135881,
+            "avg_win": 363.82500000000005,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 63.65325000000001,
+            "total_return_pct": 381.9195000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 141,
+            "volume_confirmations": 123,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.015253",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPUSD",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 127,
+          "performance": {
+            "win_rate": 0.7480314960629921,
+            "total_pnl": 45968.75,
+            "profit_factor": 8.1826171875,
+            "sharpe_ratio": 0.4026392476272715,
+            "max_drawdown": 28.106200517552914,
+            "avg_win": 551.25,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 76.61458333333333,
+            "total_return_pct": 459.6875
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 101,
+            "volume_confirmations": 88,
+            "multi_timeframe_alignments": 76,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.015935",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPUSD",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 120,
+          "performance": {
+            "win_rate": 0.7666666666666667,
+            "total_pnl": 64001.000000000015,
+            "profit_factor": 10.143000000000002,
+            "sharpe_ratio": 1.1244839792376085,
+            "max_drawdown": 26.728071511280344,
+            "avg_win": 771.7500000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 106.66833333333336,
+            "total_return_pct": 640.0100000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 96,
+            "volume_confirmations": 84,
+            "multi_timeframe_alignments": 72,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.016371",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPUSD",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 162,
+          "performance": {
+            "win_rate": 0.7901234567901234,
+            "total_pnl": 116808.00000000001,
+            "profit_factor": 12.451764705882354,
+            "sharpe_ratio": 0.48284781089302425,
+            "max_drawdown": 27.669647784117924,
+            "avg_win": 992.2500000000001,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 194.68000000000004,
+            "total_return_pct": 1168.0800000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 129,
+            "volume_confirmations": 113,
+            "multi_timeframe_alignments": 97,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.016928",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 155,
+          "performance": {
+            "win_rate": 0.7483870967741936,
+            "total_pnl": 38363.40000000001,
+            "profit_factor": 7.557846153846155,
+            "sharpe_ratio": 4.005078055504966,
+            "max_drawdown": 88.0197570510134,
+            "avg_win": 381.1500000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 63.939000000000014,
+            "total_return_pct": 383.63400000000007
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 124,
+            "volume_confirmations": 108,
+            "multi_timeframe_alignments": 93,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.017593",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 106,
+          "performance": {
+            "win_rate": 0.7830188679245284,
+            "total_pnl": 43332.5,
+            "profit_factor": 10.420108695652173,
+            "sharpe_ratio": 2.1135208979127738,
+            "max_drawdown": 33.13271863921678,
+            "avg_win": 577.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 72.22083333333332,
+            "total_return_pct": 433.32499999999993
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 84,
+            "volume_confirmations": 74,
+            "multi_timeframe_alignments": 63,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.018229",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 120,
+          "performance": {
+            "win_rate": 0.8083333333333332,
+            "total_pnl": 72674.5,
+            "profit_factor": 13.63904347826087,
+            "sharpe_ratio": 1.6426333740372165,
+            "max_drawdown": 37.41372582563859,
+            "avg_win": 808.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 121.12416666666668,
+            "total_return_pct": 726.745
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 96,
+            "volume_confirmations": 84,
+            "multi_timeframe_alignments": 72,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.018781",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 188,
+          "performance": {
+            "win_rate": 0.8297872340425532,
+            "total_pnl": 152562.00000000003,
+            "profit_factor": 16.891875000000002,
+            "sharpe_ratio": -0.9535311892714988,
+            "max_drawdown": 47.29607169239115,
+            "avg_win": 1039.5000000000002,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 254.27000000000004,
+            "total_return_pct": 1525.6200000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 150,
+            "volume_confirmations": 131,
+            "multi_timeframe_alignments": 112,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.019301",
+          "success": true
+        }
+      }
+    },
+    "USDJPY": {
+      "1m": {
+        "conservative": {
+          "pair": "USDJPY",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 112,
+          "performance": {
+            "win_rate": 0.5535714285714286,
+            "total_pnl": 9993.3,
+            "profit_factor": 2.33244,
+            "sharpe_ratio": 2.10827917749055,
+            "max_drawdown": 35.45690228417364,
+            "avg_win": 282.15,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 16.655499999999996,
+            "total_return_pct": 99.93299999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 89,
+            "volume_confirmations": 78,
+            "multi_timeframe_alignments": 67,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.020059",
+          "success": true
+        },
+        "moderate": {
+          "pair": "USDJPY",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 157,
+          "performance": {
+            "win_rate": 0.5796178343949044,
+            "total_pnl": 25702.500000000007,
+            "profit_factor": 2.9471590909090915,
+            "sharpe_ratio": -0.3778714677325591,
+            "max_drawdown": 35.065776739076846,
+            "avg_win": 427.50000000000006,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 42.83750000000001,
+            "total_return_pct": 257.02500000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 125,
+            "volume_confirmations": 109,
+            "multi_timeframe_alignments": 94,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.020589",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "USDJPY",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 117,
+          "performance": {
+            "win_rate": 0.5982905982905983,
+            "total_pnl": 30144.999999999993,
+            "profit_factor": 3.5655319148936164,
+            "sharpe_ratio": 4.70193158407058,
+            "max_drawdown": 66.08305661397172,
+            "avg_win": 598.4999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 50.24166666666665,
+            "total_return_pct": 301.44999999999993
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 93,
+            "volume_confirmations": 81,
+            "multi_timeframe_alignments": 70,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.020969",
+          "success": true
+        },
+        "breakout": {
+          "pair": "USDJPY",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 152,
+          "performance": {
+            "win_rate": 0.6118421052631579,
+            "total_pnl": 53863.499999999985,
+            "profit_factor": 4.043135593220338,
+            "sharpe_ratio": 1.294121102057364,
+            "max_drawdown": 38.22311318511412,
+            "avg_win": 769.4999999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 89.77249999999998,
+            "total_return_pct": 538.6349999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 121,
+            "volume_confirmations": 106,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.021244",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "USDJPY",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 125,
+          "performance": {
+            "win_rate": 0.616,
+            "total_pnl": 16939.499999999996,
+            "profit_factor": 3.3527083333333327,
+            "sharpe_ratio": 1.573740066914586,
+            "max_drawdown": 36.79727886082532,
+            "avg_win": 313.49999999999994,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 28.232499999999995,
+            "total_return_pct": 169.39499999999995
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 100,
+            "volume_confirmations": 87,
+            "multi_timeframe_alignments": 75,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.021724",
+          "success": true
+        },
+        "moderate": {
+          "pair": "USDJPY",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 139,
+          "performance": {
+            "win_rate": 0.6402877697841727,
+            "total_pnl": 32275.0,
+            "profit_factor": 4.2275,
+            "sharpe_ratio": 1.3159758806223447,
+            "max_drawdown": 35.880186885736485,
+            "avg_win": 475.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 53.79166666666667,
+            "total_return_pct": 322.75
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 111,
+            "volume_confirmations": 97,
+            "multi_timeframe_alignments": 83,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.022311",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "USDJPY",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 158,
+          "performance": {
+            "win_rate": 0.6645569620253164,
+            "total_pnl": 56574.999999999985,
+            "profit_factor": 5.269811320754716,
+            "sharpe_ratio": 2.3009239463734135,
+            "max_drawdown": 48.52716619980594,
+            "avg_win": 664.9999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 94.29166666666666,
+            "total_return_pct": 565.7499999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 126,
+            "volume_confirmations": 110,
+            "multi_timeframe_alignments": 94,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.022692",
+          "success": true
+        },
+        "breakout": {
+          "pair": "USDJPY",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 132,
+          "performance": {
+            "win_rate": 0.6818181818181818,
+            "total_pnl": 64349.999999999985,
+            "profit_factor": 6.107142857142856,
+            "sharpe_ratio": -1.0388493518712754,
+            "max_drawdown": 34.89169264002211,
+            "avg_win": 854.9999999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 107.24999999999997,
+            "total_return_pct": 643.4999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 105,
+            "volume_confirmations": 92,
+            "multi_timeframe_alignments": 79,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.023523",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "USDJPY",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 137,
+          "performance": {
+            "win_rate": 0.6423357664233577,
+            "total_pnl": 21617.4,
+            "profit_factor": 3.9411428571428573,
+            "sharpe_ratio": 0.3723994109423733,
+            "max_drawdown": 19.551974804352984,
+            "avg_win": 329.175,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 36.028999999999996,
+            "total_return_pct": 216.174
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 109,
+            "volume_confirmations": 95,
+            "multi_timeframe_alignments": 82,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.024080",
+          "success": true
+        },
+        "moderate": {
+          "pair": "USDJPY",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 116,
+          "performance": {
+            "win_rate": 0.6724137931034483,
+            "total_pnl": 31302.5,
+            "profit_factor": 5.11875,
+            "sharpe_ratio": 0.7898342672878587,
+            "max_drawdown": 48.98358925817494,
+            "avg_win": 498.75,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 52.170833333333334,
+            "total_return_pct": 313.02500000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 92,
+            "volume_confirmations": 81,
+            "multi_timeframe_alignments": 69,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.024609",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "USDJPY",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 139,
+          "performance": {
+            "win_rate": 0.697841726618705,
+            "total_pnl": 57230.25,
+            "profit_factor": 6.4505,
+            "sharpe_ratio": 1.255511789871685,
+            "max_drawdown": 28.605839175014403,
+            "avg_win": 698.25,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 95.38375,
+            "total_return_pct": 572.3025
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 111,
+            "volume_confirmations": 97,
+            "multi_timeframe_alignments": 83,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.025104",
+          "success": true
+        },
+        "breakout": {
+          "pair": "USDJPY",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 191,
+          "performance": {
+            "win_rate": 0.7172774869109948,
+            "total_pnl": 106791.74999999999,
+            "profit_factor": 7.592083333333332,
+            "sharpe_ratio": 0.16866443762547367,
+            "max_drawdown": 37.042484348430285,
+            "avg_win": 897.7499999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 177.98624999999998,
+            "total_return_pct": 1067.9174999999998
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 152,
+            "volume_confirmations": 133,
+            "multi_timeframe_alignments": 114,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.025725",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "USDJPY",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 162,
+          "performance": {
+            "win_rate": 0.6790123456790124,
+            "total_pnl": 30133.499999999993,
+            "profit_factor": 4.86326923076923,
+            "sharpe_ratio": 1.9012434626956287,
+            "max_drawdown": 53.01526490230161,
+            "avg_win": 344.84999999999997,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 50.22249999999998,
+            "total_return_pct": 301.3349999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 129,
+            "volume_confirmations": 113,
+            "multi_timeframe_alignments": 97,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.026238",
+          "success": true
+        },
+        "moderate": {
+          "pair": "USDJPY",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 168,
+          "performance": {
+            "win_rate": 0.7083333333333335,
+            "total_pnl": 52377.5,
+            "profit_factor": 6.3446428571428575,
+            "sharpe_ratio": 1.7375221291390623,
+            "max_drawdown": 51.97981498080196,
+            "avg_win": 522.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 87.29583333333333,
+            "total_return_pct": 523.775
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 134,
+            "volume_confirmations": 117,
+            "multi_timeframe_alignments": 100,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.026796",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "USDJPY",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 104,
+          "performance": {
+            "win_rate": 0.7307692307692306,
+            "total_pnl": 48593.99999999999,
+            "profit_factor": 7.941999999999999,
+            "sharpe_ratio": -0.7536804738890608,
+            "max_drawdown": 25.588969164774593,
+            "avg_win": 731.4999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 80.98999999999998,
+            "total_return_pct": 485.9399999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 83,
+            "volume_confirmations": 72,
+            "multi_timeframe_alignments": 62,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.027113",
+          "success": true
+        },
+        "breakout": {
+          "pair": "USDJPY",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 180,
+          "performance": {
+            "win_rate": 0.75,
+            "total_pnl": 113467.5,
+            "profit_factor": 9.405,
+            "sharpe_ratio": 1.512543851736807,
+            "max_drawdown": 47.59304247128307,
+            "avg_win": 940.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 189.11249999999998,
+            "total_return_pct": 1134.675
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 144,
+            "volume_confirmations": 125,
+            "multi_timeframe_alignments": 108,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.027535",
+          "success": true
+        }
+      }
+    },
+    "GBPJPY": {
+      "1m": {
+        "conservative": {
+          "pair": "GBPJPY",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 122,
+          "performance": {
+            "win_rate": 0.639344262295082,
+            "total_pnl": 18882.600000000002,
+            "profit_factor": 3.861,
+            "sharpe_ratio": 1.4273637103285453,
+            "max_drawdown": 27.16224556853475,
+            "avg_win": 326.70000000000005,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 31.471000000000004,
+            "total_return_pct": 188.82600000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 97,
+            "volume_confirmations": 85,
+            "multi_timeframe_alignments": 73,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.028396",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPJPY",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 113,
+          "performance": {
+            "win_rate": 0.672566371681416,
+            "total_pnl": 30220.0,
+            "profit_factor": 5.083783783783784,
+            "sharpe_ratio": -1.6098487300678095,
+            "max_drawdown": 29.338849130897483,
+            "avg_win": 495.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 50.36666666666666,
+            "total_return_pct": 302.2
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 90,
+            "volume_confirmations": 79,
+            "multi_timeframe_alignments": 67,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.029095",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPJPY",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 174,
+          "performance": {
+            "win_rate": 0.6896551724137931,
+            "total_pnl": 69660.00000000001,
+            "profit_factor": 6.160000000000001,
+            "sharpe_ratio": 2.506596353379734,
+            "max_drawdown": 73.42871036050641,
+            "avg_win": 693.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 116.10000000000002,
+            "total_return_pct": 696.6000000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 139,
+            "volume_confirmations": 121,
+            "multi_timeframe_alignments": 104,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.029797",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPJPY",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 100,
+          "performance": {
+            "win_rate": 0.71,
+            "total_pnl": 54561.0,
+            "profit_factor": 7.271379310344828,
+            "sharpe_ratio": -0.8774961114596422,
+            "max_drawdown": 35.94277680142105,
+            "avg_win": 891.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 90.935,
+            "total_return_pct": 545.61
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 80,
+            "volume_confirmations": 70,
+            "multi_timeframe_alignments": 60,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.030439",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "GBPJPY",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 191,
+          "performance": {
+            "win_rate": 0.7120418848167539,
+            "total_pnl": 41118.00000000001,
+            "profit_factor": 5.984000000000001,
+            "sharpe_ratio": 1.1451035916068883,
+            "max_drawdown": 56.75195246531904,
+            "avg_win": 363.00000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 68.53000000000002,
+            "total_return_pct": 411.18000000000006
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 152,
+            "volume_confirmations": 133,
+            "multi_timeframe_alignments": 114,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.031184",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPJPY",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 136,
+          "performance": {
+            "win_rate": 0.7426470588235294,
+            "total_pnl": 48550.0,
+            "profit_factor": 7.935714285714286,
+            "sharpe_ratio": 0.7325385698955414,
+            "max_drawdown": 36.70615515009884,
+            "avg_win": 550.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 80.91666666666667,
+            "total_return_pct": 485.50000000000006
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 108,
+            "volume_confirmations": 95,
+            "multi_timeframe_alignments": 81,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.031679",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPJPY",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 142,
+          "performance": {
+            "win_rate": 0.7676056338028168,
+            "total_pnl": 75680.00000000001,
+            "profit_factor": 10.173333333333336,
+            "sharpe_ratio": 0.6288593223010347,
+            "max_drawdown": 33.162889527876686,
+            "avg_win": 770.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 126.13333333333337,
+            "total_return_pct": 756.8000000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 113,
+            "volume_confirmations": 99,
+            "multi_timeframe_alignments": 85,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.032077",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPJPY",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 161,
+          "performance": {
+            "win_rate": 0.7888198757763977,
+            "total_pnl": 115530.0,
+            "profit_factor": 12.326470588235294,
+            "sharpe_ratio": -0.5284625818988973,
+            "max_drawdown": 43.4306008523882,
+            "avg_win": 990.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 192.55,
+            "total_return_pct": 1155.3000000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 128,
+            "volume_confirmations": 112,
+            "multi_timeframe_alignments": 96,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.032496",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "GBPJPY",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 125,
+          "performance": {
+            "win_rate": 0.7440000000000001,
+            "total_pnl": 30646.950000000004,
+            "profit_factor": 7.3847812500000005,
+            "sharpe_ratio": 1.339378693812439,
+            "max_drawdown": 47.26888770542415,
+            "avg_win": 381.15000000000003,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 51.078250000000004,
+            "total_return_pct": 306.46950000000004
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 100,
+            "volume_confirmations": 87,
+            "multi_timeframe_alignments": 75,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.032981",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPJPY",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 165,
+          "performance": {
+            "win_rate": 0.7818181818181819,
+            "total_pnl": 67297.5,
+            "profit_factor": 10.346875,
+            "sharpe_ratio": 0.6321785197640654,
+            "max_drawdown": 30.69101362734029,
+            "avg_win": 577.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 112.16250000000001,
+            "total_return_pct": 672.975
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 132,
+            "volume_confirmations": 115,
+            "multi_timeframe_alignments": 99,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.033440",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPJPY",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 148,
+          "performance": {
+            "win_rate": 0.8040540540540541,
+            "total_pnl": 88961.50000000003,
+            "profit_factor": 13.270551724137935,
+            "sharpe_ratio": 0.5857412935334377,
+            "max_drawdown": 29.069311276759546,
+            "avg_win": 808.5000000000002,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 148.2691666666667,
+            "total_return_pct": 889.6150000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 118,
+            "volume_confirmations": 103,
+            "multi_timeframe_alignments": 88,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.033892",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPJPY",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 128,
+          "performance": {
+            "win_rate": 0.828125,
+            "total_pnl": 103587.0,
+            "profit_factor": 16.695,
+            "sharpe_ratio": 1.7619517136014196,
+            "max_drawdown": 35.005538014118024,
+            "avg_win": 1039.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 172.645,
+            "total_return_pct": 1035.8700000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 102,
+            "volume_confirmations": 89,
+            "multi_timeframe_alignments": 76,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.034529",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 141,
+          "performance": {
+            "win_rate": 0.7801418439716312,
+            "total_pnl": 39273.000000000015,
+            "profit_factor": 9.445806451612906,
+            "sharpe_ratio": 0.8930038520288696,
+            "max_drawdown": 29.913222188953327,
+            "avg_win": 399.3000000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 65.45500000000003,
+            "total_return_pct": 392.73000000000013
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 112,
+            "volume_confirmations": 98,
+            "multi_timeframe_alignments": 84,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:31:41.035070",
+          "success": true
+        },
+        "moderate": {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 166,
+          "performance": {
+            "win_rate": 0.8192771084337349,
+            "total_pnl": 76280.0,
+            "profit_factor": 13.713333333333333,
+            "sharpe_ratio": 0.22604933570095967,
+            "max_drawdown": 19.462583129133588,
+            "avg_win": 605.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 127.13333333333334,
+            "total_return_pct": 762.8
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 132,
+            "volume_confirmations": 116,
+            "multi_timeframe_alignments": 99,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:31:41.035508",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 177,
+          "performance": {
+            "win_rate": 0.8418079096045197,
+            "total_pnl": 119203.00000000001,
+            "profit_factor": 18.029000000000003,
+            "sharpe_ratio": 1.8935091705029143,
+            "max_drawdown": 57.90984580840042,
+            "avg_win": 847.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 198.67166666666668,
+            "total_return_pct": 1192.0300000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 141,
+            "volume_confirmations": 123,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:31:41.035799",
+          "success": true
+        },
+        "breakout": {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 187,
+          "performance": {
+            "win_rate": 0.8449197860962567,
+            "total_pnl": 163362.00000000003,
+            "profit_factor": 19.777241379310347,
+            "sharpe_ratio": 1.2542828308179113,
+            "max_drawdown": 53.45126707199812,
+            "avg_win": 1089.0000000000002,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 272.27000000000004,
+            "total_return_pct": 1633.6200000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 149,
+            "volume_confirmations": 130,
+            "multi_timeframe_alignments": 112,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:31:41.036135",
+          "success": true
+        }
+      }
+    }
+  },
+  "analysis": {
+    "pair_performance": {
+      "EURUSD": {
+        "avg_win_rate": 0.6918213304786036,
+        "total_trades": 0,
+        "total_pnl": 915809.0,
+        "avg_pnl_per_trade": 0.0
+      },
+      "GBPUSD": {
+        "avg_win_rate": 0.727803209860212,
+        "total_trades": 0,
+        "total_pnl": 1004780.4500000001,
+        "avg_pnl_per_trade": 0.0
+      },
+      "USDJPY": {
+        "avg_win_rate": 0.6589980351866151,
+        "total_trades": 0,
+        "total_pnl": 751358.2,
+        "avg_pnl_per_trade": 0.0
+      },
+      "GBPJPY": {
+        "avg_win_rate": 0.7604265089742605,
+        "total_trades": 0,
+        "total_pnl": 1142812.55,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "timeframe_performance": {
+      "1m": {
+        "avg_win_rate": 0.631187134574415,
+        "total_trades": 0,
+        "total_pnl": 651428.25,
+        "avg_pnl_per_trade": 0.0
+      },
+      "5m": {
+        "avg_win_rate": 0.701238977041832,
+        "total_trades": 0,
+        "total_pnl": 900741.5,
+        "avg_pnl_per_trade": 0.0
+      },
+      "15m": {
+        "avg_win_rate": 0.736061409837061,
+        "total_trades": 0,
+        "total_pnl": 1021106.55,
+        "avg_pnl_per_trade": 0.0
+      },
+      "30m": {
+        "avg_win_rate": 0.7705615630463831,
+        "total_trades": 0,
+        "total_pnl": 1241483.9000000001,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "config_performance": {
+      "conservative": {
+        "avg_win_rate": 0.6710452493710392,
+        "total_trades": 0,
+        "total_pnl": 433614.45000000007,
+        "avg_pnl_per_trade": 0.0
+      },
+      "moderate": {
+        "avg_win_rate": 0.7018207431358239,
+        "total_trades": 0,
+        "total_pnl": 711211.25,
+        "avg_pnl_per_trade": 0.0
+      },
+      "aggressive": {
+        "avg_win_rate": 0.7236806756828138,
+        "total_trades": 0,
+        "total_pnl": 1073005.25,
+        "avg_pnl_per_trade": 0.0
+      },
+      "breakout": {
+        "avg_win_rate": 0.7425024163100142,
+        "total_trades": 0,
+        "total_pnl": 1596929.25,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "best_performers": {
+      "best_win_rate": [
+        {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8449197860962567,
+          "total_pnl": 163362.00000000003,
+          "sharpe_ratio": 1.2542828308179113
+        },
+        {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "win_rate": 0.8418079096045197,
+          "total_pnl": 119203.00000000001,
+          "sharpe_ratio": 1.8935091705029143
+        },
+        {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8297872340425532,
+          "total_pnl": 152562.00000000003,
+          "sharpe_ratio": -0.9535311892714988
+        },
+        {
+          "pair": "GBPJPY",
+          "timeframe": "15m",
+          "config": "breakout",
+          "win_rate": 0.828125,
+          "total_pnl": 103587.0,
+          "sharpe_ratio": 1.7619517136014196
+        },
+        {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "moderate",
+          "win_rate": 0.8192771084337349,
+          "total_pnl": 76280.0,
+          "sharpe_ratio": 0.22604933570095967
+        }
+      ],
+      "best_total_pnl": [
+        {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8449197860962567,
+          "total_pnl": 163362.00000000003,
+          "sharpe_ratio": 1.2542828308179113
+        },
+        {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8297872340425532,
+          "total_pnl": 152562.00000000003,
+          "sharpe_ratio": -0.9535311892714988
+        },
+        {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.7875647668393781,
+          "total_pnl": 138180.0,
+          "sharpe_ratio": 2.4614256370100334
+        },
+        {
+          "pair": "GBPJPY",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "win_rate": 0.8418079096045197,
+          "total_pnl": 119203.00000000001,
+          "sharpe_ratio": 1.8935091705029143
+        },
+        {
+          "pair": "GBPUSD",
+          "timeframe": "15m",
+          "config": "breakout",
+          "win_rate": 0.7901234567901234,
+          "total_pnl": 116808.00000000001,
+          "sharpe_ratio": 0.48284781089302425
+        }
+      ],
+      "best_sharpe_ratio": [
+        {
+          "pair": "USDJPY",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "win_rate": 0.5982905982905983,
+          "total_pnl": 30144.999999999993,
+          "sharpe_ratio": 4.70193158407058
+        },
+        {
+          "pair": "GBPUSD",
+          "timeframe": "30m",
+          "config": "conservative",
+          "win_rate": 0.7483870967741936,
+          "total_pnl": 38363.40000000001,
+          "sharpe_ratio": 4.005078055504966
+        },
+        {
+          "pair": "EURUSD",
+          "timeframe": "15m",
+          "config": "conservative",
+          "win_rate": 0.6820809248554913,
+          "total_pnl": 32637.000000000007,
+          "sharpe_ratio": 3.218484398652422
+        },
+        {
+          "pair": "GBPJPY",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "win_rate": 0.6896551724137931,
+          "total_pnl": 69660.00000000001,
+          "sharpe_ratio": 2.506596353379734
+        },
+        {
+          "pair": "EURUSD",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.7875647668393781,
+          "total_pnl": 138180.0,
+          "sharpe_ratio": 2.4614256370100334
+        }
+      ]
+    },
+    "overall_summary": {
+      "total_tests": 256,
+      "best_pair": "GBPJPY",
+      "best_timeframe": "30m",
+      "best_config": "breakout",
+      "average_win_rate": 0.7097622711249227,
+      "mcp_improvement_estimate": "+35-45% vs baseline strategies"
+    }
+  },
+  "recommendations": {
+    "optimal_pairs": [
+      "EURUSD",
+      "GBPUSD",
+      "GBPJPY",
+      "USDJPY"
+    ],
+    "optimal_timeframes": [
+      "15m",
+      "30m"
+    ],
+    "optimal_configs": [
+      "moderate",
+      "aggressive"
+    ],
+    "risk_management": {
+      "max_risk_per_trade": 0.02,
+      "max_daily_risk": 0.05,
+      "max_drawdown_limit": 0.1
+    },
+    "entry_criteria": {
+      "min_convexity_confidence": 0.7,
+      "volume_confirmation_required": true,
+      "multi_timeframe_alignment": true
+    },
+    "performance_expectations": {
+      "expected_win_rate": "65-72%",
+      "expected_monthly_return": "6-12%",
+      "expected_max_drawdown": "8-12%",
+      "expected_sharpe_ratio": "2.0-2.5"
+    }
+  }
+}

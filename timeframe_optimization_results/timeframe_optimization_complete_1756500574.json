@@ -1,0 +1,1615 @@
+{
+  "optimization_metadata": {
+    "start_time": "2025-08-30T06:49:34.293492",
+    "end_time": "2025-08-30T06:49:34.926356",
+    "duration_minutes": 0.0105479,
+    "timeframes_optimized": [
+      "1m",
+      "5m",
+      "15m",
+      "30m"
+    ],
+    "total_optimizations": 16
+  },
+  "timeframe_optimizations": {
+    "1m": {
+      "timeframe": "1m",
+      "config": {
+        "name": "Ultra-Fast Scalping",
+        "description": "Micro-timing for rapid market movements",
+        "optimal_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT",
+          "ADAUSDT"
+        ],
+        "risk_multiplier": 0.3,
+        "convexity_sensitivity": 0.8,
+        "atr_period": 5,
+        "volume_threshold": 1.2,
+        "max_hold_time": 3,
+        "min_convexity_confidence": 0.75,
+        "expected_win_rate": "55-65%",
+        "expected_profit_factor": "1.8-2.2",
+        "recommended_configs": [
+          "ultra_conservative",
+          "conservative"
+        ]
+      },
+      "parameter_tests": {
+        "conservative": {
+          "parameters": {
+            "convexity_sensitivity": 0.6400000000000001,
+            "atr_period": 4,
+            "volume_threshold": 1.08,
+            "min_convexity_confidence": 0.8,
+            "risk_multiplier": 0.24
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.6400000000000001,
+                "atr_period": 4,
+                "volume_threshold": 1.08,
+                "min_convexity_confidence": 0.8,
+                "risk_multiplier": 0.24
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.6400000000000001,
+                "atr_period": 4,
+                "volume_threshold": 1.08,
+                "min_convexity_confidence": 0.8,
+                "risk_multiplier": 0.24
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.6400000000000001,
+                "atr_period": 4,
+                "volume_threshold": 1.08,
+                "min_convexity_confidence": 0.8,
+                "risk_multiplier": 0.24
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "conservative"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "optimal": {
+          "parameters": {
+            "convexity_sensitivity": 0.8,
+            "atr_period": 5,
+            "volume_threshold": 1.2,
+            "min_convexity_confidence": 0.75,
+            "risk_multiplier": 0.3
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 5,
+                "volume_threshold": 1.2,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.3
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 5,
+                "volume_threshold": 1.2,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.3
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 5,
+                "volume_threshold": 1.2,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.3
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "optimal"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "aggressive": {
+          "parameters": {
+            "convexity_sensitivity": 0.96,
+            "atr_period": 3,
+            "volume_threshold": 1.32,
+            "min_convexity_confidence": 0.7,
+            "risk_multiplier": 0.36
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.96,
+                "atr_period": 3,
+                "volume_threshold": 1.32,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.36
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.96,
+                "atr_period": 3,
+                "volume_threshold": 1.32,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.36
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 0.96,
+                "atr_period": 3,
+                "volume_threshold": 1.32,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.36
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "aggressive"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "ultra_fast": {
+          "parameters": {
+            "convexity_sensitivity": 1.2000000000000002,
+            "atr_period": 2,
+            "volume_threshold": 1.44,
+            "min_convexity_confidence": 0.65,
+            "risk_multiplier": 0.44999999999999996
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 1.2000000000000002,
+                "atr_period": 2,
+                "volume_threshold": 1.44,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.44999999999999996
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 1.2000000000000002,
+                "atr_period": 2,
+                "volume_threshold": 1.44,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.44999999999999996
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "1m",
+              "parameters": {
+                "convexity_sensitivity": 1.2000000000000002,
+                "atr_period": 2,
+                "volume_threshold": 1.44,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.44999999999999996
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "ultra_fast"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        }
+      },
+      "optimal_parameters": {
+        "convexity_sensitivity": 0.6400000000000001,
+        "atr_period": 4,
+        "volume_threshold": 1.08,
+        "min_convexity_confidence": 0.8,
+        "risk_multiplier": 0.24,
+        "combination_name": "conservative",
+        "expected_mcp_score": 0.0,
+        "expected_win_rate": 0.0,
+        "expected_profit_factor": 0.0
+      },
+      "validation_results": {
+        "scenario_results": {
+          "bull_market": {
+            "scenario": "bull_market",
+            "pair": "BTCUSDT",
+            "timeframe": "1m",
+            "mcp_score": 71.10907486285734,
+            "win_rate": 39.37007874015748,
+            "profit_factor": 1.6233766233766234
+          },
+          "bear_market": {
+            "scenario": "bear_market",
+            "pair": "BTCUSDT",
+            "timeframe": "1m",
+            "mcp_score": 71.91691798197701,
+            "win_rate": 39.325842696629216,
+            "profit_factor": 1.6203703703703705
+          },
+          "sideways_market": {
+            "scenario": "sideways_market",
+            "pair": "BTCUSDT",
+            "timeframe": "1m",
+            "mcp_score": 67.31639291706142,
+            "win_rate": 39.375,
+            "profit_factor": 1.6237113402061856
+          },
+          "high_volatility": {
+            "scenario": "high_volatility",
+            "pair": "BTCUSDT",
+            "timeframe": "1m",
+            "mcp_score": 76.62604922039678,
+            "win_rate": 38.88888888888889,
+            "profit_factor": 1.5909090909090908
+          }
+        },
+        "robustness_score": 71.74210874557313,
+        "robustness_std": 3.3117640813529454,
+        "robustness_rating": "excellent",
+        "best_scenario": "high_volatility",
+        "worst_scenario": "sideways_market"
+      },
+      "insights": {
+        "optimal_parameter_combo": "conservative",
+        "key_strengths": [
+          "Ultra-fast signal detection",
+          "High frequency trading opportunities",
+          "Micro-momentum capture"
+        ],
+        "recommended_adjustments": [
+          "Tight stop-loss management",
+          "Lower position sizes",
+          "Fast execution requirements"
+        ],
+        "risk_considerations": [
+          "High transaction costs",
+          "Slippage sensitivity",
+          "Market noise interference"
+        ],
+        "market_condition_suitability": [
+          "Best in high volatility periods",
+          "Suitable for scalping strategies",
+          "Requires fast market conditions"
+        ]
+      },
+      "performance_metrics": {
+        "best_mcp_score": 0.0,
+        "avg_mcp_score": 0.0,
+        "best_win_rate": 0.0,
+        "avg_win_rate": 0.0,
+        "best_profit_factor": 0.0,
+        "avg_profit_factor": 0.0,
+        "parameter_combinations_tested": 4,
+        "performance_stability": 0.0
+      }
+    },
+    "5m": {
+      "timeframe": "5m",
+      "config": {
+        "name": "Fast Momentum Trading",
+        "description": "Quick momentum captures with reduced noise",
+        "optimal_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT",
+          "AVAXUSDT",
+          "DOTUSDT"
+        ],
+        "risk_multiplier": 0.5,
+        "convexity_sensitivity": 0.9,
+        "atr_period": 8,
+        "volume_threshold": 1.3,
+        "max_hold_time": 15,
+        "min_convexity_confidence": 0.7,
+        "expected_win_rate": "60-70%",
+        "expected_profit_factor": "2.0-2.4",
+        "recommended_configs": [
+          "conservative",
+          "moderate"
+        ]
+      },
+      "parameter_tests": {
+        "conservative": {
+          "parameters": {
+            "convexity_sensitivity": 0.7200000000000001,
+            "atr_period": 6,
+            "volume_threshold": 1.1700000000000002,
+            "min_convexity_confidence": 0.75,
+            "risk_multiplier": 0.4
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.7200000000000001,
+                "atr_period": 6,
+                "volume_threshold": 1.1700000000000002,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.4
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.7200000000000001,
+                "atr_period": 6,
+                "volume_threshold": 1.1700000000000002,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.4
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.7200000000000001,
+                "atr_period": 6,
+                "volume_threshold": 1.1700000000000002,
+                "min_convexity_confidence": 0.75,
+                "risk_multiplier": 0.4
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "conservative"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "optimal": {
+          "parameters": {
+            "convexity_sensitivity": 0.9,
+            "atr_period": 8,
+            "volume_threshold": 1.3,
+            "min_convexity_confidence": 0.7,
+            "risk_multiplier": 0.5
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 8,
+                "volume_threshold": 1.3,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.5
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 8,
+                "volume_threshold": 1.3,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.5
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 8,
+                "volume_threshold": 1.3,
+                "min_convexity_confidence": 0.7,
+                "risk_multiplier": 0.5
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "optimal"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "aggressive": {
+          "parameters": {
+            "convexity_sensitivity": 1.08,
+            "atr_period": 5,
+            "volume_threshold": 1.4300000000000002,
+            "min_convexity_confidence": 0.6499999999999999,
+            "risk_multiplier": 0.6
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.08,
+                "atr_period": 5,
+                "volume_threshold": 1.4300000000000002,
+                "min_convexity_confidence": 0.6499999999999999,
+                "risk_multiplier": 0.6
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.08,
+                "atr_period": 5,
+                "volume_threshold": 1.4300000000000002,
+                "min_convexity_confidence": 0.6499999999999999,
+                "risk_multiplier": 0.6
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.08,
+                "atr_period": 5,
+                "volume_threshold": 1.4300000000000002,
+                "min_convexity_confidence": 0.6499999999999999,
+                "risk_multiplier": 0.6
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "aggressive"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "ultra_fast": {
+          "parameters": {
+            "convexity_sensitivity": 1.35,
+            "atr_period": 4,
+            "volume_threshold": 1.56,
+            "min_convexity_confidence": 0.6,
+            "risk_multiplier": 0.75
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.35,
+                "atr_period": 4,
+                "volume_threshold": 1.56,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.75
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.35,
+                "atr_period": 4,
+                "volume_threshold": 1.56,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.75
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "SOLUSDT",
+              "timeframe": "5m",
+              "parameters": {
+                "convexity_sensitivity": 1.35,
+                "atr_period": 4,
+                "volume_threshold": 1.56,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.75
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "ultra_fast"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        }
+      },
+      "optimal_parameters": {
+        "convexity_sensitivity": 0.7200000000000001,
+        "atr_period": 6,
+        "volume_threshold": 1.1700000000000002,
+        "min_convexity_confidence": 0.75,
+        "risk_multiplier": 0.4,
+        "combination_name": "conservative",
+        "expected_mcp_score": 0.0,
+        "expected_win_rate": 0.0,
+        "expected_profit_factor": 0.0
+      },
+      "validation_results": {
+        "scenario_results": {
+          "bull_market": {
+            "scenario": "bull_market",
+            "pair": "BTCUSDT",
+            "timeframe": "5m",
+            "mcp_score": 70.45073896404989,
+            "win_rate": 48.59154929577465,
+            "profit_factor": 2.363013698630137
+          },
+          "bear_market": {
+            "scenario": "bear_market",
+            "pair": "BTCUSDT",
+            "timeframe": "5m",
+            "mcp_score": 67.63928186435079,
+            "win_rate": 48.53801169590643,
+            "profit_factor": 2.3579545454545454
+          },
+          "sideways_market": {
+            "scenario": "sideways_market",
+            "pair": "BTCUSDT",
+            "timeframe": "5m",
+            "mcp_score": 69.55240947696944,
+            "win_rate": 48.62385321100918,
+            "profit_factor": 2.3660714285714284
+          },
+          "high_volatility": {
+            "scenario": "high_volatility",
+            "pair": "BTCUSDT",
+            "timeframe": "5m",
+            "mcp_score": 67.49991890940865,
+            "win_rate": 48.148148148148145,
+            "profit_factor": 2.3214285714285716
+          }
+        },
+        "robustness_score": 68.78558730369468,
+        "robustness_std": 1.2577465640725232,
+        "robustness_rating": "excellent",
+        "best_scenario": "bull_market",
+        "worst_scenario": "high_volatility"
+      },
+      "insights": {
+        "optimal_parameter_combo": "conservative",
+        "key_strengths": [
+          "Balanced speed and reliability",
+          "Good momentum capture",
+          "Reduced noise vs 1m"
+        ],
+        "recommended_adjustments": [
+          "Moderate stop-loss levels",
+          "Standard position sizing",
+          "5-15 minute holding periods"
+        ],
+        "risk_considerations": [
+          "Still sensitive to news events",
+          "Weekend gaps can be problematic",
+          "Requires active monitoring"
+        ],
+        "market_condition_suitability": [
+          "Excellent for trending markets",
+          "Good for momentum strategies",
+          "Suitable for day trading"
+        ]
+      },
+      "performance_metrics": {
+        "best_mcp_score": 0.0,
+        "avg_mcp_score": 0.0,
+        "best_win_rate": 0.0,
+        "avg_win_rate": 0.0,
+        "best_profit_factor": 0.0,
+        "avg_profit_factor": 0.0,
+        "parameter_combinations_tested": 4,
+        "performance_stability": 0.0
+      }
+    },
+    "15m": {
+      "timeframe": "15m",
+      "config": {
+        "name": "Medium-Term Trading",
+        "description": "Balanced approach with trend confirmation",
+        "optimal_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "BNBUSDT",
+          "ADAUSDT",
+          "LINKUSDT",
+          "UNIUSDT"
+        ],
+        "risk_multiplier": 0.7,
+        "convexity_sensitivity": 1.0,
+        "atr_period": 12,
+        "volume_threshold": 1.4,
+        "max_hold_time": 60,
+        "min_convexity_confidence": 0.65,
+        "expected_win_rate": "65-75%",
+        "expected_profit_factor": "2.2-2.6",
+        "recommended_configs": [
+          "moderate",
+          "aggressive"
+        ]
+      },
+      "parameter_tests": {
+        "conservative": {
+          "parameters": {
+            "convexity_sensitivity": 0.8,
+            "atr_period": 9,
+            "volume_threshold": 1.26,
+            "min_convexity_confidence": 0.7000000000000001,
+            "risk_multiplier": 0.5599999999999999
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 9,
+                "volume_threshold": 1.26,
+                "min_convexity_confidence": 0.7000000000000001,
+                "risk_multiplier": 0.5599999999999999
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 9,
+                "volume_threshold": 1.26,
+                "min_convexity_confidence": 0.7000000000000001,
+                "risk_multiplier": 0.5599999999999999
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.8,
+                "atr_period": 9,
+                "volume_threshold": 1.26,
+                "min_convexity_confidence": 0.7000000000000001,
+                "risk_multiplier": 0.5599999999999999
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "conservative"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "optimal": {
+          "parameters": {
+            "convexity_sensitivity": 1.0,
+            "atr_period": 12,
+            "volume_threshold": 1.4,
+            "min_convexity_confidence": 0.65,
+            "risk_multiplier": 0.7
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.0,
+                "atr_period": 12,
+                "volume_threshold": 1.4,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.7
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.0,
+                "atr_period": 12,
+                "volume_threshold": 1.4,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.7
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.0,
+                "atr_period": 12,
+                "volume_threshold": 1.4,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.7
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "optimal"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "aggressive": {
+          "parameters": {
+            "convexity_sensitivity": 1.2,
+            "atr_period": 8,
+            "volume_threshold": 1.54,
+            "min_convexity_confidence": 0.6,
+            "risk_multiplier": 0.84
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.2,
+                "atr_period": 8,
+                "volume_threshold": 1.54,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.84
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.2,
+                "atr_period": 8,
+                "volume_threshold": 1.54,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.84
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 1.2,
+                "atr_period": 8,
+                "volume_threshold": 1.54,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.84
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "aggressive"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "trend_following": {
+          "parameters": {
+            "convexity_sensitivity": 0.9,
+            "atr_period": 14,
+            "volume_threshold": 1.3299999999999998,
+            "min_convexity_confidence": 0.6,
+            "risk_multiplier": 0.63
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 14,
+                "volume_threshold": 1.3299999999999998,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.63
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 14,
+                "volume_threshold": 1.3299999999999998,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.63
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "15m",
+              "parameters": {
+                "convexity_sensitivity": 0.9,
+                "atr_period": 14,
+                "volume_threshold": 1.3299999999999998,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 0.63
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "trend_following"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        }
+      },
+      "optimal_parameters": {
+        "convexity_sensitivity": 0.8,
+        "atr_period": 9,
+        "volume_threshold": 1.26,
+        "min_convexity_confidence": 0.7000000000000001,
+        "risk_multiplier": 0.5599999999999999,
+        "combination_name": "conservative",
+        "expected_mcp_score": 0.0,
+        "expected_win_rate": 0.0,
+        "expected_profit_factor": 0.0
+      },
+      "validation_results": {
+        "scenario_results": {
+          "bull_market": {
+            "scenario": "bull_market",
+            "pair": "BTCUSDT",
+            "timeframe": "15m",
+            "mcp_score": 69.67763384652804,
+            "win_rate": 58.333333333333336,
+            "profit_factor": 3.5
+          },
+          "bear_market": {
+            "scenario": "bear_market",
+            "pair": "BTCUSDT",
+            "timeframe": "15m",
+            "mcp_score": 50.62951306271209,
+            "win_rate": 58.26771653543307,
+            "profit_factor": 3.490566037735849
+          },
+          "sideways_market": {
+            "scenario": "sideways_market",
+            "pair": "BTCUSDT",
+            "timeframe": "15m",
+            "mcp_score": 52.35585378339185,
+            "win_rate": 58.16326530612245,
+            "profit_factor": 3.475609756097561
+          },
+          "high_volatility": {
+            "scenario": "high_volatility",
+            "pair": "BTCUSDT",
+            "timeframe": "15m",
+            "mcp_score": 56.9756139400575,
+            "win_rate": 57.72357723577236,
+            "profit_factor": 3.4134615384615383
+          }
+        },
+        "robustness_score": 57.409653658172374,
+        "robustness_std": 7.4532363448257914,
+        "robustness_rating": "good",
+        "best_scenario": "bull_market",
+        "worst_scenario": "bear_market"
+      },
+      "insights": {
+        "optimal_parameter_combo": "conservative",
+        "key_strengths": [
+          "Strong trend identification",
+          "Balanced risk/reward",
+          "Good signal reliability"
+        ],
+        "recommended_adjustments": [
+          "ATR-based position sizing",
+          "15-60 minute holding periods",
+          "Multi-timeframe confirmation"
+        ],
+        "risk_considerations": [
+          "Can miss very short opportunities",
+          "Requires patience for setups",
+          "Weekend position management needed"
+        ],
+        "market_condition_suitability": [
+          "Perfect for swing trading",
+          "Excellent in trending markets",
+          "Good for position trading"
+        ]
+      },
+      "performance_metrics": {
+        "best_mcp_score": 0.0,
+        "avg_mcp_score": 0.0,
+        "best_win_rate": 0.0,
+        "avg_win_rate": 0.0,
+        "best_profit_factor": 0.0,
+        "avg_profit_factor": 0.0,
+        "parameter_combinations_tested": 4,
+        "performance_stability": 0.0
+      }
+    },
+    "30m": {
+      "timeframe": "30m",
+      "config": {
+        "name": "Long-Term Swing Trading",
+        "description": "Major trend captures with lower frequency",
+        "optimal_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "BNBUSDT",
+          "SOLUSDT",
+          "AVAXUSDT",
+          "DOTUSDT",
+          "LINKUSDT"
+        ],
+        "risk_multiplier": 1.0,
+        "convexity_sensitivity": 1.1,
+        "atr_period": 14,
+        "volume_threshold": 1.5,
+        "max_hold_time": 240,
+        "min_convexity_confidence": 0.6,
+        "expected_win_rate": "70-80%",
+        "expected_profit_factor": "2.4-2.8",
+        "recommended_configs": [
+          "aggressive",
+          "breakout"
+        ]
+      },
+      "parameter_tests": {
+        "conservative": {
+          "parameters": {
+            "convexity_sensitivity": 0.8800000000000001,
+            "atr_period": 11,
+            "volume_threshold": 1.35,
+            "min_convexity_confidence": 0.65,
+            "risk_multiplier": 0.8
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.8800000000000001,
+                "atr_period": 11,
+                "volume_threshold": 1.35,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.8
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.8800000000000001,
+                "atr_period": 11,
+                "volume_threshold": 1.35,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.8
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.8800000000000001,
+                "atr_period": 11,
+                "volume_threshold": 1.35,
+                "min_convexity_confidence": 0.65,
+                "risk_multiplier": 0.8
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "conservative"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "optimal": {
+          "parameters": {
+            "convexity_sensitivity": 1.1,
+            "atr_period": 14,
+            "volume_threshold": 1.5,
+            "min_convexity_confidence": 0.6,
+            "risk_multiplier": 1.0
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.1,
+                "atr_period": 14,
+                "volume_threshold": 1.5,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 1.0
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.1,
+                "atr_period": 14,
+                "volume_threshold": 1.5,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 1.0
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.1,
+                "atr_period": 14,
+                "volume_threshold": 1.5,
+                "min_convexity_confidence": 0.6,
+                "risk_multiplier": 1.0
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "optimal"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "aggressive": {
+          "parameters": {
+            "convexity_sensitivity": 1.32,
+            "atr_period": 9,
+            "volume_threshold": 1.6500000000000001,
+            "min_convexity_confidence": 0.5499999999999999,
+            "risk_multiplier": 1.2
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.32,
+                "atr_period": 9,
+                "volume_threshold": 1.6500000000000001,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 1.2
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.32,
+                "atr_period": 9,
+                "volume_threshold": 1.6500000000000001,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 1.2
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 1.32,
+                "atr_period": 9,
+                "volume_threshold": 1.6500000000000001,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 1.2
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "aggressive"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        },
+        "trend_following": {
+          "parameters": {
+            "convexity_sensitivity": 0.9900000000000001,
+            "atr_period": 16,
+            "volume_threshold": 1.4249999999999998,
+            "min_convexity_confidence": 0.5499999999999999,
+            "risk_multiplier": 0.9
+          },
+          "pair_results": [
+            {
+              "pair": "BTCUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.9900000000000001,
+                "atr_period": 16,
+                "volume_threshold": 1.4249999999999998,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 0.9
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "ETHUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.9900000000000001,
+                "atr_period": 16,
+                "volume_threshold": 1.4249999999999998,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 0.9
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            },
+            {
+              "pair": "BNBUSDT",
+              "timeframe": "30m",
+              "parameters": {
+                "convexity_sensitivity": 0.9900000000000001,
+                "atr_period": 16,
+                "volume_threshold": 1.4249999999999998,
+                "min_convexity_confidence": 0.5499999999999999,
+                "risk_multiplier": 0.9
+              },
+              "error": "'MCPMathValidator' object has no attribute 'generate_pair_market_data'",
+              "status": "ERROR"
+            }
+          ],
+          "aggregated_metrics": {
+            "average_mcp_score": 0.0,
+            "average_win_rate": 0.0,
+            "average_profit_factor": 0.0,
+            "pairs_tested": 3,
+            "successful_tests": 0,
+            "combination_name": "trend_following"
+          },
+          "mcp_score": 0.0,
+          "win_rate": 0.0,
+          "profit_factor": 0.0
+        }
+      },
+      "optimal_parameters": {
+        "convexity_sensitivity": 0.8800000000000001,
+        "atr_period": 11,
+        "volume_threshold": 1.35,
+        "min_convexity_confidence": 0.65,
+        "risk_multiplier": 0.8,
+        "combination_name": "conservative",
+        "expected_mcp_score": 0.0,
+        "expected_win_rate": 0.0,
+        "expected_profit_factor": 0.0
+      },
+      "validation_results": {
+        "scenario_results": {
+          "bull_market": {
+            "scenario": "bull_market",
+            "pair": "BTCUSDT",
+            "timeframe": "30m",
+            "mcp_score": 49.32832960528516,
+            "win_rate": 65.33333333333333,
+            "profit_factor": 4.711538461538462
+          },
+          "bear_market": {
+            "scenario": "bear_market",
+            "pair": "BTCUSDT",
+            "timeframe": "30m",
+            "mcp_score": 56.40294924685059,
+            "win_rate": 65.38461538461539,
+            "profit_factor": 4.722222222222222
+          },
+          "sideways_market": {
+            "scenario": "sideways_market",
+            "pair": "BTCUSDT",
+            "timeframe": "30m",
+            "mcp_score": 46.34983956595905,
+            "win_rate": 64.94845360824742,
+            "profit_factor": 4.632352941176471
+          },
+          "high_volatility": {
+            "scenario": "high_volatility",
+            "pair": "BTCUSDT",
+            "timeframe": "30m",
+            "mcp_score": 55.635484758005695,
+            "win_rate": 65.26946107784431,
+            "profit_factor": 4.698275862068965
+          }
+        },
+        "robustness_score": 51.92915079402513,
+        "robustness_std": 4.232161642839341,
+        "robustness_rating": "excellent",
+        "best_scenario": "bear_market",
+        "worst_scenario": "sideways_market"
+      },
+      "insights": {
+        "optimal_parameter_combo": "conservative",
+        "key_strengths": [
+          "Strong trend following",
+          "High reliability signals",
+          "Lower stress trading"
+        ],
+        "recommended_adjustments": [
+          "Wider stop-loss levels",
+          "Longer holding periods (1-4 hours)",
+          "Position trading approach"
+        ],
+        "risk_considerations": [
+          "Slower signal generation",
+          "Can be affected by overnight news",
+          "Requires strong trend confirmation"
+        ],
+        "market_condition_suitability": [
+          "Best for strong trending markets",
+          "Excellent for position trading",
+          "Suitable for longer-term strategies"
+        ]
+      },
+      "performance_metrics": {
+        "best_mcp_score": 0.0,
+        "avg_mcp_score": 0.0,
+        "best_win_rate": 0.0,
+        "avg_win_rate": 0.0,
+        "best_profit_factor": 0.0,
+        "avg_profit_factor": 0.0,
+        "parameter_combinations_tested": 4,
+        "performance_stability": 0.0
+      }
+    }
+  },
+  "comparative_analysis": {
+    "timeframe_comparison": {
+      "1m": {
+        "avg_mcp_score": 0.0,
+        "best_mcp_score": 0.0,
+        "avg_win_rate": 0.0,
+        "avg_profit_factor": 0.0,
+        "performance_stability": 0.0
+      },
+      "5m": {
+        "avg_mcp_score": 0.0,
+        "best_mcp_score": 0.0,
+        "avg_win_rate": 0.0,
+        "avg_profit_factor": 0.0,
+        "performance_stability": 0.0
+      },
+      "15m": {
+        "avg_mcp_score": 0.0,
+        "best_mcp_score": 0.0,
+        "avg_win_rate": 0.0,
+        "avg_profit_factor": 0.0,
+        "performance_stability": 0.0
+      },
+      "30m": {
+        "avg_mcp_score": 0.0,
+        "best_mcp_score": 0.0,
+        "avg_win_rate": 0.0,
+        "avg_profit_factor": 0.0,
+        "performance_stability": 0.0
+      }
+    },
+    "best_overall_timeframe": "1m",
+    "performance_distribution": {
+      "mean_score": 0.0,
+      "score_std": 0.0,
+      "score_range": "0.0 - 0.0",
+      "consistency_rating": "high"
+    },
+    "risk_adjusted_performance": {},
+    "recommended_timeframes_by_strategy": {
+      "scalping": [
+        "1m",
+        "5m"
+      ],
+      "day_trading": [
+        "5m",
+        "15m"
+      ],
+      "swing_trading": [
+        "15m",
+        "30m"
+      ],
+      "position_trading": [
+        "30m"
+      ],
+      "high_frequency": [
+        "1m"
+      ],
+      "conservative": [
+        "15m",
+        "30m"
+      ],
+      "aggressive": [
+        "1m",
+        "5m"
+      ]
+    }
+  },
+  "recommendations": {
+    "primary_recommendations": {
+      "best_overall": "15m",
+      "highest_win_rate": "30m",
+      "lowest_risk": "30m",
+      "highest_frequency": "1m",
+      "best_stability": "15m"
+    },
+    "timeframe_specific": {
+      "1m": {
+        "best_for": "Ultra-fast scalping, high-frequency trading",
+        "risk_level": "High - requires fast execution and tight risk management",
+        "expected_win_rate": "55-65%",
+        "recommended_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT"
+        ]
+      },
+      "5m": {
+        "best_for": "Momentum trading, day trading",
+        "risk_level": "Medium - balanced speed and reliability",
+        "expected_win_rate": "60-70%",
+        "recommended_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "SOLUSDT",
+          "AVAXUSDT"
+        ]
+      },
+      "15m": {
+        "best_for": "Swing trading, balanced approach",
+        "risk_level": "Medium-Low - good risk/reward balance",
+        "expected_win_rate": "65-75%",
+        "recommended_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "BNBUSDT",
+          "ADAUSDT",
+          "LINKUSDT"
+        ]
+      },
+      "30m": {
+        "best_for": "Position trading, strong trends",
+        "risk_level": "Low - higher reliability but fewer signals",
+        "expected_win_rate": "70-80%",
+        "recommended_pairs": [
+          "BTCUSDT",
+          "ETHUSDT",
+          "BNBUSDT",
+          "SOLUSDT",
+          "AVAXUSDT"
+        ]
+      }
+    },
+    "implementation_guidelines": {
+      "start_with": "15m timeframe for most traders",
+      "add_timeframe": "Combine 15m with 30m for confirmation",
+      "risk_management": "Always use ATR-based stops regardless of timeframe",
+      "position_sizing": "Reduce size by 50% for 1m, 25% for 5m vs 15m",
+      "monitoring": "1m and 5m require constant monitoring, 15m-30m can be part-time"
+    }
+  },
+  "performance_projections": {
+    "1m": {
+      "expected_monthly_return": "0.0%",
+      "expected_win_rate": "0.0%",
+      "expected_profit_factor": "0.00",
+      "expected_max_drawdown": "33.0%",
+      "expected_sharpe_ratio": "-5.00",
+      "confidence_level": "High",
+      "recommended_leverage": "5-10x"
+    },
+    "5m": {
+      "expected_monthly_return": "0.0%",
+      "expected_win_rate": "0.0%",
+      "expected_profit_factor": "0.00",
+      "expected_max_drawdown": "33.0%",
+      "expected_sharpe_ratio": "-5.00",
+      "confidence_level": "High",
+      "recommended_leverage": "10-20x"
+    },
+    "15m": {
+      "expected_monthly_return": "0.0%",
+      "expected_win_rate": "0.0%",
+      "expected_profit_factor": "0.00",
+      "expected_max_drawdown": "33.0%",
+      "expected_sharpe_ratio": "-5.00",
+      "confidence_level": "High",
+      "recommended_leverage": "20-40x"
+    },
+    "30m": {
+      "expected_monthly_return": "0.0%",
+      "expected_win_rate": "0.0%",
+      "expected_profit_factor": "0.00",
+      "expected_max_drawdown": "33.0%",
+      "expected_sharpe_ratio": "-5.00",
+      "confidence_level": "High",
+      "recommended_leverage": "40-75x"
+    }
+  }
+}

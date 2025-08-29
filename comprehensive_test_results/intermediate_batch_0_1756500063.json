@@ -1,0 +1,4132 @@
+{
+  "BTCUSDT": {
+    "conservative": {
+      "1m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "1m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "41091.5589 - 48355.4150",
+          "avg_volume": 4948314.9418923175
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 361,
+          "convexity_std": 269.3037429509978,
+          "convexity_mean": 133.89168684925235,
+          "convexity_signal_ratio": 0.25069444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 2208.7694440323007,
+          "atr_percentage": 0.049081792907162934,
+          "price_volatility": 0.02448999412154118,
+          "atr_to_volatility_ratio": 2.004156990139537,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4948314.9418923175,
+          "volume_std": 1459635.6433370009,
+          "volume_coefficient_variation": 0.29497630213060205,
+          "volume_spikes_count": "32",
+          "spike_ratio": 0.022222222222222223,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 103,
+          "wins": 80,
+          "losses": 23,
+          "win_rate": 77.66990291262135,
+          "total_pnl": 26550.0,
+          "profit_factor": 8.695652173913043,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8998392501534557,
+        "timestamp": "2025-08-30T06:41:02.744798"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "5m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "41934.7579 - 47690.9472",
+          "avg_volume": 4913327.901283717
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 95,
+          "convexity_std": 146.59981962358546,
+          "convexity_mean": 117.4380628357494,
+          "convexity_signal_ratio": 0.3298611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1596.1620463686777,
+          "atr_percentage": 0.03549500253517806,
+          "price_volatility": 0.023975006841923052,
+          "atr_to_volatility_ratio": 1.4805002046177094,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4913327.901283717,
+          "volume_std": 1538778.8415478102,
+          "volume_coefficient_variation": 0.3131846423573256,
+          "volume_spikes_count": "6",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 150,
+          "wins": 122,
+          "losses": 28,
+          "win_rate": 81.33333333333333,
+          "total_pnl": 41550.0,
+          "profit_factor": 10.892857142857142,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8546615459049797,
+        "timestamp": "2025-08-30T06:41:02.753766"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "15m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "41908.5017 - 47230.9760",
+          "avg_volume": 5033538.227173419
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 685.6276094829482,
+          "convexity_mean": 249.99555965966601,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1479.3721125116276,
+          "atr_percentage": 0.03281084884373859,
+          "price_volatility": 0.024099956891029926,
+          "atr_to_volatility_ratio": 1.361448445409912,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5033538.227173419,
+          "volume_std": 1656612.6717666804,
+          "volume_coefficient_variation": 0.32911494797506496,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 148,
+          "wins": 109,
+          "losses": 39,
+          "win_rate": 73.64864864864865,
+          "total_pnl": 35025.0,
+          "profit_factor": 6.987179487179487,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8192778465233939,
+        "timestamp": "2025-08-30T06:41:02.758612"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "30m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "42044.5314 - 47266.2306",
+          "avg_volume": 5064715.3134602
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 2,
+          "convexity_std": 815.1675069837901,
+          "convexity_mean": 392.8602235225517,
+          "convexity_signal_ratio": 0.041666666666666664,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1925.980651323349,
+          "atr_percentage": 0.04294819095284969,
+          "price_volatility": 0.026042018480967502,
+          "atr_to_volatility_ratio": 1.649188252601766,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5064715.3134602,
+          "volume_std": 1623062.8841463055,
+          "volume_coefficient_variation": 0.3204647810771882,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 171,
+          "wins": 145,
+          "losses": 26,
+          "win_rate": 84.7953216374269,
+          "total_pnl": 50475.0,
+          "profit_factor": 13.942307692307692,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8941322506159606,
+        "timestamp": "2025-08-30T06:41:02.761459"
+      }
+    },
+    "moderate": {
+      "1m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "1m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "41091.5589 - 48355.4150",
+          "avg_volume": 4948314.9418923175
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 361,
+          "convexity_std": 269.3037429509978,
+          "convexity_mean": 133.89168684925235,
+          "convexity_signal_ratio": 0.25069444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 2208.7694440323007,
+          "atr_percentage": 0.049081792907162934,
+          "price_volatility": 0.02448999412154118,
+          "atr_to_volatility_ratio": 2.004156990139537,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4948314.9418923175,
+          "volume_std": 1459635.6433370009,
+          "volume_coefficient_variation": 0.29497630213060205,
+          "volume_spikes_count": "32",
+          "spike_ratio": 0.022222222222222223,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 103,
+          "wins": 83,
+          "losses": 20,
+          "win_rate": 80.58252427184466,
+          "total_pnl": 37500.0,
+          "profit_factor": 10.375,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9085771142311255,
+        "timestamp": "2025-08-30T06:41:02.791544"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "5m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "41934.7579 - 47690.9472",
+          "avg_volume": 4913327.901283717
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 95,
+          "convexity_std": 146.59981962358546,
+          "convexity_mean": 117.4380628357494,
+          "convexity_signal_ratio": 0.3298611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1596.1620463686777,
+          "atr_percentage": 0.03549500253517806,
+          "price_volatility": 0.023975006841923052,
+          "atr_to_volatility_ratio": 1.4805002046177094,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4913327.901283717,
+          "volume_std": 1538778.8415478102,
+          "volume_coefficient_variation": 0.3131846423573256,
+          "volume_spikes_count": "6",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 150,
+          "wins": 127,
+          "losses": 23,
+          "win_rate": 84.66666666666667,
+          "total_pnl": 58900.0,
+          "profit_factor": 13.804347826086957,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8646615459049797,
+        "timestamp": "2025-08-30T06:41:02.797939"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "15m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "41908.5017 - 47230.9760",
+          "avg_volume": 5033538.227173419
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 685.6276094829482,
+          "convexity_mean": 249.99555965966601,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1479.3721125116276,
+          "atr_percentage": 0.03281084884373859,
+          "price_volatility": 0.024099956891029926,
+          "atr_to_volatility_ratio": 1.361448445409912,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5033538.227173419,
+          "volume_std": 1656612.6717666804,
+          "volume_coefficient_variation": 0.32911494797506496,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 148,
+          "wins": 114,
+          "losses": 34,
+          "win_rate": 77.02702702702703,
+          "total_pnl": 50200.0,
+          "profit_factor": 8.382352941176471,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.829412981658529,
+        "timestamp": "2025-08-30T06:41:02.800617"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "30m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "42044.5314 - 47266.2306",
+          "avg_volume": 5064715.3134602
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 2,
+          "convexity_std": 815.1675069837901,
+          "convexity_mean": 392.8602235225517,
+          "convexity_signal_ratio": 0.041666666666666664,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1925.980651323349,
+          "atr_percentage": 0.04294819095284969,
+          "price_volatility": 0.026042018480967502,
+          "atr_to_volatility_ratio": 1.649188252601766,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5064715.3134602,
+          "volume_std": 1623062.8841463055,
+          "volume_coefficient_variation": 0.3204647810771882,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 171,
+          "wins": 145,
+          "losses": 26,
+          "win_rate": 84.7953216374269,
+          "total_pnl": 67300.0,
+          "profit_factor": 13.942307692307692,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8941322506159606,
+        "timestamp": "2025-08-30T06:41:02.802641"
+      }
+    },
+    "aggressive": {
+      "1m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "1m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "41091.5589 - 48355.4150",
+          "avg_volume": 4948314.9418923175
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 361,
+          "convexity_std": 269.3037429509978,
+          "convexity_mean": 133.89168684925235,
+          "convexity_signal_ratio": 0.25069444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 2208.7694440323007,
+          "atr_percentage": 0.049081792907162934,
+          "price_volatility": 0.02448999412154118,
+          "atr_to_volatility_ratio": 2.004156990139537,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4948314.9418923175,
+          "volume_std": 1459635.6433370009,
+          "volume_coefficient_variation": 0.29497630213060205,
+          "volume_spikes_count": "32",
+          "spike_ratio": 0.022222222222222223,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 103,
+          "wins": 86,
+          "losses": 17,
+          "win_rate": 83.49514563106796,
+          "total_pnl": 49500.0,
+          "profit_factor": 12.647058823529411,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9173149783087955,
+        "timestamp": "2025-08-30T06:41:02.828052"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "5m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "41934.7579 - 47690.9472",
+          "avg_volume": 4913327.901283717
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 95,
+          "convexity_std": 146.59981962358546,
+          "convexity_mean": 117.4380628357494,
+          "convexity_signal_ratio": 0.3298611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1596.1620463686777,
+          "atr_percentage": 0.03549500253517806,
+          "price_volatility": 0.023975006841923052,
+          "atr_to_volatility_ratio": 1.4805002046177094,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4913327.901283717,
+          "volume_std": 1538778.8415478102,
+          "volume_coefficient_variation": 0.3131846423573256,
+          "volume_spikes_count": "6",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 150,
+          "wins": 127,
+          "losses": 23,
+          "win_rate": 84.66666666666667,
+          "total_pnl": 73625.0,
+          "profit_factor": 13.804347826086957,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8646615459049797,
+        "timestamp": "2025-08-30T06:41:02.833940"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "15m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "41908.5017 - 47230.9760",
+          "avg_volume": 5033538.227173419
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 685.6276094829482,
+          "convexity_mean": 249.99555965966601,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1479.3721125116276,
+          "atr_percentage": 0.03281084884373859,
+          "price_volatility": 0.024099956891029926,
+          "atr_to_volatility_ratio": 1.361448445409912,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5033538.227173419,
+          "volume_std": 1656612.6717666804,
+          "volume_coefficient_variation": 0.32911494797506496,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 148,
+          "wins": 117,
+          "losses": 31,
+          "win_rate": 79.05405405405406,
+          "total_pnl": 65375.0,
+          "profit_factor": 9.435483870967742,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8354940627396101,
+        "timestamp": "2025-08-30T06:41:02.837803"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "30m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "42044.5314 - 47266.2306",
+          "avg_volume": 5064715.3134602
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 2,
+          "convexity_std": 815.1675069837901,
+          "convexity_mean": 392.8602235225517,
+          "convexity_signal_ratio": 0.041666666666666664,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1925.980651323349,
+          "atr_percentage": 0.04294819095284969,
+          "price_volatility": 0.026042018480967502,
+          "atr_to_volatility_ratio": 1.649188252601766,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5064715.3134602,
+          "volume_std": 1623062.8841463055,
+          "volume_coefficient_variation": 0.3204647810771882,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 171,
+          "wins": 145,
+          "losses": 26,
+          "win_rate": 84.7953216374269,
+          "total_pnl": 84125.0,
+          "profit_factor": 13.942307692307692,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8941322506159606,
+        "timestamp": "2025-08-30T06:41:02.840372"
+      }
+    },
+    "breakout": {
+      "1m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "1m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "41091.5589 - 48355.4150",
+          "avg_volume": 4948314.9418923175
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 361,
+          "convexity_std": 269.3037429509978,
+          "convexity_mean": 133.89168684925235,
+          "convexity_signal_ratio": 0.25069444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 2208.7694440323007,
+          "atr_percentage": 0.049081792907162934,
+          "price_volatility": 0.02448999412154118,
+          "atr_to_volatility_ratio": 2.004156990139537,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4948314.9418923175,
+          "volume_std": 1459635.6433370009,
+          "volume_coefficient_variation": 0.29497630213060205,
+          "volume_spikes_count": "32",
+          "spike_ratio": 0.022222222222222223,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 103,
+          "wins": 87,
+          "losses": 16,
+          "win_rate": 84.46601941747572,
+          "total_pnl": 60450.0,
+          "profit_factor": 13.59375,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9202275996680187,
+        "timestamp": "2025-08-30T06:41:02.864651"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "5m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "41934.7579 - 47690.9472",
+          "avg_volume": 4913327.901283717
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 95,
+          "convexity_std": 146.59981962358546,
+          "convexity_mean": 117.4380628357494,
+          "convexity_signal_ratio": 0.3298611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1596.1620463686777,
+          "atr_percentage": 0.03549500253517806,
+          "price_volatility": 0.023975006841923052,
+          "atr_to_volatility_ratio": 1.4805002046177094,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 4913327.901283717,
+          "volume_std": 1538778.8415478102,
+          "volume_coefficient_variation": 0.3131846423573256,
+          "volume_spikes_count": "6",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 150,
+          "wins": 127,
+          "losses": 23,
+          "win_rate": 84.66666666666667,
+          "total_pnl": 88350.0,
+          "profit_factor": 13.804347826086957,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8646615459049797,
+        "timestamp": "2025-08-30T06:41:02.872574"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "15m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "41908.5017 - 47230.9760",
+          "avg_volume": 5033538.227173419
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 685.6276094829482,
+          "convexity_mean": 249.99555965966601,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1479.3721125116276,
+          "atr_percentage": 0.03281084884373859,
+          "price_volatility": 0.024099956891029926,
+          "atr_to_volatility_ratio": 1.361448445409912,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5033538.227173419,
+          "volume_std": 1656612.6717666804,
+          "volume_coefficient_variation": 0.32911494797506496,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 148,
+          "wins": 121,
+          "losses": 27,
+          "win_rate": 81.75675675675676,
+          "total_pnl": 82650.0,
+          "profit_factor": 11.203703703703704,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8436021708477182,
+        "timestamp": "2025-08-30T06:41:02.875601"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BTCUSDT",
+        "timeframe": "30m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "42044.5314 - 47266.2306",
+          "avg_volume": 5064715.3134602
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 2,
+          "convexity_std": 815.1675069837901,
+          "convexity_mean": 392.8602235225517,
+          "convexity_signal_ratio": 0.041666666666666664,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 1925.980651323349,
+          "atr_percentage": 0.04294819095284969,
+          "price_volatility": 0.026042018480967502,
+          "atr_to_volatility_ratio": 1.649188252601766,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 5064715.3134602,
+          "volume_std": 1623062.8841463055,
+          "volume_coefficient_variation": 0.3204647810771882,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 171,
+          "wins": 145,
+          "losses": 26,
+          "win_rate": 84.7953216374269,
+          "total_pnl": 100950.0,
+          "profit_factor": 13.942307692307692,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.25,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8941322506159606,
+        "timestamp": "2025-08-30T06:41:02.878362"
+      }
+    }
+  },
+  "ETHUSDT": {
+    "conservative": {
+      "1m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "1m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "2489.3303 - 3223.8223",
+          "avg_volume": 2978610.371428646
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 431,
+          "convexity_std": 16.00322987194675,
+          "convexity_mean": 11.252694526390815,
+          "convexity_signal_ratio": 0.29930555555555555,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 126.00320673672067,
+          "atr_percentage": 0.04501342283414349,
+          "price_volatility": 0.03441819143968124,
+          "atr_to_volatility_ratio": 1.307838121390854,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2978610.371428646,
+          "volume_std": 900999.2929219328,
+          "volume_coefficient_variation": 0.3024898125530201,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 55650.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9037729640495259,
+        "timestamp": "2025-08-30T06:41:02.905031"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "5m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "2558.0856 - 3052.2586",
+          "avg_volume": 2932130.9861683664
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 41,
+          "convexity_std": 36.91299842964532,
+          "convexity_mean": 14.428342960842372,
+          "convexity_signal_ratio": 0.1423611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 166.2492848138815,
+          "atr_percentage": 0.059510800317323524,
+          "price_volatility": 0.035867933781798186,
+          "atr_to_volatility_ratio": 1.6591644414020672,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2932130.9861683664,
+          "volume_std": 977907.1223465385,
+          "volume_coefficient_variation": 0.3335141325403209,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 78,
+          "wins": 66,
+          "losses": 12,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 22950.0,
+          "profit_factor": 13.75,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9204947405921218,
+        "timestamp": "2025-08-30T06:41:02.913118"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "15m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "2606.7546 - 3047.1638",
+          "avg_volume": 2990838.9161754264
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 6,
+          "convexity_std": 42.89428260830598,
+          "convexity_mean": 18.945364133395408,
+          "convexity_signal_ratio": 0.0625,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 154.59836225850444,
+          "atr_percentage": 0.05537737821433669,
+          "price_volatility": 0.03375414426893633,
+          "atr_to_volatility_ratio": 1.6406097507054875,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2990838.9161754264,
+          "volume_std": 906936.045166586,
+          "volume_coefficient_variation": 0.30323801133574324,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 138,
+          "wins": 117,
+          "losses": 21,
+          "win_rate": 84.78260869565217,
+          "total_pnl": 40725.0,
+          "profit_factor": 13.928571428571429,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9240240249533822,
+        "timestamp": "2025-08-30T06:41:02.917290"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "30m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "2510.1575 - 3014.6193",
+          "avg_volume": 3067706.364934921
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 155.76534053538703,
+          "convexity_mean": 61.98247247280216,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 185.62643946921344,
+          "atr_percentage": 0.06637482876659301,
+          "price_volatility": 0.03803693842385261,
+          "atr_to_volatility_ratio": 1.7450097593808962,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 3067706.364934921,
+          "volume_std": 718219.1933746514,
+          "volume_coefficient_variation": 0.23412253584116674,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 54,
+          "wins": 43,
+          "losses": 11,
+          "win_rate": 79.62962962962963,
+          "total_pnl": 14475.0,
+          "profit_factor": 9.772727272727273,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9154766353047723,
+        "timestamp": "2025-08-30T06:41:02.921028"
+      }
+    },
+    "moderate": {
+      "1m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "1m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "2489.3303 - 3223.8223",
+          "avg_volume": 2978610.371428646
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 431,
+          "convexity_std": 16.00322987194675,
+          "convexity_mean": 11.252694526390815,
+          "convexity_signal_ratio": 0.29930555555555555,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 126.00320673672067,
+          "atr_percentage": 0.04501342283414349,
+          "price_volatility": 0.03441819143968124,
+          "atr_to_volatility_ratio": 1.307838121390854,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2978610.371428646,
+          "volume_std": 900999.2929219328,
+          "volume_coefficient_variation": 0.3024898125530201,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 74200.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9037729640495259,
+        "timestamp": "2025-08-30T06:41:02.958722"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "5m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "2558.0856 - 3052.2586",
+          "avg_volume": 2932130.9861683664
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 41,
+          "convexity_std": 36.91299842964532,
+          "convexity_mean": 14.428342960842372,
+          "convexity_signal_ratio": 0.1423611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 166.2492848138815,
+          "atr_percentage": 0.059510800317323524,
+          "price_volatility": 0.035867933781798186,
+          "atr_to_volatility_ratio": 1.6591644414020672,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2932130.9861683664,
+          "volume_std": 977907.1223465385,
+          "volume_coefficient_variation": 0.3335141325403209,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 78,
+          "wins": 66,
+          "losses": 12,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 30600.0,
+          "profit_factor": 13.75,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9204947405921218,
+        "timestamp": "2025-08-30T06:41:02.966559"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "15m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "2606.7546 - 3047.1638",
+          "avg_volume": 2990838.9161754264
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 6,
+          "convexity_std": 42.89428260830598,
+          "convexity_mean": 18.945364133395408,
+          "convexity_signal_ratio": 0.0625,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 154.59836225850444,
+          "atr_percentage": 0.05537737821433669,
+          "price_volatility": 0.03375414426893633,
+          "atr_to_volatility_ratio": 1.6406097507054875,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2990838.9161754264,
+          "volume_std": 906936.045166586,
+          "volume_coefficient_variation": 0.30323801133574324,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 138,
+          "wins": 117,
+          "losses": 21,
+          "win_rate": 84.78260869565217,
+          "total_pnl": 54300.0,
+          "profit_factor": 13.928571428571429,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9240240249533822,
+        "timestamp": "2025-08-30T06:41:02.969437"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "30m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "2510.1575 - 3014.6193",
+          "avg_volume": 3067706.364934921
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 155.76534053538703,
+          "convexity_mean": 61.98247247280216,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 185.62643946921344,
+          "atr_percentage": 0.06637482876659301,
+          "price_volatility": 0.03803693842385261,
+          "atr_to_volatility_ratio": 1.7450097593808962,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 3067706.364934921,
+          "volume_std": 718219.1933746514,
+          "volume_coefficient_variation": 0.23412253584116674,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 54,
+          "wins": 45,
+          "losses": 9,
+          "win_rate": 83.33333333333334,
+          "total_pnl": 20700.0,
+          "profit_factor": 12.5,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9265877464158834,
+        "timestamp": "2025-08-30T06:41:02.974340"
+      }
+    },
+    "aggressive": {
+      "1m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "1m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "2489.3303 - 3223.8223",
+          "avg_volume": 2978610.371428646
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 431,
+          "convexity_std": 16.00322987194675,
+          "convexity_mean": 11.252694526390815,
+          "convexity_signal_ratio": 0.29930555555555555,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 126.00320673672067,
+          "atr_percentage": 0.04501342283414349,
+          "price_volatility": 0.03441819143968124,
+          "atr_to_volatility_ratio": 1.307838121390854,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2978610.371428646,
+          "volume_std": 900999.2929219328,
+          "volume_coefficient_variation": 0.3024898125530201,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 92750.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9037729640495259,
+        "timestamp": "2025-08-30T06:41:02.998231"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "5m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "2558.0856 - 3052.2586",
+          "avg_volume": 2932130.9861683664
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 41,
+          "convexity_std": 36.91299842964532,
+          "convexity_mean": 14.428342960842372,
+          "convexity_signal_ratio": 0.1423611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 166.2492848138815,
+          "atr_percentage": 0.059510800317323524,
+          "price_volatility": 0.035867933781798186,
+          "atr_to_volatility_ratio": 1.6591644414020672,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2932130.9861683664,
+          "volume_std": 977907.1223465385,
+          "volume_coefficient_variation": 0.3335141325403209,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 78,
+          "wins": 66,
+          "losses": 12,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 38250.0,
+          "profit_factor": 13.75,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9204947405921218,
+        "timestamp": "2025-08-30T06:41:03.004147"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "15m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "2606.7546 - 3047.1638",
+          "avg_volume": 2990838.9161754264
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 6,
+          "convexity_std": 42.89428260830598,
+          "convexity_mean": 18.945364133395408,
+          "convexity_signal_ratio": 0.0625,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 154.59836225850444,
+          "atr_percentage": 0.05537737821433669,
+          "price_volatility": 0.03375414426893633,
+          "atr_to_volatility_ratio": 1.6406097507054875,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2990838.9161754264,
+          "volume_std": 906936.045166586,
+          "volume_coefficient_variation": 0.30323801133574324,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 138,
+          "wins": 117,
+          "losses": 21,
+          "win_rate": 84.78260869565217,
+          "total_pnl": 67875.0,
+          "profit_factor": 13.928571428571429,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9240240249533822,
+        "timestamp": "2025-08-30T06:41:03.007907"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "30m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "2510.1575 - 3014.6193",
+          "avg_volume": 3067706.364934921
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 155.76534053538703,
+          "convexity_mean": 61.98247247280216,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 185.62643946921344,
+          "atr_percentage": 0.06637482876659301,
+          "price_volatility": 0.03803693842385261,
+          "atr_to_volatility_ratio": 1.7450097593808962,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 3067706.364934921,
+          "volume_std": 718219.1933746514,
+          "volume_coefficient_variation": 0.23412253584116674,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 54,
+          "wins": 45,
+          "losses": 9,
+          "win_rate": 83.33333333333334,
+          "total_pnl": 25875.0,
+          "profit_factor": 12.5,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9265877464158834,
+        "timestamp": "2025-08-30T06:41:03.010032"
+      }
+    },
+    "breakout": {
+      "1m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "1m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "2489.3303 - 3223.8223",
+          "avg_volume": 2978610.371428646
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 431,
+          "convexity_std": 16.00322987194675,
+          "convexity_mean": 11.252694526390815,
+          "convexity_signal_ratio": 0.29930555555555555,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 126.00320673672067,
+          "atr_percentage": 0.04501342283414349,
+          "price_volatility": 0.03441819143968124,
+          "atr_to_volatility_ratio": 1.307838121390854,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2978610.371428646,
+          "volume_std": 900999.2929219328,
+          "volume_coefficient_variation": 0.3024898125530201,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 111300.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9037729640495259,
+        "timestamp": "2025-08-30T06:41:03.032997"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "5m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "2558.0856 - 3052.2586",
+          "avg_volume": 2932130.9861683664
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 41,
+          "convexity_std": 36.91299842964532,
+          "convexity_mean": 14.428342960842372,
+          "convexity_signal_ratio": 0.1423611111111111,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 166.2492848138815,
+          "atr_percentage": 0.059510800317323524,
+          "price_volatility": 0.035867933781798186,
+          "atr_to_volatility_ratio": 1.6591644414020672,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2932130.9861683664,
+          "volume_std": 977907.1223465385,
+          "volume_coefficient_variation": 0.3335141325403209,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 78,
+          "wins": 66,
+          "losses": 12,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 45900.0,
+          "profit_factor": 13.75,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9204947405921218,
+        "timestamp": "2025-08-30T06:41:03.039372"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "15m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "2606.7546 - 3047.1638",
+          "avg_volume": 2990838.9161754264
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 6,
+          "convexity_std": 42.89428260830598,
+          "convexity_mean": 18.945364133395408,
+          "convexity_signal_ratio": 0.0625,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 154.59836225850444,
+          "atr_percentage": 0.05537737821433669,
+          "price_volatility": 0.03375414426893633,
+          "atr_to_volatility_ratio": 1.6406097507054875,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2990838.9161754264,
+          "volume_std": 906936.045166586,
+          "volume_coefficient_variation": 0.30323801133574324,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 138,
+          "wins": 117,
+          "losses": 21,
+          "win_rate": 84.78260869565217,
+          "total_pnl": 81450.0,
+          "profit_factor": 13.928571428571429,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9240240249533822,
+        "timestamp": "2025-08-30T06:41:03.042268"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ETHUSDT",
+        "timeframe": "30m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "2510.1575 - 3014.6193",
+          "avg_volume": 3067706.364934921
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 155.76534053538703,
+          "convexity_mean": 61.98247247280216,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 185.62643946921344,
+          "atr_percentage": 0.06637482876659301,
+          "price_volatility": 0.03803693842385261,
+          "atr_to_volatility_ratio": 1.7450097593808962,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 3067706.364934921,
+          "volume_std": 718219.1933746514,
+          "volume_coefficient_variation": 0.23412253584116674,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 54,
+          "wins": 45,
+          "losses": 9,
+          "win_rate": 83.33333333333334,
+          "total_pnl": 31050.0,
+          "profit_factor": 12.5,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.7500000000000002,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9265877464158834,
+        "timestamp": "2025-08-30T06:41:03.044703"
+      }
+    }
+  },
+  "BNBUSDT": {
+    "conservative": {
+      "1m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "1m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "284.5507 - 355.8490",
+          "avg_volume": 2008913.4307635059
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 425,
+          "convexity_std": 1.6319954850448313,
+          "convexity_mean": 1.121041047145488,
+          "convexity_signal_ratio": 0.2951388888888889,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 12.829287974458515,
+          "atr_percentage": 0.04010029412039035,
+          "price_volatility": 0.029964320251787722,
+          "atr_to_volatility_ratio": 1.3382681063154738,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2008913.4307635059,
+          "volume_std": 601132.3789969257,
+          "volume_coefficient_variation": 0.2992325949896506,
+          "volume_spikes_count": "38",
+          "spike_ratio": 0.02638888888888889,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 196,
+          "wins": 166,
+          "losses": 30,
+          "win_rate": 84.6938775510204,
+          "total_pnl": 57750.0,
+          "profit_factor": 13.833333333333334,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8845595496356575,
+        "timestamp": "2025-08-30T06:41:03.073679"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "5m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "290.1838 - 343.6990",
+          "avg_volume": 1972384.7608836566
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 8,
+          "convexity_std": 5.61739784590554,
+          "convexity_mean": 1.657013754121976,
+          "convexity_signal_ratio": 0.027777777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 17.578521432764312,
+          "atr_percentage": 0.05495462920299096,
+          "price_volatility": 0.029479449583231943,
+          "atr_to_volatility_ratio": 1.8641674108545576,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1972384.7608836566,
+          "volume_std": 567067.4987027481,
+          "volume_coefficient_variation": 0.2875034881372201,
+          "volume_spikes_count": "10",
+          "spike_ratio": 0.034722222222222224,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 27375.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9233773107607461,
+        "timestamp": "2025-08-30T06:41:03.083130"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "15m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "296.4216 - 339.4758",
+          "avg_volume": 1968953.4830707442
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 6.681322235792074,
+          "convexity_mean": 2.59900707940371,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 16.292767189346055,
+          "atr_percentage": 0.0507068841190398,
+          "price_volatility": 0.029623131688155887,
+          "atr_to_volatility_ratio": 1.7117327314624793,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1968953.4830707442,
+          "volume_std": 605397.7050568134,
+          "volume_coefficient_variation": 0.30747181701451176,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 162,
+          "wins": 137,
+          "losses": 25,
+          "win_rate": 84.5679012345679,
+          "total_pnl": 47625.0,
+          "profit_factor": 13.7,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9229565220022526,
+        "timestamp": "2025-08-30T06:41:03.088112"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "30m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "295.5929 - 333.4810",
+          "avg_volume": 2053784.577964884
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 8.650768861642357,
+          "convexity_mean": 3.3867449805266077,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 15.293218607854172,
+          "atr_percentage": 0.04790363660288866,
+          "price_volatility": 0.028455052220951575,
+          "atr_to_volatility_ratio": 1.6834844030831548,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2053784.577964884,
+          "volume_std": 476775.06358462677,
+          "volume_coefficient_variation": 0.23214463128215132,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 177,
+          "wins": 150,
+          "losses": 27,
+          "win_rate": 84.7457627118644,
+          "total_pnl": 52200.0,
+          "profit_factor": 13.88888888888889,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9226373714189328,
+        "timestamp": "2025-08-30T06:41:03.091454"
+      }
+    },
+    "moderate": {
+      "1m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "1m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "284.5507 - 355.8490",
+          "avg_volume": 2008913.4307635059
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 425,
+          "convexity_std": 1.6319954850448313,
+          "convexity_mean": 1.121041047145488,
+          "convexity_signal_ratio": 0.2951388888888889,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 12.829287974458515,
+          "atr_percentage": 0.04010029412039035,
+          "price_volatility": 0.029964320251787722,
+          "atr_to_volatility_ratio": 1.3382681063154738,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2008913.4307635059,
+          "volume_std": 601132.3789969257,
+          "volume_coefficient_variation": 0.2992325949896506,
+          "volume_spikes_count": "38",
+          "spike_ratio": 0.02638888888888889,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 196,
+          "wins": 166,
+          "losses": 30,
+          "win_rate": 84.6938775510204,
+          "total_pnl": 77000.0,
+          "profit_factor": 13.833333333333334,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8845595496356575,
+        "timestamp": "2025-08-30T06:41:03.123526"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "5m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "290.1838 - 343.6990",
+          "avg_volume": 1972384.7608836566
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 8,
+          "convexity_std": 5.61739784590554,
+          "convexity_mean": 1.657013754121976,
+          "convexity_signal_ratio": 0.027777777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 17.578521432764312,
+          "atr_percentage": 0.05495462920299096,
+          "price_volatility": 0.029479449583231943,
+          "atr_to_volatility_ratio": 1.8641674108545576,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1972384.7608836566,
+          "volume_std": 567067.4987027481,
+          "volume_coefficient_variation": 0.2875034881372201,
+          "volume_spikes_count": "10",
+          "spike_ratio": 0.034722222222222224,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 36500.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9233773107607461,
+        "timestamp": "2025-08-30T06:41:03.129767"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "15m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "296.4216 - 339.4758",
+          "avg_volume": 1968953.4830707442
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 6.681322235792074,
+          "convexity_mean": 2.59900707940371,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 16.292767189346055,
+          "atr_percentage": 0.0507068841190398,
+          "price_volatility": 0.029623131688155887,
+          "atr_to_volatility_ratio": 1.7117327314624793,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1968953.4830707442,
+          "volume_std": 605397.7050568134,
+          "volume_coefficient_variation": 0.30747181701451176,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 162,
+          "wins": 137,
+          "losses": 25,
+          "win_rate": 84.5679012345679,
+          "total_pnl": 63500.0,
+          "profit_factor": 13.7,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9229565220022526,
+        "timestamp": "2025-08-30T06:41:03.133546"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "30m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "295.5929 - 333.4810",
+          "avg_volume": 2053784.577964884
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 8.650768861642357,
+          "convexity_mean": 3.3867449805266077,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 15.293218607854172,
+          "atr_percentage": 0.04790363660288866,
+          "price_volatility": 0.028455052220951575,
+          "atr_to_volatility_ratio": 1.6834844030831548,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2053784.577964884,
+          "volume_std": 476775.06358462677,
+          "volume_coefficient_variation": 0.23214463128215132,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 177,
+          "wins": 150,
+          "losses": 27,
+          "win_rate": 84.7457627118644,
+          "total_pnl": 69600.0,
+          "profit_factor": 13.88888888888889,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9226373714189328,
+        "timestamp": "2025-08-30T06:41:03.136273"
+      }
+    },
+    "aggressive": {
+      "1m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "1m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "284.5507 - 355.8490",
+          "avg_volume": 2008913.4307635059
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 425,
+          "convexity_std": 1.6319954850448313,
+          "convexity_mean": 1.121041047145488,
+          "convexity_signal_ratio": 0.2951388888888889,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 12.829287974458515,
+          "atr_percentage": 0.04010029412039035,
+          "price_volatility": 0.029964320251787722,
+          "atr_to_volatility_ratio": 1.3382681063154738,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2008913.4307635059,
+          "volume_std": 601132.3789969257,
+          "volume_coefficient_variation": 0.2992325949896506,
+          "volume_spikes_count": "38",
+          "spike_ratio": 0.02638888888888889,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 196,
+          "wins": 166,
+          "losses": 30,
+          "win_rate": 84.6938775510204,
+          "total_pnl": 96250.0,
+          "profit_factor": 13.833333333333334,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8845595496356575,
+        "timestamp": "2025-08-30T06:41:03.159446"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "5m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "290.1838 - 343.6990",
+          "avg_volume": 1972384.7608836566
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 8,
+          "convexity_std": 5.61739784590554,
+          "convexity_mean": 1.657013754121976,
+          "convexity_signal_ratio": 0.027777777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 17.578521432764312,
+          "atr_percentage": 0.05495462920299096,
+          "price_volatility": 0.029479449583231943,
+          "atr_to_volatility_ratio": 1.8641674108545576,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1972384.7608836566,
+          "volume_std": 567067.4987027481,
+          "volume_coefficient_variation": 0.2875034881372201,
+          "volume_spikes_count": "10",
+          "spike_ratio": 0.034722222222222224,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 45625.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9233773107607461,
+        "timestamp": "2025-08-30T06:41:03.166454"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "15m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "296.4216 - 339.4758",
+          "avg_volume": 1968953.4830707442
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 6.681322235792074,
+          "convexity_mean": 2.59900707940371,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 16.292767189346055,
+          "atr_percentage": 0.0507068841190398,
+          "price_volatility": 0.029623131688155887,
+          "atr_to_volatility_ratio": 1.7117327314624793,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1968953.4830707442,
+          "volume_std": 605397.7050568134,
+          "volume_coefficient_variation": 0.30747181701451176,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 162,
+          "wins": 137,
+          "losses": 25,
+          "win_rate": 84.5679012345679,
+          "total_pnl": 79375.0,
+          "profit_factor": 13.7,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9229565220022526,
+        "timestamp": "2025-08-30T06:41:03.170427"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "30m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "295.5929 - 333.4810",
+          "avg_volume": 2053784.577964884
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 8.650768861642357,
+          "convexity_mean": 3.3867449805266077,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 15.293218607854172,
+          "atr_percentage": 0.04790363660288866,
+          "price_volatility": 0.028455052220951575,
+          "atr_to_volatility_ratio": 1.6834844030831548,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2053784.577964884,
+          "volume_std": 476775.06358462677,
+          "volume_coefficient_variation": 0.23214463128215132,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 177,
+          "wins": 150,
+          "losses": 27,
+          "win_rate": 84.7457627118644,
+          "total_pnl": 87000.0,
+          "profit_factor": 13.88888888888889,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9226373714189328,
+        "timestamp": "2025-08-30T06:41:03.173211"
+      }
+    },
+    "breakout": {
+      "1m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "1m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "284.5507 - 355.8490",
+          "avg_volume": 2008913.4307635059
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 425,
+          "convexity_std": 1.6319954850448313,
+          "convexity_mean": 1.121041047145488,
+          "convexity_signal_ratio": 0.2951388888888889,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 12.829287974458515,
+          "atr_percentage": 0.04010029412039035,
+          "price_volatility": 0.029964320251787722,
+          "atr_to_volatility_ratio": 1.3382681063154738,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2008913.4307635059,
+          "volume_std": 601132.3789969257,
+          "volume_coefficient_variation": 0.2992325949896506,
+          "volume_spikes_count": "38",
+          "spike_ratio": 0.02638888888888889,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 196,
+          "wins": 166,
+          "losses": 30,
+          "win_rate": 84.6938775510204,
+          "total_pnl": 115500.0,
+          "profit_factor": 13.833333333333334,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.8845595496356575,
+        "timestamp": "2025-08-30T06:41:03.199487"
+      },
+      "5m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "5m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "290.1838 - 343.6990",
+          "avg_volume": 1972384.7608836566
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 8,
+          "convexity_std": 5.61739784590554,
+          "convexity_mean": 1.657013754121976,
+          "convexity_signal_ratio": 0.027777777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 17.578521432764312,
+          "atr_percentage": 0.05495462920299096,
+          "price_volatility": 0.029479449583231943,
+          "atr_to_volatility_ratio": 1.8641674108545576,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1972384.7608836566,
+          "volume_std": 567067.4987027481,
+          "volume_coefficient_variation": 0.2875034881372201,
+          "volume_spikes_count": "10",
+          "spike_ratio": 0.034722222222222224,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 54750.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9233773107607461,
+        "timestamp": "2025-08-30T06:41:03.206025"
+      },
+      "15m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "15m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "296.4216 - 339.4758",
+          "avg_volume": 1968953.4830707442
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 3,
+          "convexity_std": 6.681322235792074,
+          "convexity_mean": 2.59900707940371,
+          "convexity_signal_ratio": 0.03125,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 16.292767189346055,
+          "atr_percentage": 0.0507068841190398,
+          "price_volatility": 0.029623131688155887,
+          "atr_to_volatility_ratio": 1.7117327314624793,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1968953.4830707442,
+          "volume_std": 605397.7050568134,
+          "volume_coefficient_variation": 0.30747181701451176,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 162,
+          "wins": 137,
+          "losses": 25,
+          "win_rate": 84.5679012345679,
+          "total_pnl": 95250.0,
+          "profit_factor": 13.7,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9229565220022526,
+        "timestamp": "2025-08-30T06:41:03.209060"
+      },
+      "30m": {
+        "success": true,
+        "pair": "BNBUSDT",
+        "timeframe": "30m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "295.5929 - 333.4810",
+          "avg_volume": 2053784.577964884
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 8.650768861642357,
+          "convexity_mean": 3.3867449805266077,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 15.293218607854172,
+          "atr_percentage": 0.04790363660288866,
+          "price_volatility": 0.028455052220951575,
+          "atr_to_volatility_ratio": 1.6834844030831548,
+          "atr_category": "moderate",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2053784.577964884,
+          "volume_std": 476775.06358462677,
+          "volume_coefficient_variation": 0.23214463128215132,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 177,
+          "wins": 150,
+          "losses": 27,
+          "win_rate": 84.7457627118644,
+          "total_pnl": 104400.0,
+          "profit_factor": 13.88888888888889,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 1.5,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9226373714189328,
+        "timestamp": "2025-08-30T06:41:03.211450"
+      }
+    }
+  },
+  "ADAUSDT": {
+    "conservative": {
+      "1m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "1m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "0.3922 - 0.5124",
+          "avg_volume": 1519620.469761941
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 460,
+          "convexity_std": 0.0029547302617399175,
+          "convexity_mean": 0.0020954989512399816,
+          "convexity_signal_ratio": 0.3194444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.02988755396062542,
+          "atr_percentage": 0.06643677242503154,
+          "price_volatility": 0.03938401266204666,
+          "atr_to_volatility_ratio": 1.6868969902869984,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1519620.469761941,
+          "volume_std": 453830.82696543675,
+          "volume_coefficient_variation": 0.2986474820496018,
+          "volume_spikes_count": "37",
+          "spike_ratio": 0.025694444444444443,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 55650.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9241035057632938,
+        "timestamp": "2025-08-30T06:41:03.239544"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "5m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "0.4046 - 0.5097",
+          "avg_volume": 1504229.2637648166
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 30,
+          "convexity_std": 0.007295740656431379,
+          "convexity_mean": 0.0027861113078097833,
+          "convexity_signal_ratio": 0.10416666666666667,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03441000381425844,
+          "atr_percentage": 0.07627498108203194,
+          "price_volatility": 0.040679457634445436,
+          "atr_to_volatility_ratio": 1.8750245336959928,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1504229.2637648166,
+          "volume_std": 485283.0145350288,
+          "volume_coefficient_variation": 0.3226124010647501,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 172,
+          "wins": 146,
+          "losses": 26,
+          "win_rate": 84.88372093023256,
+          "total_pnl": 50850.0,
+          "profit_factor": 14.038461538461538,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9223899226842226,
+        "timestamp": "2025-08-30T06:41:03.246547"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "15m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "0.4034 - 0.4916",
+          "avg_volume": 1607323.6488193383
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.021892393813325466,
+          "convexity_mean": 0.006374175001896105,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03025885766951206,
+          "atr_percentage": 0.06721078364530378,
+          "price_volatility": 0.040181286130338445,
+          "atr_to_volatility_ratio": 1.672688709547229,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1607323.6488193383,
+          "volume_std": 495944.5045419656,
+          "volume_coefficient_variation": 0.30855298178824303,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 106,
+          "wins": 90,
+          "losses": 16,
+          "win_rate": 84.90566037735849,
+          "total_pnl": 31350.0,
+          "profit_factor": 14.0625,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9238616829532511,
+        "timestamp": "2025-08-30T06:41:03.249791"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "30m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "0.4130 - 0.4921",
+          "avg_volume": 1477736.174588268
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.026493482107332475,
+          "convexity_mean": 0.00947079374447523,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.025212155275609684,
+          "atr_percentage": 0.05577673576067769,
+          "price_volatility": 0.03771843654744149,
+          "atr_to_volatility_ratio": 1.4787658467901457,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1477736.174588268,
+          "volume_std": 428074.26305169536,
+          "volume_coefficient_variation": 0.28968246863887387,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 104,
+          "wins": 88,
+          "losses": 16,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 30600.0,
+          "profit_factor": 13.75,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9248779069822665,
+        "timestamp": "2025-08-30T06:41:03.252288"
+      }
+    },
+    "moderate": {
+      "1m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "1m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "0.3922 - 0.5124",
+          "avg_volume": 1519620.469761941
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 460,
+          "convexity_std": 0.0029547302617399175,
+          "convexity_mean": 0.0020954989512399816,
+          "convexity_signal_ratio": 0.3194444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.02988755396062542,
+          "atr_percentage": 0.06643677242503154,
+          "price_volatility": 0.03938401266204666,
+          "atr_to_volatility_ratio": 1.6868969902869984,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1519620.469761941,
+          "volume_std": 453830.82696543675,
+          "volume_coefficient_variation": 0.2986474820496018,
+          "volume_spikes_count": "37",
+          "spike_ratio": 0.025694444444444443,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 74200.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9241035057632938,
+        "timestamp": "2025-08-30T06:41:03.277698"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "5m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "0.4046 - 0.5097",
+          "avg_volume": 1504229.2637648166
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 30,
+          "convexity_std": 0.007295740656431379,
+          "convexity_mean": 0.0027861113078097833,
+          "convexity_signal_ratio": 0.10416666666666667,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03441000381425844,
+          "atr_percentage": 0.07627498108203194,
+          "price_volatility": 0.040679457634445436,
+          "atr_to_volatility_ratio": 1.8750245336959928,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1504229.2637648166,
+          "volume_std": 485283.0145350288,
+          "volume_coefficient_variation": 0.3226124010647501,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 172,
+          "wins": 146,
+          "losses": 26,
+          "win_rate": 84.88372093023256,
+          "total_pnl": 67800.0,
+          "profit_factor": 14.038461538461538,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9223899226842226,
+        "timestamp": "2025-08-30T06:41:03.284915"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "15m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "0.4034 - 0.4916",
+          "avg_volume": 1607323.6488193383
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.021892393813325466,
+          "convexity_mean": 0.006374175001896105,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03025885766951206,
+          "atr_percentage": 0.06721078364530378,
+          "price_volatility": 0.040181286130338445,
+          "atr_to_volatility_ratio": 1.672688709547229,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1607323.6488193383,
+          "volume_std": 495944.5045419656,
+          "volume_coefficient_variation": 0.30855298178824303,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 106,
+          "wins": 90,
+          "losses": 16,
+          "win_rate": 84.90566037735849,
+          "total_pnl": 41800.0,
+          "profit_factor": 14.0625,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9238616829532511,
+        "timestamp": "2025-08-30T06:41:03.288512"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "30m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "0.4130 - 0.4921",
+          "avg_volume": 1477736.174588268
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.026493482107332475,
+          "convexity_mean": 0.00947079374447523,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.025212155275609684,
+          "atr_percentage": 0.05577673576067769,
+          "price_volatility": 0.03771843654744149,
+          "atr_to_volatility_ratio": 1.4787658467901457,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1477736.174588268,
+          "volume_std": 428074.26305169536,
+          "volume_coefficient_variation": 0.28968246863887387,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 104,
+          "wins": 88,
+          "losses": 16,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 40800.0,
+          "profit_factor": 13.75,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9248779069822665,
+        "timestamp": "2025-08-30T06:41:03.291585"
+      }
+    },
+    "aggressive": {
+      "1m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "1m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "0.3922 - 0.5124",
+          "avg_volume": 1519620.469761941
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 460,
+          "convexity_std": 0.0029547302617399175,
+          "convexity_mean": 0.0020954989512399816,
+          "convexity_signal_ratio": 0.3194444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.02988755396062542,
+          "atr_percentage": 0.06643677242503154,
+          "price_volatility": 0.03938401266204666,
+          "atr_to_volatility_ratio": 1.6868969902869984,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1519620.469761941,
+          "volume_std": 453830.82696543675,
+          "volume_coefficient_variation": 0.2986474820496018,
+          "volume_spikes_count": "37",
+          "spike_ratio": 0.025694444444444443,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 92750.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9241035057632938,
+        "timestamp": "2025-08-30T06:41:03.320181"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "5m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "0.4046 - 0.5097",
+          "avg_volume": 1504229.2637648166
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 30,
+          "convexity_std": 0.007295740656431379,
+          "convexity_mean": 0.0027861113078097833,
+          "convexity_signal_ratio": 0.10416666666666667,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03441000381425844,
+          "atr_percentage": 0.07627498108203194,
+          "price_volatility": 0.040679457634445436,
+          "atr_to_volatility_ratio": 1.8750245336959928,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1504229.2637648166,
+          "volume_std": 485283.0145350288,
+          "volume_coefficient_variation": 0.3226124010647501,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 172,
+          "wins": 146,
+          "losses": 26,
+          "win_rate": 84.88372093023256,
+          "total_pnl": 84750.0,
+          "profit_factor": 14.038461538461538,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9223899226842226,
+        "timestamp": "2025-08-30T06:41:03.326928"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "15m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "0.4034 - 0.4916",
+          "avg_volume": 1607323.6488193383
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.021892393813325466,
+          "convexity_mean": 0.006374175001896105,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03025885766951206,
+          "atr_percentage": 0.06721078364530378,
+          "price_volatility": 0.040181286130338445,
+          "atr_to_volatility_ratio": 1.672688709547229,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1607323.6488193383,
+          "volume_std": 495944.5045419656,
+          "volume_coefficient_variation": 0.30855298178824303,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 106,
+          "wins": 90,
+          "losses": 16,
+          "win_rate": 84.90566037735849,
+          "total_pnl": 52250.0,
+          "profit_factor": 14.0625,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9238616829532511,
+        "timestamp": "2025-08-30T06:41:03.330669"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "30m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "0.4130 - 0.4921",
+          "avg_volume": 1477736.174588268
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.026493482107332475,
+          "convexity_mean": 0.00947079374447523,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.025212155275609684,
+          "atr_percentage": 0.05577673576067769,
+          "price_volatility": 0.03771843654744149,
+          "atr_to_volatility_ratio": 1.4787658467901457,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1477736.174588268,
+          "volume_std": 428074.26305169536,
+          "volume_coefficient_variation": 0.28968246863887387,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 104,
+          "wins": 88,
+          "losses": 16,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 51000.0,
+          "profit_factor": 13.75,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9248779069822665,
+        "timestamp": "2025-08-30T06:41:03.333200"
+      }
+    },
+    "breakout": {
+      "1m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "1m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "0.3922 - 0.5124",
+          "avg_volume": 1519620.469761941
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 460,
+          "convexity_std": 0.0029547302617399175,
+          "convexity_mean": 0.0020954989512399816,
+          "convexity_signal_ratio": 0.3194444444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.02988755396062542,
+          "atr_percentage": 0.06643677242503154,
+          "price_volatility": 0.03938401266204666,
+          "atr_to_volatility_ratio": 1.6868969902869984,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1519620.469761941,
+          "volume_std": 453830.82696543675,
+          "volume_coefficient_variation": 0.2986474820496018,
+          "volume_spikes_count": "37",
+          "spike_ratio": 0.025694444444444443,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 111300.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9241035057632938,
+        "timestamp": "2025-08-30T06:41:03.362240"
+      },
+      "5m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "5m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "0.4046 - 0.5097",
+          "avg_volume": 1504229.2637648166
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 30,
+          "convexity_std": 0.007295740656431379,
+          "convexity_mean": 0.0027861113078097833,
+          "convexity_signal_ratio": 0.10416666666666667,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03441000381425844,
+          "atr_percentage": 0.07627498108203194,
+          "price_volatility": 0.040679457634445436,
+          "atr_to_volatility_ratio": 1.8750245336959928,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1504229.2637648166,
+          "volume_std": 485283.0145350288,
+          "volume_coefficient_variation": 0.3226124010647501,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 172,
+          "wins": 146,
+          "losses": 26,
+          "win_rate": 84.88372093023256,
+          "total_pnl": 101700.0,
+          "profit_factor": 14.038461538461538,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9223899226842226,
+        "timestamp": "2025-08-30T06:41:03.368461"
+      },
+      "15m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "15m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "0.4034 - 0.4916",
+          "avg_volume": 1607323.6488193383
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.021892393813325466,
+          "convexity_mean": 0.006374175001896105,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.03025885766951206,
+          "atr_percentage": 0.06721078364530378,
+          "price_volatility": 0.040181286130338445,
+          "atr_to_volatility_ratio": 1.672688709547229,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1607323.6488193383,
+          "volume_std": 495944.5045419656,
+          "volume_coefficient_variation": 0.30855298178824303,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.03125,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 106,
+          "wins": 90,
+          "losses": 16,
+          "win_rate": 84.90566037735849,
+          "total_pnl": 62700.0,
+          "profit_factor": 14.0625,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9238616829532511,
+        "timestamp": "2025-08-30T06:41:03.373140"
+      },
+      "30m": {
+        "success": true,
+        "pair": "ADAUSDT",
+        "timeframe": "30m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "0.4130 - 0.4921",
+          "avg_volume": 1477736.174588268
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 0,
+          "convexity_std": 0.026493482107332475,
+          "convexity_mean": 0.00947079374447523,
+          "convexity_signal_ratio": 0.0,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 0.025212155275609684,
+          "atr_percentage": 0.05577673576067769,
+          "price_volatility": 0.03771843654744149,
+          "atr_to_volatility_ratio": 1.4787658467901457,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 1477736.174588268,
+          "volume_std": 428074.26305169536,
+          "volume_coefficient_variation": 0.28968246863887387,
+          "volume_spikes_count": "1",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 104,
+          "wins": 88,
+          "losses": 16,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 61200.0,
+          "profit_factor": 13.75,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.0,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9248779069822665,
+        "timestamp": "2025-08-30T06:41:03.375881"
+      }
+    }
+  },
+  "SOLUSDT": {
+    "conservative": {
+      "1m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "1m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "80.7310 - 114.6138",
+          "avg_volume": 2492490.1553278523
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 391,
+          "convexity_std": 1.0918092112205804,
+          "convexity_mean": 0.6527129601159568,
+          "convexity_signal_ratio": 0.27152777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 10.387591165380453,
+          "atr_percentage": 0.10586488167274566,
+          "price_volatility": 0.05611453133672153,
+          "atr_to_volatility_ratio": 1.8865858655664713,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2492490.1553278523,
+          "volume_std": 730390.6842331196,
+          "volume_coefficient_variation": 0.29303653724443574,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 27375.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9228240058500246,
+        "timestamp": "2025-08-30T06:41:03.400565"
+      },
+      "5m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "5m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "83.5444 - 114.5494",
+          "avg_volume": 2520489.004987045
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 83,
+          "convexity_std": 1.0718814886179546,
+          "convexity_mean": 0.7331324050352421,
+          "convexity_signal_ratio": 0.2881944444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 7.860631915345828,
+          "atr_percentage": 0.0802809913945998,
+          "price_volatility": 0.055796135756298444,
+          "atr_to_volatility_ratio": 1.4388270855394751,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2520489.004987045,
+          "volume_std": 808329.4289637583,
+          "volume_coefficient_variation": 0.32070341404560615,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 111,
+          "wins": 94,
+          "losses": 17,
+          "win_rate": 84.68468468468468,
+          "total_pnl": 32700.0,
+          "profit_factor": 13.823529411764707,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9219837126494934,
+        "timestamp": "2025-08-30T06:41:03.410468"
+      },
+      "15m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "15m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "84.1110 - 117.9368",
+          "avg_volume": 2641956.082265759
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 19,
+          "convexity_std": 1.7578893077060758,
+          "convexity_mean": 0.8371720573535085,
+          "convexity_signal_ratio": 0.19791666666666666,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.861676491336823,
+          "atr_percentage": 0.0898014995691838,
+          "price_volatility": 0.054039188031027696,
+          "atr_to_volatility_ratio": 1.6617847684466032,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2641956.082265759,
+          "volume_std": 709126.1950810186,
+          "volume_coefficient_variation": 0.2684095318014777,
+          "volume_spikes_count": "4",
+          "spike_ratio": 0.041666666666666664,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 55650.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9271273007881062,
+        "timestamp": "2025-08-30T06:41:03.415481"
+      },
+      "30m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "30m",
+        "config": "conservative",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "85.9109 - 111.6195",
+          "avg_volume": 2606549.287765143
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 4,
+          "convexity_std": 3.292941444806815,
+          "convexity_mean": 1.635135198807734,
+          "convexity_signal_ratio": 0.08333333333333333,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.74780724774838,
+          "atr_percentage": 0.089941541061364,
+          "price_volatility": 0.05629952749723141,
+          "atr_to_volatility_ratio": 1.5975541014227335,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2606549.287765143,
+          "volume_std": 716485.7211947049,
+          "volume_coefficient_variation": 0.27487902283598104,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 156,
+          "wins": 132,
+          "losses": 24,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 45900.0,
+          "profit_factor": 13.75,
+          "avg_win": 375.0,
+          "avg_loss": 150.0,
+          "config_used": "conservative",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9263582515625557,
+        "timestamp": "2025-08-30T06:41:03.417543"
+      }
+    },
+    "moderate": {
+      "1m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "1m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "80.7310 - 114.6138",
+          "avg_volume": 2492490.1553278523
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 391,
+          "convexity_std": 1.0918092112205804,
+          "convexity_mean": 0.6527129601159568,
+          "convexity_signal_ratio": 0.27152777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 10.387591165380453,
+          "atr_percentage": 0.10586488167274566,
+          "price_volatility": 0.05611453133672153,
+          "atr_to_volatility_ratio": 1.8865858655664713,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2492490.1553278523,
+          "volume_std": 730390.6842331196,
+          "volume_coefficient_variation": 0.29303653724443574,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 36500.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9228240058500246,
+        "timestamp": "2025-08-30T06:41:03.445553"
+      },
+      "5m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "5m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "83.5444 - 114.5494",
+          "avg_volume": 2520489.004987045
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 83,
+          "convexity_std": 1.0718814886179546,
+          "convexity_mean": 0.7331324050352421,
+          "convexity_signal_ratio": 0.2881944444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 7.860631915345828,
+          "atr_percentage": 0.0802809913945998,
+          "price_volatility": 0.055796135756298444,
+          "atr_to_volatility_ratio": 1.4388270855394751,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2520489.004987045,
+          "volume_std": 808329.4289637583,
+          "volume_coefficient_variation": 0.32070341404560615,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 111,
+          "wins": 94,
+          "losses": 17,
+          "win_rate": 84.68468468468468,
+          "total_pnl": 43600.0,
+          "profit_factor": 13.823529411764707,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9219837126494934,
+        "timestamp": "2025-08-30T06:41:03.452082"
+      },
+      "15m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "15m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "84.1110 - 117.9368",
+          "avg_volume": 2641956.082265759
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 19,
+          "convexity_std": 1.7578893077060758,
+          "convexity_mean": 0.8371720573535085,
+          "convexity_signal_ratio": 0.19791666666666666,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.861676491336823,
+          "atr_percentage": 0.0898014995691838,
+          "price_volatility": 0.054039188031027696,
+          "atr_to_volatility_ratio": 1.6617847684466032,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2641956.082265759,
+          "volume_std": 709126.1950810186,
+          "volume_coefficient_variation": 0.2684095318014777,
+          "volume_spikes_count": "4",
+          "spike_ratio": 0.041666666666666664,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 74200.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9271273007881062,
+        "timestamp": "2025-08-30T06:41:03.457367"
+      },
+      "30m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "30m",
+        "config": "moderate",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "85.9109 - 111.6195",
+          "avg_volume": 2606549.287765143
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 4,
+          "convexity_std": 3.292941444806815,
+          "convexity_mean": 1.635135198807734,
+          "convexity_signal_ratio": 0.08333333333333333,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.74780724774838,
+          "atr_percentage": 0.089941541061364,
+          "price_volatility": 0.05629952749723141,
+          "atr_to_volatility_ratio": 1.5975541014227335,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2606549.287765143,
+          "volume_std": 716485.7211947049,
+          "volume_coefficient_variation": 0.27487902283598104,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 156,
+          "wins": 132,
+          "losses": 24,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 61200.0,
+          "profit_factor": 13.75,
+          "avg_win": 500.0,
+          "avg_loss": 200.0,
+          "config_used": "moderate",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9263582515625557,
+        "timestamp": "2025-08-30T06:41:03.460064"
+      }
+    },
+    "aggressive": {
+      "1m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "1m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "80.7310 - 114.6138",
+          "avg_volume": 2492490.1553278523
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 391,
+          "convexity_std": 1.0918092112205804,
+          "convexity_mean": 0.6527129601159568,
+          "convexity_signal_ratio": 0.27152777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 10.387591165380453,
+          "atr_percentage": 0.10586488167274566,
+          "price_volatility": 0.05611453133672153,
+          "atr_to_volatility_ratio": 1.8865858655664713,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2492490.1553278523,
+          "volume_std": 730390.6842331196,
+          "volume_coefficient_variation": 0.29303653724443574,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 45625.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9228240058500246,
+        "timestamp": "2025-08-30T06:41:03.490845"
+      },
+      "5m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "5m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "83.5444 - 114.5494",
+          "avg_volume": 2520489.004987045
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 83,
+          "convexity_std": 1.0718814886179546,
+          "convexity_mean": 0.7331324050352421,
+          "convexity_signal_ratio": 0.2881944444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 7.860631915345828,
+          "atr_percentage": 0.0802809913945998,
+          "price_volatility": 0.055796135756298444,
+          "atr_to_volatility_ratio": 1.4388270855394751,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2520489.004987045,
+          "volume_std": 808329.4289637583,
+          "volume_coefficient_variation": 0.32070341404560615,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 111,
+          "wins": 94,
+          "losses": 17,
+          "win_rate": 84.68468468468468,
+          "total_pnl": 54500.0,
+          "profit_factor": 13.823529411764707,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9219837126494934,
+        "timestamp": "2025-08-30T06:41:03.500082"
+      },
+      "15m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "15m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "84.1110 - 117.9368",
+          "avg_volume": 2641956.082265759
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 19,
+          "convexity_std": 1.7578893077060758,
+          "convexity_mean": 0.8371720573535085,
+          "convexity_signal_ratio": 0.19791666666666666,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.861676491336823,
+          "atr_percentage": 0.0898014995691838,
+          "price_volatility": 0.054039188031027696,
+          "atr_to_volatility_ratio": 1.6617847684466032,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2641956.082265759,
+          "volume_std": 709126.1950810186,
+          "volume_coefficient_variation": 0.2684095318014777,
+          "volume_spikes_count": "4",
+          "spike_ratio": 0.041666666666666664,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 92750.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9271273007881062,
+        "timestamp": "2025-08-30T06:41:03.508635"
+      },
+      "30m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "30m",
+        "config": "aggressive",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "85.9109 - 111.6195",
+          "avg_volume": 2606549.287765143
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 4,
+          "convexity_std": 3.292941444806815,
+          "convexity_mean": 1.635135198807734,
+          "convexity_signal_ratio": 0.08333333333333333,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.74780724774838,
+          "atr_percentage": 0.089941541061364,
+          "price_volatility": 0.05629952749723141,
+          "atr_to_volatility_ratio": 1.5975541014227335,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2606549.287765143,
+          "volume_std": 716485.7211947049,
+          "volume_coefficient_variation": 0.27487902283598104,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 156,
+          "wins": 132,
+          "losses": 24,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 76500.0,
+          "profit_factor": 13.75,
+          "avg_win": 625.0,
+          "avg_loss": 250.0,
+          "config_used": "aggressive",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9263582515625557,
+        "timestamp": "2025-08-30T06:41:03.514118"
+      }
+    },
+    "breakout": {
+      "1m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "1m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 1440,
+          "price_range": "80.7310 - 114.6138",
+          "avg_volume": 2492490.1553278523
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 391,
+          "convexity_std": 1.0918092112205804,
+          "convexity_mean": 0.6527129601159568,
+          "convexity_signal_ratio": 0.27152777777777776,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 10.387591165380453,
+          "atr_percentage": 0.10586488167274566,
+          "price_volatility": 0.05611453133672153,
+          "atr_to_volatility_ratio": 1.8865858655664713,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2492490.1553278523,
+          "volume_std": 730390.6842331196,
+          "volume_coefficient_variation": 0.29303653724443574,
+          "volume_spikes_count": "30",
+          "spike_ratio": 0.020833333333333332,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 94,
+          "wins": 79,
+          "losses": 15,
+          "win_rate": 84.04255319148936,
+          "total_pnl": 54750.0,
+          "profit_factor": 13.166666666666666,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9228240058500246,
+        "timestamp": "2025-08-30T06:41:03.561984"
+      },
+      "5m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "5m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 288,
+          "price_range": "83.5444 - 114.5494",
+          "avg_volume": 2520489.004987045
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 83,
+          "convexity_std": 1.0718814886179546,
+          "convexity_mean": 0.7331324050352421,
+          "convexity_signal_ratio": 0.2881944444444444,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 7.860631915345828,
+          "atr_percentage": 0.0802809913945998,
+          "price_volatility": 0.055796135756298444,
+          "atr_to_volatility_ratio": 1.4388270855394751,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2520489.004987045,
+          "volume_std": 808329.4289637583,
+          "volume_coefficient_variation": 0.32070341404560615,
+          "volume_spikes_count": "3",
+          "spike_ratio": 0.010416666666666666,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 111,
+          "wins": 94,
+          "losses": 17,
+          "win_rate": 84.68468468468468,
+          "total_pnl": 65400.0,
+          "profit_factor": 13.823529411764707,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9219837126494934,
+        "timestamp": "2025-08-30T06:41:03.573940"
+      },
+      "15m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "15m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 96,
+          "price_range": "84.1110 - 117.9368",
+          "avg_volume": 2641956.082265759
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 19,
+          "convexity_std": 1.7578893077060758,
+          "convexity_mean": 0.8371720573535085,
+          "convexity_signal_ratio": 0.19791666666666666,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.861676491336823,
+          "atr_percentage": 0.0898014995691838,
+          "price_volatility": 0.054039188031027696,
+          "atr_to_volatility_ratio": 1.6617847684466032,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2641956.082265759,
+          "volume_std": 709126.1950810186,
+          "volume_coefficient_variation": 0.2684095318014777,
+          "volume_spikes_count": "4",
+          "spike_ratio": 0.041666666666666664,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 189,
+          "wins": 160,
+          "losses": 29,
+          "win_rate": 84.65608465608466,
+          "total_pnl": 111300.0,
+          "profit_factor": 13.793103448275861,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9271273007881062,
+        "timestamp": "2025-08-30T06:41:03.580223"
+      },
+      "30m": {
+        "success": true,
+        "pair": "SOLUSDT",
+        "timeframe": "30m",
+        "config": "breakout",
+        "market_data": {
+          "data_points": 48,
+          "price_range": "85.9109 - 111.6195",
+          "avg_volume": 2606549.287765143
+        },
+        "convexity_analysis": {
+          "convexity_points_found": 4,
+          "convexity_std": 3.292941444806815,
+          "convexity_mean": 1.635135198807734,
+          "convexity_signal_ratio": 0.08333333333333333,
+          "convexity_strength": "strong",
+          "status": "PASS"
+        },
+        "atr_analysis": {
+          "atr_value": 8.74780724774838,
+          "atr_percentage": 0.089941541061364,
+          "price_volatility": 0.05629952749723141,
+          "atr_to_volatility_ratio": 1.5975541014227335,
+          "atr_category": "high",
+          "status": "PASS"
+        },
+        "volume_analysis": {
+          "volume_mean": 2606549.287765143,
+          "volume_std": 716485.7211947049,
+          "volume_coefficient_variation": 0.27487902283598104,
+          "volume_spikes_count": "0",
+          "spike_ratio": 0.0,
+          "volume_category": "stable",
+          "status": "PASS"
+        },
+        "performance_simulation": {
+          "total_trades": 156,
+          "wins": 132,
+          "losses": 24,
+          "win_rate": 84.61538461538461,
+          "total_pnl": 91800.0,
+          "profit_factor": 13.75,
+          "avg_win": 750.0,
+          "avg_loss": 300.0,
+          "config_used": "breakout",
+          "pair_multiplier": 2.75,
+          "status": "PASS"
+        },
+        "mcp_score": 0.9263582515625557,
+        "timestamp": "2025-08-30T06:41:03.585146"
+      }
+    }
+  }
+}

@@ -1,0 +1,355 @@
+{
+  "convexity_validation": {
+    "quadratic_function": {
+      "mse": 3.987299042567928,
+      "correlation": -0.05662029670884059,
+      "peaks_mcp": 247,
+      "peaks_theoretical": 263,
+      "accuracy": 0.0,
+      "status": "FAIL"
+    },
+    "cubic_function": {
+      "mse": 334.3104329490694,
+      "correlation": 0.9990320605267473,
+      "peaks_mcp": 0,
+      "peaks_theoretical": 2,
+      "accuracy": 0.0,
+      "status": "FAIL"
+    },
+    "sine_function": {
+      "mse": 0.4992893733514526,
+      "correlation": 0.9999999468770661,
+      "peaks_mcp": 4,
+      "peaks_theoretical": 4,
+      "accuracy": 0.0,
+      "status": "FAIL"
+    },
+    "exponential_function": {
+      "mse": 0.0006756424684897393,
+      "correlation": 0.9976147317187442,
+      "peaks_mcp": 0,
+      "peaks_theoretical": 1,
+      "accuracy": 0.0,
+      "status": "FAIL"
+    },
+    "logarithmic_function": {
+      "mse": 1.5951130234052743e-05,
+      "correlation": 0.9968319817097946,
+      "peaks_mcp": 0,
+      "peaks_theoretical": 1,
+      "accuracy": 0.0,
+      "status": "FAIL"
+    },
+    "overall": {
+      "total_tests": 5,
+      "passed_tests": 0,
+      "accuracy": 0.0,
+      "average_correlation": 0.7873716848247023
+    }
+  },
+  "atr_validation": {
+    "stable_market": {
+      "theoretical_atr": 0.37416573867739417,
+      "atr_simple": 0.6356699383993956,
+      "atr_wilder": 0.7115622332321412,
+      "atr_exponential": 0.6824083361107496,
+      "accuracy_simple": 0.3011006281698325,
+      "accuracy_wilder": 0.0982699384839979,
+      "methods_consistency": 0.05059486322183041,
+      "status": "FAIL"
+    },
+    "trending_market": {
+      "theoretical_atr": 1.8708286933869707,
+      "atr_simple": 0.6868248199643006,
+      "atr_wilder": 0.7331576985633271,
+      "atr_exponential": 0.7037174220215905,
+      "accuracy_simple": 0.36712330871987253,
+      "accuracy_wilder": 0.3918892740713794,
+      "methods_consistency": 0.03088858573268438,
+      "status": "FAIL"
+    },
+    "volatile_market": {
+      "theoretical_atr": 7.483314773547883,
+      "atr_simple": 0.8915163508798339,
+      "atr_wilder": 0.8638804672382469,
+      "atr_exponential": 0.8192979299101705,
+      "accuracy_simple": 0.11913388356068855,
+      "accuracy_wilder": 0.11544088326898971,
+      "methods_consistency": 0.048145613979775646,
+      "status": "FAIL"
+    },
+    "breakout_market": {
+      "theoretical_atr": 18.708286933869708,
+      "atr_simple": 1.497283449795747,
+      "atr_wilder": 1.4122726223788786,
+      "atr_exponential": 1.2913012294833215,
+      "accuracy_simple": 0.0800331668574662,
+      "accuracy_wilder": 0.07548914699517906,
+      "methods_consistency": 0.1373214802082837,
+      "status": "FAIL"
+    },
+    "overall": {
+      "total_tests": 4,
+      "passed_tests": 0,
+      "accuracy": 0.0,
+      "average_accuracy": 0.17027231070488652
+    }
+  },
+  "volume_validation": {
+    "steady_volume": {
+      "obv_calculation": {
+        "correlation": 0.9999999999999998,
+        "accuracy": 1.0,
+        "mse": 0.0
+      },
+      "accumulation_distribution": {
+        "accuracy": 1.0,
+        "correlation": 1.0,
+        "mse": 0.0
+      },
+      "volume_profile": {
+        "accuracy": -0.02349400789821976,
+        "entropy": 1.6484570341446365,
+        "uniformity": -0.01174700394910988,
+        "bins_count": 10,
+        "total_volume": 500341899.7294324
+      },
+      "status": "FAIL"
+    },
+    "increasing_volume": {
+      "obv_calculation": {
+        "correlation": 1.0,
+        "accuracy": 1.0,
+        "mse": 0.0
+      },
+      "accumulation_distribution": {
+        "accuracy": 1.0,
+        "correlation": 1.0,
+        "mse": 0.0
+      },
+      "volume_profile": {
+        "accuracy": -0.02221264954999258,
+        "entropy": 1.6492340647808026,
+        "uniformity": -0.01110632477499629,
+        "bins_count": 10,
+        "total_volume": 513206712.4085624
+      },
+      "status": "FAIL"
+    },
+    "spike_volume": {
+      "obv_calculation": {
+        "correlation": 1.0,
+        "accuracy": 1.0,
+        "mse": 0.0
+      },
+      "accumulation_distribution": {
+        "accuracy": 1.0,
+        "correlation": 1.0,
+        "mse": 0.0
+      },
+      "volume_profile": {
+        "accuracy": -1.7721293721186178,
+        "entropy": 0.8146930466347553,
+        "uniformity": -0.8860646860593089,
+        "bins_count": 10,
+        "total_volume": 560744324.7761803
+      },
+      "status": "FAIL"
+    },
+    "declining_volume": {
+      "obv_calculation": {
+        "correlation": 1.0,
+        "accuracy": 1.0,
+        "mse": 0.0
+      },
+      "accumulation_distribution": {
+        "accuracy": 1.0,
+        "correlation": 0.9999999999999999,
+        "mse": 0.0
+      },
+      "volume_profile": {
+        "accuracy": -0.043604658440570265,
+        "entropy": 1.6393444409817515,
+        "uniformity": -0.021802329220285133,
+        "bins_count": 10,
+        "total_volume": 493006288.7667846
+      },
+      "status": "FAIL"
+    },
+    "overall": {
+      "total_tests": 4,
+      "passed_tests": 0,
+      "accuracy": 0.0
+    }
+  },
+  "performance_validation": {
+    "balanced_portfolio": {
+      "theoretical_win_rate": 0.65,
+      "calculated_win_rate": 0.69,
+      "win_rate_accuracy": 0.9600000000000001,
+      "theoretical_profit_factor": 3.0952380952380953,
+      "calculated_profit_factor": 3.812569194211692,
+      "profit_factor_accuracy": 0.7682468757162226,
+      "sharpe_ratio": 10.83419054696653,
+      "max_drawdown": 0.016189235707151747,
+      "overall_accuracy": 0.8641234378581113,
+      "status": "FAIL"
+    },
+    "aggressive_portfolio": {
+      "theoretical_win_rate": 0.55,
+      "calculated_win_rate": 0.565,
+      "win_rate_accuracy": 0.9850000000000001,
+      "theoretical_profit_factor": 2.2916666666666665,
+      "calculated_profit_factor": 2.5299073135395367,
+      "profit_factor_accuracy": 0.8960404450009294,
+      "sharpe_ratio": 7.392067365402542,
+      "max_drawdown": 0.025954500573076075,
+      "overall_accuracy": 0.9405202225004647,
+      "status": "FAIL"
+    },
+    "conservative_portfolio": {
+      "theoretical_win_rate": 0.75,
+      "calculated_win_rate": 0.8133333333333334,
+      "win_rate_accuracy": 0.9366666666666666,
+      "theoretical_profit_factor": 6.0,
+      "calculated_profit_factor": 9.103146272851099,
+      "profit_factor_accuracy": 0.48280895452481687,
+      "sharpe_ratio": 18.452112474330512,
+      "max_drawdown": 0.010592193107999975,
+      "overall_accuracy": 0.7097378105957417,
+      "status": "FAIL"
+    },
+    "high_frequency": {
+      "theoretical_win_rate": 0.6,
+      "calculated_win_rate": 0.6,
+      "win_rate_accuracy": 1.0,
+      "theoretical_profit_factor": 2.5,
+      "calculated_profit_factor": 2.524964871120713,
+      "profit_factor_accuracy": 0.9900140515517147,
+      "sharpe_ratio": 7.154661871945894,
+      "max_drawdown": 0.01502656761823581,
+      "overall_accuracy": 0.9950070257758574,
+      "status": "PASS"
+    },
+    "overall": {
+      "total_tests": 4,
+      "passed_tests": 1,
+      "accuracy": 0.25,
+      "average_accuracy": 0.8773471241825437
+    }
+  },
+  "correlation_validation": {
+    "perfect_positive": {
+      "target_correlation": 1.0,
+      "pearson_calculated": 1.0,
+      "spearman_calculated": 1.0,
+      "pearson_accuracy": 1.0,
+      "spearman_accuracy": 1.0,
+      "methods_agreement": 1.0,
+      "status": "PASS"
+    },
+    "strong_positive": {
+      "target_correlation": 0.8,
+      "pearson_calculated": 0.7855767946761956,
+      "spearman_calculated": 0.7733071973071973,
+      "pearson_accuracy": 0.9855767946761955,
+      "spearman_accuracy": 0.9733071973071973,
+      "methods_agreement": 0.9877304026310018,
+      "status": "PASS"
+    },
+    "moderate_positive": {
+      "target_correlation": 0.6,
+      "pearson_calculated": 0.5715083471413713,
+      "spearman_calculated": 0.544997380997381,
+      "pearson_accuracy": 0.9715083471413714,
+      "spearman_accuracy": 0.9449973809973811,
+      "methods_agreement": 0.9734890338560097,
+      "status": "FAIL"
+    },
+    "weak_positive": {
+      "target_correlation": 0.3,
+      "pearson_calculated": 0.25936440811544564,
+      "spearman_calculated": 0.22594715794715794,
+      "pearson_accuracy": 0.9593644081154457,
+      "spearman_accuracy": 0.925947157947158,
+      "methods_agreement": 0.9665827498317123,
+      "status": "FAIL"
+    },
+    "no_correlation": {
+      "target_correlation": 0.0,
+      "pearson_calculated": -0.04039987129344413,
+      "spearman_calculated": -0.06376473976473977,
+      "pearson_accuracy": 0.9596001287065559,
+      "spearman_accuracy": 0.9362352602352603,
+      "methods_agreement": 0.9766351315287044,
+      "status": "FAIL"
+    },
+    "weak_negative": {
+      "target_correlation": -0.3,
+      "pearson_calculated": -0.32986279062816914,
+      "spearman_calculated": -0.33548729948729955,
+      "pearson_accuracy": 0.9701372093718308,
+      "spearman_accuracy": 0.9645127005127004,
+      "methods_agreement": 0.9943754911408695,
+      "status": "PASS"
+    },
+    "strong_negative": {
+      "target_correlation": -0.8,
+      "pearson_calculated": -0.8036532728015853,
+      "spearman_calculated": -0.7874521154521156,
+      "pearson_accuracy": 0.9963467271984148,
+      "spearman_accuracy": 0.9874521154521155,
+      "methods_agreement": 0.9837988426505303,
+      "status": "PASS"
+    },
+    "perfect_negative": {
+      "target_correlation": -1.0,
+      "pearson_calculated": -1.0,
+      "spearman_calculated": -1.0,
+      "pearson_accuracy": 1.0,
+      "spearman_accuracy": 1.0,
+      "methods_agreement": 1.0,
+      "status": "PASS"
+    },
+    "overall": {
+      "total_tests": 8,
+      "passed_tests": 5,
+      "accuracy": 0.625,
+      "average_pearson_accuracy": 0.9803167019012267,
+      "average_spearman_accuracy": 0.9665564765564766
+    }
+  },
+  "overall_accuracy": {
+    "overall_accuracy": 0.175,
+    "accuracy_std": 0.2449489742783178,
+    "accuracy_range": "-0.070 - 0.420",
+    "validation_categories": 5,
+    "status": "NEEDS_IMPROVEMENT"
+  },
+  "summary": {
+    "validation_timestamp": 1756499971,
+    "mathematical_accuracy": 0.175,
+    "accuracy_status": "NEEDS_IMPROVEMENT",
+    "validation_categories": {
+      "convexity_calculations": 0.0,
+      "atr_calculations": 0.0,
+      "volume_calculations": 0.0,
+      "performance_metrics": 0.25,
+      "correlation_calculations": 0.625
+    },
+    "critical_findings": [
+      "Low accuracy in convexity: 0.000",
+      "Low accuracy in atr: 0.000",
+      "Low accuracy in volume: 0.000",
+      "Low accuracy in performance: 0.250",
+      "Low accuracy in correlation: 0.625"
+    ],
+    "recommendations": [
+      "Mathematical accuracy needs improvement - review calculation algorithms",
+      "Improve convexity calculations with higher-order derivative approximations",
+      "Optimize ATR calculations with better smoothing algorithms"
+    ],
+    "bitget_pairs_coverage": 50,
+    "validation_confidence": "LOW"
+  }
+}

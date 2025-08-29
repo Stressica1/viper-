@@ -1,0 +1,2909 @@
+{
+  "demo_metadata": {
+    "start_time": "2025-08-30T06:35:29.400408",
+    "end_time": "2025-08-30T06:35:29.523201",
+    "duration_minutes": 0.0020467333333333334,
+    "pairs_tested": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "BNBUSDT",
+      "ADAUSDT",
+      "SOLUSDT"
+    ],
+    "timeframes_tested": [
+      "1m",
+      "5m",
+      "15m",
+      "30m"
+    ],
+    "configs_tested": [
+      "conservative",
+      "moderate",
+      "aggressive",
+      "breakout"
+    ],
+    "total_tests": 80
+  },
+  "results": {
+    "BTCUSDT": {
+      "1m": {
+        "conservative": {
+          "pair": "BTCUSDT",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 102,
+          "performance": {
+            "win_rate": 0.6078431372549019,
+            "total_pnl": 13334.700000000004,
+            "profit_factor": 3.2224500000000007,
+            "sharpe_ratio": 2.0375921779598865,
+            "max_drawdown": 28.150491342340473,
+            "avg_win": 311.8500000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 22.224500000000006,
+            "total_return_pct": 133.34700000000004
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 81,
+            "volume_confirmations": 71,
+            "multi_timeframe_alignments": 61,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.484889",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BTCUSDT",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 192,
+          "performance": {
+            "win_rate": 0.640625,
+            "total_pnl": 44317.50000000001,
+            "profit_factor": 4.211413043478261,
+            "sharpe_ratio": -0.1050709429014481,
+            "max_drawdown": 21.280214627970846,
+            "avg_win": 472.50000000000006,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 73.86250000000003,
+            "total_return_pct": 443.17500000000007
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 153,
+            "volume_confirmations": 134,
+            "multi_timeframe_alignments": 115,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.485462",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BTCUSDT",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 191,
+          "performance": {
+            "win_rate": 0.6596858638743456,
+            "total_pnl": 67099.0,
+            "profit_factor": 5.1291692307692305,
+            "sharpe_ratio": 0.4940866021020403,
+            "max_drawdown": 27.681856529652325,
+            "avg_win": 661.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 111.83166666666666,
+            "total_return_pct": 670.99
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 152,
+            "volume_confirmations": 133,
+            "multi_timeframe_alignments": 114,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.485866",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BTCUSDT",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 178,
+          "performance": {
+            "win_rate": 0.6797752808988764,
+            "total_pnl": 85810.50000000001,
+            "profit_factor": 6.018157894736843,
+            "sharpe_ratio": -0.4537988508553991,
+            "max_drawdown": 38.88123118777083,
+            "avg_win": 850.5000000000001,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 143.0175,
+            "total_return_pct": 858.1050000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 142,
+            "volume_confirmations": 124,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.486187",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "BTCUSDT",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 159,
+          "performance": {
+            "win_rate": 0.679245283018868,
+            "total_pnl": 29772.000000000007,
+            "profit_factor": 4.891764705882354,
+            "sharpe_ratio": 0.7882261542981374,
+            "max_drawdown": 27.09170837473086,
+            "avg_win": 346.50000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 49.62000000000001,
+            "total_return_pct": 297.7200000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 127,
+            "volume_confirmations": 111,
+            "multi_timeframe_alignments": 95,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.486559",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BTCUSDT",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 157,
+          "performance": {
+            "win_rate": 0.7133757961783439,
+            "total_pnl": 49800.0,
+            "profit_factor": 6.533333333333333,
+            "sharpe_ratio": -0.5251817333822764,
+            "max_drawdown": 40.00350029587769,
+            "avg_win": 525.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 83.0,
+            "total_return_pct": 498.00000000000006
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 125,
+            "volume_confirmations": 109,
+            "multi_timeframe_alignments": 94,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.486943",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BTCUSDT",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 152,
+          "performance": {
+            "win_rate": 0.7302631578947368,
+            "total_pnl": 71335.0,
+            "profit_factor": 7.959512195121952,
+            "sharpe_ratio": 2.249612806336098,
+            "max_drawdown": 67.7610237169456,
+            "avg_win": 735.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 118.89166666666667,
+            "total_return_pct": 713.35
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 121,
+            "volume_confirmations": 106,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.487534",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BTCUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 172,
+          "performance": {
+            "win_rate": 0.7558139534883721,
+            "total_pnl": 110250.0,
+            "profit_factor": 9.75,
+            "sharpe_ratio": 0.2960647770561032,
+            "max_drawdown": 34.604419941788514,
+            "avg_win": 945.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 183.75,
+            "total_return_pct": 1102.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 137,
+            "volume_confirmations": 120,
+            "multi_timeframe_alignments": 103,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.488147",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "BTCUSDT",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 115,
+          "performance": {
+            "win_rate": 0.7130434782608696,
+            "total_pnl": 24883.650000000005,
+            "profit_factor": 6.027000000000001,
+            "sharpe_ratio": 2.616936430724155,
+            "max_drawdown": 50.264577483829434,
+            "avg_win": 363.82500000000005,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 41.472750000000005,
+            "total_return_pct": 248.83650000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 92,
+            "volume_confirmations": 80,
+            "multi_timeframe_alignments": 69,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.488610",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BTCUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 114,
+          "performance": {
+            "win_rate": 0.7456140350877193,
+            "total_pnl": 41056.25,
+            "profit_factor": 8.078663793103448,
+            "sharpe_ratio": 1.8533549493453738,
+            "max_drawdown": 46.41256963414665,
+            "avg_win": 551.25,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 68.42708333333333,
+            "total_return_pct": 410.5625
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 91,
+            "volume_confirmations": 79,
+            "multi_timeframe_alignments": 68,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.489018",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BTCUSDT",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 166,
+          "performance": {
+            "win_rate": 0.7710843373493976,
+            "total_pnl": 89284.00000000001,
+            "profit_factor": 10.398315789473687,
+            "sharpe_ratio": -1.8576779785453563,
+            "max_drawdown": 66.96002195924558,
+            "avg_win": 771.7500000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 148.8066666666667,
+            "total_return_pct": 892.8400000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 132,
+            "volume_confirmations": 116,
+            "multi_timeframe_alignments": 99,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.489408",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BTCUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 139,
+          "performance": {
+            "win_rate": 0.7913669064748201,
+            "total_pnl": 100447.50000000001,
+            "profit_factor": 12.545689655172415,
+            "sharpe_ratio": 0.8183992199221651,
+            "max_drawdown": 22.871492965363586,
+            "avg_win": 992.2500000000001,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 167.41250000000002,
+            "total_return_pct": 1004.4750000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 111,
+            "volume_confirmations": 97,
+            "multi_timeframe_alignments": 83,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.489742",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 177,
+          "performance": {
+            "win_rate": 0.7457627118644068,
+            "total_pnl": 43561.80000000001,
+            "profit_factor": 7.453600000000002,
+            "sharpe_ratio": -1.1107708674695518,
+            "max_drawdown": 29.910631611888167,
+            "avg_win": 381.1500000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 72.60300000000002,
+            "total_return_pct": 435.6180000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 141,
+            "volume_confirmations": 123,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.490081",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 194,
+          "performance": {
+            "win_rate": 0.7835051546391754,
+            "total_pnl": 79380.0,
+            "profit_factor": 10.45,
+            "sharpe_ratio": 1.7498639379772678,
+            "max_drawdown": 55.68657128558585,
+            "avg_win": 577.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 132.29999999999998,
+            "total_return_pct": 793.8
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 155,
+            "volume_confirmations": 135,
+            "multi_timeframe_alignments": 116,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.490949",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 195,
+          "performance": {
+            "win_rate": 0.8051282051282052,
+            "total_pnl": 117434.5,
+            "profit_factor": 13.361526315789474,
+            "sharpe_ratio": 1.5049793329135988,
+            "max_drawdown": 56.758076744230344,
+            "avg_win": 808.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 195.72416666666666,
+            "total_return_pct": 1174.345
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 156,
+            "volume_confirmations": 136,
+            "multi_timeframe_alignments": 117,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.491702",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 153,
+          "performance": {
+            "win_rate": 0.8300653594771242,
+            "total_pnl": 124216.50000000003,
+            "profit_factor": 16.92519230769231,
+            "sharpe_ratio": 3.35448409347593,
+            "max_drawdown": 66.227981032169,
+            "avg_win": 1039.5000000000002,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 207.02750000000006,
+            "total_return_pct": 1242.1650000000004
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 122,
+            "volume_confirmations": 107,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.492204",
+          "success": true
+        }
+      }
+    },
+    "ETHUSDT": {
+      "1m": {
+        "conservative": {
+          "pair": "ETHUSDT",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 154,
+          "performance": {
+            "win_rate": 0.6428571428571429,
+            "total_pnl": 24093.300000000003,
+            "profit_factor": 3.9204000000000003,
+            "sharpe_ratio": -0.34861440403648,
+            "max_drawdown": 35.428885249718384,
+            "avg_win": 326.70000000000005,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 40.1555,
+            "total_return_pct": 240.93300000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 123,
+            "volume_confirmations": 107,
+            "multi_timeframe_alignments": 92,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.492862",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ETHUSDT",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 136,
+          "performance": {
+            "win_rate": 0.6691176470588235,
+            "total_pnl": 36045.0,
+            "profit_factor": 5.005,
+            "sharpe_ratio": 1.8449867422697648,
+            "max_drawdown": 39.364348995416705,
+            "avg_win": 495.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 60.075,
+            "total_return_pct": 360.45
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 108,
+            "volume_confirmations": 95,
+            "multi_timeframe_alignments": 81,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.493777",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ETHUSDT",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 150,
+          "performance": {
+            "win_rate": 0.6866666666666668,
+            "total_pnl": 59629.000000000015,
+            "profit_factor": 6.074808510638299,
+            "sharpe_ratio": 1.5574210580026084,
+            "max_drawdown": 48.63444314645102,
+            "avg_win": 693.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 99.38166666666669,
+            "total_return_pct": 596.2900000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 120,
+            "volume_confirmations": 105,
+            "multi_timeframe_alignments": 90,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.494382",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ETHUSDT",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 144,
+          "performance": {
+            "win_rate": 0.7083333333333335,
+            "total_pnl": 78282.0,
+            "profit_factor": 7.212857142857143,
+            "sharpe_ratio": -1.2047062908752706,
+            "max_drawdown": 38.361303281287775,
+            "avg_win": 891.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 130.47,
+            "total_return_pct": 782.8199999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 115,
+            "volume_confirmations": 100,
+            "multi_timeframe_alignments": 86,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.494757",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "ETHUSDT",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 182,
+          "performance": {
+            "win_rate": 0.7142857142857143,
+            "total_pnl": 39390.00000000001,
+            "profit_factor": 6.050000000000001,
+            "sharpe_ratio": 1.7075718658402894,
+            "max_drawdown": 77.6178072774849,
+            "avg_win": 363.00000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 65.65000000000002,
+            "total_return_pct": 393.9000000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 145,
+            "volume_confirmations": 127,
+            "multi_timeframe_alignments": 109,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.495220",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ETHUSDT",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 144,
+          "performance": {
+            "win_rate": 0.7430555555555556,
+            "total_pnl": 51450.0,
+            "profit_factor": 7.952702702702703,
+            "sharpe_ratio": 1.7983702300725446,
+            "max_drawdown": 52.91900139282839,
+            "avg_win": 550.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 85.75,
+            "total_return_pct": 514.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 115,
+            "volume_confirmations": 100,
+            "multi_timeframe_alignments": 86,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.495877",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ETHUSDT",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 189,
+          "performance": {
+            "win_rate": 0.7671957671957672,
+            "total_pnl": 100650.00000000001,
+            "profit_factor": 10.150000000000002,
+            "sharpe_ratio": 1.7134053569953134,
+            "max_drawdown": 45.347418304288176,
+            "avg_win": 770.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 167.75000000000003,
+            "total_return_pct": 1006.5000000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 151,
+            "volume_confirmations": 132,
+            "multi_timeframe_alignments": 113,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.496594",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ETHUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 125,
+          "performance": {
+            "win_rate": 0.792,
+            "total_pnl": 90210.0,
+            "profit_factor": 12.565384615384616,
+            "sharpe_ratio": 3.0678988801195963,
+            "max_drawdown": 54.56454991133038,
+            "avg_win": 990.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 150.35,
+            "total_return_pct": 902.1000000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 100,
+            "volume_confirmations": 87,
+            "multi_timeframe_alignments": 75,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.497010",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 114,
+          "performance": {
+            "win_rate": 0.7456140350877193,
+            "total_pnl": 28047.750000000004,
+            "profit_factor": 7.447758620689656,
+            "sharpe_ratio": 1.2039739995441567,
+            "max_drawdown": 28.652269233690795,
+            "avg_win": 381.15000000000003,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 46.74625,
+            "total_return_pct": 280.4775
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 91,
+            "volume_confirmations": 79,
+            "multi_timeframe_alignments": 68,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.497951",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 198,
+          "performance": {
+            "win_rate": 0.7828282828282829,
+            "total_pnl": 80912.5,
+            "profit_factor": 10.408430232558139,
+            "sharpe_ratio": 3.3096930232942112,
+            "max_drawdown": 96.59183368847755,
+            "avg_win": 577.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 134.85416666666669,
+            "total_return_pct": 809.125
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 158,
+            "volume_confirmations": 138,
+            "multi_timeframe_alignments": 118,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.498733",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 155,
+          "performance": {
+            "win_rate": 0.8064516129032258,
+            "total_pnl": 93562.50000000003,
+            "profit_factor": 13.475000000000003,
+            "sharpe_ratio": -1.0767383901789496,
+            "max_drawdown": 22.55009685667394,
+            "avg_win": 808.5000000000002,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 155.93750000000003,
+            "total_return_pct": 935.6250000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 124,
+            "volume_confirmations": 108,
+            "multi_timeframe_alignments": 93,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.499145",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 159,
+          "performance": {
+            "win_rate": 0.8301886792452831,
+            "total_pnl": 129114.0,
+            "profit_factor": 16.94,
+            "sharpe_ratio": 2.5904821365233204,
+            "max_drawdown": 52.92726650183535,
+            "avg_win": 1039.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 215.19,
+            "total_return_pct": 1291.14
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 127,
+            "volume_confirmations": 111,
+            "multi_timeframe_alignments": 95,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.499628",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 123,
+          "performance": {
+            "win_rate": 0.7804878048780488,
+            "total_pnl": 34282.80000000001,
+            "profit_factor": 9.464888888888892,
+            "sharpe_ratio": 2.7919503511402217,
+            "max_drawdown": 46.67388066135322,
+            "avg_win": 399.3000000000001,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 57.13800000000001,
+            "total_return_pct": 342.8280000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 98,
+            "volume_confirmations": 86,
+            "multi_timeframe_alignments": 73,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.500076",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 104,
+          "performance": {
+            "win_rate": 0.8173076923076923,
+            "total_pnl": 47625.0,
+            "profit_factor": 13.532894736842104,
+            "sharpe_ratio": 0.5548111873605706,
+            "max_drawdown": 19.43780998578035,
+            "avg_win": 605.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 79.375,
+            "total_return_pct": 476.25
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 83,
+            "volume_confirmations": 72,
+            "multi_timeframe_alignments": 62,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.500442",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 126,
+          "performance": {
+            "win_rate": 0.8412698412698413,
+            "total_pnl": 84782.00000000001,
+            "profit_factor": 17.956400000000002,
+            "sharpe_ratio": 1.4969787722177077,
+            "max_drawdown": 50.193064098773085,
+            "avg_win": 847.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 141.30333333333337,
+            "total_return_pct": 847.8200000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 100,
+            "volume_confirmations": 88,
+            "multi_timeframe_alignments": 75,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.500797",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 184,
+          "performance": {
+            "win_rate": 0.8478260869565217,
+            "total_pnl": 161484.00000000003,
+            "profit_factor": 20.224285714285717,
+            "sharpe_ratio": 2.2415266179872693,
+            "max_drawdown": 71.86508519515587,
+            "avg_win": 1089.0000000000002,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 269.14000000000004,
+            "total_return_pct": 1614.8400000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 147,
+            "volume_confirmations": 128,
+            "multi_timeframe_alignments": 110,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.501007",
+          "success": true
+        }
+      }
+    },
+    "BNBUSDT": {
+      "1m": {
+        "conservative": {
+          "pair": "BNBUSDT",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 158,
+          "performance": {
+            "win_rate": 0.5506329113924051,
+            "total_pnl": 13897.05,
+            "profit_factor": 2.304887323943662,
+            "sharpe_ratio": 1.3641526464698326,
+            "max_drawdown": 52.52228983666532,
+            "avg_win": 282.15,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 23.16175,
+            "total_return_pct": 138.9705
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 126,
+            "volume_confirmations": 110,
+            "multi_timeframe_alignments": 94,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.501489",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BNBUSDT",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 113,
+          "performance": {
+            "win_rate": 0.5752212389380531,
+            "total_pnl": 18187.500000000004,
+            "profit_factor": 2.8945312500000004,
+            "sharpe_ratio": -2.7421940888627288,
+            "max_drawdown": 47.00140841512671,
+            "avg_win": 427.50000000000006,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 30.312500000000004,
+            "total_return_pct": 181.87500000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 90,
+            "volume_confirmations": 79,
+            "multi_timeframe_alignments": 67,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.501801",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BNBUSDT",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 169,
+          "performance": {
+            "win_rate": 0.5976331360946746,
+            "total_pnl": 43448.499999999985,
+            "profit_factor": 3.555794117647058,
+            "sharpe_ratio": 1.6495665116672693,
+            "max_drawdown": 47.5706403371956,
+            "avg_win": 598.4999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 72.41416666666663,
+            "total_return_pct": 434.48499999999984
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 135,
+            "volume_confirmations": 118,
+            "multi_timeframe_alignments": 101,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.502073",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BNBUSDT",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 199,
+          "performance": {
+            "win_rate": 0.6130653266331658,
+            "total_pnl": 70778.99999999999,
+            "profit_factor": 4.064025974025974,
+            "sharpe_ratio": 1.3653816416045517,
+            "max_drawdown": 59.18637855954705,
+            "avg_win": 769.4999999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 117.96499999999999,
+            "total_return_pct": 707.7899999999998
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 159,
+            "volume_confirmations": 139,
+            "multi_timeframe_alignments": 119,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.502349",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "BNBUSDT",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 172,
+          "performance": {
+            "win_rate": 0.6162790697674418,
+            "total_pnl": 23330.999999999993,
+            "profit_factor": 3.356666666666666,
+            "sharpe_ratio": 0.4071392588919172,
+            "max_drawdown": 27.959490303099255,
+            "avg_win": 313.49999999999994,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 38.884999999999984,
+            "total_return_pct": 233.30999999999992
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 137,
+            "volume_confirmations": 120,
+            "multi_timeframe_alignments": 103,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.502647",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BNBUSDT",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 129,
+          "performance": {
+            "win_rate": 0.6434108527131783,
+            "total_pnl": 30225.0,
+            "profit_factor": 4.2853260869565215,
+            "sharpe_ratio": 2.0442059478915664,
+            "max_drawdown": 39.28221038371582,
+            "avg_win": 475.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 50.375,
+            "total_return_pct": 302.25
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 103,
+            "volume_confirmations": 90,
+            "multi_timeframe_alignments": 77,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.502947",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BNBUSDT",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 175,
+          "performance": {
+            "win_rate": 0.6628571428571428,
+            "total_pnl": 62389.999999999985,
+            "profit_factor": 5.229830508474575,
+            "sharpe_ratio": 0.734041396128188,
+            "max_drawdown": 30.622891837064873,
+            "avg_win": 664.9999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 103.98333333333329,
+            "total_return_pct": 623.8999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 140,
+            "volume_confirmations": 122,
+            "multi_timeframe_alignments": 105,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.503272",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BNBUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 138,
+          "performance": {
+            "win_rate": 0.6811594202898551,
+            "total_pnl": 67169.99999999999,
+            "profit_factor": 6.088636363636363,
+            "sharpe_ratio": -0.42590740883427214,
+            "max_drawdown": 32.74669099660233,
+            "avg_win": 854.9999999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 111.94999999999997,
+            "total_return_pct": 671.6999999999998
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 110,
+            "volume_confirmations": 96,
+            "multi_timeframe_alignments": 82,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.503901",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "BNBUSDT",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 149,
+          "performance": {
+            "win_rate": 0.6442953020134228,
+            "total_pnl": 23650.800000000003,
+            "profit_factor": 3.9749433962264153,
+            "sharpe_ratio": 1.2719250396048365,
+            "max_drawdown": 31.60619770986025,
+            "avg_win": 329.175,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 39.418000000000006,
+            "total_return_pct": 236.50800000000004
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 119,
+            "volume_confirmations": 104,
+            "multi_timeframe_alignments": 89,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.504204",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BNBUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 104,
+          "performance": {
+            "win_rate": 0.673076923076923,
+            "total_pnl": 28112.5,
+            "profit_factor": 5.134191176470588,
+            "sharpe_ratio": -0.47158905030839104,
+            "max_drawdown": 24.13682824696989,
+            "avg_win": 498.75,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 46.854166666666664,
+            "total_return_pct": 281.125
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 83,
+            "volume_confirmations": 72,
+            "multi_timeframe_alignments": 62,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.504399",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BNBUSDT",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 119,
+          "performance": {
+            "win_rate": 0.6974789915966386,
+            "total_pnl": 48954.75,
+            "profit_factor": 6.439416666666666,
+            "sharpe_ratio": 0.2912421755056908,
+            "max_drawdown": 22.504242032046484,
+            "avg_win": 698.25,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 81.59125,
+            "total_return_pct": 489.5475
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 95,
+            "volume_confirmations": 83,
+            "multi_timeframe_alignments": 71,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.504619",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BNBUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 110,
+          "performance": {
+            "win_rate": 0.7181818181818181,
+            "total_pnl": 61622.249999999985,
+            "profit_factor": 7.626048387096772,
+            "sharpe_ratio": 0.5505371841717656,
+            "max_drawdown": 22.93952836094923,
+            "avg_win": 897.7499999999999,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 102.70374999999999,
+            "total_return_pct": 616.2224999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 88,
+            "volume_confirmations": 77,
+            "multi_timeframe_alignments": 66,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.504852",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "BNBUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 167,
+          "performance": {
+            "win_rate": 0.6766467065868264,
+            "total_pnl": 30868.049999999996,
+            "profit_factor": 4.8108703703703695,
+            "sharpe_ratio": -0.26019458555251573,
+            "max_drawdown": 31.51510471517548,
+            "avg_win": 344.84999999999997,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 51.446749999999994,
+            "total_return_pct": 308.68049999999994
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 133,
+            "volume_confirmations": 116,
+            "multi_timeframe_alignments": 100,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.505469",
+          "success": true
+        },
+        "moderate": {
+          "pair": "BNBUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 123,
+          "performance": {
+            "win_rate": 0.7073170731707318,
+            "total_pnl": 38257.5,
+            "profit_factor": 6.313541666666667,
+            "sharpe_ratio": 2.4771662838325934,
+            "max_drawdown": 48.81660723769406,
+            "avg_win": 522.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 63.7625,
+            "total_return_pct": 382.57500000000005
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 98,
+            "volume_confirmations": 86,
+            "multi_timeframe_alignments": 73,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.505853",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "BNBUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 195,
+          "performance": {
+            "win_rate": 0.7282051282051282,
+            "total_pnl": 90622.99999999999,
+            "profit_factor": 7.839471698113207,
+            "sharpe_ratio": 1.539255400031309,
+            "max_drawdown": 54.70343569894165,
+            "avg_win": 731.4999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 151.03833333333333,
+            "total_return_pct": 906.2299999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 156,
+            "volume_confirmations": 136,
+            "multi_timeframe_alignments": 117,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.506393",
+          "success": true
+        },
+        "breakout": {
+          "pair": "BNBUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 152,
+          "performance": {
+            "win_rate": 0.75,
+            "total_pnl": 95817.0,
+            "profit_factor": 9.405,
+            "sharpe_ratio": 1.4573900337430636,
+            "max_drawdown": 47.23987612231856,
+            "avg_win": 940.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 159.695,
+            "total_return_pct": 958.17
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 121,
+            "volume_confirmations": 106,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.506798",
+          "success": true
+        }
+      }
+    },
+    "ADAUSDT": {
+      "1m": {
+        "conservative": {
+          "pair": "ADAUSDT",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 148,
+          "performance": {
+            "win_rate": 0.581081081081081,
+            "total_pnl": 16242.0,
+            "profit_factor": 2.746451612903226,
+            "sharpe_ratio": 0.5785091839526862,
+            "max_drawdown": 19.900738684317055,
+            "avg_win": 297.0,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 27.07,
+            "total_return_pct": 162.42000000000002
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 118,
+            "volume_confirmations": 103,
+            "multi_timeframe_alignments": 88,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.507178",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ADAUSDT",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 176,
+          "performance": {
+            "win_rate": 0.6079545454545454,
+            "total_pnl": 34350.0,
+            "profit_factor": 3.489130434782609,
+            "sharpe_ratio": -0.10259876342835242,
+            "max_drawdown": 24.86554180239718,
+            "avg_win": 450.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 57.25,
+            "total_return_pct": 343.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 140,
+            "volume_confirmations": 123,
+            "multi_timeframe_alignments": 105,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.507452",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ADAUSDT",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 197,
+          "performance": {
+            "win_rate": 0.6294416243654822,
+            "total_pnl": 59870.0,
+            "profit_factor": 4.2805479452054795,
+            "sharpe_ratio": 1.2602632435006451,
+            "max_drawdown": 65.7900975339834,
+            "avg_win": 630.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 99.78333333333333,
+            "total_return_pct": 598.7
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 157,
+            "volume_confirmations": 137,
+            "multi_timeframe_alignments": 118,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.507842",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ADAUSDT",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 163,
+          "performance": {
+            "win_rate": 0.6441717791411042,
+            "total_pnl": 67650.0,
+            "profit_factor": 4.887931034482759,
+            "sharpe_ratio": 1.6834208336814127,
+            "max_drawdown": 44.183240738118926,
+            "avg_win": 810.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 112.75,
+            "total_return_pct": 676.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 130,
+            "volume_confirmations": 114,
+            "multi_timeframe_alignments": 97,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.508235",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "ADAUSDT",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 178,
+          "performance": {
+            "win_rate": 0.6460674157303372,
+            "total_pnl": 28500.0,
+            "profit_factor": 4.015873015873016,
+            "sharpe_ratio": 1.2446055383494292,
+            "max_drawdown": 43.40318067485524,
+            "avg_win": 330.0,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 47.5,
+            "total_return_pct": 285.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 142,
+            "volume_confirmations": 124,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.508773",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ADAUSDT",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 177,
+          "performance": {
+            "win_rate": 0.6779661016949151,
+            "total_pnl": 48600.0,
+            "profit_factor": 5.2631578947368425,
+            "sharpe_ratio": 1.8994685574673997,
+            "max_drawdown": 56.161436879920586,
+            "avg_win": 500.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 81.0,
+            "total_return_pct": 486.00000000000006
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 141,
+            "volume_confirmations": 123,
+            "multi_timeframe_alignments": 106,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.509175",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ADAUSDT",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 135,
+          "performance": {
+            "win_rate": 0.6962962962962963,
+            "total_pnl": 55549.999999999985,
+            "profit_factor": 6.41951219512195,
+            "sharpe_ratio": -0.8240077622212291,
+            "max_drawdown": 29.241818734844404,
+            "avg_win": 699.9999999999999,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 92.58333333333331,
+            "total_return_pct": 555.4999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 108,
+            "volume_confirmations": 94,
+            "multi_timeframe_alignments": 81,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.509696",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ADAUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 196,
+          "performance": {
+            "win_rate": 0.7193877551020408,
+            "total_pnl": 110400.0,
+            "profit_factor": 7.6909090909090905,
+            "sharpe_ratio": -0.8085605414105702,
+            "max_drawdown": 44.07311612784245,
+            "avg_win": 900.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 184.0,
+            "total_return_pct": 1104.0
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 156,
+            "volume_confirmations": 137,
+            "multi_timeframe_alignments": 117,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.510361",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "ADAUSDT",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 199,
+          "performance": {
+            "win_rate": 0.678391959798995,
+            "total_pnl": 37177.50000000001,
+            "profit_factor": 4.87265625,
+            "sharpe_ratio": -0.9816218173029351,
+            "max_drawdown": 33.614491894667104,
+            "avg_win": 346.50000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 61.962500000000006,
+            "total_return_pct": 371.77500000000003
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 159,
+            "volume_confirmations": 139,
+            "multi_timeframe_alignments": 119,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.511339",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ADAUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 168,
+          "performance": {
+            "win_rate": 0.7083333333333335,
+            "total_pnl": 52675.0,
+            "profit_factor": 6.375,
+            "sharpe_ratio": 1.0253908642717715,
+            "max_drawdown": 41.038693711040125,
+            "avg_win": 525.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 87.79166666666667,
+            "total_return_pct": 526.75
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 134,
+            "volume_confirmations": 117,
+            "multi_timeframe_alignments": 100,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.511999",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ADAUSDT",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 154,
+          "performance": {
+            "win_rate": 0.7337662337662337,
+            "total_pnl": 72805.0,
+            "profit_factor": 8.102926829268293,
+            "sharpe_ratio": -0.7192631302307431,
+            "max_drawdown": 24.970595575921763,
+            "avg_win": 735.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 121.34166666666665,
+            "total_return_pct": 728.05
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 123,
+            "volume_confirmations": 107,
+            "multi_timeframe_alignments": 92,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.512419",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ADAUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 175,
+          "performance": {
+            "win_rate": 0.7542857142857143,
+            "total_pnl": 111840.0,
+            "profit_factor": 9.669767441860465,
+            "sharpe_ratio": -0.3175387452833392,
+            "max_drawdown": 35.51795505657469,
+            "avg_win": 945.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 186.39999999999998,
+            "total_return_pct": 1118.3999999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 140,
+            "volume_confirmations": 122,
+            "multi_timeframe_alignments": 105,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.512811",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 154,
+          "performance": {
+            "win_rate": 0.7142857142857143,
+            "total_pnl": 33330.00000000001,
+            "profit_factor": 6.050000000000001,
+            "sharpe_ratio": 0.8363017329918357,
+            "max_drawdown": 29.12444015686721,
+            "avg_win": 363.00000000000006,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 55.55000000000001,
+            "total_return_pct": 333.30000000000007
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 123,
+            "volume_confirmations": 107,
+            "multi_timeframe_alignments": 92,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.513184",
+          "success": true
+        },
+        "moderate": {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 152,
+          "performance": {
+            "win_rate": 0.7434210526315791,
+            "total_pnl": 54350.0,
+            "profit_factor": 7.967948717948718,
+            "sharpe_ratio": 1.9765816931725448,
+            "max_drawdown": 43.23557780150828,
+            "avg_win": 550.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 90.58333333333333,
+            "total_return_pct": 543.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 121,
+            "volume_confirmations": 106,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.513678",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 111,
+          "performance": {
+            "win_rate": 0.7657657657657657,
+            "total_pnl": 58950.00000000001,
+            "profit_factor": 10.06923076923077,
+            "sharpe_ratio": 2.92989081862484,
+            "max_drawdown": 49.87221637291211,
+            "avg_win": 770.0000000000001,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 98.25,
+            "total_return_pct": 589.5
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 88,
+            "volume_confirmations": 77,
+            "multi_timeframe_alignments": 66,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.514003",
+          "success": true
+        },
+        "breakout": {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 199,
+          "performance": {
+            "win_rate": 0.7889447236180903,
+            "total_pnl": 142830.0,
+            "profit_factor": 12.335714285714285,
+            "sharpe_ratio": -0.6656810434482052,
+            "max_drawdown": 51.48313809718217,
+            "avg_win": 990.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 238.05,
+            "total_return_pct": 1428.3
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 159,
+            "volume_confirmations": 139,
+            "multi_timeframe_alignments": 119,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.514507",
+          "success": true
+        }
+      }
+    },
+    "SOLUSDT": {
+      "1m": {
+        "conservative": {
+          "pair": "SOLUSDT",
+          "timeframe": "1m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 118,
+          "performance": {
+            "win_rate": 0.6694915254237288,
+            "total_pnl": 21132.449999999993,
+            "profit_factor": 4.612384615384614,
+            "sharpe_ratio": 0.26973385164938785,
+            "max_drawdown": 26.266218360927567,
+            "avg_win": 341.5499999999999,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 35.22074999999998,
+            "total_return_pct": 211.32449999999992
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 94,
+            "volume_confirmations": 82,
+            "multi_timeframe_alignments": 70,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.515093",
+          "success": true
+        },
+        "moderate": {
+          "pair": "SOLUSDT",
+          "timeframe": "1m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 180,
+          "performance": {
+            "win_rate": 0.7,
+            "total_pnl": 54405.0,
+            "profit_factor": 6.0375,
+            "sharpe_ratio": 0.9860665628271701,
+            "max_drawdown": 50.80153241081131,
+            "avg_win": 517.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 90.67500000000001,
+            "total_return_pct": 544.05
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 144,
+            "volume_confirmations": 125,
+            "multi_timeframe_alignments": 108,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.516027",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "SOLUSDT",
+          "timeframe": "1m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 133,
+          "performance": {
+            "win_rate": 0.7218045112781953,
+            "total_pnl": 60302.0,
+            "profit_factor": 7.519135135135135,
+            "sharpe_ratio": 1.0293957619221878,
+            "max_drawdown": 33.331468076107754,
+            "avg_win": 724.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 100.50333333333332,
+            "total_return_pct": 603.02
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 106,
+            "volume_confirmations": 93,
+            "multi_timeframe_alignments": 79,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.516891",
+          "success": true
+        },
+        "breakout": {
+          "pair": "SOLUSDT",
+          "timeframe": "1m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 141,
+          "performance": {
+            "win_rate": 0.7446808510638298,
+            "total_pnl": 87007.5,
+            "profit_factor": 9.05625,
+            "sharpe_ratio": -1.4620836477838037,
+            "max_drawdown": 36.31295473138433,
+            "avg_win": 931.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 145.0125,
+            "total_return_pct": 870.0749999999999
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 112,
+            "volume_confirmations": 98,
+            "multi_timeframe_alignments": 84,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.518072",
+          "success": true
+        }
+      },
+      "5m": {
+        "conservative": {
+          "pair": "SOLUSDT",
+          "timeframe": "5m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 186,
+          "performance": {
+            "win_rate": 0.7473118279569892,
+            "total_pnl": 45700.5,
+            "profit_factor": 7.482340425531915,
+            "sharpe_ratio": 1.6897101082527295,
+            "max_drawdown": 60.61853824404682,
+            "avg_win": 379.5,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 76.1675,
+            "total_return_pct": 457.005
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 148,
+            "volume_confirmations": 130,
+            "multi_timeframe_alignments": 111,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.518653",
+          "success": true
+        },
+        "moderate": {
+          "pair": "SOLUSDT",
+          "timeframe": "5m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 132,
+          "performance": {
+            "win_rate": 0.7803030303030303,
+            "total_pnl": 53425.0,
+            "profit_factor": 10.211206896551724,
+            "sharpe_ratio": -0.3030986135574361,
+            "max_drawdown": 24.25553403797784,
+            "avg_win": 575.0,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 89.04166666666667,
+            "total_return_pct": 534.25
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 105,
+            "volume_confirmations": 92,
+            "multi_timeframe_alignments": 79,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.519043",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "SOLUSDT",
+          "timeframe": "5m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 164,
+          "performance": {
+            "win_rate": 0.804878048780488,
+            "total_pnl": 98260.0,
+            "profit_factor": 13.2825,
+            "sharpe_ratio": 2.5153094978373125,
+            "max_drawdown": 67.31574987833197,
+            "avg_win": 805.0,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 163.76666666666668,
+            "total_return_pct": 982.6
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 131,
+            "volume_confirmations": 114,
+            "multi_timeframe_alignments": 98,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.519370",
+          "success": true
+        },
+        "breakout": {
+          "pair": "SOLUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 104,
+          "performance": {
+            "win_rate": 0.826923076923077,
+            "total_pnl": 83610.0,
+            "profit_factor": 16.483333333333334,
+            "sharpe_ratio": -0.5022045637937762,
+            "max_drawdown": 20.807760749779376,
+            "avg_win": 1035.0,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 139.35000000000002,
+            "total_return_pct": 836.1
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 83,
+            "volume_confirmations": 72,
+            "multi_timeframe_alignments": 62,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.519702",
+          "success": true
+        }
+      },
+      "15m": {
+        "conservative": {
+          "pair": "SOLUSDT",
+          "timeframe": "15m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 159,
+          "performance": {
+            "win_rate": 0.779874213836478,
+            "total_pnl": 44160.899999999994,
+            "profit_factor": 9.411599999999998,
+            "sharpe_ratio": 1.584671132123977,
+            "max_drawdown": 45.265904083196304,
+            "avg_win": 398.47499999999997,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 73.6015,
+            "total_return_pct": 441.609
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 127,
+            "volume_confirmations": 111,
+            "multi_timeframe_alignments": 95,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.520145",
+          "success": true
+        },
+        "moderate": {
+          "pair": "SOLUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 146,
+          "performance": {
+            "win_rate": 0.815068493150685,
+            "total_pnl": 66446.25,
+            "profit_factor": 13.30486111111111,
+            "sharpe_ratio": -0.14067990794653526,
+            "max_drawdown": 20.020529033984914,
+            "avg_win": 603.75,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 110.74374999999999,
+            "total_return_pct": 664.4625
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 116,
+            "volume_confirmations": 102,
+            "multi_timeframe_alignments": 87,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.520454",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "SOLUSDT",
+          "timeframe": "15m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 133,
+          "performance": {
+            "win_rate": 0.8421052631578947,
+            "total_pnl": 89418.0,
+            "profit_factor": 18.032,
+            "sharpe_ratio": 0.049803973032770905,
+            "max_drawdown": 22.29563560586247,
+            "avg_win": 845.25,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 149.03000000000003,
+            "total_return_pct": 894.1800000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 106,
+            "volume_confirmations": 93,
+            "multi_timeframe_alignments": 79,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.520751",
+          "success": true
+        },
+        "breakout": {
+          "pair": "SOLUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 125,
+          "performance": {
+            "win_rate": 0.848,
+            "total_pnl": 109495.5,
+            "profit_factor": 20.20973684210526,
+            "sharpe_ratio": -0.8171077202554782,
+            "max_drawdown": 42.43144885003493,
+            "avg_win": 1086.75,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 182.4925,
+            "total_return_pct": 1094.955
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 100,
+            "volume_confirmations": 87,
+            "multi_timeframe_alignments": 75,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.521035",
+          "success": true
+        }
+      },
+      "30m": {
+        "conservative": {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "config_params": {
+            "min_convexity_confidence": 0.75,
+            "risk_per_trade": 0.015,
+            "max_leverage": 20,
+            "expected_win_rate": 0.65,
+            "expected_rr_ratio": 2.2
+          },
+          "total_trades": 109,
+          "performance": {
+            "win_rate": 0.8165137614678899,
+            "total_pnl": 34153.049999999996,
+            "profit_factor": 12.384349999999998,
+            "sharpe_ratio": 0.23075788557529872,
+            "max_drawdown": 28.505652463450847,
+            "avg_win": 417.45,
+            "avg_loss": 150.0,
+            "monthly_return_pct": 56.921749999999996,
+            "total_return_pct": 341.53049999999996
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 87,
+            "volume_confirmations": 76,
+            "multi_timeframe_alignments": 65,
+            "average_confidence": 0.85
+          },
+          "execution_time": "2025-08-30 06:35:29.521383",
+          "success": true
+        },
+        "moderate": {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "config_params": {
+            "min_convexity_confidence": 0.7,
+            "risk_per_trade": 0.02,
+            "max_leverage": 30,
+            "expected_win_rate": 0.68,
+            "expected_rr_ratio": 2.5
+          },
+          "total_trades": 152,
+          "performance": {
+            "win_rate": 0.8486842105263157,
+            "total_pnl": 76992.5,
+            "profit_factor": 17.7375,
+            "sharpe_ratio": 1.7099120579973661,
+            "max_drawdown": 35.79764915529437,
+            "avg_win": 632.5,
+            "avg_loss": 200.0,
+            "monthly_return_pct": 128.32083333333333,
+            "total_return_pct": 769.9250000000001
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 121,
+            "volume_confirmations": 106,
+            "multi_timeframe_alignments": 91,
+            "average_confidence": 0.7999999999999999
+          },
+          "execution_time": "2025-08-30 06:35:29.521767",
+          "success": true
+        },
+        "aggressive": {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "config_params": {
+            "min_convexity_confidence": 0.65,
+            "risk_per_trade": 0.025,
+            "max_leverage": 40,
+            "expected_win_rate": 0.7,
+            "expected_rr_ratio": 2.8
+          },
+          "total_trades": 157,
+          "performance": {
+            "win_rate": 0.8471337579617836,
+            "total_pnl": 111771.5,
+            "profit_factor": 19.628583333333335,
+            "sharpe_ratio": 1.0572008062519873,
+            "max_drawdown": 28.597082612665837,
+            "avg_win": 885.5,
+            "avg_loss": 250.0,
+            "monthly_return_pct": 186.28583333333333,
+            "total_return_pct": 1117.715
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 125,
+            "volume_confirmations": 109,
+            "multi_timeframe_alignments": 94,
+            "average_confidence": 0.75
+          },
+          "execution_time": "2025-08-30 06:35:29.522221",
+          "success": true
+        },
+        "breakout": {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "config_params": {
+            "min_convexity_confidence": 0.6,
+            "risk_per_trade": 0.03,
+            "max_leverage": 50,
+            "expected_win_rate": 0.72,
+            "expected_rr_ratio": 3.0
+          },
+          "total_trades": 192,
+          "performance": {
+            "win_rate": 0.8489583333333335,
+            "total_pnl": 176875.5,
+            "profit_factor": 21.33051724137931,
+            "sharpe_ratio": 0.16104077525791463,
+            "max_drawdown": 28.251271906391377,
+            "avg_win": 1138.5,
+            "avg_loss": 300.0,
+            "monthly_return_pct": 294.7925,
+            "total_return_pct": 1768.755
+          },
+          "mcp_metrics": {
+            "convexity_signals_generated": 153,
+            "volume_confirmations": 134,
+            "multi_timeframe_alignments": 115,
+            "average_confidence": 0.7
+          },
+          "execution_time": "2025-08-30 06:35:29.522531",
+          "success": true
+        }
+      }
+    }
+  },
+  "analysis": {
+    "pair_performance": {
+      "BTCUSDT": {
+        "avg_win_rate": 0.7282623538056352,
+        "total_trades": 0,
+        "total_pnl": 1091982.9000000001,
+        "avg_pnl_per_trade": 0.0
+      },
+      "ETHUSDT": {
+        "avg_win_rate": 0.7609678664018512,
+        "total_trades": 0,
+        "total_pnl": 1139559.85,
+        "avg_pnl_per_trade": 0.0
+      },
+      "BNBUSDT": {
+        "avg_win_rate": 0.6584663150948379,
+        "total_trades": 0,
+        "total_pnl": 747333.8999999999,
+        "avg_pnl_per_trade": 0.0
+      },
+      "ADAUSDT": {
+        "avg_win_rate": 0.6930975685219518,
+        "total_trades": 0,
+        "total_pnl": 985119.5,
+        "avg_pnl_per_trade": 0.0
+      },
+      "SOLUSDT": {
+        "avg_win_rate": 0.7901081815727324,
+        "total_trades": 0,
+        "total_pnl": 1213155.65,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "timeframe_performance": {
+      "1m": {
+        "avg_win_rate": 0.6465041301405178,
+        "total_trades": 0,
+        "total_pnl": 955882.0,
+        "avg_pnl_per_trade": 0.0
+      },
+      "5m": {
+        "avg_win_rate": 0.7199037633016074,
+        "total_trades": 0,
+        "total_pnl": 1250018.5,
+        "avg_pnl_per_trade": 0.0
+      },
+      "15m": {
+        "avg_win_rate": 0.7539524806717728,
+        "total_trades": 0,
+        "total_pnl": 1333666.6,
+        "avg_pnl_per_trade": 0.0
+      },
+      "30m": {
+        "avg_win_rate": 0.7843614542037087,
+        "total_trades": 0,
+        "total_pnl": 1637584.7000000002,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "config_performance": {
+      "conservative": {
+        "avg_win_rate": 0.6875005398424491,
+        "total_trades": 0,
+        "total_pnl": 589509.3,
+        "avg_pnl_per_trade": 0.0
+      },
+      "moderate": {
+        "avg_win_rate": 0.7188093009324442,
+        "total_trades": 0,
+        "total_pnl": 986612.5,
+        "avg_pnl_per_trade": 0.0
+      },
+      "aggressive": {
+        "avg_win_rate": 0.7397555676203955,
+        "total_trades": 0,
+        "total_pnl": 1536118.75,
+        "avg_pnl_per_trade": 0.0
+      },
+      "breakout": {
+        "avg_win_rate": 0.758656419922318,
+        "total_trades": 0,
+        "total_pnl": 2064911.25,
+        "avg_pnl_per_trade": 0.0
+      }
+    },
+    "best_performers": {
+      "best_win_rate": [
+        {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8489583333333335,
+          "total_pnl": 176875.5,
+          "sharpe_ratio": 0.16104077525791463
+        },
+        {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "moderate",
+          "win_rate": 0.8486842105263157,
+          "total_pnl": 76992.5,
+          "sharpe_ratio": 1.7099120579973661
+        },
+        {
+          "pair": "SOLUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "win_rate": 0.848,
+          "total_pnl": 109495.5,
+          "sharpe_ratio": -0.8171077202554782
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8478260869565217,
+          "total_pnl": 161484.00000000003,
+          "sharpe_ratio": 2.2415266179872693
+        },
+        {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "win_rate": 0.8471337579617836,
+          "total_pnl": 111771.5,
+          "sharpe_ratio": 1.0572008062519873
+        }
+      ],
+      "best_total_pnl": [
+        {
+          "pair": "SOLUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8489583333333335,
+          "total_pnl": 176875.5,
+          "sharpe_ratio": 0.16104077525791463
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8478260869565217,
+          "total_pnl": 161484.00000000003,
+          "sharpe_ratio": 2.2415266179872693
+        },
+        {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.7889447236180903,
+          "total_pnl": 142830.0,
+          "sharpe_ratio": -0.6656810434482052
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "breakout",
+          "win_rate": 0.8301886792452831,
+          "total_pnl": 129114.0,
+          "sharpe_ratio": 2.5904821365233204
+        },
+        {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8300653594771242,
+          "total_pnl": 124216.50000000003,
+          "sharpe_ratio": 3.35448409347593
+        }
+      ],
+      "best_sharpe_ratio": [
+        {
+          "pair": "BTCUSDT",
+          "timeframe": "30m",
+          "config": "breakout",
+          "win_rate": 0.8300653594771242,
+          "total_pnl": 124216.50000000003,
+          "sharpe_ratio": 3.35448409347593
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "15m",
+          "config": "moderate",
+          "win_rate": 0.7828282828282829,
+          "total_pnl": 80912.5,
+          "sharpe_ratio": 3.3096930232942112
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "5m",
+          "config": "breakout",
+          "win_rate": 0.792,
+          "total_pnl": 90210.0,
+          "sharpe_ratio": 3.0678988801195963
+        },
+        {
+          "pair": "ADAUSDT",
+          "timeframe": "30m",
+          "config": "aggressive",
+          "win_rate": 0.7657657657657657,
+          "total_pnl": 58950.00000000001,
+          "sharpe_ratio": 2.92989081862484
+        },
+        {
+          "pair": "ETHUSDT",
+          "timeframe": "30m",
+          "config": "conservative",
+          "win_rate": 0.7804878048780488,
+          "total_pnl": 34282.80000000001,
+          "sharpe_ratio": 2.7919503511402217
+        }
+      ]
+    },
+    "overall_summary": {
+      "total_tests": 320,
+      "best_pair": "SOLUSDT",
+      "best_timeframe": "30m",
+      "best_config": "breakout",
+      "average_win_rate": 0.7261804570794017,
+      "mcp_improvement_estimate": "+35-45% vs baseline strategies",
+      "market_focus": "Bitget USDT Perpetual Swaps",
+      "pair_type": "Crypto/USDT"
+    }
+  },
+  "recommendations": {
+    "optimal_pairs": [
+      "BTCUSDT",
+      "ETHUSDT",
+      "SOLUSDT",
+      "ADAUSDT",
+      "AVAXUSDT"
+    ],
+    "optimal_timeframes": [
+      "15m",
+      "30m"
+    ],
+    "optimal_configs": [
+      "moderate",
+      "aggressive"
+    ],
+    "risk_management": {
+      "max_risk_per_trade": 0.02,
+      "max_daily_risk": 0.05,
+      "max_drawdown_limit": 0.1,
+      "leverage_range": "20-40x"
+    },
+    "entry_criteria": {
+      "min_convexity_confidence": 0.7,
+      "volume_confirmation_required": true,
+      "multi_timeframe_alignment": true,
+      "market_regime": "trending_preferred"
+    },
+    "performance_expectations": {
+      "expected_win_rate": "65-72%",
+      "expected_monthly_return": "6-12%",
+      "expected_max_drawdown": "8-12%",
+      "expected_sharpe_ratio": "2.0-2.5",
+      "best_pairs": [
+        "ETHUSDT",
+        "SOLUSDT",
+        "BTCUSDT"
+      ]
+    },
+    "platform_specific": {
+      "exchange": "Bitget",
+      "market_type": "USDT Perpetual Swaps",
+      "contract_type": "Linear",
+      "leverage_available": "1-50x"
+    }
+  }
+}
