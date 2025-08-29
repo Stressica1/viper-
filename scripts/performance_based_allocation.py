@@ -233,7 +233,8 @@ class PerformanceBasedAllocator:
         print("• Top performer gets maximum allocation (up to $12.00)")
         print("• Second best gets medium allocation (up to $9.00)")
         print("• Third best gets smaller allocation (up to $6.00)")
-        print("• Remaining strategies get minimum allocation ($0.50+)"        print("• Focus on Sharpe ratio, win rate, and risk-adjusted returns")
+        print("• Remaining strategies get minimum allocation ($0.50+)")
+        print("• Focus on Sharpe ratio, win rate, and risk-adjusted returns")
 
     def export_allocation_report(self, result: AllocationResult) -> str:
         """Export allocation results to file"""
@@ -302,10 +303,9 @@ def main():
             report_path = allocator.export_allocation_report(result)
             print(f"\n📄 Allocation report saved: {report_path}")
 
-        print("
-✅ Performance-based allocation optimization completed!")
+        print("\n✅ Performance-based allocation optimization completed!")
         print(f"💰 Portfolio: ${allocator.portfolio_value:.2f}")
-        print("🎯 Capital allocated based on strategy performance metrics"
+        print("🎯 Capital allocated based on strategy performance metrics")
     else:
         print("🎯 VIPER Performance-Based Allocation System")
         print("=" * 50)

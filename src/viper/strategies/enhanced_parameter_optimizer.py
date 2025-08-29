@@ -568,7 +568,8 @@ def main():
     )
 
     if result:
-        print("✅ Optimization completed!"        print(".4f"        print(f"🔧 Optimized {len(result.parameters)} parameters")
+        print("✅ Optimization completed!")
+        print(f"🔧 Optimized {len(result.parameters)} parameters")
         print(f"📊 Key Metrics:")
         for key, value in result.metrics.items():
             print(f"   {key}: {value:.4f}")
