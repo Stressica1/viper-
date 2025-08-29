@@ -63,6 +63,23 @@ class SimpleVIPERTrader:
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '2.5'))
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '1.5'))
         self.max_positions = int(os.getenv('MAX_POSITIONS', '5'))
+        
+        # Mock data configuration for testing
+        self.use_mock_data = os.getenv('USE_MOCK_DATA', 'false').lower() == 'true'
+        self.mock_data_seed = int(os.getenv('MOCK_DATA_SEED', '42'))
+        self.test_mode = os.getenv('TEST_MODE', 'false').lower() == 'true'
+        self.debug_mode = os.getenv('DEBUG', 'false').lower() == 'true'
+        
+        # Set logging level based on debug mode
+        if self.debug_mode:
+            logger.setLevel(logging.DEBUG)
+            logger.debug("# Debug Debug mode enabled - verbose logging activated")
+        
+        # Initialize random seed for consistent mock data
+        if self.use_mock_data:
+            import random
+            random.seed(self.mock_data_seed)
+            logger.info(f"# Warning Using mock data with seed: {self.mock_data_seed}")
 
         # ALL AVAILABLE TRADING PAIRS (will be filtered by leverage)
         self.all_symbols = [
