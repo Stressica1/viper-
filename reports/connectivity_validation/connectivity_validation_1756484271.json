@@ -1,0 +1,265 @@
+{
+  "validation_summary": {
+    "timestamp": "2025-08-29T16:17:50.961534",
+    "duration_seconds": 0.114646,
+    "total_services": 25,
+    "reachable_services": 0,
+    "unreachable_services": 25
+  },
+  "docker_status": {
+    "docker_available": true,
+    "compose_available": true,
+    "services_running": [],
+    "services_stopped": [],
+    "total_services": 0
+  },
+  "environment_status": {
+    "env_file_exists": true,
+    "required_vars_present": [
+      "BITGET_API_KEY",
+      "BITGET_API_SECRET",
+      "BITGET_API_PASSWORD",
+      "REDIS_URL"
+    ],
+    "missing_vars": [
+      "GITHUB_TOKEN"
+    ],
+    "port_conflicts": []
+  },
+  "connectivity_results": [
+    {
+      "service_name": "api-server",
+      "endpoint_url": "http://localhost:8000/health",
+      "is_reachable": false,
+      "response_time_ms": 14.598608016967773,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8000 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8000, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8000)]",
+      "timestamp": "2025-08-29T16:17:51.075346"
+    },
+    {
+      "service_name": "ultra-backtester",
+      "endpoint_url": "http://localhost:8001/health",
+      "is_reachable": false,
+      "response_time_ms": 13.396978378295898,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8001 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8001, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8001)]",
+      "timestamp": "2025-08-29T16:17:51.075366"
+    },
+    {
+      "service_name": "risk-manager",
+      "endpoint_url": "http://localhost:8002/health",
+      "is_reachable": false,
+      "response_time_ms": 13.14234733581543,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8002 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8002, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8002)]",
+      "timestamp": "2025-08-29T16:17:51.075375"
+    },
+    {
+      "service_name": "market-data-manager",
+      "endpoint_url": "http://localhost:8003/health",
+      "is_reachable": false,
+      "response_time_ms": 12.933015823364258,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8003 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8003, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8003)]",
+      "timestamp": "2025-08-29T16:17:51.075382"
+    },
+    {
+      "service_name": "strategy-optimizer",
+      "endpoint_url": "http://localhost:8004/health",
+      "is_reachable": false,
+      "response_time_ms": 12.731313705444336,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8004 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8004, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8004)]",
+      "timestamp": "2025-08-29T16:17:51.075388"
+    },
+    {
+      "service_name": "exchange-connector",
+      "endpoint_url": "http://localhost:8005/health",
+      "is_reachable": false,
+      "response_time_ms": 12.512445449829102,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8005 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8005, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8005)]",
+      "timestamp": "2025-08-29T16:17:51.075394"
+    },
+    {
+      "service_name": "monitoring-service",
+      "endpoint_url": "http://localhost:8006/health",
+      "is_reachable": false,
+      "response_time_ms": 12.324810028076172,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8006 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8006, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8006)]",
+      "timestamp": "2025-08-29T16:17:51.075400"
+    },
+    {
+      "service_name": "live-trading-engine",
+      "endpoint_url": "http://localhost:8007/health",
+      "is_reachable": false,
+      "response_time_ms": 12.139320373535156,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8007 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8007, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8007)]",
+      "timestamp": "2025-08-29T16:17:51.075405"
+    },
+    {
+      "service_name": "centralized-logger",
+      "endpoint_url": "http://localhost:8008/health",
+      "is_reachable": false,
+      "response_time_ms": 11.876821517944336,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8008 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8008, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8008)]",
+      "timestamp": "2025-08-29T16:17:51.075410"
+    },
+    {
+      "service_name": "viper-scoring-service",
+      "endpoint_url": "http://localhost:8009/health",
+      "is_reachable": false,
+      "response_time_ms": 11.665582656860352,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8009 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8009, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8009)]",
+      "timestamp": "2025-08-29T16:17:51.075416"
+    },
+    {
+      "service_name": "position-synchronizer",
+      "endpoint_url": "http://localhost:8010/health",
+      "is_reachable": false,
+      "response_time_ms": 11.474370956420898,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8010 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8010, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8010)]",
+      "timestamp": "2025-08-29T16:17:51.075421"
+    },
+    {
+      "service_name": "unified-scanner",
+      "endpoint_url": "http://localhost:8011/health",
+      "is_reachable": false,
+      "response_time_ms": 11.285781860351562,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8011 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8011, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8011)]",
+      "timestamp": "2025-08-29T16:17:51.075426"
+    },
+    {
+      "service_name": "signal-processor",
+      "endpoint_url": "http://localhost:8012/health",
+      "is_reachable": false,
+      "response_time_ms": 11.099100112915039,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8012 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8012, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8012)]",
+      "timestamp": "2025-08-29T16:17:51.075431"
+    },
+    {
+      "service_name": "task-scheduler",
+      "endpoint_url": "http://localhost:8013/health",
+      "is_reachable": false,
+      "response_time_ms": 10.923147201538086,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8013 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8013, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8013)]",
+      "timestamp": "2025-08-29T16:17:51.075440"
+    },
+    {
+      "service_name": "alert-system",
+      "endpoint_url": "http://localhost:8014/health",
+      "is_reachable": false,
+      "response_time_ms": 10.742664337158203,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8014 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8014, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8014)]",
+      "timestamp": "2025-08-29T16:17:51.075445"
+    },
+    {
+      "service_name": "mcp-server",
+      "endpoint_url": "http://localhost:8015/health",
+      "is_reachable": false,
+      "response_time_ms": 10.480880737304688,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8015 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8015, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8015)]",
+      "timestamp": "2025-08-29T16:17:51.075450"
+    },
+    {
+      "service_name": "github-manager",
+      "endpoint_url": "http://localhost:8016/health",
+      "is_reachable": false,
+      "response_time_ms": 10.299921035766602,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8016 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8016, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8016)]",
+      "timestamp": "2025-08-29T16:17:51.075455"
+    },
+    {
+      "service_name": "workflow-monitor",
+      "endpoint_url": "http://localhost:8017/health",
+      "is_reachable": false,
+      "response_time_ms": 10.119199752807617,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8017 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8017, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8017)]",
+      "timestamp": "2025-08-29T16:17:51.075460"
+    },
+    {
+      "service_name": "event-system",
+      "endpoint_url": "http://localhost:8018/health",
+      "is_reachable": false,
+      "response_time_ms": 9.938716888427734,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8018 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8018, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8018)]",
+      "timestamp": "2025-08-29T16:17:51.075465"
+    },
+    {
+      "service_name": "data-manager",
+      "endpoint_url": "http://localhost:8019/health",
+      "is_reachable": false,
+      "response_time_ms": 9.765863418579102,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8019 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8019, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8019)]",
+      "timestamp": "2025-08-29T16:17:51.075471"
+    },
+    {
+      "service_name": "config-manager",
+      "endpoint_url": "http://localhost:8020/health",
+      "is_reachable": false,
+      "response_time_ms": 9.548664093017578,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8020 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8020, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8020)]",
+      "timestamp": "2025-08-29T16:17:51.075476"
+    },
+    {
+      "service_name": "credential-vault",
+      "endpoint_url": "http://localhost:8021/health",
+      "is_reachable": false,
+      "response_time_ms": 9.308099746704102,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8021 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8021, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8021)]",
+      "timestamp": "2025-08-29T16:17:51.075481"
+    },
+    {
+      "service_name": "market-data-streamer",
+      "endpoint_url": "http://localhost:8022/health",
+      "is_reachable": false,
+      "response_time_ms": 9.118318557739258,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8022 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8022, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8022)]",
+      "timestamp": "2025-08-29T16:17:51.075486"
+    },
+    {
+      "service_name": "order-lifecycle-manager",
+      "endpoint_url": "http://localhost:8023/health",
+      "is_reachable": false,
+      "response_time_ms": 8.939981460571289,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8023 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8023, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8023)]",
+      "timestamp": "2025-08-29T16:17:51.075491"
+    },
+    {
+      "service_name": "trading-optimizer",
+      "endpoint_url": "http://localhost:8024/health",
+      "is_reachable": false,
+      "response_time_ms": 8.741617202758789,
+      "status_code": null,
+      "error_message": "Cannot connect to host localhost:8024 ssl:default [Multiple exceptions: [Errno 111] Connect call failed ('::1', 8024, 0, 0), [Errno 111] Connect call failed ('127.0.0.1', 8024)]",
+      "timestamp": "2025-08-29T16:17:51.075497"
+    }
+  ],
+  "generated_scripts": {
+    "startup_script": "/home/runner/work/viper-/viper-/scripts/start_all_microservices.sh",
+    "check_script": "/home/runner/work/viper-/viper-/scripts/check_services.sh"
+  },
+  "recommendations": [
+    "Start Docker containers using 'docker compose up -d'",
+    "Configure missing environment variables: GITHUB_TOKEN",
+    "Start unreachable services: api-server, ultra-backtester, risk-manager, market-data-manager, strategy-optimizer, exchange-connector, monitoring-service, live-trading-engine, centralized-logger, viper-scoring-service, position-synchronizer, unified-scanner, signal-processor, task-scheduler, alert-system, mcp-server, github-manager, workflow-monitor, event-system, data-manager, config-manager, credential-vault, market-data-streamer, order-lifecycle-manager, trading-optimizer"
+  ]
+}
