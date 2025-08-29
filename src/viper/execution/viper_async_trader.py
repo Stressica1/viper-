@@ -19,31 +19,44 @@ import secrets
 import time
 from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+
+# Configure logging first
+import logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # Import enhanced components with fallbacks
 try:
     from enhanced_system_integrator import get_integrator
     ENHANCED_TECHNICAL_AVAILABLE = True
     OPTIMIZED_DATA_AVAILABLE = True
     PERFORMANCE_MONITORING_AVAILABLE = True
+    
+    # Define fallback enums for compatibility
+    from enum import Enum
+    class TrendDirection(Enum):
+        STRONG_BULLISH = "STRONG_BULLISH"
+        BULLISH = "BULLISH"
+        NEUTRAL = "NEUTRAL"
+        BEARISH = "BEARISH"
+        STRONG_BEARISH = "STRONG_BEARISH"
+        
+    class TrendStrength(Enum):
+        VERY_WEAK = 1
+        WEAK = 2
+        MODERATE = 3
+        STRONG = 4
+        VERY_STRONG = 5
+        
 except ImportError as e:
     # Fallback to basic components
     logger.warning(f"# Warning Enhanced components not available: {e}")
     try:
-        from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
-        # Define fallback enums if not available
-        from enum import Enum
-
-        class TrendDirection(Enum):
-            UP = "up"
-            DOWN = "down"
-            SIDEWAYS = "sideways"
-
-        class TrendStrength(Enum):
-            WEAK = "weak"
-            MODERATE = "moderate"
-            STRONG = "strong"
-
+        from src.viper.core.advanced_trend_detector import AdvancedTrendDetector, TrendConfig, TrendDirection, TrendStrength
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
@@ -52,26 +65,22 @@ except ImportError as e:
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
         PERFORMANCE_MONITORING_AVAILABLE = False
-
-# Define basic enums for core functionality (always available)
-from enum import Enum
-
-class TrendDirection(Enum):
-    UP = "up"
-    DOWN = "down"
-    SIDEWAYS = "sideways"
-
-class TrendStrength(Enum):
-    WEAK = "weak"
-    MODERATE = "moderate"
-    STRONG = "strong"
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+        
+        # Define fallback enums
+        from enum import Enum
+        class TrendDirection(Enum):
+            STRONG_BULLISH = "STRONG_BULLISH"
+            BULLISH = "BULLISH"
+            NEUTRAL = "NEUTRAL"
+            BEARISH = "BEARISH"
+            STRONG_BEARISH = "STRONG_BEARISH"
+            
+        class TrendStrength(Enum):
+            VERY_WEAK = 1
+            WEAK = 2
+            MODERATE = 3
+            STRONG = 4
+            VERY_STRONG = 5
 
 @dataclass
 class TradingJob:
@@ -107,6 +116,11 @@ class ViperAsyncTrader:
         self.jobs: Dict[str, TradingJob] = {}
         self.active_positions: Dict[str, Dict] = {}
         self.running_tasks: Set[asyncio.Task] = set()
+        
+        # Trend detection components
+        self.trend_detector = None  # Will be initialized during connect_exchange
+        self.use_enhanced_technical = ENHANCED_TECHNICAL_AVAILABLE
+        self.enhanced_technical = None
         
         # Configuration
         self.api_key = os.getenv('BITGET_API_KEY', 'bg_d20a392139710bc38b8ab39e970114eb')
@@ -220,19 +234,23 @@ class ViperAsyncTrader:
 
     def _initialize_basic_trend_detector(self):
         """Initialize basic trend detector as fallback"""
-        from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
+        try:
+            from src.viper.core.advanced_trend_detector import AdvancedTrendDetector, TrendConfig
 
-        self.trend_config = TrendConfig(
-            fast_ma_length=int(os.getenv('FAST_MA_LENGTH', '21')),
-            slow_ma_length=int(os.getenv('SLOW_MA_LENGTH', '50')),
-            trend_ma_length=int(os.getenv('TREND_MA_LENGTH', '200')),
-            atr_length=int(os.getenv('ATR_LENGTH', '14')),
-            atr_multiplier=float(os.getenv('ATR_MULTIPLIER', '2.0')),
-            min_trend_bars=int(os.getenv('MIN_TREND_BARS', '5')),
-            trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
-        )
-        self.trend_detector = AdvancedTrendDetector(self.trend_config)
-        logger.info("# Chart Using basic trend detector (enhanced not available)")
+            self.trend_config = TrendConfig(
+                fast_ma_length=int(os.getenv('FAST_MA_LENGTH', '21')),
+                slow_ma_length=int(os.getenv('SLOW_MA_LENGTH', '50')),
+                trend_ma_length=int(os.getenv('TREND_MA_LENGTH', '200')),
+                atr_length=int(os.getenv('ATR_LENGTH', '14')),
+                atr_multiplier=float(os.getenv('ATR_MULTIPLIER', '2.0')),
+                min_trend_bars=int(os.getenv('MIN_TREND_BARS', '5')),
+                trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
+            )
+            self.trend_detector = AdvancedTrendDetector(self.trend_config)
+            logger.info("# Chart Using basic trend detector (enhanced not available)")
+        except ImportError as e:
+            logger.warning(f"# Warning Failed to initialize trend detector: {e}")
+            self.trend_detector = None
         
         logger.info("# Rocket VIPER ASYNC TRADER INITIALIZED")
         logger.info(f"💼 Max Concurrent Jobs: {self.max_concurrent_jobs}")
@@ -356,12 +374,16 @@ class ViperAsyncTrader:
             await self.exchange.load_markets()
             logger.info(f"# Check Connected to Bitget Pro - {len(self.exchange.markets)} markets")
             
-            # Initialize trend detector with same exchange
-            self.trend_detector.exchange = self.exchange
+            # Initialize trend detector with same exchange - enhanced for validation
+            if self.trend_detector:
+                self.trend_detector.exchange = self.exchange
+                logger.info(f"# Target Trend detector linked to exchange for enhanced validation")
+            else:
+                logger.warning(f"# Warning No trend detector available - using basic validation")
             
             # Get available pairs
             swap_pairs = [symbol for symbol, market in self.exchange.markets.items() 
-                         if market.get('type') == 'swap' and 'USDT' in symbol]:
+                         if market.get('type') == 'swap' and 'USDT' in symbol]
             logger.info(f"# Chart Found {len(swap_pairs)} USDT swap pairs")
             
             return True
@@ -372,7 +394,7 @@ class ViperAsyncTrader:
 
     def create_job(self, job_type: str, **kwargs) -> TradingJob:
         """Create a new trading job"""
-        job_id = f"{job_type}_{int(time.time() * 1000)}_{secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1000, 9999)}"
+        job_id = f"{job_type}_{int(time.time() * 1000)}_{secrets.randbelow(9000) + 1000}"  # Was: random.randint(1000, 9999)
         
         job = TradingJob(
             job_id=job_id,
@@ -590,6 +612,55 @@ class ViperAsyncTrader:
                 recommended_side = secrets.choice(['buy', 'sell'])
                 confidence *= 0.8  # Reduce confidence for random direction
             
+            # CRITICAL: Enhanced trend validation - ensure trade aligns with sound trend direction
+            is_trend_valid, trend_reason, trend_confidence = await self.validate_trade_with_trend_consensus(
+                symbol, recommended_side, trend_direction, trend_score
+            )
+            
+            if not is_trend_valid:
+                logger.warning(f"# Warning Trade rejected for {symbol}: {trend_reason}")
+                logger.info(f"   Would have been: {recommended_side} with score {enhanced_viper_score:.3f}")
+                return None  # Reject trade that doesn't align with trend
+            
+            # Use trend-validated confidence
+            confidence = min(trend_confidence, confidence)
+            
+            logger.info(f"# Check Trend validation passed for {symbol}: {trend_reason}")
+            
+            # ✨ ENHANCED ENTRY SIGNALS - Advanced entry point optimization
+            try:
+                from src.viper.core.enhanced_entry_signals import enhanced_entry_generator
+                
+                # Prepare market data for enhanced analysis
+                market_data = {
+                    'price': price,
+                    'volume': volume,
+                    'change_24h': change_24h,
+                    'symbol': symbol
+                }
+                
+                # Generate enhanced entry signal
+                enhanced_signal = await enhanced_entry_generator.analyze_enhanced_entry_opportunity(
+                    symbol, recommended_side, enhanced_viper_score, market_data
+                )
+                
+                if enhanced_signal:
+                    logger.info(f"   # 🎯 Enhanced entry signal found for {symbol}!")
+                    logger.info(f"      Quality: {enhanced_signal.quality.name} | Confidence: {enhanced_signal.confidence:.3f}")
+                    logger.info(f"      Entry: {enhanced_signal.entry_price:.6f} | R/R: {enhanced_signal.risk_reward_ratio:.2f}")
+                    
+                    # Use enhanced signal confidence and score
+                    enhanced_viper_score = enhanced_signal.score
+                    confidence = enhanced_signal.confidence
+                    
+                    # Store enhanced signal data for potential use
+                    enhanced_data = asdict(enhanced_signal)
+                else:
+                    logger.info(f"   # ⚠ Enhanced entry signal not generated for {symbol} - using base signal")
+                    
+            except Exception as e:
+                logger.warning(f"   # ⚠ Enhanced entry analysis failed for {symbol}: {e} - proceeding with base signal")
+            
             # Enhanced threshold with trend consideration
             min_score = 0.6 if trend_score >= 70 else 0.65
             
@@ -704,7 +775,7 @@ class ViperAsyncTrader:
             
             # Add some randomness to simulate real market microstructure
             import random
-import secrets
+            import secrets
             microstructure_factor = random.uniform(0.8, 1.2)
             base_score *= microstructure_factor
             
@@ -762,9 +833,9 @@ import secrets
 
         except Exception as e:
             logger.error(f"# X Error in advanced trend score calculation: {e}")
-            return 50.0, TrendDirection.NEUTRAL if not ENHANCED_TECHNICAL_AVAILABLE else EnhancedTrendDirection.NEUTRAL
+            return 50.0, TrendDirection.NEUTRAL
 
-    async def _calculate_enhanced_trend_score(self, symbol: str) -> Tuple[float, Optional[EnhancedTrendDirection]]:
+    async def _calculate_enhanced_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
         """Calculate trend score using enhanced technical optimizer"""
         try:
             # Get enhanced trend analysis
@@ -772,15 +843,15 @@ import secrets
 
             if not trend_analysis:
                 logger.warning(f"# Warning No enhanced trend analysis for {symbol}")
-                return 50.0, EnhancedTrendDirection.NEUTRAL
+                return 50.0, TrendDirection.NEUTRAL
 
             # Convert trend direction to score
             trend_direction_scores = {
-                EnhancedTrendDirection.STRONG_BULLISH: 95.0,
-                EnhancedTrendDirection.BULLISH: 75.0,
-                EnhancedTrendDirection.NEUTRAL: 50.0,
-                EnhancedTrendDirection.BEARISH: 25.0,
-                EnhancedTrendDirection.STRONG_BEARISH: 5.0
+                TrendDirection.STRONG_BULLISH: 95.0,
+                TrendDirection.BULLISH: 75.0,
+                TrendDirection.NEUTRAL: 50.0,
+                TrendDirection.BEARISH: 25.0,
+                TrendDirection.STRONG_BEARISH: 5.0
             }
 
             base_score = trend_direction_scores.get(trend_analysis.direction, 50.0)
@@ -800,7 +871,7 @@ import secrets
 
         except Exception as e:
             logger.error(f"# X Error in enhanced trend score calculation: {e}")
-            return 50.0, EnhancedTrendDirection.NEUTRAL
+            return 50.0, TrendDirection.NEUTRAL
 
     async def _calculate_basic_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
         """Calculate trend score using basic trend detector (fallback)"""
@@ -859,6 +930,65 @@ import secrets
         except Exception as e:
             logger.error(f"# X Error in basic trend score calculation: {e}")
             return 50.0, TrendDirection.NEUTRAL
+
+    async def validate_trade_with_trend_consensus(self, symbol: str, proposed_side: str, 
+                                                current_trend_direction: Optional[TrendDirection], 
+                                                trend_score: float) -> Tuple[bool, str, float]:
+        """
+        Validate if a proposed trade aligns with sound trend analysis using enhanced multi-timeframe consensus
+        
+        Args:
+            symbol: Trading symbol
+            proposed_side: 'buy' or 'sell' 
+            current_trend_direction: Current trend direction from trend analysis
+            trend_score: Current trend score (0-100)
+            
+        Returns:
+            Tuple of (is_valid, reason, confidence_score)
+        """
+        try:
+            # Use basic trend detector for validation (fallback-compatible)
+            if not hasattr(self, 'trend_detector') or not self.trend_detector:
+                # Create basic trend detector if not available
+                from src.viper.core.advanced_trend_detector import AdvancedTrendDetector
+                self.trend_detector = AdvancedTrendDetector()
+                await self.trend_detector.initialize_exchange()
+            
+            # Get enhanced multi-timeframe analysis
+            mtf_signals, has_sound_trend, trend_summary = await self.trend_detector.enhanced_multi_timeframe_analysis(symbol)
+            
+            if not has_sound_trend:
+                return False, f"Unsound trend detected - {trend_summary}", 0.0
+            
+            # Use the enhanced validation from trend detector
+            is_valid, reason, confidence = self.trend_detector.validate_trade_direction_with_trend(
+                symbol, proposed_side, mtf_signals
+            )
+            
+            # Additional validation: check trend score threshold
+            min_trend_score_for_trading = 60
+            if trend_score < min_trend_score_for_trading:
+                return False, f"Trend score too low ({trend_score:.1f} < {min_trend_score_for_trading})", confidence
+            
+            # Extra validation: ensure current trend direction aligns
+            if current_trend_direction and is_valid:
+                valid_bullish = [TrendDirection.STRONG_BULLISH, TrendDirection.BULLISH]
+                valid_bearish = [TrendDirection.STRONG_BEARISH, TrendDirection.BEARISH]
+                
+                if proposed_side == 'buy' and current_trend_direction not in valid_bullish and current_trend_direction != TrendDirection.NEUTRAL:
+                    return False, f"Current trend direction {current_trend_direction.value} conflicts with buy signal", confidence
+                elif proposed_side == 'sell' and current_trend_direction not in valid_bearish and current_trend_direction != TrendDirection.NEUTRAL:
+                    return False, f"Current trend direction {current_trend_direction.value} conflicts with sell signal", confidence
+            
+            logger.info(f"   # ✓ Enhanced trend validation: {reason} (Confidence: {confidence:.2f})")
+            logger.info(f"   # ✓ Multi-timeframe analysis: {trend_summary}")
+            
+            return is_valid, reason, confidence
+            
+        except Exception as e:
+            logger.error(f"# X Error in trade-trend validation for {symbol}: {e}")
+            # In case of validation error, be conservative and reject
+            return False, f"Validation system error: {str(e)}", 0.0
 
     async def execute_trade_job(self, symbol: str, side: str) -> Dict:
         """Execute a trade asynchronously with proper balance and position sizing"""
