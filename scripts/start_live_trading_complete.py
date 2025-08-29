@@ -318,7 +318,7 @@ class CompleteLiveTradingSystem:
 
     def run_automated_mode(self, duration_hours: int = None):
         """Run in automated mode for specified duration"""
-        print("🤖 Automated Mode Started"
+        print("🤖 Automated Mode Started")
         if duration_hours:
             print(f"Duration: {duration_hours} hours")
             end_time = datetime.now() + timedelta(hours=duration_hours)

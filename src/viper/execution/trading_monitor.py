@@ -678,8 +678,8 @@ def main():
         return
 
     # Start monitoring
-    print("
-📊 Starting monitoring..."    try:
+    print("\n📊 Starting monitoring...")
+    try:
         monitor.start_monitoring()
     except KeyboardInterrupt:
         print("\n🛑 Monitor stopped by user")
