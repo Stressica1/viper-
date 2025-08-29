@@ -18,9 +18,35 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 async def run_complete_live_system():
-    """Run the complete VIPER live trading system"""
+    """Run the complete VIPER live trading system with mandatory enforcement"""
     print("🚀 FINAL VIPER LIVE TRADING SYSTEM")
     print("=" * 60)
+    print("🔒 MANDATORY DOCKER & MCP ENFORCEMENT ACTIVE")
+    print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA")
+    print("=" * 60)
+    
+    # Enforce Docker and MCP requirements
+    try:
+        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+        
+        print("🔒 Enforcing Docker & MCP requirements...")
+        if not enforce_docker_mcp_requirements():
+            print("❌ Docker/MCP requirements not met")
+            sys.exit(1)
+        print("✅ Docker & MCP enforcement passed")
+        
+    except ImportError as e:
+        print(f"❌ Cannot import enforcement system: {e}")
+        sys.exit(1)
+    
+    # Validate live trading environment
+    from dotenv import load_dotenv
+    load_dotenv()
+    
+    if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+        print("❌ Mock data mode detected - not allowed")
+        sys.exit(1)
+    
     print("🎯 Complete Integration Status:")
     print("   ✅ Mathematical Validator - ACTIVE")
     print("   ✅ Optimal MCP Configuration - ACTIVE")
@@ -29,6 +55,8 @@ async def run_complete_live_system():
     print("   ✅ Enhanced Balance Fetching - ACTIVE")
     print("   ✅ Advanced TP/SL/TSL - ACTIVE")
     print("   ✅ Risk Management - ACTIVE")
+    print("   ✅ Docker Services - ENFORCED")
+    print("   ✅ MCP Server - ENFORCED")
     print("=" * 60)
 
     try:

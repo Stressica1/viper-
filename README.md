@@ -1,52 +1,150 @@
-# Viper
+# 🚀 VIPER Live Trading Bot - Docker & MCP Enforced System
 
-A Python project template and utility library.
+**⚠️ LIVE TRADING SYSTEM ONLY - NO MOCK DATA OR DEMO MODE**
 
-## Overview
+A high-performance automated trading system with mandatory Docker and MCP (Model Context Protocol) enforcement for live cryptocurrency trading.
 
-Viper is a lightweight utility library designed to provide common functionality and project structure for Python applications.
+## 🔒 System Requirements (MANDATORY)
 
-## Features
+**CRITICAL:** This system operates in LIVE TRADING mode only. All components require:
 
-- Configuration management
-- Utility functions
-- Project scaffolding
-- Easy setup and deployment
+- **Docker & Docker Compose** - Mandatory for all operations
+- **MCP Server** - Required for system coordination  
+- **Valid Bitget API credentials** - Real trading credentials only
+- **Redis** - For data caching and coordination
+- **GitHub PAT** - For MCP integration
 
-## Installation
+## 🚨 Live Trading Warning
+
+**THIS SYSTEM EXECUTES REAL TRADES WITH REAL MONEY**
+
+- No simulation or paper trading mode
+- All trades are executed on live markets
+- Losses can occur - use proper risk management
+- Ensure you understand the risks before running
+
+## 🚀 Quick Start
+
+### 1. Configure Environment
 
 ```bash
-# Clone the repository
-git clone https://github.com/Stressica1/viper-.git
-cd viper-
+# Copy environment template
+cp .env.example .env
 
-# Install dependencies (when available)
-pip install -r requirements.txt
+# Edit .env with your REAL credentials
+# CRITICAL: Use real Bitget API credentials, not placeholders
 ```
 
-## Usage
+### 2. Start with Mandatory Enforcement
 
-```python
-# Basic usage example
-from viper import config
-
-# Load configuration
-settings = config.load('config.yaml')
+```bash
+# Start the system with full enforcement
+python start_live_trading_mandatory.py
 ```
 
-## Project Structure
+Or use Docker directly:
 
-```
-viper-/
-├── README.md          # This file
-├── requirements.txt   # Python dependencies (to be added)
-├── viper/            # Main package (to be created)
-│   └── __init__.py
-└── tests/            # Test files (to be created)
-    └── test_viper.py
+```bash
+# Start Docker services
+docker compose up -d
+
+# Verify MCP server is running
+curl http://localhost:8015/health
+
+# Start live trading
+python final_live_trading_launcher.py
 ```
 
-## Development
+## 🔧 System Architecture
+
+The system uses a microservices architecture with Docker enforcement:
+
+- **MCP Server** (Port 8015) - System coordination
+- **Live Trading Engine** (Port 8007) - Trade execution
+- **Risk Manager** (Port 8002) - Position and risk control
+- **Exchange Connector** (Port 8005) - Bitget API integration
+- **Market Data Manager** (Port 8003) - Real-time data feeds
+- **Redis** (Port 6379) - Data caching and messaging
+
+## ⚙️ Configuration
+
+Key environment variables (all in `.env`):
+
+```bash
+# Trading Mode (ENFORCED)
+USE_MOCK_DATA=false
+FORCE_LIVE_TRADING=true
+MANDATORY_DOCKER=true
+MANDATORY_MCP=true
+
+# Bitget API (REQUIRED)
+BITGET_API_KEY=your_real_api_key
+BITGET_API_SECRET=your_real_api_secret  
+BITGET_API_PASSWORD=your_real_api_password
+
+# Risk Management
+RISK_PER_TRADE=0.02
+MAX_LEVERAGE=50
+MAX_POSITIONS=15
+DAILY_LOSS_LIMIT=0.03
+```
+
+## 🛡️ Safety Features
+
+- **Emergency Stop System** - Immediate position closure
+- **Risk Limits** - Automatic position sizing and limits
+- **Docker Health Checks** - Service monitoring and restart
+- **MCP Validation** - Ensures system coordination
+- **Real-time Monitoring** - Live performance tracking
+
+## 📊 Monitoring
+
+Access the monitoring dashboard:
+
+- **Grafana:** http://localhost:3000 
+- **Prometheus:** http://localhost:9090
+- **MCP Server:** http://localhost:8015
+
+## 🚫 What Was Removed
+
+This version has all demo/mock functionality removed:
+
+- All demo_*.py files
+- All test_*.py files  
+- Mock data generation functions
+- Simulation modes
+- Development validation scripts
+
+## 🔧 Troubleshooting
+
+### Docker Issues
+```bash
+# Check Docker status
+docker compose ps
+
+# Restart services  
+docker compose down && docker compose up -d
+
+# View logs
+docker compose logs -f
+```
+
+### MCP Server Issues
+```bash
+# Check MCP server health
+curl http://localhost:8015/health
+
+# Restart MCP server
+docker compose restart mcp-server
+```
+
+## ⚠️ Important Notes
+
+- **No Demo Mode:** This system only operates with real money
+- **Docker Required:** All operations require Docker services
+- **MCP Required:** System coordination requires MCP server
+- **API Credentials:** Must use valid Bitget production credentials
+- **Risk Management:** Built-in limits protect against large losses
 
 To contribute to this project:
 

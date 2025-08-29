@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Live Trading System Launcher
-Complete system startup with live trading optimization
+🚀 VIPER Live Trading System Launcher - LIVE MODE ONLY
+Complete system startup with mandatory Docker & MCP enforcement
 """
 
 import os
@@ -24,9 +24,22 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class LiveTradingLauncher:
-    """Complete live trading system launcher"""
+    """Complete live trading system launcher with mandatory enforcement"""
 
     def __init__(self):
+        # Validate live trading mode first
+        if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
+            logger.error("❌ Mock data mode not allowed in live trading launcher")
+            sys.exit(1)
+        
+        # Enforce live trading requirements
+        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+        
+        logger.info("🔒 Enforcing Docker & MCP requirements...")
+        if not enforce_docker_mcp_requirements():
+            logger.error("❌ Docker/MCP requirements not met")
+            sys.exit(1)
+        
         self.project_root = Path(__file__).parent
         self.docker_compose_file = self.project_root / "docker-compose.yml"
         self.live_optimizer_script = self.project_root / "live_trading_optimizer.py"
@@ -36,6 +49,8 @@ class LiveTradingLauncher:
 
         # Check if all required files exist
         self.files_ready = self.check_required_files()
+        
+        logger.info("✅ Live trading launcher initialized with enforcement")
 
     def check_docker(self) -> bool:
         """Check if Docker is available and running"""
