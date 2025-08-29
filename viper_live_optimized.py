@@ -113,7 +113,8 @@ class ViperLiveOptimized:
             if best_scenario and best_scenario in backtest_results.get('scenario_results', {}):
                 best_result = backtest_results['scenario_results'][best_scenario]
 
-                print("🎯 BEST BASELINE SCENARIO FOUND:"                print(f"   Scenario: {best_scenario}")
+                print("🎯 BEST BASELINE SCENARIO FOUND:")
+                print(f"   Scenario: {best_scenario}")
                 print(f"   Win Rate: {best_result.get('win_rate', 0):.1%}")
                 print(f"   Total Return: {best_result.get('total_return', 0):.2%}")
                 print(f"   Sharpe Ratio: {best_result.get('sharpe_ratio', 0):.2f}")
@@ -160,7 +161,8 @@ class ViperLiveOptimized:
                 if 'trailing_stop_percent' in optimized_params and 'trailing_stop_percent' in tp_sl_opt:
                     optimized_params['trailing_stop_percent'] = tp_sl_opt.get('trailing_stop_percent', 0.01)
 
-            print("🎯 OPTIMIZATION RESULTS:"            print(f"   Entry Threshold: {optimized_params['entry_threshold']:.2f}")
+            print("🎯 OPTIMIZATION RESULTS:")
+            print(f"   Entry Threshold: {optimized_params['entry_threshold']:.2f}")
             print(f"   Stop Loss: {optimized_params['stop_loss_percent']:.1%}")
             print(f"   Take Profit: {optimized_params['take_profit_percent']:.1%}")
             print(f"   Trailing Stop: {optimized_params['trailing_stop_percent']:.1%}")
@@ -207,7 +209,8 @@ class ViperLiveOptimized:
                 max_drawdown <= 0.20  # Maximum 20% drawdown
             )
 
-            print("📊 VALIDATION RESULTS:"            print(f"   Win Rate: {win_rate:.1%} {'✅' if win_rate >= 0.50 else '❌'}")
+            print("📊 VALIDATION RESULTS:")
+            print(f"   Win Rate: {win_rate:.1%} {'✅' if win_rate >= 0.50 else '❌'}")
             print(f"   Sharpe Ratio: {sharpe_ratio:.2f} {'✅' if sharpe_ratio >= 0.5 else '❌'}")
             print(f"   Max Drawdown: {max_drawdown:.1%} {'✅' if max_drawdown <= 0.20 else '❌'}")
 
@@ -380,7 +383,8 @@ class ViperLiveOptimized:
 
                 # Display status update every 5 minutes
                 if int(time.time()) % 300 == 0:
-                    print("📊 STATUS UPDATE:"                    print(f"   Balance: ${performance.get('account_balance', 0):.2f}")
+                    print("📊 STATUS UPDATE:")
+                    print(f"   Balance: ${performance.get('account_balance', 0):.2f}")
                     print(f"   Active Positions: {performance.get('active_positions', 0)}")
                     print(f"   Last Optimization: {self.last_optimization.strftime('%H:%M:%S') if self.last_optimization else 'Never'}")
 
@@ -411,13 +415,14 @@ class ViperLiveOptimized:
             # Step 2: Run initial comprehensive backtest
             baseline_results = await self.run_initial_backtest()
             if baseline_results:
-                print("📈 BASELINE PERFORMANCE ESTABLISHED"                print(f"   Expected Win Rate: {baseline_results.get('win_rate', 0):.1%}")
+                print("📈 BASELINE PERFORMANCE ESTABLISHED")
+                print(f"   Expected Win Rate: {baseline_results.get('win_rate', 0):.1%}")
                 print(f"   Expected Return: {baseline_results.get('total_return', 0):.2%}")
                 print(f"   Risk (Max Drawdown): {baseline_results.get('max_drawdown', 0):.2%}")
 
             # Step 3: Initial AI/ML optimization
-            print("
-🎯 INITIAL AI/ML OPTIMIZATION..."            initial_params = await self.optimize_parameters()
+            print("🎯 INITIAL AI/ML OPTIMIZATION...")
+            initial_params = await self.optimize_parameters()
 
             if await self.validate_optimization(initial_params):
                 await self.apply_trading_parameters(initial_params)
@@ -426,8 +431,8 @@ class ViperLiveOptimized:
                 print("⚠️ Using default parameters for initial setup")
 
             # Step 4: Start continuous optimization
-            print("
-🔄 STARTING CONTINUOUS OPTIMIZATION..."            print("📊 System will optimize parameters every hour")
+            print("🔄 STARTING CONTINUOUS OPTIMIZATION...")
+            print("📊 System will optimize parameters every hour")
             print("🛑 Emergency stop: Ctrl+C")
             print("-" * 60)
 
@@ -438,15 +443,14 @@ class ViperLiveOptimized:
             await self.continuous_optimization_loop()
 
         except KeyboardInterrupt:
-            print("
-⏹️ System shutdown requested by user"        except Exception as e:
+            print("⏹️ System shutdown requested by user")
+        except Exception as e:
             logger.error(f"❌ Fatal error in live trading system: {e}")
             print(f"\n❌ System error: {e}")
         finally:
             self.is_running = False
 
-            print("
-" + "=" * 60)
+            print("\n" + "=" * 60)
             print("🛑 VIPER LIVE OPTIMIZED TRADING SYSTEM SHUTDOWN")
             print("=" * 60)
 
