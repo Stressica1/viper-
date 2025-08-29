@@ -28,6 +28,10 @@ REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
 LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
 SERVICE_NAME = os.getenv('SERVICE_NAME', 'config-manager')
 
+# Backup configuration from environment variables
+BACKUP_INTERVAL_HOURS = int(os.getenv('BACKUP_INTERVAL_HOURS', '24'))
+BACKUP_RETENTION_DAYS = int(os.getenv('BACKUP_RETENTION_DAYS', '30'))
+
 # Configuration paths
 CONFIG_DIR = Path("/app/config")
 ENV_FILE = Path("/app/.env")
@@ -405,11 +409,73 @@ class ConfigurationManager:
                 'last_update': self.config_history[-1]['timestamp'] if self.config_history else None,
                 'services_configured': len(self.current_config.get('services', {})),
                 'trading_parameters': len(self.current_config.get('trading', {})),
-                'redis_connected': self.redis_client is not None
+                'redis_connected': self.redis_client is not None,
+                'backup_interval_hours': BACKUP_INTERVAL_HOURS,
+                'backup_retention_days': BACKUP_RETENTION_DAYS
             }
         except Exception as e:
             logger.error(f"# X Error getting system status: {e}")
             return {'error': str(e)}
+    
+    def create_backup(self) -> bool:
+        """Create a configuration backup using environment settings"""
+        try:
+            import datetime
+            
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_key = f"viper:config_backup:{timestamp}"
+            
+            backup_data = {
+                'timestamp': timestamp,
+                'config': self.current_config,
+                'metadata': {
+                    'backup_interval_hours': BACKUP_INTERVAL_HOURS,
+                    'retention_days': BACKUP_RETENTION_DAYS,
+                    'created_by': 'config_manager_auto_backup'
+                }
+            }
+            
+            # Store backup in Redis
+            self.redis_client.setex(
+                backup_key, 
+                BACKUP_RETENTION_DAYS * 24 * 3600,  # Convert days to seconds
+                json.dumps(backup_data)
+            )
+            
+            logger.info(f"# Check Configuration backup created: {backup_key}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"# X Error creating backup: {e}")
+            return False
+    
+    def cleanup_old_backups(self) -> int:
+        """Clean up backups older than retention period"""
+        try:
+            import datetime
+            
+            cutoff_timestamp = datetime.datetime.now() - datetime.timedelta(days=BACKUP_RETENTION_DAYS)
+            cutoff_str = cutoff_timestamp.strftime("%Y%m%d_%H%M%S")
+            
+            # Get all backup keys
+            backup_keys = self.redis_client.keys("viper:config_backup:*")
+            deleted_count = 0
+            
+            for key in backup_keys:
+                # Extract timestamp from key
+                timestamp_str = key.decode('utf-8').split(':')[-1]
+                if timestamp_str < cutoff_str:
+                    self.redis_client.delete(key)
+                    deleted_count += 1
+            
+            if deleted_count > 0:
+                logger.info(f"# Check Cleaned up {deleted_count} old backups")
+            
+            return deleted_count
+            
+        except Exception as e:
+            logger.error(f"# X Error cleaning up backups: {e}")
+            return 0
 
 # FastAPI application
 app = FastAPI(
@@ -581,6 +647,38 @@ async def get_system_status():
         return config_manager.get_system_status()
     except Exception as e:
         raise HTTPException(status_code=503, detail=f"Unable to get status: {e}")
+
+@app.post("/api/backup/create")
+async def create_configuration_backup():
+    """Create a configuration backup"""
+    try:
+        success = config_manager.create_backup()
+        if success:
+            return {
+                "status": "created",
+                "message": "Configuration backup created successfully",
+                "backup_settings": {
+                    "interval_hours": BACKUP_INTERVAL_HOURS,
+                    "retention_days": BACKUP_RETENTION_DAYS
+                }
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Backup creation failed")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Backup failed: {e}")
+
+@app.post("/api/backup/cleanup")
+async def cleanup_old_backups():
+    """Clean up old configuration backups"""
+    try:
+        deleted_count = config_manager.cleanup_old_backups()
+        return {
+            "status": "completed",
+            "deleted_backups": deleted_count,
+            "retention_policy": f"{BACKUP_RETENTION_DAYS} days"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Cleanup failed: {e}")
 
 if __name__ == "__main__":
     port = int(os.getenv("CONFIG_MANAGER_PORT", 8012))

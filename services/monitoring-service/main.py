@@ -61,12 +61,24 @@ class MonitoringService:
             'monitoring-service': {'port': 8006, 'url': 'http://monitoring-service:8000'}
         }
 
-        # Alert configurations
+        # Alert configurations loaded from environment variables
         self.alert_rules = {
             'service_down': {'threshold': 0, 'duration': 30, 'enabled': True},
-            'high_cpu_usage': {'threshold': 80.0, 'duration': 60, 'enabled': True},
-            'high_memory_usage': {'threshold': 85.0, 'duration': 60, 'enabled': True},
-            'low_disk_space': {'threshold': 90.0, 'duration': 300, 'enabled': True},
+            'high_cpu_usage': {
+                'threshold': float(os.getenv('ALERT_HIGH_CPU_THRESHOLD', '80.0')), 
+                'duration': 60, 
+                'enabled': True
+            },
+            'high_memory_usage': {
+                'threshold': float(os.getenv('ALERT_HIGH_MEMORY_THRESHOLD', '85.0')), 
+                'duration': 60, 
+                'enabled': True
+            },
+            'low_disk_space': {
+                'threshold': float(os.getenv('ALERT_LOW_DISK_THRESHOLD', '90.0')), 
+                'duration': 300, 
+                'enabled': True
+            },
             'risk_limit_breached': {'enabled': True},
             'api_rate_limit': {'threshold': 100, 'duration': 60, 'enabled': True}
         }

@@ -16,6 +16,23 @@ import sys
 import subprocess
 import time
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
+# Load configuration from environment variables
+MAX_WORKERS = int(os.getenv('MAX_WORKERS', '4'))
+THREAD_POOL_SIZE = int(os.getenv('THREAD_POOL_SIZE', '10'))
+CONNECTION_POOL_SIZE = int(os.getenv('CONNECTION_POOL_SIZE', '20'))
+REQUEST_TIMEOUT_SECONDS = int(os.getenv('REQUEST_TIMEOUT_SECONDS', '30'))
+HEALTH_CHECK_TIMEOUT_SECONDS = int(os.getenv('HEALTH_CHECK_TIMEOUT_SECONDS', '10'))
+DEBUG_MODE = os.getenv('DEBUG_MODE', 'false').lower() == 'true'
+TEST_MODE = os.getenv('TEST_MODE', 'false').lower() == 'true'
+COMPOSE_PROJECT_NAME = os.getenv('COMPOSE_PROJECT_NAME', 'viper-trading')
+DOCKER_MODE = os.getenv('DOCKER_MODE', 'true').lower() == 'true'
+PROMETHEUS_PORT = int(os.getenv('PROMETHEUS_PORT', '9090'))
+GRAFANA_PORT = int(os.getenv('GRAFANA_PORT', '3000'))
 
 # Colors for better output
 class Colors:
@@ -65,6 +82,66 @@ def load_environment():
     except ImportError:
         print_error("python-dotenv not installed. Run: pip install python-dotenv")
         return False
+
+def validate_system_configuration():
+    """Validate system configuration from environment variables"""
+    print_step("Validating system configuration...")
+    
+    config_issues = []
+    
+    # Validate worker configuration
+    if MAX_WORKERS < 1 or MAX_WORKERS > 32:
+        config_issues.append(f"MAX_WORKERS should be between 1-32, got {MAX_WORKERS}")
+    
+    if THREAD_POOL_SIZE < 1:
+        config_issues.append(f"THREAD_POOL_SIZE should be >= 1, got {THREAD_POOL_SIZE}")
+    
+    if CONNECTION_POOL_SIZE < 1:
+        config_issues.append(f"CONNECTION_POOL_SIZE should be >= 1, got {CONNECTION_POOL_SIZE}")
+    
+    # Validate timeout configuration
+    if REQUEST_TIMEOUT_SECONDS < 5:
+        config_issues.append(f"REQUEST_TIMEOUT_SECONDS should be >= 5, got {REQUEST_TIMEOUT_SECONDS}")
+    
+    if HEALTH_CHECK_TIMEOUT_SECONDS < 1:
+        config_issues.append(f"HEALTH_CHECK_TIMEOUT_SECONDS should be >= 1, got {HEALTH_CHECK_TIMEOUT_SECONDS}")
+    
+    # Check mode settings
+    if TEST_MODE and not DEBUG_MODE:
+        print_warning("TEST_MODE is enabled but DEBUG_MODE is not - this may hide important debugging info")
+    
+    # Check Docker mode
+    if not DOCKER_MODE:
+        print_warning("DOCKER_MODE is disabled - services may not start correctly")
+    
+    # Check external service ports
+    external_ports = {
+        'Prometheus': PROMETHEUS_PORT,
+        'Grafana': GRAFANA_PORT
+    }
+    
+    for service, port in external_ports.items():
+        if port < 1024 or port > 65535:
+            config_issues.append(f"{service} port should be between 1024-65535, got {port}")
+    
+    if config_issues:
+        print_error("Configuration validation failed:")
+        for issue in config_issues:
+            print(f"  - {issue}")
+        return False
+    
+    print_success("System configuration validated")
+    print(f"  • Max Workers: {MAX_WORKERS}")
+    print(f"  • Thread Pool Size: {THREAD_POOL_SIZE}")
+    print(f"  • Connection Pool Size: {CONNECTION_POOL_SIZE}")
+    print(f"  • Request Timeout: {REQUEST_TIMEOUT_SECONDS}s")
+    print(f"  • Health Check Timeout: {HEALTH_CHECK_TIMEOUT_SECONDS}s")
+    print(f"  • Debug Mode: {DEBUG_MODE}")
+    print(f"  • Test Mode: {TEST_MODE}")
+    print(f"  • Docker Mode: {DOCKER_MODE}")
+    print(f"  • Prometheus Port: {PROMETHEUS_PORT}")
+    print(f"  • Grafana Port: {GRAFANA_PORT}")
+    return True
 
 def validate_api_keys():
     """Validate API keys are configured"""
@@ -226,6 +303,10 @@ def main():
     
     # Load environment
     if not load_environment():
+        return 1
+    
+    # Validate system configuration
+    if not validate_system_configuration():
         return 1
     
     # Validate API keys

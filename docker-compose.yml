@@ -340,7 +340,7 @@ services:
     ports:
       - "${GRAFANA_PORT:-3000}:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=viper_admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-viper_admin}
     volumes:
       - grafana_data:/var/lib/grafana
       - ./config/grafana:/etc/grafana/provisioning
