@@ -16,6 +16,7 @@ import json
 import logging
 import math
 import random
+import secrets
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
@@ -30,7 +31,6 @@ try:
     import numpy as np
     import pandas as pd
 except ImportError:
-    print("Installing required packages...")
     import subprocess
     subprocess.run([sys.executable, "-m", "pip", "install", "--user", "numpy", "pandas"], check=True)
     import numpy as np
@@ -548,7 +548,7 @@ class JokeEliminatorOptimizer:
         # Add some trend periods
         for i in range(0, total_candles, total_candles // 8):
             end_idx = min(i + total_candles // 8, total_candles)
-            trend_direction = random.choice([-1, 1])
+            trend_direction = secrets.choice([-1, 1])
             trend_strength = random.uniform(0.0001, 0.0008)
             returns[i:end_idx] += trend_direction * trend_strength
         

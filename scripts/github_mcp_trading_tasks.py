@@ -77,7 +77,6 @@ class GitHubMCPTradingTasks:
                           labels: List[str] = None) -> Optional[int]:
         """Create a new GitHub issue for trading task"""
         if not self.github_token:
-            print("❌ GitHub token not configured")
             return None
 
         if labels is None:
@@ -120,7 +119,6 @@ class GitHubMCPTradingTasks:
                 return None
 
         except Exception as e:
-            print(f"❌ Error creating GitHub task: {e}")
             return None
 
     def create_performance_monitoring_task(self, strategy_name: str, metrics: Dict[str, Any]) -> Optional[int]:
@@ -308,7 +306,6 @@ class GitHubMCPTradingTasks:
             return True
 
         except Exception as e:
-            print(f"❌ Error updating task status: {e}")
             return False
 
     def get_open_tasks(self) -> List[Dict[str, Any]]:
@@ -341,7 +338,6 @@ class GitHubMCPTradingTasks:
                 return []
 
         except Exception as e:
-            print(f"❌ Error getting tasks: {e}")
             return []
 
     def create_daily_performance_report(self, dashboard_data: Dict[str, Any]) -> Optional[int]:
@@ -535,11 +531,9 @@ def main():
     if args.list:
         tasks = github_client.get_open_tasks()
         if tasks:
-            print("📋 Open Trading Tasks:")
             for task in tasks:
                 print(f"  #{task['number']}: {task['title']} ({task['state']})")
         else:
-            print("📭 No open trading tasks found")
 
     elif args.create:
         if not args.title or not args.description:
@@ -554,9 +548,7 @@ def main():
         )
 
         if issue_number:
-            print(f"✅ Created task #{issue_number}")
         else:
-            print("❌ Failed to create task")
 
     elif args.daily_report:
         # Mock dashboard data for demonstration
@@ -589,8 +581,6 @@ def main():
             print(f"✅ Created weekly review task #{issue_number}")
 
     else:
-        print("🐙 GitHub MCP Trading Tasks Manager")
-        print("Use --help for available commands")
 
 if __name__ == '__main__':
     main()

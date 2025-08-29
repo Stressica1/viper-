@@ -23,7 +23,6 @@ from enum import Enum
 from dataclasses import dataclass
 import redis
 import requests
-import ccxt
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')

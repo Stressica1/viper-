@@ -16,7 +16,6 @@ Features:
 import asyncio
 import json
 import logging
-import os
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -27,34 +26,18 @@ warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
-from matplotlib.patches import Rectangle
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-import plotly.express as px
 from rich.console import Console
-from rich.table import Table, Column
 from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn
 from rich.panel import Panel
-from rich.layout import Layout
 from rich import box
 from rich.text import Text
 
 from dataclasses import dataclass, asdict
-from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
-from scipy import stats
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_squared_error, r2_score
 
 # Import existing VIPER components
 sys.path.append(str(Path(__file__).parent))
 
 try:
-    from predictive_ranges_strategy import PredictiveRangesStrategy
-    from enhanced_trade_entry_optimizer import EnhancedTradeEntryOptimizer
-    from comprehensive_backtester import ComprehensiveBacktester
-    from github_mcp_integration import GitHubMCPIntegration
 except ImportError as e:
     logging.warning(f"Some imports failed: {e}")
 
@@ -469,7 +452,7 @@ class ComprehensiveStrategyBacktester:
         # Bootstrap simulation
         simulation_results = []
         for _ in range(simulations):
-            bootstrap_returns = np.random.choice(returns, size=len(returns), replace=True)
+            bootstrap_returns = np.secrets.choice(returns, size=len(returns), replace=True)
             total_return = (1 + bootstrap_returns).prod() - 1
             simulation_results.append(total_return)
         

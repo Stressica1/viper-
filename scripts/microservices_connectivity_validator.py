@@ -546,32 +546,20 @@ echo "📊 Use 'scripts/comprehensive_system_validator.py' for detailed analysis
 async def main():
     """Main entry point"""
     print("🌐 VIPER MICROSERVICES CONNECTIVITY VALIDATOR")
-    print("=" * 80)
-    print("Testing connectivity and integration for all 25 microservices...")
-    print()
     
     try:
         validator = MicroservicesConnectivityValidator()
         report = await validator.run_comprehensive_connectivity_test()
         
-        print("\n" + "=" * 80)
-        print("📊 CONNECTIVITY VALIDATION COMPLETE!")
-        print("=" * 80)
         print(f"🌐 Total Services: {report['validation_summary']['total_services']}")
         print(f"✅ Reachable: {report['validation_summary']['reachable_services']}")
         print(f"❌ Unreachable: {report['validation_summary']['unreachable_services']}")
         success_rate = (report['validation_summary']['reachable_services'] / 
                        report['validation_summary']['total_services'] * 100)
-        print(f"📈 Success Rate: {success_rate:.1f}%")
-        print()
         
         if report['recommendations']:
-            print("💡 RECOMMENDATIONS:")
             for rec in report['recommendations']:
-                print(f"   • {rec}")
-            print()
         
-        print("🛠️ GENERATED HELPER SCRIPTS:")
         print(f"   • Start services: {report['generated_scripts']['startup_script']}")
         print(f"   • Check status: {report['generated_scripts']['check_script']}")
         

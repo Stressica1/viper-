@@ -367,7 +367,7 @@ class TaskScheduler:
                 None, self.redis_client.llen, queue_name
             )
             return size or 0
-        except:
+        except Exception:
             return 0
 
     async def cancel_task(self, task_id: str) -> bool:

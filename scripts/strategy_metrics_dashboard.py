@@ -283,8 +283,6 @@ class StrategyMetricsDashboard:
     def display_strategy_table(self, sort_by: str = 'sharpe_ratio', ascending: bool = False,
                              filter_status: str = 'active') -> str:
         """Display comprehensive strategy performance table"""
-        print("📊 VIPER STRATEGY METRICS DASHBOARD")
-        print("=" * 80)
 
         # Filter strategies
         filtered_strategies = [
@@ -547,14 +545,12 @@ future results. Always perform your own due diligence and risk assessment.
         self.is_monitoring = True
         self.monitor_thread = threading.Thread(target=self._monitoring_loop, daemon=True)
         self.monitor_thread.start()
-        print("✅ Real-time monitoring started")
 
     def stop_monitoring(self):
         """Stop real-time monitoring"""
         self.is_monitoring = False
         if self.monitor_thread:
             self.monitor_thread.join(timeout=5)
-        print("⏹️  Real-time monitoring stopped")
 
     def _monitoring_loop(self):
         """Main monitoring loop"""
@@ -569,7 +565,6 @@ future results. Always perform your own due diligence and risk assessment.
                 time.sleep(self.update_interval)
 
             except Exception as e:
-                print(f"⚠️  Monitoring error: {e}")
                 time.sleep(60)  # Wait before retrying
 
     def _update_live_metrics(self):
@@ -597,9 +592,7 @@ future results. Always perform your own due diligence and risk assessment.
                     alerts.append(f"⚠️  Low win rate for {strategy.strategy_name}: {strategy.win_rate:.1f}%")
 
         if alerts:
-            print("\n🚨 PERFORMANCE ALERTS:")
             for alert in alerts:
-                print(f"  {alert}")
 
 def main():
     """Main entry point"""
@@ -624,29 +617,23 @@ def main():
 
     # Handle commands
     if args.portfolio:
-        print(dashboard.display_portfolio_summary())
 
     if args.list:
         table = dashboard.display_strategy_table(
             sort_by=args.sort,
             filter_status=args.filter
         )
-        print(table)
 
     if args.details:
         details = dashboard.display_strategy_details(args.details)
-        print(details)
 
     if args.export:
         csv_path = dashboard.export_to_csv(args.export)
-        print(f"✅ Exported to: {csv_path}")
 
     if args.report:
         report = dashboard.generate_performance_report()
-        print(report)
 
     if args.monitor:
-        print("🚀 Starting real-time monitoring...")
         dashboard.start_monitoring()
 
         try:
@@ -657,8 +644,6 @@ def main():
 
     # Default action: show portfolio and strategy table
     if not any([args.list, args.details, args.export, args.report, args.monitor, args.portfolio]):
-        print(dashboard.display_portfolio_summary())
-        print("\n" + dashboard.display_strategy_table())
 
 if __name__ == '__main__':
     main()

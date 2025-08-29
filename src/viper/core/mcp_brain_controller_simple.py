@@ -4,10 +4,7 @@
 A working brain controller that actually starts and serves the web interface
 """
 
-import os
 import sys
-import json
-import time
 import logging
 from datetime import datetime
 from fastapi import FastAPI, Request

@@ -273,13 +273,13 @@ class EnhancedBacktestingValidation:
                 equity_curve.append(balance)
 
             # Generate trade log
-            num_trades = np.random.randint(20, 100)
+            num_trades = np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(20, 100)
             trade_log = []
             for i in range(num_trades):
                 trade_log.append({
                     "trade_id": i,
                     "symbol": symbol,
-                    "side": "BUY" if np.random.random() > 0.5 else "SELL",
+                    "side": "BUY" if np.secrets.randbelow(1000000) / 1000000.0  # Was: random.random() > 0.5 else "SELL",
                     "entry_price": 50000 + np.random.normal(0, 5000),
                     "exit_price": 50000 + np.random.normal(0, 5000),
                     "pnl": np.random.normal(0, 200),
@@ -301,7 +301,7 @@ class EnhancedBacktestingValidation:
                 max_drawdown=base_drawdown,
                 volatility=0.15,
                 avg_trade_pnl=np.random.normal(50, 25),
-                max_consecutive_losses=np.random.randint(3, 8),
+                max_consecutive_losses=np.secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(3, 8),
                 profit_factor=np.random.normal(1.3, 0.2),
                 calmar_ratio=base_sharpe / base_drawdown if base_drawdown > 0 else 0,
                 sortino_ratio=base_sharpe * 0.8,
@@ -770,8 +770,6 @@ class EnhancedBacktestingValidation:
 
 async def run_backtesting_validation():
     """Run comprehensive backtesting validation"""
-    print("🚀 Enhanced Backtesting Validation Suite")
-    print("=" * 80)
 
     validator = EnhancedBacktestingValidation()
 
@@ -783,47 +781,31 @@ async def run_backtesting_validation():
         validator.save_validation_report(results)
 
         # Print summary
-        print("\n" + "=" * 80)
-        print("📊 VALIDATION SUMMARY")
-        print("=" * 80)
 
         if results.get("deployment_ready"):
-            print("🎉 DEPLOYMENT READY!")
-            print("   ✅ All validation criteria met")
             print("   🚀 System ready for production deployment")
         else:
-            print("⚠️ DEPLOYMENT NOT READY")
-            print("   ❌ Validation criteria not fully met")
-            print("   🔧 Additional improvements needed")
 
         # Performance improvements
         improvements = results.get("performance_improvement", {}).get("improvements", {})
         if improvements:
-            print("\n📈 Key Performance Improvements:")
             for metric, improvement in improvements.items():
-                print(f"   • {metric}: {improvement:.1f}%")
 
         # Recommendations
         recommendations = results.get("recommendations", [])
         if recommendations:
-            print("\n💡 Deployment Recommendations:")
             for rec in recommendations[:5]:  # Show first 5
-                print(f"   • {rec}")
 
-        print(f"\n📋 Detailed report saved to: backtesting_validation_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
 
         return results.get("deployment_ready", False)
 
     except Exception as e:
-        print(f"❌ Validation failed with exception: {e}")
         return False
 
 if __name__ == "__main__":
     success = asyncio.run(run_backtesting_validation())
     if success:
-        print("\n🎉 Backtesting validation completed successfully!")
         print("🚀 Enhanced system is ready for deployment")
     else:
-        print("\n⚠️ Backtesting validation found issues")
         print("🔧 Please review the validation report and address any concerns before deployment")
         sys.exit(1)

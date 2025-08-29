@@ -17,12 +17,10 @@ import pandas as pd
 import talib as ta
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass
-from datetime import datetime, timedelta
 import asyncio
 import logging
 
 # Import predictive ranges strategy
-from predictive_ranges_strategy import get_predictive_strategy, PredictiveRangesStrategy
 
 # Configure logging
 logging.basicConfig(
@@ -655,8 +653,6 @@ def get_optimized_entry_system() -> OptimizedTradeEntrySystem:
 # Example usage
 async def main():
     """Test optimized entry system"""
-    print("🚀 OPTIMIZED TRADE ENTRY SYSTEM TEST")
-    print("=" * 60)
 
     system = get_optimized_entry_system()
 
@@ -684,14 +680,11 @@ async def main():
     print(f"🎯 Found {len(signals)} optimized entry signals")
 
     for i, signal in enumerate(signals[:3], 1):  # Show top 3
-        print(f"\n📊 Signal {i}:")
         print(f"   Direction: {signal.direction.upper()}")
         print(f"   Entry Price: ${signal.entry_price:.2f}")
-        print(f"   Stop Loss: ${signal.stop_loss:.2f}")
         print(f"   Take Profit: ${signal.take_profit:.2f}")
         print(f"   Confidence: {signal.confidence_score:.1%}")
         print(f"   Risk/Reward: {signal.risk_reward_ratio:.2f}")
-        print(f"   Quality: {signal.entry_quality}")
         print(f"   Win Probability: {signal.win_probability:.1%}")
 
 if __name__ == "__main__":

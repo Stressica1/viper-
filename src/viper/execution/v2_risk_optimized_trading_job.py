@@ -17,9 +17,6 @@ import sys
 import asyncio
 import logging
 import signal
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-from pathlib import Path
 
 # Configure comprehensive logging
 logging.basicConfig(
@@ -35,8 +32,6 @@ logger = logging.getLogger(__name__)
 # Import enhanced components with fallback
 try:
     from enhanced_system_integrator import get_integrator
-    from enhanced_risk_manager import EnhancedRiskManager
-    from performance_monitoring_system import PerformanceMonitoringSystem
     ENHANCED_RISK_AVAILABLE = True
     PERFORMANCE_MONITORING_AVAILABLE = True
     logger.info("✅ Enhanced components available for integration")
@@ -412,7 +407,7 @@ class V2RiskOptimizedTradingJob:
                         try:
                             ticker = await trader.exchange.fetch_ticker(opportunity.symbol)
                             price = ticker['last']
-                        except:
+                        except Exception:
                             price = 100  # Default fallback
 
                     position_size = self.calculate_v2_position_size(price, balance, self.max_leverage, opportunity.symbol)
@@ -676,7 +671,6 @@ class V2RiskOptimizedTradingJob:
             print(f"   • Max Positions: {self.max_positions} (ONE PER SYMBOL)")
             print(f"   • Scan Interval: {self.scan_interval}s")
             print(f"   • Monitor Interval: {self.monitor_interval}s")
-            print("=" * 60)
 
             logger.info("🎉 V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM STARTED!")
             logger.info("📊 All components connected and operational with 2% risk management")
@@ -711,15 +705,12 @@ class V2RiskOptimizedTradingJob:
 async def main():
     """Main execution function for V2 Risk-Optimized Trading"""
     print("🎯 VIPER V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING JOB")
-    print("=" * 80)
     print("🎯 STRICT 2% RISK PER TRADE • MAX 50X LEVERAGE • ONE POSITION PER SYMBOL")
-    print("=" * 80)
 
     job = V2RiskOptimizedTradingJob()
 
     def signal_handler(signum, frame):
         """Handle shutdown signals"""
-        print("\n🛑 V2 Shutdown signal received...")
         job.stop_v2_trading()
 
     # Register signal handlers
@@ -736,11 +727,9 @@ async def main():
             return 1
 
     except KeyboardInterrupt:
-        print("\n🛑 V2 System interrupted by user")
         job.stop_v2_trading()
     except Exception as e:
         logger.error(f"❌ V2 Fatal error: {e}")
-        print(f"❌ V2 FATAL ERROR: {e}")
         return 1
 
     return 0
@@ -750,5 +739,4 @@ if __name__ == "__main__":
         exit_code = asyncio.run(main())
         sys.exit(exit_code)
     except KeyboardInterrupt:
-        print("\n🛑 V2 System interrupted")
         sys.exit(0)

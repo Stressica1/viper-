@@ -4,16 +4,9 @@
 Dedicated MCP server for performance analysis and strategy optimization
 """
 
-import os
-import asyncio
 import logging
-from typing import Dict, Any, List
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
-import json
-import time
-from datetime import datetime, timedelta
 
 # Load environment variables
 load_dotenv()

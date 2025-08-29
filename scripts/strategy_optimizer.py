@@ -8,11 +8,7 @@ Advanced strategy optimization for $30 portfolio with performance-based weightin
 
 import os
 import sys
-import json
-from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any, Optional, Tuple
-from dataclasses import dataclass, asdict
 
 @dataclass
 class StrategyScore:
@@ -47,7 +43,6 @@ class StrategyOptimizer:
 
     def optimize_strategy_weights(self) -> OptimizationResult:
         print("🎯 VIPER STRATEGY OPTIMIZATION FOR $30 PORTFOLIO")
-        print("=" * 50)
 
         strategies = self.dashboard.strategies
         original_weights = {name: s.weight for name, s in strategies.items()}
@@ -159,14 +154,9 @@ class StrategyOptimizer:
     def display_optimization_results(self, result: OptimizationResult):
         """Display optimization results"""
         print(f"\n🎯 STRATEGY OPTIMIZATION RESULTS - $30 PORTFOLIO")
-        print("=" * 60)
         print(f"📈 Performance Improvement: {result.performance_improvement:.1f}%")
-        print(f"💰 Portfolio Value: $30.00")
 
-        print(f"\n📋 CAPITAL ALLOCATION OPTIMIZATION")
-        print("-" * 40)
         print(f"{'Strategy':<25} {'Original':>10} {'Optimized':>10} {'Change':>8} {'$ Amount':>9}")
-        print("-" * 74)
 
         for strategy_name in result.strategy_scores.keys():
             original = result.original_weights.get(strategy_name, 0)
@@ -176,8 +166,6 @@ class StrategyOptimizer:
 
             print(f"{strategy_name[:24]:<25} {original:>9.1f}% {optimized:>9.1f}% {change:>+7.1f}% ${dollar_amount:>7.2f}")
 
-        print(f"\n🏆 TOP PERFORMING STRATEGIES")
-        print("-" * 30)
 
         sorted_strategies = sorted(
             result.strategy_scores.items(),
@@ -189,7 +177,6 @@ class StrategyOptimizer:
             optimized_weight = result.optimized_weights.get(name, 0)
             dollar_allocation = (optimized_weight / 100) * 30
 
-            print(f"{i}. {name}")
             print(f"   Performance Score: {score.performance_score:.1f}/100")
             print(f"   Optimized Allocation: {optimized_weight:.1f}% (${dollar_allocation:.2f})")
 
@@ -229,11 +216,8 @@ def main():
 
     else:
         print("🎯 VIPER Strategy Optimizer - $30 Portfolio")
-        print("=" * 50)
         print("Optimizes strategy weights based on performance metrics")
         print("for maximum returns on your $30 portfolio")
-        print("\nUse --optimize to run optimization")
-        print("Use --apply to apply optimized weights")
 
 if __name__ == '__main__':
     main()

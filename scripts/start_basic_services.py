@@ -88,19 +88,15 @@ def check_service_health():
     return healthy_count
 
 if __name__ == "__main__":
-    print("🚀 VIPER Trading Bot - Quick Startup for Testing")
-    print("=" * 50)
     
     if start_basic_services():
         healthy = check_service_health()
         print(f"\n📊 Services Health: {healthy} services healthy")
         
         if healthy > 0:
-            print("\n✅ Ready for completion testing!")
             print("Run: python src/utils/complete_viper_system.py")
         else:
             print("\n⚠️ Services may need more time to start. Wait a moment and try again.")
-            print("Check logs: docker compose logs")
     else:
         print("\n❌ Failed to start services. Check Docker installation and permissions.")
         sys.exit(1)

@@ -41,7 +41,6 @@ class SystemHealthChecker:
 
         print("🔍 VIPER System Health Checker Initialized")
         print(f"📊 Services to check: {len(self.services)}")
-        print("=" * 80)
 
     def check_service_health(self, service_name: str, port: int, name: str) -> Dict[str, Any]:
         """Check individual service health"""
@@ -92,7 +91,7 @@ class SystemHealthChecker:
                     result['status'] = ServiceStatus.HEALTHY.value
                     try:
                         result['details'] = response.json()
-                    except:
+                    except Exception:
                         result['details'] = {'message': 'Service responding but no JSON data'}
                 elif response.status_code >= 500:
                     result['status'] = ServiceStatus.DOWN.value
@@ -117,7 +116,6 @@ class SystemHealthChecker:
         """Perform comprehensive health check of all services"""
         print("\n🚀 STARTING COMPREHENSIVE HEALTH CHECK...")
         print("🔍 Checking all services and their connectivity")
-        print("=" * 80)
 
         health_report = {
             'timestamp': datetime.now().isoformat(),
@@ -137,7 +135,6 @@ class SystemHealthChecker:
 
         # Check each service
         for service_name, config in self.services.items():
-            print(f"🔍 Checking {config['name']}...")
             service_result = self.check_service_health(
                 service_name, config['port'], config['name']
             )
@@ -228,9 +225,6 @@ class SystemHealthChecker:
 
     def test_system_connectivity(self) -> Dict[str, Any]:
         """Test connectivity between services"""
-        print("\n🔗 TESTING SYSTEM CONNECTIVITY...")
-        print("🚀 Checking inter-service communication")
-        print("=" * 80)
 
         connectivity_report = {
             'timestamp': datetime.now().isoformat(),
@@ -242,7 +236,6 @@ class SystemHealthChecker:
         # Test API Server connectivity to other services
         api_server_status = self.services['api-server']
         if api_server_status:
-            print("🔗 Testing API Server connectivity to other services...")
 
             # Test connection to data-manager
             try:
@@ -251,7 +244,7 @@ class SystemHealthChecker:
                     'status': 'CONNECTED' if response.status_code == 200 else 'FAILED',
                     'response_code': response.status_code
                 }
-            except:
+            except Exception:
                 connectivity_report['connectivity_tests']['api_to_data'] = {'status': 'FAILED'}
 
             # Test connection to risk-manager
@@ -261,7 +254,7 @@ class SystemHealthChecker:
                     'status': 'CONNECTED' if response.status_code == 200 else 'FAILED',
                     'response_code': response.status_code
                 }
-            except:
+            except Exception:
                 connectivity_report['connectivity_tests']['api_to_risk'] = {'status': 'FAILED'}
 
         # Determine overall connectivity
@@ -280,7 +273,6 @@ class SystemHealthChecker:
 
     def run_full_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-        print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ 🚀 VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       ║
 ║ 🔍 Comprehensive Service Health | 🔗 Connectivity Testing | 📊 Performance   ║
@@ -301,15 +293,12 @@ class SystemHealthChecker:
 
         try:
             # Phase 1: Health Check
-            print("\n📊 PHASE 1: SYSTEM HEALTH CHECK")
             diagnostic_report['health_check'] = self.perform_comprehensive_health_check()
 
             # Phase 2: Connectivity Test
-            print("\n🔗 PHASE 2: CONNECTIVITY ANALYSIS")
             diagnostic_report['connectivity_test'] = self.test_system_connectivity()
 
             # Phase 3: System Analysis
-            print("\n🧠 PHASE 3: SYSTEM ANALYSIS")
             diagnostic_report['system_analysis'] = self.perform_system_analysis(diagnostic_report)
 
             # Determine overall health
@@ -324,7 +313,6 @@ class SystemHealthChecker:
                 diagnostic_report['overall_health'] = 'SYSTEM_CRITICAL'
 
         except Exception as e:
-            print(f"❌ Diagnostic error: {e}")
             diagnostic_report['overall_health'] = 'ERROR'
             diagnostic_report['error'] = str(e)
 
@@ -390,9 +378,7 @@ class SystemHealthChecker:
 
     def print_comprehensive_summary(self, report: Dict[str, Any]) -> None:
         """Print comprehensive diagnostic summary"""
-        print("\n" + "=" * 80)
         print("📋 COMPREHENSIVE SYSTEM DIAGNOSTIC SUMMARY")
-        print("=" * 80)
 
         # Overall health
         health = report.get('overall_health', 'UNKNOWN')
@@ -431,11 +417,8 @@ class SystemHealthChecker:
         # Recommendations
         recommendations = health_check.get('recommendations', [])
         if recommendations:
-            print("\n💡 RECOMMENDATIONS:")
             for i, rec in enumerate(recommendations, 1):
-                print(f"   {i}. {rec}")
 
-        print("=" * 80)
 
         # Action items based on health
         if health == 'SYSTEM_OPERATIONAL':
@@ -462,7 +445,6 @@ def main():
     except KeyboardInterrupt:
         print("\n\n👋 System Health Check terminated by user")
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -31,7 +31,6 @@ try:
     from utils.mathematical_validator import validate_array, safe_divide
     from config.optimal_mcp_config import OPTIMAL_MCP_CONFIG
 except ImportError as e:
-    print(f"⚠️ Import warning: {e}")
     # Create minimal fallback
     def validate_array(arr, name="array"):
         return {'is_valid': True, 'issues': [], 'statistics': {}}
@@ -633,7 +632,6 @@ class OptimalEntryPointManager:
 def main():
     """Run entry point optimization example"""
     print("🎯 OPTIMAL ENTRY POINT MANAGER - EXAMPLE RUN")
-    print("=" * 60)
     
     # Initialize manager
     manager = OptimalEntryPointManager()
@@ -663,23 +661,16 @@ def main():
     print(f"🎯 Entry Score: {result['entry_score']:.3f}")
     print(f"🔍 Confidence: {result['confidence']:.3f}")
     print(f"📊 Recommendation: {result['recommendation']}")
-    print("\n📋 Component Scores:")
     for component, score in result['component_scores'].items():
-        print(f"   {component}: {score:.3f}")
     
-    print("\n⚠️ Risk Metrics:")
     for metric, value in result['risk_metrics'].items():
-        print(f"   {metric}: {value}")
     
     if result['optimization_suggestions']:
-        print("\n💡 Optimization Suggestions:")
         for suggestion in result['optimization_suggestions']:
-            print(f"   {suggestion}")
     
     # Save performance report
     manager.save_performance_report()
     
-    print("\n🎯 Entry Point Optimization Complete!")
 
 if __name__ == "__main__":
     main()

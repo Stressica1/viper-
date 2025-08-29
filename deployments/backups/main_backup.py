@@ -5,13 +5,9 @@ Complete standalone trading system that works 100%
 """
 
 import os
-import sys
 import time
 import logging
 import ccxt
-import json
-import random
-from datetime import datetime, timedelta
 from typing import List, Dict, Optional
 
 # Configure logging

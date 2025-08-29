@@ -69,13 +69,8 @@ class DirectSwapTrader:
         self.min_volume_threshold = 1000000  # Minimum 24h volume
         self.min_order_size = 0.001  # Minimum order size in base currency
 
-        print("🚀 VIPER Direct Swap Trader Initialized")
         print(f"📊 Loaded {len(self.all_pairs)} swap pairs")
         print(f"🎯 Risk per trade: {self.risk_per_trade*100}%")
-        print(f"⚡ Max leverage: {self.max_leverage}x")
-        print(f"📈 Max positions: {self.max_positions}")
-        print(f"💰 Min order size: {self.min_order_size}")
-        print("=" * 80)
 
     def load_all_pairs(self) -> None:
         """Load all available swap pairs from Bitget"""
@@ -89,7 +84,6 @@ class DirectSwapTrader:
             ]
             print(f"✅ Loaded {len(self.all_pairs)} active swap pairs")
         except Exception as e:
-            print(f"❌ Error loading pairs: {e}")
             self.all_pairs = []
 
     def get_market_data(self, symbol: str) -> Optional[Dict]:
@@ -106,7 +100,6 @@ class DirectSwapTrader:
                 'timestamp': datetime.now().isoformat()
             }
         except Exception as e:
-            print(f"❌ Error fetching data for {symbol}: {e}")
             return None
 
     def calculate_position_size(self, symbol: str, price: float, balance: float) -> float:
@@ -127,7 +120,6 @@ class DirectSwapTrader:
             return max(position_size_base, self.min_order_size)
 
         except Exception as e:
-            print(f"❌ Error calculating position size: {e}")
             return self.min_order_size
 
     def calculate_viper_score(self, market_data: Dict) -> float:
@@ -148,7 +140,6 @@ class DirectSwapTrader:
             return min(viper_score, 100)
 
         except Exception as e:
-            print(f"❌ Error calculating VIPER score: {e}")
             return 0
 
     def generate_signal(self, symbol: str, viper_score: float, market_data: Dict) -> Optional[Dict]:
@@ -219,9 +210,6 @@ class DirectSwapTrader:
             }
 
             print(f"📊 Executing {signal['signal']} order for {symbol}")
-            print(f"   Amount: {position_size:.6f}")
-            print(f"   Leverage: {signal['leverage']}x")
-            print(f"   Price: ${signal['price']:.4f}")
 
             # Execute order (in demo mode for safety)
             if not BITGET_API_KEY:
@@ -250,11 +238,9 @@ class DirectSwapTrader:
                 print(f"✅ Swap trade executed: {symbol} {signal['signal']} at ${signal['price']}")
                 return True
             else:
-                print(f"❌ Failed to execute trade for {symbol}")
                 return False
 
         except Exception as e:
-            print(f"❌ Error executing swap trade: {e}")
             return False
 
     def monitor_positions(self) -> None:
@@ -280,7 +266,6 @@ class DirectSwapTrader:
                     self.close_position(symbol, "Stop Loss")
 
         except Exception as e:
-            print(f"❌ Error monitoring positions: {e}")
 
     def close_position(self, symbol: str, reason: str) -> None:
         """Close a position"""
@@ -308,22 +293,17 @@ class DirectSwapTrader:
                 order = self.exchange.create_order(**close_params)
                 if order and order.get('id'):
                     del self.active_positions[symbol]
-                    print(f"✅ Position closed: {symbol} - {reason}")
                 else:
-                    print(f"❌ Failed to close position: {symbol}")
 
         except Exception as e:
-            print(f"❌ Error closing position {symbol}: {e}")
 
     def start_swap_trading(self) -> None:
         """Start direct swap trading for all pairs"""
         print("\n🚀 STARTING DIRECT SWAP TRADING FOR ALL PAIRS...")
         print("🔥 Scanning and trading all available swap pairs")
         print("⚡ Using 50x leverage with comprehensive risk management")
-        print("-" * 80)
 
         if not self.all_pairs:
-            print("❌ No trading pairs available.")
             return
 
         self.is_running = True
@@ -368,10 +348,8 @@ class DirectSwapTrader:
 
                                 # Execute trade
                                 if self.execute_swap_trade(signal):
-                                    print(f"    ✅ Swap trade executed for {symbol}")
 
                     except Exception as e:
-                        print(f"❌ Error processing {symbol}: {e}")
 
                 if opportunities_found == 0:
                     print("  📊 No high-confidence trading opportunities found in this scan")
@@ -397,15 +375,11 @@ class DirectSwapTrader:
         except KeyboardInterrupt:
             print("\n\n🛑 Direct Swap Trading stopped by user")
         except Exception as e:
-            print(f"\n❌ Direct Swap Trading error: {e}")
         finally:
             self.is_running = False
             self.emergency_stop()
-            print(f"\n📊 Session Summary:")
-            print(f"   Total scans: {scan_count}")
             print(f"   Trades executed: {self.trades_executed}")
             print(f"   Active positions: {len(self.active_positions)}")
-            print(f"   Pairs scanned: {len(self.all_pairs)}")
 
     def emergency_stop(self) -> None:
         """Emergency stop - close all positions"""
@@ -416,11 +390,9 @@ class DirectSwapTrader:
     def stop(self) -> None:
         """Stop the trading system"""
         self.is_running = False
-        print("🛑 Stopping Direct Swap Trader...")
 
 def main():
     """Main entry point"""
-    print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ 🚀 VIPER DIRECT SWAP TRADER - ALL PAIRS TRADING                             ║
 ║ 🔥 Automated Swap Trading | 📊 50x Leverage | 🎯 Direct API Integration     ║
@@ -441,7 +413,6 @@ def main():
     except KeyboardInterrupt:
         print("\n\n👋 Direct Swap Trader terminated gracefully")
     except Exception as e:
-        print(f"\n❌ Fatal error: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

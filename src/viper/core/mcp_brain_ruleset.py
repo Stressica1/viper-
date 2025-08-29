@@ -20,12 +20,8 @@ RULESET HIERARCHY:
 6. Emergency Protocols (override)
 """
 
-import os
 import json
-import time
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -555,22 +551,17 @@ def main():
     rules_engine = MCPRulesEngine()
 
     # Test rule validation
-    print("🧠 VIPER MCP Brain Rules Engine")
-    print("=" * 50)
 
     # Test rule update
     success = rules_engine.update_rule("decision_threshold", 90, "admin")
-    print(f"Rule update test: {'✅ Success' if success else '❌ Failed'}")
 
     # Test operation validation
     result = rules_engine.validate_operation("execute_trade", {"risk_per_trade": 0.05})
-    print(f"Operation validation: {result}")
 
     # Export ruleset
     ruleset_json = rules_engine.export_ruleset()
     print(f"Ruleset exported: {len(ruleset_json)} characters")
 
-    print("✅ Rules Engine initialized successfully!")
 
 if __name__ == "__main__":
     main()

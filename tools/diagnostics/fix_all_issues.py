@@ -30,7 +30,6 @@ class ComprehensiveFixer:
     def run_comprehensive_fix(self):
         """Run all fixes"""
         print("🔧 COMPREHENSIVE VIPER TRADING SYSTEM FIXER")
-        print("=" * 60)
 
         try:
             # Fix 1: Environment Variables
@@ -52,19 +51,15 @@ class ComprehensiveFixer:
             self.generate_fix_report()
 
         except Exception as e:
-            print(f"❌ Fix process failed: {e}")
             import traceback
             traceback.print_exc()
 
     def fix_environment_variables(self):
         """Fix environment variable loading"""
-        print("\n🔧 Fix 1: ENVIRONMENT VARIABLES")
-        print("-" * 40)
 
         # Check if .env file exists and has credentials
         env_file = self.project_root / '.env'
         if not env_file.exists():
-            print("❌ .env file missing - creating template")
             self.create_env_template()
             return
 
@@ -98,7 +93,6 @@ class ComprehensiveFixer:
 
         if credentials_missing:
             print(f"❌ Missing credentials: {', '.join(credentials_missing)}")
-            print("   Please add these to your .env file")
             self.issues_remaining.extend(credentials_missing)
 
         # Test environment loading
@@ -111,11 +105,9 @@ class ComprehensiveFixer:
                 print("✅ Environment variables load successfully")
                 self.fixes_applied.append("Environment variable loading")
             else:
-                print("❌ Environment variables not loading")
                 self.issues_remaining.append("Environment loading failed")
 
         except ImportError:
-            print("❌ python-dotenv not installed")
             self.issues_remaining.append("Missing python-dotenv dependency")
 
     def create_env_template(self):
@@ -149,13 +141,10 @@ ENABLE_DEBUG=true
         with open(self.project_root / '.env', 'w') as f:
             f.write(template)
 
-        print("📝 Created .env template file")
         print("   Please edit it with your actual API credentials")
 
     def fix_async_sync_issues(self):
         """Fix async/sync mismatches"""
-        print("\n🔧 Fix 2: ASYNC/SYNC ISSUES")
-        print("-" * 40)
 
         # Fix the advanced trend detector OHLCV issue
         trend_detector_file = self.project_root / 'advanced_trend_detector.py'
@@ -166,10 +155,8 @@ ENABLE_DEBUG=true
 
             # Check if the fix is already applied
             if 'await self.exchange.fetch_ohlcv' in content:
-                print("✅ OHLCV async fix already applied")
                 self.fixes_applied.append("OHLCV async fix")
             else:
-                print("❌ OHLCV async fix needed")
                 self.issues_remaining.append("OHLCV async fix needed")
 
         # Check other files for async issues
@@ -204,8 +191,6 @@ ENABLE_DEBUG=true
 
     def fix_api_credential_loading(self):
         """Fix API credential loading issues"""
-        print("\n🔧 Fix 3: API CREDENTIAL LOADING")
-        print("-" * 40)
 
         # Test if credentials can be loaded properly
         try:
@@ -217,7 +202,6 @@ ENABLE_DEBUG=true
             api_password = os.getenv('BITGET_API_PASSWORD')
 
             if all([api_key, api_secret, api_password]):
-                print("✅ API credentials load successfully")
 
                 # Test API connection
                 try:
@@ -232,13 +216,11 @@ ENABLE_DEBUG=true
 
                     # Test connection
                     exchange.load_markets()
-                    print("✅ API connection test successful")
                     print(f"   Markets available: {len(exchange.markets)}")
 
                     self.fixes_applied.append("API credential loading")
 
                 except Exception as e:
-                    print(f"❌ API connection failed: {e}")
                     self.issues_remaining.append(f"API connection: {e}")
 
             else:
@@ -256,8 +238,6 @@ ENABLE_DEBUG=true
 
     def fix_component_integration(self):
         """Fix component integration issues"""
-        print("\n🔧 Fix 4: COMPONENT INTEGRATION")
-        print("-" * 40)
 
         # Test importing all key components
         components_to_test = [
@@ -275,9 +255,7 @@ ENABLE_DEBUG=true
             try:
                 module = __import__(module_name, fromlist=[class_name])
                 getattr(module, class_name)
-                print(f"✅ {class_name}: Import successful")
             except Exception as e:
-                print(f"❌ {class_name}: Import failed - {e}")
                 self.issues_remaining.append(f"{class_name} import: {e}")
 
         # Test MasterDiagnosticScanner has run_full_scan_sync
@@ -293,16 +271,12 @@ ENABLE_DEBUG=true
                 self.issues_remaining.append("Missing run_full_scan_sync method")
 
         except Exception as e:
-            print(f"❌ MasterDiagnosticScanner test failed: {e}")
             self.issues_remaining.append(f"MasterDiagnosticScanner: {e}")
 
     def test_complete_system(self):
         """Test the complete system integration"""
-        print("\n🔧 Fix 5: COMPLETE SYSTEM TEST")
-        print("-" * 40)
 
         # Test 1: Syntax check all Python files
-        print("📝 Checking syntax of all Python files...")
 
         python_files = []
         for file_path in self.project_root.rglob('*.py'):
@@ -330,7 +304,6 @@ ENABLE_DEBUG=true
 
         # Test 2: Import test for main components
         print("📦 Testing component imports...")
-
         import_tests = [
             ('ccxt', 'Crypto exchange library'),
             ('numpy', 'Mathematical operations'),
@@ -342,13 +315,11 @@ ENABLE_DEBUG=true
         for module, description in import_tests:
             try:
                 __import__(module)
-                print(f"✅ {description}: Available")
             except ImportError:
                 print(f"❌ {description}: Missing - install with pip install {module}")
                 self.issues_remaining.append(f"Missing {module}")
 
         # Test 3: Environment variable loading
-        print("🔑 Testing environment variable loading...")
 
         from dotenv import load_dotenv
         load_dotenv()
@@ -363,13 +334,10 @@ ENABLE_DEBUG=true
         if env_loaded:
             print(f"✅ Environment variables loaded: {', '.join(env_loaded)}")
         else:
-            print("❌ No environment variables loaded")
             self.issues_remaining.append("Environment variables not loaded")
 
     def generate_fix_report(self):
         """Generate comprehensive fix report"""
-        print("\n📊 FINAL FIX REPORT")
-        print("-" * 40)
 
         report = {
             'fix_timestamp': datetime.now().isoformat(),
@@ -394,7 +362,6 @@ ENABLE_DEBUG=true
             json.dump(report, f, indent=2, default=str)
 
         # Display summary
-        print("🎯 FIX SUMMARY:")
         print(f"   Fixes Applied: {len(self.fixes_applied)}")
         print(f"   Issues Remaining: {len(self.issues_remaining)}")
         print(f"   System Readiness: {report['system_readiness']}")

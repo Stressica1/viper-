@@ -17,13 +17,10 @@ import sys
 import json
 import asyncio
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Tuple
 from pathlib import Path
 import pandas as pd
 import numpy as np
 from dataclasses import dataclass, asdict
-from concurrent.futures import ThreadPoolExecutor, as_completed
 import ccxt
 
 # Add project root to path
@@ -960,8 +957,6 @@ async def get_entry_signal_recommendations(symbol: str, timeframe: str) -> Dict[
 # Main execution
 async def main():
     """Main backtesting and optimization execution"""
-    print("🎯 MCP BACKTESTING & ENTRY SIGNAL OPTIMIZER")
-    print("=" * 60)
 
     # Default analysis parameters
     symbols = ['BTCUSDT', 'ETHUSDT', 'ADAUSDT']
@@ -978,31 +973,23 @@ async def main():
         }
 
         task_id = await create_backtesting_task(task_config)
-        print(f"📋 Task Created: {task_id}")
 
         # Run comprehensive analysis
-        print("🚀 Running comprehensive analysis...")
         results = await run_backtesting_analysis(symbols, timeframes, days)
 
-        print("📊 Analysis Results:")
-        print(f"   Status: {results['status']}")
         print(f"   Symbols Analyzed: {results['symbols_analyzed']}")
         print(f"   Entry Analyses: {results['entry_analyses']}")
-        print(f"   Backtest Results: {results['backtest_results']}")
 
         # Get entry signal recommendations
-        print("\n🎯 Entry Signal Recommendations:")
         for symbol in symbols:
             for timeframe in timeframes:
                 recs = await get_entry_signal_recommendations(symbol, timeframe)
                 if recs.get('success_rate'):
                     print(f"   {symbol} {timeframe}: {recs['success_rate']:.1f}% success rate")
 
-        print("✅ Backtesting and optimization completed!")
 
     except Exception as e:
         logger.error(f"❌ Execution failed: {e}")
-        print(f"❌ ERROR: {e}")
         return 1
 
     return 0

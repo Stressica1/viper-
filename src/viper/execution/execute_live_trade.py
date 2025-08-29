@@ -42,47 +42,35 @@ class LiveTradeExecutor:
     async def execute_complete_trade_cycle(self):
         """Execute complete trade cycle from signal to order"""
 
-        print("🚀 VIPER LIVE TRADE EXECUTION")
-        print("=" * 60)
 
         try:
             # Step 1: System Health Check
-            print("📊 STEP 1: SYSTEM HEALTH CHECK")
             await self.system_health_check()
 
             # Step 2: Generate Trading Signals
-            print("\\n🎯 STEP 2: GENERATE TRADING SIGNALS")
             signals = await self.generate_trading_signals()
 
             if not signals:
-                print("❌ No trading signals generated")
                 return False
 
             # Step 3: Validate and Optimize Signals
-            print("\\n🔍 STEP 3: VALIDATE SIGNALS")
             validated_signals = await self.validate_signals(signals)
 
             if not validated_signals:
-                print("❌ No signals passed validation")
                 return False
 
             # Step 4: Execute Trade Order
-            print("\\n💰 STEP 4: EXECUTE TRADE ORDER")
             trade_result = await self.execute_trade_order(validated_signals[0])
 
             if not trade_result:
-                print("❌ Trade execution failed")
                 return False
 
             # Step 5: Monitor and Manage Position
-            print("\\n📈 STEP 5: MONITOR POSITION")
             await self.monitor_position(trade_result)
 
             # Step 6: Report Results
-            print("\\n📊 STEP 6: GENERATE REPORT")
             await self.generate_trade_report(trade_result)
 
-            print("\\n🎉 TRADE EXECUTION COMPLETE!")
             return True
 
         except Exception as e:
@@ -95,7 +83,6 @@ class LiveTradeExecutor:
 
         # Check account balance
         balance = await self.trader.check_account_balance()
-        print(f"💰 Account Balance: ${balance:.2f}")
 
         if balance < 1.0:
             raise Exception("❌ Insufficient account balance for trading")
@@ -108,17 +95,13 @@ class LiveTradeExecutor:
             raise Exception("❌ Emergency stop is active")
 
         # Check GitHub MCP
-        print("🔗 GitHub MCP Status: Checking...")
 
         # Verify API connectivity
         try:
             await self.trader.connect_exchange()
-            print("✅ Exchange Connection: SUCCESS")
         except Exception as e:
-            print(f"❌ Exchange Connection: FAILED - {e}")
             raise
 
-        print("✅ System Health Check: PASSED")
 
     async def generate_trading_signals(self):
         """Generate optimized trading signals"""
@@ -128,7 +111,6 @@ class LiveTradeExecutor:
         market_data = await self.get_market_data(symbol)
 
         if not market_data:
-            print("❌ Failed to get market data")
             return []
 
         # Calculate predictive ranges
@@ -225,7 +207,6 @@ class LiveTradeExecutor:
         print(f"💰 EXECUTING TRADE: {signal.direction.upper()} {signal.symbol}")
         print(f"   Entry Price: ${signal.entry_price:.2f}")
         print(f"   Position Size: {signal.position_size:.6f}")
-        print(f"   Stop Loss: ${signal.stop_loss:.2f}")
         print(f"   Take Profit: ${signal.take_profit:.2f}")
 
         try:
@@ -240,14 +221,12 @@ class LiveTradeExecutor:
             )
 
             if trade_result:
-                print("✅ TRADE EXECUTED SUCCESSFULLY!")
                 print(f"   Order ID: {trade_result.get('order_id', 'N/A')}")
                 print(f"   Executed Price: ${trade_result.get('price', 0):.2f}")
                 print(f"   Executed Size: {trade_result.get('size', 0):.6f}")
 
                 return trade_result
             else:
-                print("❌ Trade execution failed")
                 return None
 
         except Exception as e:
@@ -261,7 +240,6 @@ class LiveTradeExecutor:
             return
 
         symbol = trade_result.get('symbol')
-        print(f"📈 MONITORING POSITION: {symbol}")
 
         try:
             # Monitor for 60 seconds
@@ -271,14 +249,11 @@ class LiveTradeExecutor:
                 # Check position status
                 position_status = await self.trader.monitor_positions()
                 if position_status:
-                    print(f"   Position Status: {position_status}")
 
                 # Check for TP/SL hits
                 if await self.check_tp_sl_hit(trade_result):
-                    print("🎯 Take Profit or Stop Loss hit!")
                     break
 
-            print("✅ Position monitoring complete")
 
         except Exception as e:
             logger.error(f"❌ Position monitoring error: {e}")
@@ -293,7 +268,6 @@ class LiveTradeExecutor:
     async def generate_trade_report(self, trade_result):
         """Generate comprehensive trade report"""
 
-        print("📊 GENERATING TRADE REPORT")
 
         report = {
             'timestamp': datetime.now().isoformat(),
@@ -310,7 +284,6 @@ class LiveTradeExecutor:
         # Save to GitHub
         try:
             await self.github_mcp.create_performance_issue(report)
-            print("✅ Trade report saved to GitHub")
         except Exception as e:
             logger.error(f"❌ Failed to save report to GitHub: {e}")
 
@@ -319,14 +292,11 @@ class LiveTradeExecutor:
 async def main():
     """Main execution function"""
 
-    print("🚀 STARTING COMPLETE LIVE TRADE EXECUTION")
     print("⚠️  WARNING: This will execute REAL trades with REAL money!")
-    print("=" * 60)
 
     # Confirm execution
     confirm = input("Are you sure you want to execute a LIVE trade? (yes/no): ").strip().lower()
     if confirm != 'yes':
-        print("❌ Trade execution cancelled")
         return
 
     # Initialize and run trade executor
@@ -334,10 +304,8 @@ async def main():
     success = await executor.execute_complete_trade_cycle()
 
     if success:
-        print("\\n🎉 LIVE TRADE EXECUTION SUCCESSFUL!")
         print("💰 A trade has been placed and is being monitored")
     else:
-        print("\\n❌ LIVE TRADE EXECUTION FAILED!")
         print("🔍 Check logs for detailed error information")
 
 if __name__ == "__main__":

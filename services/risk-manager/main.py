@@ -14,27 +14,20 @@ Features:
 
 import os
 import json
-import time
 import logging
 import asyncio
 import sys
-import math
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 from dataclasses import dataclass
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
-from pathlib import Path
-import threading
 import httpx
 from enum import Enum
 
 # Add shared directory to path for circuit breaker
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
-    from circuit_breaker import ServiceClient, call_service
     CIRCUIT_BREAKER_AVAILABLE = True
 except ImportError:
     # Fallback if shared module not available
@@ -970,7 +963,7 @@ async def get_risk_alerts(limit: int = Query(50, description="Number of alerts t
         for alert in alerts:
             try:
                 parsed_alerts.append(json.loads(alert))
-            except:
+            except Exception:
                 parsed_alerts.append({'raw': alert})
 
         return {'alerts': parsed_alerts, 'count': len(parsed_alerts)}

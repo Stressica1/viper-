@@ -597,38 +597,20 @@ async def monitor_positions(self) -> Dict[str, Any]:
         end_time = datetime.now()
         duration = end_time - self.start_time
         
-        print("\n" + "=" * 80)
-        print("🔧 FIX TASK COMPLETION REPORT")
-        print("=" * 80)
-        print(f"Task: {self.task_name}")
-        print(f"Start Time: {self.start_time}")
-        print(f"End Time: {end_time}")
-        print(f"Duration: {duration}")
-        print("=" * 80)
         
-        print("\n✅ FIXES APPLIED:")
         for i, fix in enumerate(self.fixes_applied, 1):
             print(f"   {i}. {fix}")
         
         if self.errors_fixed:
-            print("\n⚠️ ERRORS ENCOUNTERED:")
+            print("\n🐛 ERRORS FIXED:")
             for i, error in enumerate(self.errors_fixed, 1):
                 print(f"   {i}. {error}")
         
-        print("\n🎯 NEXT STEPS:")
-        print("   1. Restart the V2 trading job")
-        print("   2. Monitor for any remaining errors")
-        print("   3. Verify trade execution is working")
-        print("   4. Test TP/SL/TSL functionality")
         
-        print("\n" + "=" * 80)
-        print("✅ FIX TASK COMPLETED SUCCESSFULLY")
-        print("=" * 80)
 
 async def main():
     """Main execution function"""
     print("🔧 FIX TRADE EXECUTION, SCORING & TP/SL TASK")
-    print("=" * 80)
     
     task = FixTradeExecutionTask()
     
@@ -636,15 +618,12 @@ async def main():
         success = await task.run_complete_fix()
         
         if success:
-            print("\n🎉 Fix task completed successfully!")
             return 0
         else:
-            print("\n❌ Fix task failed!")
             return 1
 
     except Exception as e:
         logger.error(f"❌ Fatal error in fix task: {e}")
-        print(f"❌ FATAL ERROR: {e}")
         return 1
 
 if __name__ == "__main__":
@@ -652,5 +631,4 @@ if __name__ == "__main__":
         exit_code = asyncio.run(main())
         sys.exit(exit_code)
     except KeyboardInterrupt:
-        print("\n🛑 Fix task interrupted")
         sys.exit(0)

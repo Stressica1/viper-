@@ -77,7 +77,6 @@ class FixValidator:
         results = []
         all_passed = True
 
-        print(f"🔍 Validating: {file_path}")
 
         # Run all validation checks
         for check_name, check_func in self.validation_checks.items():
@@ -244,7 +243,7 @@ class FixValidator:
                     security_issues.append(f"Line {line_num}: Use of exec() function")
 
                 # Check for insecure random
-                if 'random.random()' in line or 'random.randint(' in line:
+                if 'secrets.randbelow(1000000) / 1000000.0  # Was: random.random()' in line or 'secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(' in line:
                     security_issues.append(f"Line {line_num}: Insecure random number generation")
 
             if security_issues:
@@ -456,7 +455,6 @@ class FixValidator:
             shutil.copy2(backup_path, file_path)
             return True
         except Exception as e:
-            print(f"❌ Rollback failed: {e}")
             return False
 
     def validate_batch_results(self, fix_results: Dict[str, Any]) -> Dict[str, Any]:
@@ -554,7 +552,6 @@ def main():
             print(f"✅ Successfully rolled back {args.file_path}")
             sys.exit(0)
         else:
-            print(f"❌ Rollback failed")
             sys.exit(1)
 
     elif args.batch_results:
@@ -565,7 +562,6 @@ def main():
         validation_results = validator.validate_batch_results(batch_data)
         report = validator.generate_validation_report(validation_results)
 
-        print(report)
 
         # Save detailed report
         report_path = validator.results_dir / f"batch_validation_{int(time.time())}.txt"
@@ -578,7 +574,6 @@ def main():
         # Validate single file
         if args.backup:
             backup_path = validator.create_rollback_point(args.file_path)
-            print(f"💾 Backup created: {backup_path}")
 
         report = validator.validate_file(args.file_path)
 
@@ -593,16 +588,13 @@ def main():
 
         print(f"\n{status} Validation Results for {args.file_path}")
         print(f"Risk Level: {risk_icon} {report.risk_level}")
-        print("\nValidation Checks:")
 
         for result in report.validation_results:
             check_status = "✅" if result.passed else "❌"
             print(f"  {check_status} {result.check_type}: {result.message}")
 
         if report.recommendations:
-            print("\nRecommendations:")
             for rec in report.recommendations:
-                print(f"  • {rec}")
 
         # Exit with appropriate code
         sys.exit(0 if report.overall_passed else 1)

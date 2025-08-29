@@ -9,8 +9,8 @@ import os
 import time
 import logging
 import ccxt
-import json
 import random
+import secrets
 from datetime import datetime
 from typing import List, Dict, Optional
 
@@ -412,7 +412,7 @@ class BitgetUnlimitedTrader:
                             if abs(change_24h) > 2:  # Strong momentum
                                 side = 'buy' if change_24h > 0 else 'sell'
                             else:  # Random direction for low momentum
-                                side = random.choice(['buy', 'sell'])
+                                side = secrets.choice(['buy', 'sell'])
                             
                             order = self.execute_unlimited_trade(symbol, side)
                             if order:

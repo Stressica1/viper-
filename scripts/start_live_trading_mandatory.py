@@ -33,17 +33,12 @@ except ImportError:
     ENHANCED_DISPLAY = False
     # Fallback terminal functions
     def display_error(msg, details=None):
-        print(f"❌ {msg}")
         if details: print(f"   {details}")
     def display_success(msg, details=None):
-        print(f"✅ {msg}")
         if details: print(f"   {details}")
     def display_warning(msg, details=None):
-        print(f"⚠️ {msg}")
         if details: print(f"   {details}")
     def print_banner():
-        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
-        print("=" * 70)
 
 # Configure logging
 logging.basicConfig(
@@ -179,11 +174,7 @@ def main():
         terminal.console.rule("[bold red]⚠️ LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO ⚠️[/]")
         terminal.console.rule("[bold blue]🔒 DOCKER AND MCP ENFORCEMENT ACTIVE 🔒[/]")
     else:
-        print("🔒 VIPER MANDATORY LIVE TRADING LAUNCHER")
-        print("=" * 70)
         print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO")
-        print("🔒 DOCKER AND MCP ENFORCEMENT ACTIVE")
-        print("=" * 70)
     
     # System validation with enhanced progress display
     validation_steps = [
@@ -236,19 +227,13 @@ def main():
             
         terminal.console.print("[bold green]🚀 LAUNCHING LIVE TRADING SYSTEM...[/]")
     else:
-        print("✅ ALL MANDATORY REQUIREMENTS MET")
-        print("🚀 Starting live trading system...")
-        print("=" * 70)
         print("⚠️ WARNING: This will execute real trades with real money!")
         print("⚠️ Press Ctrl+C within 10 seconds to cancel")
-        print("=" * 70)
         
         try:
             for i in range(10, 0, -1):
-                print(f"Starting in {i} seconds...")
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("\n🛑 Launch cancelled by user")
             sys.exit(0)
     
     # Import and start the main system

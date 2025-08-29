@@ -554,13 +554,10 @@ class EnhancedParameterOptimizer:
 
 def main():
     """Main optimization function"""
-    print("🚀 Enhanced Parameter Optimizer")
-    print("=" * 50)
 
     optimizer = EnhancedParameterOptimizer()
 
     # Run optimization
-    print("🎯 Starting parameter optimization...")
     result = optimizer.optimize_parameters(
         target="balanced",
         max_iterations=20,
@@ -568,17 +565,13 @@ def main():
     )
 
     if result:
-        print("✅ Optimization completed!")
         print(f"🔧 Optimized {len(result.parameters)} parameters")
-        print(f"📊 Key Metrics:")
         for key, value in result.metrics.items():
-            print(f"   {key}: {value:.4f}")
 
         # Generate report
         report = optimizer.generate_optimization_report()
         print(f"📋 Optimization report generated with {len(report.get('recommendations', []))} recommendations")
     else:
-        print("❌ Optimization failed")
 
 if __name__ == "__main__":
     main()

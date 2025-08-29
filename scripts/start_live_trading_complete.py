@@ -58,8 +58,6 @@ class CompleteLiveTradingSystem:
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
 
-        print("🚀 VIPER Complete Live Trading System")
-        print("=" * 60)
 
     def _load_system_config(self) -> Dict[str, Any]:
         """Load system configuration"""
@@ -82,7 +80,6 @@ class CompleteLiveTradingSystem:
     def initialize_system(self) -> bool:
         """Initialize all system components"""
         try:
-            print("🔧 Initializing system components...")
 
             # Initialize strategy dashboard
             print("  📊 Initializing strategy metrics dashboard...")
@@ -96,14 +93,11 @@ class CompleteLiveTradingSystem:
                 self.status.github_mcp_connected = bool(self.github_mcp.github_token)
 
             # Initialize live trading manager
-            print("  💰 Initializing live trading manager...")
             self.trading_manager = LiveTradingManager(self.config)
 
-            print("✅ System initialization complete")
             return True
 
         except Exception as e:
-            print(f"❌ System initialization failed: {e}")
             return False
 
     def start_live_trading(self) -> bool:
@@ -112,22 +106,17 @@ class CompleteLiveTradingSystem:
             return False
 
         try:
-            print("\n🚀 Starting Live Trading Operations...")
-            print("-" * 40)
 
             # Start live trading
             if self.trading_manager and self.trading_manager.start_live_trading():
                 self.status.live_trading_active = True
-                print("✅ Live trading started")
             else:
-                print("❌ Failed to start live trading")
                 return False
 
             # Start strategy monitoring
             if self.strategy_dashboard:
                 self.strategy_dashboard.start_monitoring()
                 self.status.monitoring_active = True
-                print("✅ Strategy monitoring started")
 
             # Create initial GitHub tasks
             if self.github_mcp and self.status.github_mcp_connected:
@@ -136,7 +125,6 @@ class CompleteLiveTradingSystem:
             self.status.last_update = datetime.now().isoformat()
 
             print("\n🎉 VIPER Live Trading System Started Successfully!")
-            print("=" * 60)
 
             # Display initial status
             self.display_system_status()
@@ -151,29 +139,24 @@ class CompleteLiveTradingSystem:
         """Stop the complete trading system"""
         try:
             print("\n⏹️  Stopping VIPER Live Trading System...")
-            print("-" * 40)
 
             # Stop live trading
             if self.trading_manager and self.status.live_trading_active:
                 self.trading_manager.stop_live_trading("System shutdown")
                 self.status.live_trading_active = False
-                print("✅ Live trading stopped")
 
             # Stop monitoring
             if self.strategy_dashboard and self.status.monitoring_active:
                 self.strategy_dashboard.stop_monitoring()
                 self.status.monitoring_active = False
-                print("✅ Strategy monitoring stopped")
 
             # Create shutdown tasks
             if self.github_mcp and self.status.github_mcp_connected:
                 self._create_shutdown_tasks()
 
-            print("✅ System shutdown complete")
             return True
 
         except Exception as e:
-            print(f"❌ Error during system shutdown: {e}")
             return False
 
     def _create_startup_tasks(self):
@@ -206,10 +189,8 @@ class CompleteLiveTradingSystem:
                 }
             )
 
-            print("✅ GitHub startup tasks created")
 
         except Exception as e:
-            print(f"⚠️  GitHub task creation failed: {e}")
 
     def _create_shutdown_tasks(self):
         """Create GitHub tasks for system shutdown"""
@@ -228,38 +209,29 @@ class CompleteLiveTradingSystem:
                 }
             )
 
-            print("✅ GitHub shutdown tasks created")
 
         except Exception as e:
-            print(f"⚠️  GitHub shutdown task failed: {e}")
 
     def display_system_status(self):
         """Display comprehensive system status"""
-        print("\n📊 SYSTEM STATUS")
-        print("=" * 30)
 
         # Trading status
-        print("💰 Live Trading:")
         trading_status = self.trading_manager.get_trading_status() if self.trading_manager else {}
         print(f"  Status: {'✅ Active' if self.status.live_trading_active else '❌ Inactive'}")
         print(f"  Positions: {trading_status.get('active_positions', 0)}")
         print(f"  Total P&L: ${trading_status.get('total_pnl', 0):,.2f}")
 
         # Strategy monitoring
-        print("\n📊 Strategy Monitoring:")
         print(f"  Status: {'✅ Active' if self.status.monitoring_active else '❌ Inactive'}")
         print(f"  Strategies Loaded: {self.status.strategies_loaded}")
 
         # GitHub MCP
-        print("\n🐙 GitHub MCP:")
         print(f"  Status: {'✅ Connected' if self.status.github_mcp_connected else '❌ Disconnected'}")
         if self.github_mcp:
             open_tasks = len(self.github_mcp.get_open_tasks())
-            print(f"  Open Tasks: {open_tasks}")
 
         # Portfolio summary
         if self.strategy_dashboard:
-            print("\n📈 Portfolio Summary:")
             portfolio = self.strategy_dashboard.portfolio_metrics
             if portfolio:
                 print(f"  Total Value: ${portfolio.total_portfolio_value:,.2f}")
@@ -271,9 +243,7 @@ class CompleteLiveTradingSystem:
 
     def run_interactive_mode(self):
         """Run in interactive mode with command interface"""
-        print("\n🎮 Interactive Mode Started")
         print("Commands: status, strategies, trading, github, stop, help")
-        print("Type 'stop' to exit")
 
         while True:
             try:
@@ -293,34 +263,20 @@ class CompleteLiveTradingSystem:
                     if self.github_mcp:
                         tasks = self.github_mcp.get_open_tasks()
                         if tasks:
-                            print("📋 Open GitHub Tasks:")
                             for task in tasks[:10]:  # Show first 10
-                                print(f"  #{task['number']}: {task['title']}")
                         else:
-                            print("📭 No open tasks")
                 elif command == 'help':
-                    print("Available commands:")
-                    print("  status     - Show system status")
-                    print("  strategies - Show strategy metrics")
-                    print("  trading    - Show trading report")
-                    print("  github     - Show GitHub tasks")
-                    print("  stop       - Stop the system")
-                    print("  help       - Show this help")
                 else:
-                    print(f"Unknown command: {command}")
 
             except KeyboardInterrupt:
                 break
             except Exception as e:
-                print(f"Error: {e}")
 
         self.stop_system()
 
     def run_automated_mode(self, duration_hours: int = None):
         """Run in automated mode for specified duration"""
-        print("🤖 Automated Mode Started")
         if duration_hours:
-            print(f"Duration: {duration_hours} hours")
             end_time = datetime.now() + timedelta(hours=duration_hours)
             print(f"Will stop at: {end_time.strftime('%Y-%m-%d %H:%M:%S')}")
 
@@ -336,7 +292,6 @@ class CompleteLiveTradingSystem:
                     break
 
         except KeyboardInterrupt:
-            print("\n⚠️  Interrupted by user")
         finally:
             self.stop_system()
 
@@ -370,7 +325,6 @@ def main():
             else:
                 print("💡 System started. Use --interactive for command interface")
                 print("   or --automated N for automated operation")
-                print("   Press Ctrl+C to stop")
                 try:
                     while True:
                         time.sleep(60)
@@ -378,14 +332,11 @@ def main():
                 except KeyboardInterrupt:
                     system.stop_system()
         else:
-            print("❌ Failed to start system")
             sys.exit(1)
 
     elif args.stop:
         if system.stop_system():
-            print("✅ System stopped successfully")
         else:
-            print("❌ Failed to stop system")
 
     elif args.status:
         if system.initialize_system():
@@ -394,14 +345,10 @@ def main():
             print("❌ Failed to initialize system for status check")
 
     else:
-        print("🚀 VIPER Complete Live Trading System")
-        print("=" * 50)
-        print("Quick Start Commands:")
         print("  Start interactive: python scripts/start_live_trading_complete.py --start --interactive")
         print("  Start automated:   python scripts/start_live_trading_complete.py --start --automated 24")
         print("  Show status:       python scripts/start_live_trading_complete.py --status")
         print("  Stop system:       python scripts/start_live_trading_complete.py --stop")
-        print("\nUse --help for all options")
 
 if __name__ == '__main__':
     main()

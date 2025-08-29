@@ -73,7 +73,6 @@ class ComprehensiveBugReportGenerator:
 
     def generate_comprehensive_report(self) -> str:
         """Generate comprehensive HTML report"""
-        print("📊 GENERATING COMPREHENSIVE BUG REPORT")
 
         # Load scan results
         with open(self.scan_results_path, 'r', encoding='utf-8') as f:
@@ -103,14 +102,11 @@ class ComprehensiveBugReportGenerator:
         with open(html_path, 'w', encoding='utf-8') as f:
             f.write(html_content)
 
-        print(f"✅ HTML Report saved to: {html_path}")
 
         # Generate PDF report (if weka is available)
         try:
             pdf_path = self._generate_pdf_report(html_content)
-            print(f"✅ PDF Report saved to: {pdf_path}")
         except Exception as e:
-            print(f"⚠️  PDF generation skipped: {e}")
 
         return str(html_path)
 

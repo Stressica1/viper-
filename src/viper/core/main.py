@@ -29,7 +29,6 @@ except ImportError:
 # Core imports with error handling
 try:
     import ccxt
-    import asyncio
     from datetime import datetime
     from dotenv import load_dotenv
     from src.viper.core.job_manager import ViperLiveJobManager
@@ -39,7 +38,6 @@ try:
     
     IMPORTS_AVAILABLE = True
 except ImportError as e:
-    print(f"⚠️ WARNING: Some imports failed: {e}")
     print("📦 Please ensure all dependencies are installed: pip install -r requirements.txt")
     # Continue with available modules
     IMPORTS_AVAILABLE = False
@@ -166,7 +164,7 @@ class SimpleVIPERTrader:
                         max_leverage = max([tier.get('maxLeverage', 1) for tier in leverage_info])
                     else:
                         max_leverage = 20  # Default fallback
-                except:
+                except Exception:
                     max_leverage = 20  # Default fallback
 
                 self.symbol_leverages[symbol] = max_leverage
@@ -460,9 +458,7 @@ def main():
     """
     
     print("🔒 VIPER LIVE TRADING BOT - MANDATORY DOCKER & MCP ENFORCEMENT")
-    print("=" * 70)
     print("🚨 LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO MODE")
-    print("=" * 70)
     
     # Force load environment with live trading settings
     from dotenv import load_dotenv
@@ -491,7 +487,6 @@ def main():
     # Execute through mandatory wrapper only
     try:
         result = execute_module('main', 'run_live_trading')
-        print("🎉 Live trading bot execution completed!")
         return result
     except SystemExit:
         print("💀 Live trading bot execution blocked by enforcement!")

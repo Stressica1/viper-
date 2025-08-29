@@ -62,30 +62,19 @@ class MCPFixProcessRunner:
         """Run the complete MCP fix process"""
         self.start_time = time.time()
 
-        print("🚀 MCP COMPLETE FIX PROCESS")
-        print("=" * 60)
         print(f"⏰ Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print()
 
         try:
             # Phase 1: Load and analyze scan results
-            print("📊 PHASE 1: Loading Scan Results")
-            print("-" * 40)
             issues = self._load_and_analyze_scan(scan_file)
 
             # Phase 2: Create orchestrator and process fixes
-            print("\n🔧 PHASE 2: Processing Fixes")
-            print("-" * 40)
             fix_results = self._process_fixes(scan_file)
 
             # Phase 3: Validate fixes
-            print("\n✅ PHASE 3: Validating Fixes")
-            print("-" * 40)
             validation_results = self._validate_fixes(fix_results)
 
             # Phase 4: Generate final report
-            print("\n📄 PHASE 4: Generating Reports")
-            print("-" * 40)
             final_report = self._generate_final_report(fix_results, validation_results)
 
             # Calculate final statistics
@@ -109,7 +98,6 @@ class MCPFixProcessRunner:
             return self.results
 
         except Exception as e:
-            print(f"\n❌ PROCESS FAILED: {e}")
             self.results = {
                 'success': False,
                 'error': str(e),
@@ -124,7 +112,6 @@ class MCPFixProcessRunner:
         if not issues:
             raise Exception("No scan results found")
 
-        print(f"📄 Loaded {len(issues)} issues from scan")
 
         # Analyze issue distribution
         severity_counts = {}
@@ -134,13 +121,9 @@ class MCPFixProcessRunner:
             severity_counts[issue['severity']] = severity_counts.get(issue['severity'], 0) + 1
             category_counts[issue['category']] = category_counts.get(issue['category'], 0) + 1
 
-        print("\n📊 Issue Distribution:")
         for severity, count in severity_counts.items():
-            print(f"  {severity}: {count}")
 
-        print("\n📋 Category Distribution:")
         for category, count in category_counts.items():
-            print(f"  {category}: {count}")
 
         return issues
 
@@ -190,9 +173,7 @@ class MCPFixProcessRunner:
             'summary_report': str(summary_report)
         }
 
-        print(f"📄 Reports generated:")
         for report_type, path in reports.items():
-            print(f"  {report_type}: {path}")
 
         return reports
 
@@ -299,9 +280,6 @@ VIPER Development Team
 
     def _print_final_summary(self):
         """Print final summary to console"""
-        print("\n" + "=" * 60)
-        print("🎯 MCP FIX PROCESS COMPLETE")
-        print("=" * 60)
 
         success_rate = self.results.get('success_rate', 0)
         processing_time = self.results.get('processing_time', 0)
@@ -309,16 +287,13 @@ VIPER Development Team
         status_emoji = "✅" if self.results.get('success') else "⚠️"
 
         print(f"Status: {status_emoji} {'SUCCESS' if self.results.get('success') else 'NEEDS ATTENTION'}")
-        print(f"Success Rate: {success_rate:.1f}%")
         print(f"Processing Time: {processing_time:.2f} seconds")
         print(f"Total Issues: {self.results.get('total_issues', 0)}")
         print(f"Fixes Applied: {self.results.get('fixes_applied', 0)}")
         print(f"Validations Passed: {self.results.get('validation_passed', 0)}")
 
         if self.results.get('recommendations'):
-            print("\n💡 Recommendations:")
             for rec in self.results.get('recommendations', []):
-                print(f"  • {rec}")
 
         print(f"\n📄 Reports saved in: reports/ directory")
 

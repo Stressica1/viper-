@@ -408,7 +408,7 @@ class ProductionDeployment:
                     )
                     if result.returncode == 0 and result.stdout.strip():
                         enhanced_processes += len(result.stdout.strip().split('\n'))
-                except:
+                except Exception:
                     pass
 
             metrics["enhanced_processes_running"] = enhanced_processes
@@ -421,9 +421,9 @@ class ProductionDeployment:
                         if any(pattern in proc.info['name'].lower()
                               for pattern in ['enhanced', 'viper', 'trading']):
                             enhanced_memory += proc.info['memory_info'].rss
-                    except:
+                    except Exception:
                         continue
-            except:
+            except Exception:
                 pass
 
             metrics["enhanced_memory_mb"] = enhanced_memory / (1024 * 1024)
@@ -738,7 +738,6 @@ class ProductionDeployment:
             logger.info(f"📋 Deployment report saved to: {report_path}")
 
             # Display report
-            print(report_content)
 
         except Exception as e:
             logger.error(f"❌ Error generating deployment report: {e}")
@@ -774,16 +773,12 @@ class ProductionDeployment:
 
 def execute_production_deployment():
     """Execute production deployment procedure"""
-    print("🚀 PRODUCTION DEPLOYMENT SYSTEM")
-    print("=" * 80)
     print("⚠️  WARNING: This will perform gradual rollout of enhanced trading system")
     print("⚠️  Ensure you have backups and monitoring in place")
-    print()
 
     # Confirm execution
     confirm = input("Start production deployment? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ Deployment cancelled by user")
         return False
 
     # Execute deployment
@@ -798,7 +793,6 @@ def execute_production_deployment():
             print("📋 Check the deployment report for detailed information")
             return True
         elif final_status == "ROLLBACK_EXECUTED":
-            print("\n🚨 EMERGENCY ROLLBACK WAS EXECUTED!")
             print("🔍 Review the deployment and rollback reports")
             return False
         else:
@@ -807,13 +801,10 @@ def execute_production_deployment():
             return False
 
     except Exception as e:
-        print(f"\n❌ DEPLOYMENT EXECUTION FAILED: {e}")
         return False
 
 def monitor_deployment_status():
     """Monitor ongoing deployment status"""
-    print("📊 Deployment Status Monitor")
-    print("=" * 80)
 
     deployment_system = ProductionDeployment()
 
@@ -821,22 +812,15 @@ def monitor_deployment_status():
         while True:
             # Display current status
             print(f"\n[{datetime.now().strftime('%H:%M:%S')}] DEPLOYMENT STATUS")
-            print("-" * 40)
 
             # Show current metrics
             if deployment_system.deployment_metrics:
                 latest_metrics = deployment_system.deployment_metrics[-1]
-                print(f"CPU: {latest_metrics.get('cpu_percent', 'N/A')}%")
-                print(f"Memory: {latest_metrics.get('memory_percent', 'N/A')}%")
-                print(f"Enhanced Processes: {latest_metrics.get('enhanced_processes_running', 'N/A')}")
 
-            print("\nPress Ctrl+C to stop monitoring")
             time.sleep(10)
 
     except KeyboardInterrupt:
-        print("\n🛑 Deployment monitoring stopped")
     except Exception as e:
-        print(f"❌ Monitoring error: {e}")
 
 if __name__ == "__main__":
     import argparse

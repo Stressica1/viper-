@@ -15,20 +15,12 @@ Features:
 """
 
 import numpy as np
-import pandas as pd
-import math
 import scipy.stats as stats
-import scipy.optimize as optimize
-from typing import Dict, List, Tuple, Optional, Any, Union, Callable
 import logging
-from decimal import Decimal, ROUND_HALF_UP
 import warnings
 import time
-import functools
 from dataclasses import dataclass
 from enum import Enum
-import concurrent.futures
-import multiprocessing as mp
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -406,7 +398,7 @@ class EnhancedMathematicalValidator:
                 if cond_num > 1e12:
                     issues.append(f"Poor condition number: {cond_num:.2e}")
                     recommendations.append("Matrix may be ill-conditioned")
-            except:
+            except Exception:
                 pass
         
         return {
@@ -693,7 +685,7 @@ class EnhancedMathematicalValidator:
                     result = calculation_func(**noisy_inputs)
                     if np.isfinite(result):
                         results.append(result)
-                except:
+                except Exception:
                     continue
             
             if len(results) == 0:
@@ -777,7 +769,7 @@ class EnhancedMathematicalValidator:
             running_max = np.maximum.accumulate(cumulative)
             drawdown = (cumulative - running_max) / running_max
             return float(np.min(drawdown))
-        except:
+        except Exception:
             return 0.0
     
     def safe_divide(self, numerator: Union[float, np.ndarray], 
@@ -907,7 +899,6 @@ def benchmark_function(calculation_func: Callable, inputs: Dict[str, Any],
 # Test function for validation
 def run_enhanced_mathematical_validation_tests():
     """Run comprehensive mathematical validation tests"""
-    print("🧮 Running Enhanced Mathematical Validation Tests...")
     
     # Test array validation
     test_array = np.array([1, 2, 3, np.nan, 5, 100, -50, 2.5])
@@ -949,7 +940,6 @@ def run_enhanced_mathematical_validation_tests():
     )
     print(f"✅ Performance benchmark: {benchmark_result.get('operations_per_second', 0):.0f} ops/sec")
     
-    print("🎯 Enhanced mathematical validation tests completed!")
 
 if __name__ == "__main__":
     run_enhanced_mathematical_validation_tests()

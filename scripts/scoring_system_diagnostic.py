@@ -72,14 +72,11 @@ class VIPERScoringDiagnostic:
                 'sandbox': False,
             })
             self.exchange.loadMarkets()
-            print("✅ Exchange connection initialized")
         except Exception as e:
-            print(f"❌ Failed to initialize exchange: {e}")
             self.diagnostic_report['issues'].append(f"Exchange initialization failed: {e}")
 
     def print_header(self):
         """Print diagnostic header"""
-        print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║ 🔍 VIPER SCORING SYSTEM DIAGNOSTIC - COMPLETE ANALYSIS                        ║
 ║ Comprehensive diagnosis of VIPER scoring algorithm and components             ║
@@ -110,7 +107,6 @@ class VIPERScoringDiagnostic:
 
     def diagnose_signal_processor(self) -> Dict:
         """Diagnose signal processor service"""
-        print("🔍 Diagnosing Signal Processor...")
 
         result = {
             'service_status': self.check_service_health('signal-processor', 8006),
@@ -191,7 +187,6 @@ class VIPERScoringDiagnostic:
 
     def test_score_calculation(self) -> Dict:
         """Test VIPER score calculation with real market data"""
-        print("🧮 Testing VIPER Score Calculation...")
 
         result = {
             'test_pairs': [],
@@ -299,7 +294,6 @@ class VIPERScoringDiagnostic:
             return min(100, max(0, viper_score))
 
         except Exception as e:
-            print(f"Error calculating VIPER score: {e}")
             return 0.0
 
     def diagnose_scoring_pipeline(self) -> Dict:
@@ -415,7 +409,7 @@ class VIPERScoringDiagnostic:
                     market_data = {'ticker': ticker, 'orderbook': order_book}
                     score = self.calculate_viper_score(symbol, market_data)
                     scores.append(score)
-                except:
+                except Exception:
                     continue
 
             end_time = time.time()
@@ -465,7 +459,6 @@ class VIPERScoringDiagnostic:
     def run_complete_diagnostic(self):
         """Run complete diagnostic suite"""
         print("🚀 Starting Complete VIPER Scoring System Diagnostic...")
-        print("=" * 70)
 
         # Component diagnosis
         self.diagnostic_report['components']['signal_processor'] = self.diagnose_signal_processor()
@@ -502,9 +495,6 @@ class VIPERScoringDiagnostic:
         """Print comprehensive diagnostic report"""
         report = self.diagnostic_report
 
-        print("\n" + "="*70)
-        print("🎯 VIPER SCORING SYSTEM DIAGNOSTIC REPORT")
-        print("="*70)
 
         # System Status
         status = report['system_status']
@@ -517,7 +507,6 @@ class VIPERScoringDiagnostic:
         print(f"\n📊 OVERALL SYSTEM STATUS: {status_color.get(status, '⚪')} {status}")
 
         # Component Status
-        print("\n🏗️ COMPONENT STATUS:")
         for component_name, component_data in report.get('components', {}).items():
             if 'service_status' in component_data:
                 status = component_data['service_status']['status']
@@ -525,52 +514,35 @@ class VIPERScoringDiagnostic:
                 print(f"  {status_icon} {component_name}: {status}")
 
         # Algorithm Analysis
-        print("\n🧮 VIPER ALGORITHM ANALYSIS:")
         algo_analysis = report.get('scoring_algorithm', {}).get('algorithm_analysis', {})
         if algo_analysis:
             print(f"  📈 Implementation Status: {algo_analysis.get('implementation_status', 'UNKNOWN')}")
-            print("  🔧 Components:")
             for comp, present in algo_analysis.get('components', {}).items():
                 icon = '✅' if present else '❌'
-                print(f"    {icon} {comp}")
 
-            print("  ⚖️ Weights:")
             for factor, weight in algo_analysis.get('weights', {}).items():
-                print(f"    📊 {factor}: {weight}")
 
         # Performance Metrics
-        print("\n⚡ PERFORMANCE METRICS:")
         perf = report.get('performance_metrics', {})
         if perf.get('calculation_speed'):
             speed = perf['calculation_speed']
-            print(".2f")
-            print(".1f")
         # Scoring Pipeline
-        print("\n🔬 SCORING PIPELINE STATUS:")
         pipeline = report.get('scoring_pipeline', {})
         if pipeline.get('score_calculation'):
             calc = pipeline['score_calculation']
             print(f"  🎯 Scores Generated: {calc.get('scores_generated', 0)}")
-            print(".2f")
             print(f"  🔴 High Confidence Signals: {calc.get('high_confidence_signals', 0)}")
 
         # Issues Found
         issues = report.get('issues', [])
         if issues:
-            print("\n❌ ISSUES FOUND:")
             for issue in issues:
-                print(f"  🔴 {issue}")
 
         # Recommendations
         recommendations = report.get('recommendations', [])
         if recommendations:
-            print("\n💡 RECOMMENDATIONS:")
             for rec in recommendations:
-                print(f"  💡 {rec}")
 
-        print("\n" + "="*70)
-        print("🎯 Diagnostic Complete!")
-        print("="*70)
 
 def main():
     """Main diagnostic function"""
@@ -598,7 +570,6 @@ def main():
                 json.dump(report, f, indent=2, default=str)
             print(f"💾 Detailed report saved to: {report_file}")
         except Exception as save_e:
-            print(f"❌ Failed to save report: {save_e}")
             # Try to save in current directory as fallback
             try:
                 fallback_file = f"scoring_system_diagnostic_{timestamp}.json"
@@ -609,7 +580,6 @@ def main():
                 print(f"❌ Fallback save also failed: {fallback_e}")
 
     except Exception as e:
-        print(f"❌ Diagnostic failed: {e}")
         import traceback
         traceback.print_exc()
 

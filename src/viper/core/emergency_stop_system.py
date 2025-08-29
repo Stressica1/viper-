@@ -366,8 +366,6 @@ def get_emergency_system() -> EmergencyStopSystem:
 
 async def main():
     """Test emergency stop system"""
-    print("🚨 VIPER EMERGENCY STOP SYSTEM TEST")
-    print("=" * 50)
 
     emergency_system = get_emergency_system()
 
@@ -380,13 +378,11 @@ async def main():
         'api_errors_last_hour': 6
     }
 
-    print("🧪 Testing emergency conditions...")
     emergency_triggered = await emergency_system.check_emergency_conditions(test_data)
 
     if emergency_triggered:
         print("✅ Emergency conditions detected and handled")
     else:
-        print("ℹ️ No emergency conditions triggered")
 
     # Get system health
     health = await emergency_system.check_system_health()

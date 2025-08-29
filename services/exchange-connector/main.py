@@ -12,27 +12,19 @@ Features:
 """
 
 import os
-import json
 import time
 import logging
-import asyncio
 import sys
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Union
 import ccxt
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
-from pathlib import Path
 import threading
-import hashlib
-import hmac
 
 # Add shared directory to path for credential client
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
-    from credential_client import get_credential_client, get_bitget_credentials
     CREDENTIAL_CLIENT_AVAILABLE = True
 except ImportError:
     CREDENTIAL_CLIENT_AVAILABLE = False

@@ -251,14 +251,8 @@ class LiveTradingLauncher:
 
     def run_system_startup(self):
         """Run complete system startup sequence"""
-        print("🚀 VIPER LIVE TRADING SYSTEM STARTUP")
-        print("=" * 60)
-        print("⚠️  IMPORTANT SAFETY INFORMATION:")
-        print("   • This system trades with REAL MONEY")
-        print("   • Risk management is CRITICAL")
         print("   • Monitor closely during initial operation")
         print("   • Emergency stop: Ctrl+C or 'docker compose down'")
-        print("=" * 60)
 
         # Setup signal handlers
         signal.signal(signal.SIGINT, self.signal_handler)
@@ -266,69 +260,49 @@ class LiveTradingLauncher:
 
         try:
             # Step 1: Validate prerequisites
-            print("\n1️⃣ VALIDATING PREREQUISITES...")
             if not self.docker_available:
                 print("❌ Docker is not available. Please install Docker Desktop.")
                 return
 
             if not self.files_ready:
-                print("❌ Required files are missing.")
                 return
 
             if not self.validate_environment():
-                print("❌ Environment configuration is invalid.")
                 print("   Please check your .env file and ensure all required variables are set.")
                 return
 
-            print("✅ Prerequisites validated")
 
             # Step 2: Start Docker services
-            print("\n2️⃣ STARTING DOCKER SERVICES...")
             if not self.start_docker_services():
-                print("❌ Failed to start Docker services.")
                 return
 
             # Step 3: Check service health
-            print("\n3️⃣ VERIFYING SERVICE HEALTH...")
             if not self.check_service_health():
-                print("❌ Some services are unhealthy.")
                 print("   Check Docker logs: docker compose logs")
                 return
 
             # Step 4: Start live trading
-            print("\n4️⃣ STARTING LIVE TRADING OPTIMIZER...")
             print("🎯 System will begin live trading with optimization")
             print("📊 Monitor performance at: http://localhost:8000")
-            print("🛑 Emergency stop: Ctrl+C")
-            print("-" * 60)
 
             self.start_live_trading_optimizer()
 
         except KeyboardInterrupt:
-            print("\n⏹️ System shutdown requested by user")
         except Exception as e:
             logger.error(f"❌ System startup error: {e}")
-            print(f"\n❌ System error: {e}")
         finally:
-            print("\n" + "=" * 60)
-            print("🛑 SYSTEM SHUTDOWN")
-            print("=" * 60)
 
             # Cleanup
             try:
-                print("🧹 Cleaning up Docker services...")
                 subprocess.run(
                     ["docker", "compose", "down"],
                     cwd=self.project_root,
                     capture_output=True,
                     timeout=60
                 )
-                print("✅ Cleanup complete")
             except Exception as e:
-                print(f"⚠️ Cleanup warning: {e}")
 
             print("✅ VIPER Live Trading System shutdown complete")
-            print("📊 Check logs for performance summary")
 
 def main():
     """Main entry point"""

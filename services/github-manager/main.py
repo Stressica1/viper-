@@ -5,11 +5,8 @@ Dedicated MCP server for GitHub task management and project operations
 """
 
 import os
-import asyncio
 import logging
-from typing import Dict, Any, List
 from fastapi import FastAPI, Request, HTTPException
-from fastapi.responses import JSONResponse
 import httpx
 from dotenv import load_dotenv
 

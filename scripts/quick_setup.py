@@ -35,7 +35,6 @@ def run_command(cmd, description, check=True):
         if ENHANCED_DISPLAY:
             terminal.console.print(f"[blue]Running:[/] {description}")
         else:
-            print(f"Running: {description}")
             
         result = subprocess.run(cmd, shell=True, capture_output=True, text=True, check=check)
         
@@ -56,7 +55,6 @@ def setup_python_environment():
     # Check Python version
     success, output = run_command("python --version", "Checking Python version", check=False)
     if success:
-        print(f"Python version: {output.strip()}")
     
     # Create virtual environment if it doesn't exist
     if not Path("viper_env").exists():
@@ -168,8 +166,6 @@ def main():
         print_banner()
         terminal.console.rule("[bold blue]🚀 Automated VIPER Setup Starting[/]")
     else:
-        print("🚀 VIPER Quick Setup Script")
-        print("=" * 50)
     
     setup_steps = [
         ("Python Environment", setup_python_environment),
@@ -184,11 +180,9 @@ def main():
     success_count = 0
     
     for step_name, step_func in setup_steps:
-        print(f"\n{'='*60}")
         if ENHANCED_DISPLAY:
             terminal.console.rule(f"[bold cyan]{step_name}[/]")
         else:
-            print(f"=== {step_name} ===")
         
         try:
             if step_func():
@@ -197,9 +191,6 @@ def main():
             display_error(f"Error in {step_name}", str(e))
     
     # Final report
-    print(f"\n{'='*60}")
-    print("📊 SETUP COMPLETE")
-    print(f"{'='*60}")
     
     if success_count == len(setup_steps):
         display_success("All setup steps completed successfully!")
@@ -211,9 +202,7 @@ def main():
             terminal.console.print("2. Run: python tools/setup_validator.py")
             terminal.console.print("3. Start system: python scripts/start_live_trading_mandatory.py")
         else:
-            print("\n🎯 Next Steps:")
             print("1. Edit .env file with your API credentials")
-            print("2. Run: python tools/setup_validator.py")
             print("3. Start system: python scripts/start_live_trading_mandatory.py")
             
     else:
@@ -226,10 +215,8 @@ def main():
             terminal.console.print("• Run validator: python tools/setup_validator.py")
             terminal.console.print("• Check logs in logs/ directory")
         else:
-            print("\n🔧 Troubleshooting:")
             print("• Check the AI Setup Guide: docs/AI_SETUP_GUIDE.md")
             print("• Run validator: python tools/setup_validator.py")
-            print("• Check logs in logs/ directory")
 
 if __name__ == "__main__":
     main()

@@ -211,7 +211,6 @@ class MCPErrorFixer:
                 data = json.load(f)
             return data['findings']
         except Exception as e:
-            print(f"❌ Error loading scan results: {e}")
             return []
 
     def create_fix_batches(self, issues: List[Dict[str, Any]]) -> List[FixBatch]:
@@ -359,7 +358,6 @@ class MCPErrorFixer:
 
         except Exception as e:
             success = False
-            print(f"❌ Manual fix error: {e}")
 
         return {'success': success, 'fixes': fixes}
 
@@ -373,7 +371,7 @@ class MCPErrorFixer:
                 if 'fix' in pattern_info:
                     try:
                         return pattern_info['fix'](line)
-                    except:
+                    except Exception:
                         pass
 
         # Specific fix for unterminated strings
@@ -413,14 +411,11 @@ class MCPErrorFixer:
             source_path = Path(file_path)
             backup_path = self.backup_dir / source_path.name
             shutil.copy2(source_path, backup_path)
-            print(f"💾 Backup created: {backup_path}")
         except Exception as e:
-            print(f"⚠️  Backup failed: {e}")
 
     def run_fix_process(self, scan_file: str = None) -> Dict[str, Any]:
         """Run the complete fix process"""
         print("🔧 MCP ERROR FIXER - AUTOMATED CODE FIXING")
-        print("=" * 50)
 
         if self.config.dry_run:
             print("🧪 DRY RUN MODE - No actual changes will be made")
@@ -428,14 +423,12 @@ class MCPErrorFixer:
         # Load scan results
         issues = self.load_scan_results(scan_file)
         if not issues:
-            print("❌ No scan results found")
             return {'error': 'No scan results found'}
 
         print(f"📊 Loaded {len(issues)} issues from scan results")
 
         # Create fix batches
         batches = self.create_fix_batches(issues)
-        print(f"📦 Created {len(batches)} fix batches")
 
         # Process batches
         processed_batches = []
@@ -451,18 +444,11 @@ class MCPErrorFixer:
             successful_fixes += sum(1 for f in processed_batch.fixes if f.success)
             failed_fixes += sum(1 for f in processed_batch.fixes if not f.success)
 
-            print(f"   ✅ {batch_fixes} fixes attempted")
 
         # Generate report
         report = self._generate_fix_report(processed_batches, successful_fixes, failed_fixes)
 
-        print("\n" + "=" * 50)
-        print("🎯 FIX PROCESS COMPLETE")
-        print("=" * 50)
         print(f"📊 Total batches processed: {len(processed_batches)}")
-        print(f"✅ Successful fixes: {successful_fixes}")
-        print(f"❌ Failed fixes: {failed_fixes}")
-        print(f"📄 Report saved: {report}")
 
         return {
             'total_batches': len(processed_batches),
@@ -551,7 +537,6 @@ def main():
     result = fixer.run_fix_process(args.scan_file)
 
     if 'error' in result:
-        print(f"❌ Error: {result['error']}")
         sys.exit(1)
     else:
         success_rate = (result['successful_fixes'] / max(result['successful_fixes'] + result['failed_fixes'], 1)) * 100

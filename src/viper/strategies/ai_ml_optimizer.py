@@ -7,15 +7,9 @@ Advanced optimization for entry points and TP/SL levels using machine learning
 import numpy as np
 import pandas as pd
 import requests
-import json
-import time
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Optional, Any
 import logging
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import mean_squared_error, r2_score
 import ta  # Technical Analysis library
 import warnings
 warnings.filterwarnings('ignore')
@@ -782,23 +776,13 @@ def main():
     """Main function for AI/ML optimization"""
     optimizer = AIMLOptimizer()
 
-    print("🚀 VIPER AI/ML Trading Optimizer")
-    print("=" * 50)
 
     # Run comprehensive backtest
-    print("🔬 Running comprehensive backtest...")
     backtest_results = optimizer.run_comprehensive_backtest()
 
     if 'error' in backtest_results:
-        print(f"❌ Backtest failed: {backtest_results['error']}")
         return
 
-    print("📊 BACKTEST RESULTS:")
-    print(f"   Win Rate: {backtest_results['win_rate']:.1%}")
-    print(f"   Total Return: {backtest_results['total_return']:.2%}")
-    print(f"   Max Drawdown: {backtest_results['max_drawdown']:.2%}")
-    print(f"   Sharpe Ratio: {backtest_results['sharpe_ratio']:.2f}")
-    print(f"   Total Trades: {backtest_results['total_trades']}")
 
     # Get current optimization recommendations
     print("\n🎯 CURRENT OPTIMIZATION RECOMMENDATIONS:")
@@ -817,7 +801,6 @@ def main():
         print(f"   Market Trend: {recommendations.get('market_conditions', {}).get('trend', 'unknown')}")
         print(f"   Risk Level: {recommendations.get('risk_assessment', 'unknown')}")
 
-    print("\n✅ AI/ML Optimization Complete!")
 
 if __name__ == "__main__":
     main()

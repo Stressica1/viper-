@@ -24,7 +24,6 @@ import time
 import threading
 import queue
 from pathlib import Path
-from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -361,15 +360,12 @@ class BatchFixOrchestrator:
 
     def orchestrate_fixes(self, scan_file: str = None) -> Dict[str, Any]:
         """Orchestrate the complete fix process"""
-        print("🎯 BATCH FIX ORCHESTRATOR")
-        print("=" * 50)
 
         # Load and categorize issues
         issues = self.fixer.load_scan_results(scan_file)
         if not issues:
             return {'error': 'No scan results found'}
 
-        print(f"📊 Loaded {len(issues)} issues")
 
         # Categorize issues by priority
         critical_issues = [i for i in issues if i['severity'] == 'CRITICAL']
@@ -377,13 +373,8 @@ class BatchFixOrchestrator:
         medium_issues = [i for i in issues if i['severity'] == 'MEDIUM']
         low_issues = [i for i in issues if i['severity'] == 'LOW']
 
-        print(f"🚨 Critical: {len(critical_issues)}")
-        print(f"🔴 High: {len(high_issues)}")
-        print(f"🟡 Medium: {len(medium_issues)}")
-        print(f"🟢 Low: {len(low_issues)}")
 
         # Submit jobs by priority
-        print("\n📦 Submitting jobs...")
 
         # Critical issues first
         if critical_issues:
@@ -407,13 +398,11 @@ class BatchFixOrchestrator:
             print(f"✅ Submitted {len(remaining_batches)} standard batches")
 
         # Process queue
-        print("\n🔄 Processing queue...")
         results = self.processor.process_queue()
 
         # Generate final report
         progress_report = self.processor.generate_progress_report(results)
 
-        print("\n" + progress_report)
 
         # Save comprehensive report
         final_report = {
@@ -477,10 +466,8 @@ def main():
     result = orchestrator.orchestrate_fixes(args.scan_file)
 
     if 'error' in result:
-        print(f"❌ Error: {result['error']}")
         sys.exit(1)
     elif result.get('success', False):
-        print("🎉 All fixes completed successfully!")
         sys.exit(0)
     else:
         failed_jobs = result['results']['failed_jobs']

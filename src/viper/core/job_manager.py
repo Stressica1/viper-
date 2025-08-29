@@ -11,10 +11,8 @@ import json
 import logging
 import os
 import sys
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
-from concurrent.futures import ThreadPoolExecutor
 
 # Load environment variables
 try:
@@ -559,6 +557,7 @@ async def continuous_job_creation():
                 
                 # Create score jobs for random symbols
                 import random
+import secrets
                 selected_symbols = random.sample(symbols, 5)
                 for symbol in selected_symbols:
                     await job_manager.create_task(
@@ -568,13 +567,13 @@ async def continuous_job_creation():
                     )
                 
                 # Create trade job for best symbol (simulate)
-                best_symbol = random.choice(selected_symbols)
+                best_symbol = secrets.choice(selected_symbols)
                 await job_manager.create_task(
                     task_type="execute_trade",
                     priority=2,
                     payload={
                         "symbol": best_symbol,
-                        "side": random.choice(["buy", "sell"]),
+                        "side": secrets.choice(["buy", "sell"]),
                         "amount": random.uniform(5.0, 20.0),
                         "cycle": cycle
                     }

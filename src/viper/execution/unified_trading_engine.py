@@ -571,31 +571,25 @@ class UnifiedTradingEngine:
 
 async def main():
     """Main execution function"""
-    print("🚀 VIPER Unified Trading Engine")
-    print("=" * 50)
 
     # Initialize engine
     engine = UnifiedTradingEngine()
 
     # Display system status
     status = engine.get_system_status()
-    print(f"\n📊 System Status:")
     print(f"   Components Loaded: {len(status['components_loaded'])}")
     print(f"   Exchange Connected: {'✅' if status['exchange_connected'] else '❌'}")
     print(f"   Trading Active: {'✅' if status['trading_active'] else '❌'}")
 
     # Run system check
-    print("🔍 Running system check...")
     system_check = engine.run_system_check()
     print(f"   System Health: {len([h for h in system_check['health_checks'].values() if h != 'unknown'])} components healthy")
 
     # Start trading if requested
     if len(sys.argv) > 1 and sys.argv[1] == '--start-trading':
-        print("🚀 Starting trading engine...")
         try:
             await engine.start_trading_engine()
         except KeyboardInterrupt:
-            print("\n🛑 Trading stopped by user")
     else:
         print("💡 Use '--start-trading' flag to begin live trading")
         print("   Example: python unified_trading_engine.py --start-trading")

@@ -892,13 +892,11 @@ class VIPERAllPairsScanner:
 def main():
     """Main entry point for all pairs scanner"""
     print("🚀 VIPER All Pairs Scanner - Comprehensive Multi-Pair Trading")
-    print("=" * 70)
 
     # Initialize scanner
     scanner = VIPERAllPairsScanner()
 
     # Display configuration
-    print("📊 Scanner Configuration:")
     print(f"   Total Pairs Available: {len(scanner.all_pairs)}")
     print(f"   Active Pairs Filtered: {len(scanner.active_pairs)}")
     print(f"   Risk per Trade: {scanner.trading_config['risk_per_trade']*100:.1f}%")
@@ -906,7 +904,6 @@ def main():
     print(f"   Scan Interval: {scanner.trading_config['scan_interval']} seconds")
     print(f"   Min VIPER Score: {scanner.trading_config['min_viper_score']}")
 
-    print("\n🏆 Top 10 Pairs by Volume:")
     top_pairs = sorted(scanner.active_pairs, key=lambda x: x.get('volume_24h', 0), reverse=True)[:10]
     for i, pair in enumerate(top_pairs, 1):
         print(f"   {i}. {pair['symbol']}: ${pair.get('volume_24h', 0):,.0f} (Lev: {pair.get('leverage', 1)}x)")
@@ -917,7 +914,6 @@ def main():
     # Confirm start
     confirm = input("\n🚨 Execute REAL LIVE TRADES across ALL PAIRS? (yes/no): ").lower().strip()
     if confirm not in ['yes', 'y']:
-        print("❌ All pairs scanner cancelled")
         return
 
     # Start scanner
@@ -925,8 +921,9 @@ def main():
     try:
         scanner.start()
     except KeyboardInterrupt:
-        print("\n🛑 All pairs scanner stopped by user")
+        print("\n⏹️ Scanner stopped by user")
     except Exception as e:
-        print(f"\n❌ All pairs scanner failed: {e}")
+        print(f"❌ Scanner error: {e}")
+
 if __name__ == "__main__":
     main()

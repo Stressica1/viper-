@@ -4,12 +4,8 @@
 Complete repository organization rules and enforcement system
 """
 
-import os
 import sys
 from pathlib import Path
-import json
-import subprocess
-from typing import List, Dict, Set
 from datetime import datetime
 
 class RepositoryRules:
@@ -264,7 +260,6 @@ Generated: {datetime.now().isoformat()}
         pre_commit_config = """
 #!/usr/bin/env python3
 import sys
-import subprocess
 from pathlib import Path
 
 # Import the repository rules
@@ -280,11 +275,9 @@ def main():
     
     if total_violations > 0:
         print("❌ Repository structure violations detected!")
-        print(f"Total violations: {total_violations}")
         print("Run 'python tools/repository_rules.py --report' for details")
         sys.exit(1)
     
-    print("✅ Repository structure is clean!")
     sys.exit(0)
 
 if __name__ == "__main__":
@@ -337,7 +330,6 @@ jobs:
         with open(workflow_path, 'w') as f:
             f.write(workflow_content.strip())
         
-        print(f"✅ Created CI workflow: {workflow_path}")
 
 
 def main():
@@ -368,12 +360,10 @@ def main():
             f.write(report)
         
         print(f"📊 Violations report saved to: {report_path}")
-        print(report)
     
     if args.setup_enforcement:
         rules.create_enforcement_tools()
         rules.setup_ci_validation()
-        print("🛡️ Enforcement tools setup complete!")
     
     if args.validate or not any([args.report, args.setup_enforcement]):
         violations = rules.validate_structure()
@@ -384,7 +374,6 @@ def main():
             print("Run with --report for detailed information")
             sys.exit(1)
         else:
-            print("✅ Repository structure is compliant!")
             sys.exit(0)
 
 

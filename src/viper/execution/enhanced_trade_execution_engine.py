@@ -13,12 +13,9 @@ Key Fixes:
 
 import os
 import asyncio
-import aiohttp
 import logging
 import ccxt.pro as ccxt
-import json
 import time
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 
@@ -26,7 +23,6 @@ from dataclasses import dataclass
 import sys
 sys.path.insert(0, '/home/runner/work/viper-/viper-/services/viper-scoring-service')
 try:
-    from main import VIPERScoringService, SignalType
 except ImportError:
     logger.error("❌ Could not import VIPERScoringService - required for live trading")
     raise ImportError("VIPERScoringService is required for live trading operations")

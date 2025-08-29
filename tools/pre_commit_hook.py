@@ -91,17 +91,10 @@ def main():
         violations.extend(naming_violations)
     
     if violations:
-        print("❌ Repository structure violations found:")
         for violation in violations:
-            print(f"   - {violation}")
-        print()
-        print("💡 To fix these issues:")
         print("   1. Run: python tools/repo_organizer.py --fix")
-        print("   2. Add the organized files: git add .")
-        print("   3. Commit again")
         sys.exit(1)
     
-    print("✅ Repository structure is clean!")
     sys.exit(0)
 
 if __name__ == "__main__":

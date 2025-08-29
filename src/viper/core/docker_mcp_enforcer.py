@@ -15,16 +15,11 @@ NO SYSTEM OPERATION IS ALLOWED WITHOUT DOCKER & MCP!
 
 import os
 import sys
-import time
-import json
 import logging
 import subprocess
 import requests
 from datetime import datetime
-from typing import Dict, List, Optional, Any
 from pathlib import Path
-import socket
-import threading
 
 # Configure logging
 logging.basicConfig(
@@ -155,7 +150,7 @@ class DockerMCPEnforcer:
                 logger.info("✅ MCP Server: RESPONDING")
                 self.mcp_validated = True
                 return True
-        except:
+        except Exception:
             logger.warning("⚠️ MCP server not responding")
         
         # Check if MCP server container exists
@@ -166,7 +161,7 @@ class DockerMCPEnforcer:
                 logger.info("✅ MCP Server container: RUNNING")
                 self.mcp_validated = True
                 return True
-        except:
+        except Exception:
             pass
                     
         logger.warning("⚠️ MCP Server validation incomplete")
@@ -298,13 +293,10 @@ def enforce_docker_mcp_requirements() -> bool:
 
 if __name__ == "__main__":
     # Test enforcement system
-    print("🔒 Testing Docker & MCP Enforcement System...")
     enforcer = DockerMCPEnforcer()
     
     if enforcer.enforce_mandatory_requirements():
         print("✅ All requirements validated successfully!")
         status = enforcer.get_system_status()
-        print(json.dumps(status, indent=2))
     else:
-        print("❌ Validation failed!")
         sys.exit(1)

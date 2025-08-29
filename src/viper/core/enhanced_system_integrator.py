@@ -12,21 +12,16 @@ This integrator provides:
 - Real-time system health monitoring
 """
 
-import os
 import sys
 import json
 import asyncio
 import logging
-import threading
-import time
 import inspect
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Callable
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 import importlib
-import traceback
 
 # Add project root to path
 project_root = Path(__file__).parent
@@ -856,6 +851,5 @@ def get_system_status() -> Dict[str, Any]:
     return integrator.get_system_status()
 
 if __name__ == "__main__":
-    print("🚀 Enhanced VIPER System Integrator")
     print("Run this module to initialize and start the enhanced trading system")
     print("Use: python enhanced_system_integrator.py")

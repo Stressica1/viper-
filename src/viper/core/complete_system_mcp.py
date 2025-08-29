@@ -38,7 +38,6 @@ class CompleteSystemMCP:
         """Complete all outstanding tasks using MCP GitHub"""
 
         print("🚀 VIPER COMPLETE SYSTEM - MCP GITHUB INTEGRATION")
-        print("=" * 70)
 
         try:
             # Step 1: Validate MCP GitHub Integration
@@ -46,15 +45,12 @@ class CompleteSystemMCP:
             await self.validate_mcp_github()
 
             # Step 2: Complete System Components
-            print("\\n🔧 STEP 2: COMPLETE SYSTEM COMPONENTS")
             await self.complete_system_components()
 
             # Step 3: Validate Trading System
-            print("\\n✅ STEP 3: VALIDATE TRADING SYSTEM")
             await self.validate_trading_system()
 
             # Step 4: Test Live Trading Integration
-            print("\\n💰 STEP 4: TEST LIVE TRADING INTEGRATION")
             await self.test_live_trading_integration()
 
             # Step 5: Generate Final Report
@@ -62,10 +58,8 @@ class CompleteSystemMCP:
             await self.generate_final_report()
 
             # Step 6: Deploy Production System
-            print("\\n🚀 STEP 6: DEPLOY PRODUCTION SYSTEM")
             await self.deploy_production_system()
 
-            print("\\n🎉 ALL TASKS COMPLETED SUCCESSFULLY!")
             return True
 
         except Exception as e:
@@ -86,7 +80,6 @@ class CompleteSystemMCP:
 
             # Create test issue
             await self.github_mcp.create_performance_issue(test_data)
-            print("✅ GitHub MCP: Issue creation successful")
 
             # Test repository operations
             await self.github_mcp.commit_and_push("System completion validation")
@@ -96,7 +89,6 @@ class CompleteSystemMCP:
             print("✅ MCP GitHub Integration: FULLY VALIDATED")
 
         except Exception as e:
-            print(f"❌ MCP GitHub validation failed: {e}")
             self.completion_status['mcp_github'] = 'FAILED'
             raise
 
@@ -116,25 +108,20 @@ class CompleteSystemMCP:
             try:
                 # Import and validate component
                 module = __import__(component)
-                print(f"✅ {component}: LOADED SUCCESSFULLY")
 
                 # Test component functionality
                 if hasattr(module, 'get_predictive_strategy'):
                     strategy = module.get_predictive_strategy()
-                    print(f"   📈 Predictive strategy initialized")
 
                 if hasattr(module, 'get_optimized_entry_system'):
                     entry_system = module.get_optimized_entry_system()
-                    print(f"   🎯 Optimized entry system initialized")
 
                 if hasattr(module, 'get_emergency_system'):
                     emergency_system = module.get_emergency_system()
-                    print(f"   🛡️ Emergency system initialized")
 
                 self.system_components.append(component)
 
             except Exception as e:
-                print(f"❌ {component}: FAILED - {e}")
                 self.completion_status[f'component_{component}'] = 'FAILED'
                 continue
 
@@ -153,21 +140,17 @@ class CompleteSystemMCP:
             # Test market data retrieval
             try:
                 market_data = await trader.fetch_market_data('BTCUSDT', '1h', 10)
-                print("✅ Market data retrieval: SUCCESS")
             except Exception as e:
-                print(f"⚠️ Market data retrieval: {e}")
 
             # Test account balance (will fail without API, but tests connection)
             try:
                 balance = await trader.check_account_balance()
-                print(f"✅ Account balance: ${balance:.2f}")
             except Exception as e:
                 print(f"⚠️ Account balance check: {e} (Expected without API)")
 
             self.completion_status['trading_system'] = 'VALIDATED'
 
         except Exception as e:
-            print(f"❌ Trading system validation failed: {e}")
             self.completion_status['trading_system'] = 'FAILED'
 
     async def test_live_trading_integration(self):
@@ -179,7 +162,6 @@ class CompleteSystemMCP:
 
             # Initialize trader (won't execute trade without confirmation)
             trader = SimpleLiveTrader()
-            print("✅ Simple Live Trader: INITIALIZED")
 
             # Test system health checks
             try:
@@ -191,7 +173,6 @@ class CompleteSystemMCP:
             self.completion_status['live_trading'] = 'TESTED'
 
         except Exception as e:
-            print(f"❌ Live trading integration test failed: {e}")
             self.completion_status['live_trading'] = 'FAILED'
 
     async def generate_final_report(self):
@@ -257,7 +238,6 @@ class CompleteSystemMCP:
             self.completion_status['production_deployment'] = 'COMPLETED'
 
         except Exception as e:
-            print(f"❌ Production deployment failed: {e}")
             self.completion_status['production_deployment'] = 'FAILED'
 
     async def report_completion_failure(self, error):
@@ -285,20 +265,15 @@ async def main():
 
     print("🚀 STARTING COMPLETE SYSTEM - MCP GITHUB INTEGRATION")
     print("⚠️  This will complete all outstanding tasks and deploy production system")
-    print("=" * 70)
 
     # Initialize and run completion
     completer = CompleteSystemMCP()
     success = await completer.complete_all_outstanding_tasks()
 
     if success:
-        print("\\n🎉 SYSTEM COMPLETION SUCCESSFUL!")
-        print("✅ All outstanding tasks completed")
         print("✅ MCP GitHub integration fully operational")
-        print("✅ Production system deployed and ready")
         print("\\n🚀 Your VIPER trading system is now COMPLETE and PRODUCTION READY!")
     else:
-        print("\\n❌ SYSTEM COMPLETION FAILED!")
         print("🔍 Check the error messages above and GitHub issues for details")
 
 if __name__ == "__main__":

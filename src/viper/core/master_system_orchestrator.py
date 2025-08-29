@@ -335,36 +335,30 @@ class MasterSystemOrchestrator:
 
 def main():
     """Main execution function"""
-    print("🚀 VIPER Master System Orchestrator")
-    print("=" * 50)
 
     # Initialize orchestrator
     orchestrator = MasterSystemOrchestrator()
 
     # Display system status
     status = orchestrator.get_system_status()
-    print(f"\n📊 System Status:")
     print(f"   Components: {status['total_components']}")
     print(f"   Healthy: {status['healthy_components']}")
     print(f"   Failed: {status['failed_components']}")
     print(f"   Monitoring: {'Active' if status['monitoring_active'] else 'Inactive'}")
 
     # Run diagnostics
-    print("🔍 Running system diagnostics...")
     diagnostics = orchestrator.run_system_diagnostics()
     print(f"   System Health: {diagnostics.get('system_health', 'unknown')}")
 
     if diagnostics.get('issues'):
         print(f"   Issues Found: {len(diagnostics['issues'])}")
         for issue in diagnostics['issues'][:3]:  # Show first 3 issues
-            print(f"     - {issue}")
 
     if diagnostics.get('recommendations'):
         print(f"   Recommendations: {len(diagnostics['recommendations'])}")
 
     # Start monitoring if requested
     if len(sys.argv) > 1 and sys.argv[1] == '--monitor':
-        print("📊 Starting real-time monitoring...")
         orchestrator.start_monitoring()
 
         try:
@@ -372,7 +366,6 @@ def main():
             while True:
                 time.sleep(1)
         except KeyboardInterrupt:
-            print("\n🛑 Stopping monitoring...")
             orchestrator.stop_monitoring()
     else:
         print("💡 Use '--monitor' flag to start real-time monitoring")

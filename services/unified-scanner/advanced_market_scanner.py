@@ -15,21 +15,14 @@ Features:
 """
 
 import os
-import json
-import time
 import logging
 import asyncio
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
-from pathlib import Path
-import threading
 import httpx
-from scipy import stats
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.ensemble import RandomForestRegressor
 import talib
@@ -1065,6 +1058,5 @@ if __name__ == "__main__":
         print(f"✅ Top opportunities: {len(opportunities)} found")
         
         advanced_scanner.stop()
-        print("🎯 Advanced scanner test completed!")
     
     asyncio.run(test_scanner())

@@ -15,20 +15,14 @@ Features:
 """
 
 import os
-import json
 import time
 import logging
 import asyncio
 import numpy as np
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Tuple
-from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
-import threading
 import httpx
 import uuid
-from decimal import Decimal, ROUND_DOWN, ROUND_UP
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -1191,17 +1185,13 @@ if __name__ == "__main__":
         )
         
         result = await enhanced_executor.submit_order(market_order)
-        print(f"✅ Market order result: {result}")
         
         # Check positions
         positions = enhanced_executor.get_all_positions()
-        print(f"✅ Active positions: {len(positions)}")
         
         # Get statistics
         stats = enhanced_executor.get_execution_statistics()
-        print(f"✅ Execution statistics: {stats}")
         
         enhanced_executor.stop()
-        print("🎯 Order executor test completed!")
     
     asyncio.run(test_order_executor())

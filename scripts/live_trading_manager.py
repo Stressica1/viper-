@@ -292,6 +292,7 @@ class LiveTradingManager:
 
                 # Add some realistic variation (±0.01 for small fluctuations)
                 import random
+import secrets
                 variation = random.uniform(-0.01, 0.01)
                 new_balance = max(0, calculated_balance + variation)  # Ensure non-negative
 
@@ -610,19 +611,14 @@ def main():
 
     if args.start:
         if manager.start_live_trading():
-            print("✅ Live trading started successfully")
         else:
-            print("❌ Failed to start live trading")
 
     elif args.stop:
         if manager.stop_live_trading():
-            print("✅ Live trading stopped successfully")
         else:
-            print("❌ Failed to stop live trading")
 
     elif args.status:
         status = manager.get_trading_status()
-        print("📊 Trading Status:")
         print(f"  Active: {'✅ Yes' if status['is_trading'] else '❌ No'}")
         print(f"  Positions: {status['active_positions']}")
         print(f"  Total P&L: ${status['total_pnl']:,.2f}")
@@ -630,11 +626,9 @@ def main():
 
     elif args.report:
         report = manager.generate_trading_report()
-        print(report)
 
     elif args.export:
         filepath = manager.export_trading_data(args.export)
-        print(f"✅ Trading data exported to: {filepath}")
 
     elif args.monitor:
         print("🚀 Starting live trading and monitoring...")
@@ -646,12 +640,8 @@ def main():
             except KeyboardInterrupt:
                 manager.stop_live_trading("User interrupt")
         else:
-            print("❌ Failed to start monitoring")
 
     else:
-        print("💰 VIPER Live Trading Manager")
-        print("Use --help for available commands")
-        print("\nQuick start:")
         print("  python scripts/live_trading_manager.py --start --monitor")
 
 if __name__ == '__main__':

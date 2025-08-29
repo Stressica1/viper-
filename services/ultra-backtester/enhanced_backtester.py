@@ -24,22 +24,15 @@ import logging
 import asyncio
 import numpy as np
 import pandas as pd
-from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Any, Tuple, Callable
 from dataclasses import dataclass, asdict
 from enum import Enum
 import redis
-from pathlib import Path
-import threading
-import httpx
 import uuid
 import warnings
 warnings.filterwarnings('ignore')
 
 # Statistical and optimization libraries
-from scipy import stats
-from sklearn.model_selection import TimeSeriesSplit
-from sklearn.metrics import mean_squared_error
 import concurrent.futures
 import multiprocessing as mp
 
@@ -984,7 +977,7 @@ async def simple_momentum_strategy(market_data: Dict, positions: Dict, config: B
             # In practice, this would use historical data to calculate MA
             if len(positions) < config.max_positions and symbol not in positions:
                 # Generate buy signal (simplified)
-                if np.random.random() > 0.8:  # 20% chance to buy
+                if np.secrets.randbelow(1000000) / 1000000.0  # Was: random.random() > 0.8:  # 20% chance to buy
                     signals.append({
                         'symbol': symbol,
                         'action': 'buy',
@@ -993,7 +986,7 @@ async def simple_momentum_strategy(market_data: Dict, positions: Dict, config: B
             
             elif symbol in positions:
                 # Generate sell signal (simplified)
-                if np.random.random() > 0.9:  # 10% chance to sell
+                if np.secrets.randbelow(1000000) / 1000000.0  # Was: random.random() > 0.9:  # 10% chance to sell
                     signals.append({
                         'symbol': symbol,
                         'action': 'close'
@@ -1060,21 +1053,17 @@ if __name__ == "__main__":
         symbol_list = ["BTCUSDT", "ETHUSDT", "ADAUSDT"]
         
         # Test standard backtest
-        print("🔍 Running standard backtest...")
         standard_result = await enhanced_backtester.run_backtest(
             simple_momentum_strategy, config, symbol_list, BacktestType.SINGLE_STRATEGY
         )
-        print(f"✅ Standard backtest: {standard_result.total_return:.2%} return, {standard_result.sharpe_ratio:.2f} Sharpe")
         
         # Test walk-forward analysis
-        print("🔄 Running walk-forward analysis...")
         wf_result = await enhanced_backtester.run_backtest(
             simple_momentum_strategy, config, symbol_list, BacktestType.WALK_FORWARD
         )
         print(f"✅ Walk-forward: {wf_result.total_return:.2%} return, {wf_result.sharpe_ratio:.2f} Sharpe")
         
         # Test Monte Carlo simulation
-        print("🎰 Running Monte Carlo simulation...")
         mc_result = await enhanced_backtester.run_backtest(
             viper_based_strategy, config, symbol_list, BacktestType.MONTE_CARLO
         )
@@ -1084,6 +1073,5 @@ if __name__ == "__main__":
             print(f"   MC P95: {mc_result.monte_carlo_stats['percentiles']['p95']:.2%}")
         
         enhanced_backtester.stop()
-        print("🎯 Enhanced backtester test completed!")
     
     asyncio.run(test_enhanced_backtester())

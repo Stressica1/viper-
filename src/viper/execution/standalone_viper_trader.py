@@ -926,26 +926,19 @@ class StandaloneVIPERTrader:
     
     def print_status(self):
         """Print current trading status"""
-        print("\n" + "="*80)
-        print("🚀 VIPER STANDALONE TRADER STATUS")
-        print("="*80)
         print(f"⏰ Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         print(f"📊 Active Positions: {len(self.active_positions)}/{self.max_positions}")
         print(f"🎯 VIPER Threshold: {self.viper_threshold}")
         print(f"💰 Risk per Trade: {self.risk_per_trade*100:.1f}%")
         
         if self.active_positions:
-            print("\n📈 ACTIVE POSITIONS:")
-            print("-"*60)
             for symbol, position in self.active_positions.items():
                 pnl_pct = position.unrealized_pnl * 100 if position.unrealized_pnl else 0
                 pnl_icon = "🟢" if pnl_pct > 0 else "🔴" if pnl_pct < 0 else "⚪"
                 print(f"  {pnl_icon} {symbol} | {position.side.upper()} | "
                       f"P&L: {pnl_pct:.2f}% | Entry: ${position.entry_price:.2f}")
         else:
-            print("\n💤 No active positions")
         
-        print("="*80)
     
     def signal_handler(self, signum, frame):
         """Handle shutdown signals gracefully"""
@@ -1017,7 +1010,6 @@ class StandaloneVIPERTrader:
 
 def main():
     """Main entry point"""
-    print("""
 ╔══════════════════════════════════════════════════════════════════════════════╗
 ║                🚀 VIPER STANDALONE TRADING COMPONENT                         ║
 ║                Complete Scan → Score → Trade → TP/SL Flow                    ║
@@ -1041,7 +1033,6 @@ def main():
         return 0
         
     except Exception as e:
-        print(f"❌ Failed to start VIPER Trader: {e}")
         return 1
 
 

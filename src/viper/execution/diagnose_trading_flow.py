@@ -76,8 +76,6 @@ class TradingFlowDiagnostic:
 
     async def run_complete_diagnostic(self):
         """Run complete trading flow diagnostic"""
-        print("🚀 VIPER TRADING FLOW DIAGNOSTIC")
-        print("=" * 50)
 
         try:
             # Step 1: Pair Discovery
@@ -108,8 +106,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_pair_discovery(self):
         """Diagnose pair discovery phase"""
-        print("\n🔍 Step 1: PAIR DISCOVERY")
-        print("-" * 30)
 
         try:
             # Discover all USDT swap pairs
@@ -146,8 +142,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_pair_filtering(self):
         """Diagnose pair filtering phase"""
-        print("\n🎯 Step 2: PAIR FILTERING")
-        print("-" * 30)
 
         try:
             # Filtering criteria
@@ -224,8 +218,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_market_data(self):
         """Diagnose market data fetching (OHLCV)"""
-        print("\n📊 Step 3: MARKET DATA FETCHING")
-        print("-" * 30)
 
         try:
             if not self.qualified_pairs:
@@ -260,8 +252,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_viper_scoring(self):
         """Diagnose VIPER scoring system"""
-        print("\n🎯 Step 4: VIPER SCORING")
-        print("-" * 30)
 
         try:
             if not self.qualified_pairs:
@@ -332,8 +322,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_trade_execution(self):
         """Diagnose trade execution logic"""
-        print("\n💰 Step 5: TRADE EXECUTION")
-        print("-" * 30)
 
         try:
             if not self.scoring_results:
@@ -397,8 +385,6 @@ class TradingFlowDiagnostic:
 
     async def diagnose_tp_sl_logic(self):
         """Diagnose TP/SL logic"""
-        print("\n🎯 Step 6: TP/SL LOGIC")
-        print("-" * 30)
 
         try:
             if not self.trade_simulations:
@@ -456,8 +442,6 @@ class TradingFlowDiagnostic:
 
     def generate_diagnostic_report(self):
         """Generate comprehensive diagnostic report"""
-        print("\n📊 Step 7: DIAGNOSTIC REPORT")
-        print("-" * 30)
 
         report = {
             'diagnostic_timestamp': datetime.now().isoformat(),
@@ -493,28 +477,21 @@ class TradingFlowDiagnostic:
             }, f, indent=2, default=str)
 
         # Display summary
-        print("🎯 DIAGNOSTIC SUMMARY:")
         print(f"   Pairs Discovered: {len(self.pairs_data)}")
         print(f"   Pairs Qualified: {len(self.qualified_pairs)}")
-        print(f"   Scoring Tests: {len(self.scoring_results)}")
         print(f"   Trade Simulations: {len(self.trade_simulations)}")
         print(f"   Issues Found: {len(report['issues_found'])}")
 
         if report['issues_found']:
-            print("\n❌ ISSUES FOUND:")
             for issue in report['issues_found']:
-                print(f"   • {issue}")
 
         if report['recommendations']:
-            print("\n💡 RECOMMENDATIONS:")
             for rec in report['recommendations']:
-                print(f"   • {rec}")
 
         print(f"\n📄 Detailed report saved: trading_flow_diagnostic_report.json")
 
         # Overall assessment
         if len(report['issues_found']) == 0:
-            print("\n🎉 STATUS: TRADING FLOW IS HEALTHY!")
         else:
             print(f"\n⚠️ STATUS: {len(report['issues_found'])} ISSUES NEED ATTENTION")
 

@@ -17,9 +17,7 @@ import json
 import time
 import logging
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
-import requests
 from github_mcp_integration import GitHubMCPIntegration
 
 # Configure logging
@@ -503,8 +501,6 @@ class EnhancedGitHubIntegration:
 # Example usage and integration functions
 async def main():
     """Main function for testing enhanced GitHub integration"""
-    print("🚀 Enhanced GitHub Integration System")
-    print("=" * 80)
 
     integration = EnhancedGitHubIntegration()
 
@@ -545,7 +541,6 @@ async def main():
     status_report = await integration.get_issue_status_report()
     print(f"📊 Status Report: {status_report['total_active_issues']} active issues")
 
-    print("\\n✅ Enhanced GitHub Integration Test Complete!")
 
 if __name__ == "__main__":
     asyncio.run(main())
