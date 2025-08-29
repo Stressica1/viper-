@@ -18,6 +18,7 @@ import pandas as pd
 from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
+from datetime import datetime
 import ccxt
 
 logging.basicConfig(level=logging.INFO)
@@ -184,14 +185,14 @@ class AdvancedTrendDetector:
             low = recent_data.iloc[i]['low']
             
             # Check if it's a swing high
-            if (high > recent_data.iloc[i-1]['high'] and:
+            if (high > recent_data.iloc[i-1]['high'] and
                 high > recent_data.iloc[i-2]['high'] and
                 high > recent_data.iloc[i+1]['high'] and 
                 high > recent_data.iloc[i+2]['high']):
                 swing_highs.append(high)
             
             # Check if it's a swing low
-            if (low < recent_data.iloc[i-1]['low'] and:
+            if (low < recent_data.iloc[i-1]['low'] and
                 low < recent_data.iloc[i-2]['low'] and
                 low < recent_data.iloc[i+1]['low'] and 
                 low < recent_data.iloc[i+2]['low']):
@@ -463,6 +464,212 @@ class AdvancedTrendDetector:
         base_signal.confidence = consensus_confidence
         
         return base_signal
+
+    def validate_trade_direction_with_trend(self, symbol: str, proposed_side: str, 
+                                           mtf_signals: Optional[Dict[str, TrendSignal]] = None) -> Tuple[bool, str, float]:
+        """
+        Validate if a proposed trade direction aligns with sound trend analysis
+        
+        Args:
+            symbol: Trading symbol
+            proposed_side: 'buy' or 'sell'
+            mtf_signals: Multi-timeframe signals (if None, will fetch fresh)
+            
+        Returns:
+            Tuple of (is_valid, reason, confidence_score)
+        """
+        try:
+            # Get multi-timeframe signals if not provided
+            if mtf_signals is None:
+                # Use the last available MTF analysis or perform fresh analysis
+                if hasattr(self, '_last_mtf_signals') and symbol in self._last_mtf_signals:
+                    mtf_signals = self._last_mtf_signals[symbol]
+                else:
+                    logger.warning(f"# Warning No MTF signals available for {symbol} trade validation")
+                    return False, "No trend data available", 0.0
+            
+            if not mtf_signals:
+                return False, "No trend signals available", 0.0
+                
+            # Get consensus trend
+            consensus_signal = self.get_consensus_trend(mtf_signals)
+            if not consensus_signal:
+                return False, "Unable to determine trend consensus", 0.0
+            
+            # Check minimum confidence threshold for trading
+            min_confidence = 0.6
+            if consensus_signal.confidence < min_confidence:
+                return False, f"Trend confidence too low ({consensus_signal.confidence:.2f} < {min_confidence})", consensus_signal.confidence
+            
+            # Check trend strength - avoid trading in very weak trends
+            if consensus_signal.strength == TrendStrength.VERY_WEAK:
+                return False, "Trend strength too weak for reliable trading", consensus_signal.confidence
+                
+            # Validate trade direction alignment
+            trend_direction = consensus_signal.direction
+            
+            # Define valid combinations
+            valid_bullish_directions = [TrendDirection.STRONG_BULLISH, TrendDirection.BULLISH]
+            valid_bearish_directions = [TrendDirection.STRONG_BEARISH, TrendDirection.BEARISH]
+            
+            if proposed_side == 'buy':
+                if trend_direction in valid_bullish_directions:
+                    confidence_bonus = 0.2 if trend_direction == TrendDirection.STRONG_BULLISH else 0.1
+                    final_confidence = min(1.0, consensus_signal.confidence + confidence_bonus)
+                    return True, f"✓ Buy aligns with {trend_direction.value} trend", final_confidence
+                elif trend_direction == TrendDirection.NEUTRAL:
+                    # Allow trades in neutral trend but with reduced confidence
+                    if consensus_signal.confidence >= 0.7:  # Higher threshold for neutral
+                        return True, "⚠ Buy in neutral trend (higher risk)", consensus_signal.confidence * 0.8
+                    else:
+                        return False, "Neutral trend with insufficient confidence for buy", consensus_signal.confidence
+                else:
+                    return False, f"✗ Buy conflicts with {trend_direction.value} trend", consensus_signal.confidence
+                    
+            elif proposed_side == 'sell':
+                if trend_direction in valid_bearish_directions:
+                    confidence_bonus = 0.2 if trend_direction == TrendDirection.STRONG_BEARISH else 0.1
+                    final_confidence = min(1.0, consensus_signal.confidence + confidence_bonus)
+                    return True, f"✓ Sell aligns with {trend_direction.value} trend", final_confidence
+                elif trend_direction == TrendDirection.NEUTRAL:
+                    # Allow trades in neutral trend but with reduced confidence
+                    if consensus_signal.confidence >= 0.7:  # Higher threshold for neutral
+                        return True, "⚠ Sell in neutral trend (higher risk)", consensus_signal.confidence * 0.8
+                    else:
+                        return False, "Neutral trend with insufficient confidence for sell", consensus_signal.confidence
+                else:
+                    return False, f"✗ Sell conflicts with {trend_direction.value} trend", consensus_signal.confidence
+            else:
+                return False, f"Invalid trade side: {proposed_side}", 0.0
+                
+        except Exception as e:
+            logger.error(f"# X Error validating trade direction for {symbol}: {e}")
+            return False, f"Validation error: {str(e)}", 0.0
+
+    def check_multi_timeframe_trend_agreement(self, mtf_signals: Dict[str, TrendSignal], 
+                                            min_agreement_threshold: float = 0.7) -> Tuple[bool, str]:
+        """
+        Check if multiple timeframes show sufficient agreement in trend direction
+        
+        Args:
+            mtf_signals: Multi-timeframe trend signals
+            min_agreement_threshold: Minimum agreement ratio (0.7 = 70% agreement)
+            
+        Returns:
+            Tuple of (has_agreement, description)
+        """
+        try:
+            if not mtf_signals or len(mtf_signals) < 2:
+                return False, "Insufficient timeframes for agreement check"
+                
+            # Count direction votes with broader agreement logic
+            direction_votes = {
+                TrendDirection.STRONG_BULLISH: 0,
+                TrendDirection.BULLISH: 0,
+                TrendDirection.NEUTRAL: 0,
+                TrendDirection.BEARISH: 0,
+                TrendDirection.STRONG_BEARISH: 0
+            }
+            
+            # Also track broader directional agreement (bullish vs bearish vs neutral)
+            broad_direction_votes = {
+                'bullish': 0,  # STRONG_BULLISH + BULLISH
+                'bearish': 0,  # STRONG_BEARISH + BEARISH
+                'neutral': 0   # NEUTRAL
+            }
+            
+            # Weight by timeframe importance and signal confidence
+            timeframe_weights = {'4h': 0.5, '1h': 0.3, '15m': 0.2}
+            total_weight = 0
+            
+            for tf, signal in mtf_signals.items():
+                weight = timeframe_weights.get(tf, 0.1) * signal.confidence
+                direction_votes[signal.direction] += weight
+                
+                # Count broad directional agreement
+                if signal.direction in [TrendDirection.STRONG_BULLISH, TrendDirection.BULLISH]:
+                    broad_direction_votes['bullish'] += weight
+                elif signal.direction in [TrendDirection.STRONG_BEARISH, TrendDirection.BEARISH]:
+                    broad_direction_votes['bearish'] += weight
+                else:
+                    broad_direction_votes['neutral'] += weight
+                    
+                total_weight += weight
+            
+            if total_weight == 0:
+                return False, "No valid signals for agreement calculation"
+                
+            # Check both specific and broad directional agreement
+            max_specific_votes = max(direction_votes.values())
+            max_broad_votes = max(broad_direction_votes.values())
+            
+            specific_agreement = max_specific_votes / total_weight if total_weight > 0 else 0
+            broad_agreement = max_broad_votes / total_weight if total_weight > 0 else 0
+            
+            # Use broad agreement if it's stronger (allows STRONG_BULLISH + BULLISH to agree)
+            agreement_ratio = max(specific_agreement, broad_agreement)
+            
+            dominant_direction = max(direction_votes, key=direction_votes.get)
+            
+            if agreement_ratio >= min_agreement_threshold:
+                agreement_type = "specific" if specific_agreement >= broad_agreement else "broad directional"
+                return True, f"Strong {agreement_type} agreement ({agreement_ratio:.1%}) on {dominant_direction.value} trend"
+            else:
+                return False, f"Weak agreement ({agreement_ratio:.1%}) - conflicting timeframe signals"
+                
+        except Exception as e:
+            logger.error(f"# X Error checking MTF agreement: {e}")
+            return False, f"Agreement check error: {str(e)}"
+
+    async def enhanced_multi_timeframe_analysis(self, symbol: str) -> Tuple[Dict[str, TrendSignal], bool, str]:
+        """
+        Enhanced multi-timeframe analysis with agreement validation
+        
+        Returns:
+            Tuple of (mtf_signals, has_sound_trend, trend_summary)
+        """
+        try:
+            # Get multi-timeframe signals - use cached if available for testing
+            if hasattr(self, '_last_mtf_signals') and symbol in self._last_mtf_signals:
+                mtf_signals = self._last_mtf_signals[symbol]
+                logger.info(f"# Test Using cached MTF signals for {symbol}")
+            else:
+                # Get multi-timeframe signals normally
+                mtf_signals = await self.multi_timeframe_analysis(symbol)
+            
+            if not mtf_signals:
+                return {}, False, "No trend signals available"
+            
+            # Store for later use
+            if not hasattr(self, '_last_mtf_signals'):
+                self._last_mtf_signals = {}
+            self._last_mtf_signals[symbol] = mtf_signals
+            
+            # Check timeframe agreement
+            has_agreement, agreement_desc = self.check_multi_timeframe_trend_agreement(mtf_signals)
+            
+            # Get consensus
+            consensus = self.get_consensus_trend(mtf_signals)
+            
+            if consensus and has_agreement and consensus.confidence >= 0.6:
+                trend_summary = f"✓ Sound trend: {consensus.direction.value} " + \
+                              f"(Confidence: {consensus.confidence:.2f}, {agreement_desc})"
+                return mtf_signals, True, trend_summary
+            else:
+                reasons = []
+                if not has_agreement:
+                    reasons.append(agreement_desc)
+                if not consensus:
+                    reasons.append("no consensus")
+                elif consensus.confidence < 0.6:
+                    reasons.append(f"low confidence ({consensus.confidence:.2f})")
+                    
+                trend_summary = f"⚠ Unsound trend: {'; '.join(reasons)}"
+                return mtf_signals, False, trend_summary
+                
+        except Exception as e:
+            logger.error(f"# X Error in enhanced MTF analysis for {symbol}: {e}")
+            return {}, False, f"Analysis error: {str(e)}"
 
 async def test_trend_detector():
     """Test the trend detector with different configurations"""
