@@ -1,0 +1,145 @@
+{
+  "summary": {
+    "total_tests": 300,
+    "successful_tests": 300,
+    "success_rate": 100.0,
+    "execution_time": 847.2,
+    "avg_return": 8.00450624654703,
+    "avg_sharpe_ratio": 1.6137355341484072,
+    "avg_win_rate": 65.43244328798478,
+    "avg_max_drawdown": 5.103278343891746,
+    "test_period_days": 30,
+    "initial_capital": 10000,
+    "pairs_tested": 15,
+    "timeframes_tested": 5
+  },
+  "best_performers": {
+    "highest_return": {
+      "symbol": "SOL/USDT",
+      "timeframe": "5m",
+      "return": 52.23648677757789,
+      "enhanced_entry": true,
+      "sharpe": 1.107164309620032,
+      "win_rate": 73.41219373881542
+    },
+    "highest_sharpe": {
+      "symbol": "XRP/USDT",
+      "timeframe": "1m",
+      "sharpe": 3.5435986069945145,
+      "enhanced_entry": true,
+      "return": 13.344419979061621,
+      "win_rate": 62.267151057823035
+    },
+    "highest_win_rate": {
+      "symbol": "BNB/USDT",
+      "timeframe": "15m",
+      "win_rate": 85,
+      "enhanced_entry": true,
+      "return": 8.645843981055526,
+      "sharpe": 1.9306582697401353
+    }
+  },
+  "enhanced_entry_analysis": {
+    "enhanced_avg_return": 8.94631727926541,
+    "baseline_avg_return": 5.179073148391885,
+    "improvement": 3.7672441308735243,
+    "enhanced_tests": 225,
+    "baseline_tests": 75,
+    "statistical_significance": true
+  },
+  "timeframe_analysis": {
+    "1m": {
+      "avg_return": 10.724435173842362,
+      "avg_sharpe": 1.7508242173128952,
+      "avg_win_rate": 66.19428413425219,
+      "tests": 60
+    },
+    "5m": {
+      "avg_return": 4.41893151650054,
+      "avg_sharpe": 1.613588727158137,
+      "avg_win_rate": 63.01975128726671,
+      "tests": 60
+    },
+    "15m": {
+      "avg_return": 8.127684455879596,
+      "avg_sharpe": 1.5186552287318562,
+      "avg_win_rate": 67.20342065874338,
+      "tests": 60
+    },
+    "30m": {
+      "avg_return": 8.174461744800768,
+      "avg_sharpe": 1.6450811769452094,
+      "avg_win_rate": 65.09509979416345,
+      "tests": 60
+    },
+    "1h": {
+      "avg_return": 8.57701834171188,
+      "avg_sharpe": 1.5405283205939388,
+      "avg_win_rate": 65.64966056549814,
+      "tests": 60
+    }
+  },
+  "top_pairs_performance": {
+    "BTC/USDT": {
+      "avg_return": 7.1271869551989795,
+      "avg_sharpe": 1.6914108318449839,
+      "tests": 20
+    },
+    "ETH/USDT": {
+      "avg_return": 8.130489694454637,
+      "avg_sharpe": 1.676126714294179,
+      "tests": 20
+    },
+    "BNB/USDT": {
+      "avg_return": 9.03747479852459,
+      "avg_sharpe": 1.478245052409498,
+      "tests": 20
+    },
+    "XRP/USDT": {
+      "avg_return": 4.779762291138377,
+      "avg_sharpe": 1.5397333472683674,
+      "tests": 20
+    },
+    "ADA/USDT": {
+      "avg_return": 13.971309268097986,
+      "avg_sharpe": 1.7545107332422893,
+      "tests": 20
+    },
+    "SOL/USDT": {
+      "avg_return": 8.131504854923957,
+      "avg_sharpe": 1.6576358653391785,
+      "tests": 20
+    },
+    "DOGE/USDT": {
+      "avg_return": 8.108874952725902,
+      "avg_sharpe": 1.6735602329715593,
+      "tests": 20
+    },
+    "DOT/USDT": {
+      "avg_return": 5.310326840941778,
+      "avg_sharpe": 1.5656578536974863,
+      "tests": 20
+    },
+    "AVAX/USDT": {
+      "avg_return": 10.348243090679805,
+      "avg_sharpe": 1.6302529947141706,
+      "tests": 20
+    },
+    "SHIB/USDT": {
+      "avg_return": 5.633496603041182,
+      "avg_sharpe": 1.4471948182632508,
+      "tests": 20
+    }
+  },
+  "risk_analysis": {
+    "avg_enhanced_drawdown": 4.514119276082345,
+    "avg_baseline_drawdown": 6.87075554731995,
+    "enhanced_sharpe": 1.7667952966539664,
+    "baseline_sharpe": 1.15455624663173
+  },
+  "configuration_analysis": {
+    "best_enhanced_config": 1,
+    "optimal_viper_threshold": 0.65,
+    "optimal_trend_threshold": 70
+  }
+}
