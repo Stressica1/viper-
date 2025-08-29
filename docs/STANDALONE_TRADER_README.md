@@ -59,7 +59,7 @@ BITGET_API_SECRET=your_api_secret_here
 BITGET_API_PASSWORD=your_api_password_here
 
 # Optional trading parameters (defaults shown)
-MAX_POSITIONS=5
+MAX_POSITIONS=15
 RISK_PER_TRADE=0.02
 VIPER_THRESHOLD=85.0
 SCAN_INTERVAL=30
@@ -132,7 +132,7 @@ python test_standalone_trader.py
 ### Trading Parameters
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `MAX_POSITIONS` | 5 | Maximum concurrent positions |
+| `MAX_POSITIONS` | 15 | Maximum concurrent positions |
 | `RISK_PER_TRADE` | 0.02 (2%) | Risk per individual trade |
 | `VIPER_THRESHOLD` | 50.0 | Minimum score for trade signals (reduced due to stricter scoring) |
 | `SCAN_INTERVAL` | 30 | Seconds between market scans |

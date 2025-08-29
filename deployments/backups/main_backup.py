@@ -35,9 +35,9 @@ class VIPERFixedTrader:
         self.api_password = os.getenv('BITGET_API_PASSWORD', '')
 
         # Trading configuration
-        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '20'))  # Leverage from environment
+        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '50'))  # Leverage from environment
         self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '10'))  # Position size from environment
-        self.max_positions = int(os.getenv('MAX_POSITIONS', '3'))  # Max positions
+        self.max_positions = int(os.getenv('MAX_POSITIONS', '15'))  # Max positions
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '3.0'))  # Take profit %
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '2.0'))  # Stop loss %
 

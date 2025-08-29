@@ -151,12 +151,12 @@ class VIPERUnifiedTradingJob:
             base_config = {
                 'max_positions_total': int(os.getenv('MAX_TOTAL_POSITIONS', '15')),
                 'max_positions_per_pair': int(os.getenv('MAX_POSITIONS_PER_PAIR', '1')),
-                'risk_per_trade': float(os.getenv('RISK_PER_TRADE', '0.015')),  # Optimized 1.5% risk per trade
+                'risk_per_trade': float(os.getenv('RISK_PER_TRADE', '0.02')),  # 2% risk per trade
                 'take_profit_pct': float(os.getenv('TAKE_PROFIT_PCT', '3.0')),
                 'stop_loss_pct': float(os.getenv('STOP_LOSS_PCT', '2.0')),
                 'trailing_stop_pct': float(os.getenv('TRAILING_STOP_PCT', '1.5')),
                 'trailing_activation_pct': float(os.getenv('TRAILING_ACTIVATION_PCT', '1.0')),
-                'max_leverage': int(os.getenv('MAX_LEVERAGE', '25')),
+                'max_leverage': int(os.getenv('MAX_LEVERAGE', '50')),
                 'scan_interval': int(os.getenv('SCAN_INTERVAL', '30')),
                 'max_trades_per_hour': int(os.getenv('MAX_TRADES_PER_HOUR', '20')),
                 'min_viper_score': float(os.getenv('MIN_VIPER_SCORE', '70.0')),

@@ -115,7 +115,7 @@ class StandaloneVIPERTrader:
     def load_configuration(self) -> Dict:
         """Load trading configuration from environment"""
         return {
-            'max_positions': int(os.getenv('MAX_POSITIONS', '5')),
+            'max_positions': int(os.getenv('MAX_POSITIONS', '15')),
             'risk_per_trade': float(os.getenv('RISK_PER_TRADE', '0.02')),
             'viper_threshold': float(os.getenv('VIPER_THRESHOLD', '85.0')),
             'scan_interval': int(os.getenv('SCAN_INTERVAL', '30')),

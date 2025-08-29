@@ -10,9 +10,10 @@ import time
 import logging
 import ccxt
 import random
-import requests
+
 from pathlib import Path
 from dotenv import load_dotenv
+from position_adoption_system import PositionAdoptionSystem
 
 # Load environment variables
 load_dotenv()
@@ -21,6 +22,8 @@ load_dotenv()
 project_root = Path(__file__).parent
 sys.path.append(str(project_root))
 sys.path.append(str(project_root / "src"))
+
+
 
 # Configure logging
 logging.basicConfig(
@@ -675,46 +678,24 @@ class MultiPairVIPERTrader:
             logger.error(f"❌ Failed to close {symbol}")
             return False
 
-        position = self.active_positions[symbol]
-            opposite_signal = 'SELL' if position['signal'] == 'BUY' else 'BUY'
+    def _on_position_adopted(self, position_record):
+        """Callback when a position is adopted"""
+        symbol = position_record['symbol']
+        logger.info(f"🎉 Position adopted: {symbol}")
+        self.active_positions[symbol] = {
+            'order_id': position_record['order_id'],
+            'signal': position_record['signal'],
+            'entry_price': position_record['entry_price'],
+            'quantity': position_record['quantity'],
+            'timestamp': time.time()
+        }
 
-            logger.info(f"🔄 Closing {symbol} position ({reason})")
-
-            # Close the position
-            if opposite_signal == 'SELL':
-                close_order = self.exchange.create_market_sell_order(
-                    symbol,
-                    position['quantity'],
-                    params={
-                        'leverage': self.max_leverage,
-                        'marginMode': 'isolated',
-                        'tradeSide': 'close'
-                    }
-                )
-            else:
-                close_order = self.exchange.create_market_buy_order(
-                    symbol,
-                    position['quantity'],
-                    params={
-                        'leverage': self.max_leverage,
-                        'marginMode': 'isolated',
-                        'tradeSide': 'close'
-                    }
-                )
-
-        # Debug logging
-        before_count = len(self.active_positions)
-        logger.debug(f"📊 Before removal: {before_count} positions")
-
-        # Remove from our active positions tracking
+    def _on_position_closed(self, position_record):
+        """Callback when a position is closed"""
+        symbol = position_record['symbol']
+        logger.info(f"👋 Position closed: {symbol}")
         if symbol in self.active_positions:
             del self.active_positions[symbol]
-            logger.info(f"✅ Removed {symbol} from active positions tracking")
-        else:
-            logger.warning(f"⚠️ {symbol} not found in active positions for removal")
-
-        after_count = len(self.active_positions)
-        logger.debug(f"📊 After removal: {after_count} positions")
 
     def _on_position_updated(self, position_record):
         """Callback when a position is updated"""
@@ -797,7 +778,6 @@ class MultiPairVIPERTrader:
             logger.info(f"ℹ️ {result['positions_closed']} positions were closed externally")
 
         return result
->>>>>>> Stashed changes
 
     def stop(self):
         """Stop trading"""

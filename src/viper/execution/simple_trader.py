@@ -23,7 +23,7 @@ class SimpleVIPERTrader:
         # Trading config
         self.symbol = "BTC/USDT:USDT"
         self.position_size_usdt = float(os.getenv('POSITION_SIZE_USDT', '10'))
-        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '20'))
+        self.max_leverage = int(os.getenv('MAX_LEVERAGE', '50'))
         self.take_profit_pct = float(os.getenv('TAKE_PROFIT_PCT', '3.0'))
         self.stop_loss_pct = float(os.getenv('STOP_LOSS_PCT', '2.0'))
         

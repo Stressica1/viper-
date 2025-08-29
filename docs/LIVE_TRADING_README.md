@@ -103,12 +103,12 @@ docker compose down --volumes
 ### Risk Management Settings
 ```bash
 # Conservative settings (recommended for beginners)
-RISK_PER_TRADE=0.01          # 1% per trade
-MAX_POSITIONS=5              # Maximum 5 positions
+RISK_PER_TRADE=0.02          # 2% per trade
+MAX_POSITIONS=15             # Maximum 15 positions
 DAILY_LOSS_LIMIT=0.02        # 2% daily loss limit
 
 # Aggressive settings (experienced traders only)
-RISK_PER_TRADE=0.05          # 5% per trade
+RISK_PER_TRADE=0.02          # 2% per trade
 MAX_POSITIONS=15             # Maximum 15 positions
 DAILY_LOSS_LIMIT=0.10        # 10% daily loss limit
 ```

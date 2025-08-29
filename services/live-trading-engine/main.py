@@ -226,7 +226,7 @@ class LiveTradingEngine:
             min_contract_size = 0.001  # 0.001 BTC minimum
             position_size = max(leveraged_position_size, min_contract_size)
 
-            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), "
                        f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
                        f"({leverage}x leverage) → Final Size={position_size:.6f}")

@@ -127,7 +127,7 @@ BITGET_API_PASSWORD=your_bitget_api_password_here
 # # Target TRADING PARAMETERS
 # =============================================================================
 RISK_PER_TRADE=0.02
-MAX_POSITIONS=10
+MAX_POSITIONS=15
 MIN_VIPER_SCORE=75.0
 SCAN_INTERVAL=30
 

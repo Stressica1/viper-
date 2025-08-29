@@ -69,7 +69,7 @@ class BitgetUnlimitedTrader:
             "new_narrative": {
                 "coins": ["ORDIUSDT", "INJUSDT", "SUIUSDT", "APTOS", "SEUSDT"],
                 "leverage": 50,  # MAX LEVERAGE
-                "risk_pct": 0.12,  # 12% risk - MAXIMUM AGGRESSION
+                "risk_pct": 0.02,  # 2% risk per trade
                 "take_profit": 0.50,  # 50% TP - MASSIVE MOVES
                 "stop_loss": 0.20,   # 20% SL - VERY WIDE
             },

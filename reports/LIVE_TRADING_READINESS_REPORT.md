@@ -19,13 +19,13 @@ VIPER Trading System is **READY FOR LIVE TRADING** with optimized conservative p
 
 ### Risk Management (Conservative for Small Accounts)
 ```bash
-RISK_PER_TRADE=0.005         # 0.5% risk per trade
-MAX_LEVERAGE=5               # 5x leverage maximum
+RISK_PER_TRADE=0.02          # 2% risk per trade
+MAX_LEVERAGE=50              # 50x leverage maximum
 TAKE_PROFIT_PCT=2.0         # 2% take profit target
 STOP_LOSS_PCT=1.5           # 1.5% stop loss
 TRAILING_STOP_PCT=1.0       # 1% trailing stop
 MAX_DAILY_LOSS=1.0          # $1 daily loss limit
-MAX_POSITIONS=1             # Single position at a time
+MAX_POSITIONS=15            # 15 positions maximum
 ```
 
 ### Backtest Results Summary

@@ -92,9 +92,9 @@ await stop_live_trading_task(task_id)
 export GITHUB_TOKEN=your_github_token
 
 # Trading Parameters
-export MAX_POSITIONS=5
+export MAX_POSITIONS=15
 export RISK_PER_TRADE=0.02
-export LEVERAGE=25
+export LEVERAGE=50
 export TRADING_PAIRS="BTCUSDT,ETHUSDT"
 
 # Risk Management

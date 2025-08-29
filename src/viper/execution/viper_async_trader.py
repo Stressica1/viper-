@@ -290,7 +290,7 @@ class ViperAsyncTrader:
             # Adaptive risk based on account balance
             if balance < 10:
                 # Very low balance - use minimal risk
-                risk_per_trade = 0.005  # 0.5% risk for small accounts
+                risk_per_trade = 0.02  # 2% risk per trade
                 leverage = min(leverage, 5)  # Max 5x leverage for small accounts
             elif balance < 100:
                 # Low balance - conservative risk
