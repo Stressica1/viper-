@@ -370,8 +370,9 @@ class MultiPairVIPERTrader:
 
             # Calculate position size based on account balance percentage
             try:
+                # FIXED: Use total balance including unrealized P&L
                 balance = self.exchange.fetch_balance({'type': 'swap'})
-                usdt_balance = float(balance.get('USDT', {}).get('free', 0))
+                usdt_balance = float(balance.get('USDT', {}).get('total', 0))  # Include unrealized P&L
                 if usdt_balance <= 0:
                     logger.error(f"❌ No USDT balance available for {symbol}")
                     return None
@@ -491,6 +492,17 @@ class MultiPairVIPERTrader:
                     )
                     logger.info(f"✅ Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
+                    # VERIFY TP ORDER WAS PLACED
+                    if tp_order and tp_order.get('id'):
+                        try:
+                            # Verify the order exists on exchange
+                            order_status = self.exchange.fetch_order(tp_order['id'], symbol)
+                            logger.info(f"🔍 TP Order verified: {symbol} | Status: {order_status.get('status', 'unknown')}")
+                        except Exception as verify_error:
+                            logger.error(f"⚠️ Could not verify TP order {tp_order.get('id')}: {verify_error}")
+                    else:
+                        logger.error(f"❌ TP order placement failed for {symbol}")
+
                     # Create Stop-Loss order
                     sl_order = self.exchange.create_limit_order(
                         symbol,
@@ -505,6 +517,17 @@ class MultiPairVIPERTrader:
                         }
                     )
                     logger.info(f"🛡️ Stop-Loss order placed: {sl_order.get('id', 'N/A')}")
+
+                    # VERIFY SL ORDER WAS PLACED
+                    if sl_order and sl_order.get('id'):
+                        try:
+                            # Verify the order exists on exchange
+                            order_status = self.exchange.fetch_order(sl_order['id'], symbol)
+                            logger.info(f"🔍 SL Order verified: {symbol} | Status: {order_status.get('status', 'unknown')}")
+                        except Exception as verify_error:
+                            logger.error(f"⚠️ Could not verify SL order {sl_order.get('id')}: {verify_error}")
+                    else:
+                        logger.error(f"❌ SL order placement failed for {symbol}")
 
                 except Exception as tp_sl_error:
                     logger.error(f"❌ Failed to set TP/SL for {symbol}: {tp_sl_error}")
@@ -724,9 +747,10 @@ class MultiPairVIPERTrader:
     def calculate_position_size(self, symbol: str = None):
         """Calculate position size based on risk management parameters and minimum amounts"""
         try:
-            # Get current balance
+            # FIXED: Get current balance including unrealized P&L
             balance = self.exchange.fetch_balance()
-            usdt_balance = balance['USDT']['free']
+            # Use total USDT (includes unrealized P&L) instead of just free balance
+            usdt_balance = balance['USDT']['total']  # This includes unrealized P&L
 
             # FIXED: Use minimum margin per trade (fixed $5 to meet exchange minimum)
             risk_based_size = usdt_balance * 0.1  # 10% of balance
@@ -788,16 +812,41 @@ class MultiPairVIPERTrader:
                     order = self.execute_trade(symbol, signal)
                     if order:
                         trades_this_cycle += 1
+                        # Calculate and store TP/SL information for monitoring
+                        entry_price = order.get('price', current_price)
+                        tp_price = entry_price * (1 + self.take_profit_pct / 100) if signal == 'BUY' else entry_price * (1 - self.take_profit_pct / 100)
+                        sl_price = entry_price * (1 - self.stop_loss_pct / 100) if signal == 'BUY' else entry_price * (1 + self.stop_loss_pct / 100)
+
                         self.active_positions[symbol] = {
                             'order_id': order['id'],
                             'signal': signal,
-                            'entry_price': order['price'],
+                            'entry_price': entry_price,
                             'quantity': order['amount'],
-                            'timestamp': time.time()
+                            'timestamp': time.time(),
+                            'tp_price': tp_price,
+                            'sl_price': sl_price,
+                            'tp_order_id': tp_order.get('id') if 'tp_order' in locals() and tp_order else None,
+                            'sl_order_id': sl_order.get('id') if 'sl_order' in locals() and sl_order else None
                         }
+
+                        logger.info(f"📊 Position tracked: {symbol} | Entry: ${entry_price:.6f} | TP: ${tp_price:.6f} | SL: ${sl_price:.6f}")
 
             logger.info(f"✅ Cycle #{cycle} complete - {trades_this_cycle} trades executed")
             logger.info(f"📈 Active positions: {len(self.active_positions)}")
+
+            # DEBUG: Detailed position status
+            if self.active_positions:
+                logger.info("📊 Current positions:")
+                for symbol, pos_data in self.active_positions.items():
+                    age = time.time() - pos_data['timestamp']
+                    logger.info(f"   {symbol}: {pos_data['signal']} | Entry: ${pos_data['entry_price']:.6f} | Qty: {pos_data['quantity']:.6f} | Age: {age:.1f}s")
+                    if 'tp_price' in pos_data and 'sl_price' in pos_data:
+                        logger.info(f"      TP: ${pos_data['tp_price']:.6f} | SL: ${pos_data['sl_price']:.6f}")
+            else:
+                logger.info("📊 No active positions")
+
+            # CRITICAL FIX: MONITOR TP/SL EXECUTION
+            self.monitor_tp_sl_execution()
 
             # PERIODIC POSITION LIMIT ENFORCEMENT
             self.enforce_position_limit()
@@ -805,6 +854,49 @@ class MultiPairVIPERTrader:
             logger.info("⏰ Waiting 30 seconds for next scan...")
 
             time.sleep(30)
+
+    def monitor_tp_sl_execution(self):
+        """CRITICAL: Monitor and execute TP/SL orders that may have been filled"""
+        if not self.active_positions:
+            return
+
+        logger.debug("🔍 Checking TP/SL execution for active positions...")
+
+        try:
+            # Get current positions from exchange to check for closures
+            exchange_positions = self.exchange.fetch_positions()
+
+            # Create a set of currently open position symbols
+            open_symbols = {pos['symbol'] for pos in exchange_positions if float(pos.get('contracts', 0)) > 0}
+
+            # Check each tracked position
+            positions_to_remove = []
+            for symbol in list(self.active_positions.keys()):
+                if symbol not in open_symbols:
+                    # Position was closed (likely by TP/SL execution)
+                    logger.info(f"🎯 TP/SL EXECUTED: {symbol} - Position closed by exchange")
+                    positions_to_remove.append(symbol)
+
+                    # Trigger position closed callback
+                    if hasattr(self, '_on_position_closed'):
+                        position_record = self.active_positions[symbol].copy()
+                        position_record['symbol'] = symbol
+                        position_record['closed_reason'] = 'tp_sl_executed'
+                        try:
+                            self._on_position_closed(position_record)
+                        except Exception as callback_error:
+                            logger.error(f"⚠️ Position close callback error: {callback_error}")
+
+            # Remove closed positions from tracking
+            for symbol in positions_to_remove:
+                del self.active_positions[symbol]
+                logger.info(f"🗑️ Removed closed position from tracking: {symbol}")
+
+            if positions_to_remove:
+                logger.info(f"✅ Processed {len(positions_to_remove)} TP/SL executions")
+
+        except Exception as e:
+            logger.error(f"❌ Error monitoring TP/SL execution: {e}")
 
     def close_position(self, symbol, reason="manual"):
         """Close a position using the adoption system (which handles long/short properly)"""
@@ -857,8 +949,8 @@ class MultiPairVIPERTrader:
         logger.info("🔍 Checking for existing positions to adopt...")
         logger.info(f"📊 Current position limit: {self.max_positions} positions maximum")
 
-        # Clear any stale position tracking first
-        self.active_positions = {}
+        # FIXED: Don't clear positions - sync with adoption system instead
+        # self.active_positions = {}  # REMOVED - this was causing the bug!
 
         result = self.position_adoption_system.adopt_existing_positions()
 
@@ -866,6 +958,20 @@ class MultiPairVIPERTrader:
             logger.info(f"✅ Adopted {result['newly_adopted']} existing positions")
             if result['newly_adopted'] > 0:
                 logger.info(f"   Adopted symbols: {', '.join(result['adopted_symbols'])}")
+
+                # CRITICAL FIX: Sync adopted positions with main trader's tracking
+                for symbol in result['adopted_symbols']:
+                    if symbol in self.position_adoption_system.active_positions:
+                        adopted_pos = self.position_adoption_system.active_positions[symbol]
+                        self.active_positions[symbol] = {
+                            'order_id': f"adopted_{symbol}",
+                            'signal': adopted_pos.get('side', 'unknown'),
+                            'entry_price': adopted_pos.get('entry_price', 0),
+                            'quantity': adopted_pos.get('contracts', 0),
+                            'timestamp': adopted_pos.get('adopted_at').timestamp() if hasattr(adopted_pos.get('adopted_at'), 'timestamp') else time.time(),
+                            'source': 'adopted'
+                        }
+                        logger.info(f"🔄 Synced adopted position: {symbol}")
         else:
             logger.warning(f"⚠️ Position adoption failed: {result.get('error', 'Unknown error')}")
 

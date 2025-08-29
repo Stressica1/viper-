@@ -14,6 +14,14 @@
   - Order parameter corrections ✅
   - Enhanced error handling ✅
 
+### 🚨 **CRITICAL MONEY LOSS FIXES APPLIED**
+- **🔴 POSITION TRACKING BUG FIXED**: System was clearing positions before adoption, causing 3→0 position inconsistency
+- **🔴 BALANCE CALCULATION FIXED**: Now uses total USDT (includes unrealized P&L) instead of just free balance
+- **🔴 TP/SL MONITORING ADDED**: Automatic detection and processing of executed TP/SL orders
+- **🔴 POSITION SYNCHRONIZATION FIXED**: Adopted positions now properly sync with main trader tracking
+- **🔴 ORDER VERIFICATION ADDED**: TP/SL orders are now verified on exchange after placement
+- **🔴 DETAILED POSITION DEBUGGING**: Added comprehensive position lifecycle monitoring
+
 ### 🎯 **MCP Server & Integration Fixes**
 - **MCP Architecture Diagnosis**: Identified fundamental stdio vs WebSocket communication mismatch
 - **Broken Integration Fixed**: Terminated problematic MCP-VIPER integration consuming 11.3% CPU
