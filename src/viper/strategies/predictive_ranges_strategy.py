@@ -425,6 +425,25 @@ class PredictiveRangesStrategy:
         for timeframe in self.config['timeframes']:
             self.calculate_predictive_ranges(df, symbol, timeframe)
 
+    def analyze_symbol(self, symbol: str, df: pd.DataFrame, timeframe: str) -> List[EntrySignal]:
+        """Analyze symbol for predictive range opportunities (unified interface)"""
+        try:
+            # Update market data
+            self.update_market_data(symbol, df)
+            
+            # Calculate predictive ranges
+            ranges = self.calculate_predictive_ranges(df, symbol, timeframe)
+            
+            # Find optimal entries
+            current_price = df['close'].iloc[-1] if len(df) > 0 else 100.0
+            signals = self.find_optimal_entries(symbol, current_price)
+            
+            return signals
+            
+        except Exception as e:
+            logger.error(f"Error analyzing {symbol} on {timeframe}: {e}")
+            return []
+
 # Global instance
 _predictive_strategy = None
 
