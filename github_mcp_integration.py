@@ -43,21 +43,21 @@ class GitHubMCPIntegration:
         self.repo = None
         self.remote_url = None
 
-    # Initialize repository
-    self._initialize_repository()
+        # Initialize repository
+        self._initialize_repository()
 
-    # MCP Server configuration
-    self.mcp_config = {
-        'server_url': 'http://localhost:8015',
+        # MCP Server configuration
+        self.mcp_config = {
+            'server_url': 'http://localhost:8015',
             'github_api_url': 'https://api.github.com',
             'timeout': 30,
             'retry_attempts': 3
         }
 
-    # Tracking data
-    self.commit_history = []
-    self.performance_logs = []
-    self.issue_tracking = []
+        # Tracking data
+        self.commit_history = []
+        self.performance_logs = []
+        self.issue_tracking = []
 
     def _initialize_repository(self):
         """Initialize Git repository"""
@@ -88,7 +88,7 @@ class GitHubMCPIntegration:
                 logger.warning("⚠️  No Git repository available for commit")
                 return False
 
-        # Add files to staging
+            # Add files to staging
             if files_to_commit:
                 for file_path in files_to_commit:
                     if Path(file_path).exists():
@@ -97,8 +97,8 @@ class GitHubMCPIntegration:
                 # Add all modified files
                 self.repo.git.add('.')
 
-        # Create commit
-                        commit = self.repo.index.commit(message)
+            # Create commit
+            commit = self.repo.index.commit(message)
 
             # Track commit
             commit_data = {
@@ -122,15 +122,15 @@ class GitHubMCPIntegration:
             if not self.repo:
                 return False
 
-        # Push to remote
+            # Push to remote
             origin = self.repo.remote('origin')
             origin.push(branch)
 
-        logger.info(f"✅ Changes pushed to GitHub: {branch}")
+            logger.info(f"✅ Changes pushed to GitHub: {branch}")
             return True
 
-    except Exception as e:
-        logger.error(f"❌ Git push failed: {e}")
+        except Exception as e:
+            logger.error(f"❌ Git push failed: {e}")
             return False
 
     async def create_performance_issue(self, performance_data: Dict[str, Any]):
@@ -140,323 +140,391 @@ class GitHubMCPIntegration:
                 logger.warning("⚠️  No GitHub token available for issue creation")
                 return False
 
-        # Prepare issue data
-            issue_title = f"🚀 Performance Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
+            # Prepare issue data
+            issue_title = f"Performance Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
 
-        issue_body = f"""## 📊 VIPER Trading System Performance Report
+            issue_body = f"""## Performance Report
 
-**📅 Timestamp:** {datetime.now().isoformat()}
-**🔧 System Status:** {performance_data.get('system_status', 'UNKNOWN')}
+**Timestamp:** {datetime.now().isoformat()}
+**System Status:** {performance_data.get('system_status', 'UNKNOWN')}
 
-### 🎯 Trading Performance Metrics
-**📈 Pairs Scanned:** {performance_data.get('pairs_scanned', 0)}
-**✅ Pairs Qualified:** {performance_data.get('pairs_qualified', 0)}
-**📊 Qualification Rate:** {performance_data.get('qualification_rate', 0):.1f}%
-**💰 Total Volume:** ${performance_data.get('total_volume', 0):,.0f}
-
-### 🏆 Top Performing Pairs
-{self._format_top_pairs(performance_data.get('top_pairs', []))}
-
-### 💹 Market Analysis
-**🌟 Best Performing Pair:** {performance_data.get('best_pair', 'N/A')}
-**📉 Worst Performing Pair:** {performance_data.get('worst_pair', 'N/A')}
-**🎯 Average Spread:** {performance_data.get('avg_spread', 0):.4f}
-
-### ⚡ System Performance
-**⏱️ Scan Time:** {performance_data.get('scan_time', 0):.2f}s
-**💾 Memory Usage:** {performance_data.get('memory_usage', 0):.1f}MB
-**🔄 API Calls:** {performance_data.get('api_calls', 0)}
-
-### 🛡️ Risk Management
-**🎯 Risk per Trade:** {performance_data.get('risk_per_trade', 0):.1f}%
-**🛑 Stop Loss Triggers:** {performance_data.get('stop_loss_triggers', 0)}
-**✅ Take Profit Triggers:** {performance_data.get('take_profit_triggers', 0)}
-
-### 📝 Recommendations
-{self._generate_recommendations(performance_data)}
-
----
-*Generated automatically by VIPER MCP Performance Tracker*
-*Report ID: {performance_data.get('report_id', 'AUTO-GENERATED')}*
-
-### 📊 Summary
-- **Total P&L:** ${performance_data.get('total_pnl', 0):.2f}
+### Key Metrics
+- **Uptime:** {performance_data.get('system_uptime', 0):.1f} seconds
+- **CPU Usage:** {performance_data.get('cpu_usage', 0):.1f}%
+- **Memory Usage:** {performance_data.get('memory_usage', 0):.1f}%
 - **Active Components:** {performance_data.get('active_components', 0)}
-- **System Health:** {performance_data.get('system_health', 'GOOD')}
+
+### Trading Performance
+- **Trades Executed:** {performance_data.get('total_trades_executed', 0)}
+- **Win Rate:** {performance_data.get('win_rate', 0):.1f}%
+- **Total P&L:** ${performance_data.get('total_pnl', 0):.2f}
+
+### System Health
+- **Active Threads:** {performance_data.get('active_threads', 0)}
+- **Network Connections:** {performance_data.get('network_connections', 0)}
 
 ---
 *Auto-generated by VIPER Ultimate Trading System*
 """
 
-    return True
-
-        except Exception as e:
-    logger.error(f"❌ Performance issue creation failed: {e}")
-    return False
-
-    def _format_top_pairs(self, top_pairs: List[Dict]) -> str:
-        """Format top pairs for performance report"""
-        if not top_pairs:
-            return "No pairs data available"
-
-    formatted = ""
-    for i, pair in enumerate(top_pairs[:5], 1):
-        symbol = pair.get('symbol', 'N/A')
-            volume = pair.get('volume', 0)
-            formatted += f"{i}. **{symbol}**: ${volume:,.0f}\n"
-
-    return formatted.strip()
-
-    def _generate_recommendations(self, performance_data: Dict[str, Any]) -> str:
-        """Generate recommendations based on performance data"""
-        recommendations = []
-
-    qualification_rate = performance_data.get('qualification_rate', 0)
-    if qualification_rate < 50:
-        recommendations.append("⚠️ **Low qualification rate** - Consider adjusting filtering criteria")
-
-    scan_time = performance_data.get('scan_time', 0)
-    if scan_time > 30:
-        recommendations.append("⚡ **Slow scan time** - Consider optimizing API calls or caching")
-
-    pairs_qualified = performance_data.get('pairs_qualified', 0)
-    if pairs_qualified > 100:
-        recommendations.append("🎯 **High pair count** - Consider batch processing for better performance")
-
-    if not recommendations:
-        recommendations.append("✅ **System performing optimally** - No immediate recommendations")
-
-    return "\n".join(f"- {rec}" for rec in recommendations)
-
-    async def create_system_health_issue(self, health_data: Dict[str, Any]):
-        """Create GitHub issue for system health monitoring"""
-        try:
-            if not self.github_token:
-                logger.warning("⚠️  No GitHub token available for health issue creation")
-                return False
-
-        health_status = health_data.get('overall_health', 'UNKNOWN')
-            status_emoji = "🟢" if health_status == "HEALTHY" else "🟡" if health_status == "WARNING" else "🔴"
-
-        issue_title = f"{status_emoji} System Health Report - {datetime.now().strftime('%Y-%m-%d %H:%M')}"
-
-        issue_body = f"""## 🔍 VIPER System Health Report
-
-**📅 Timestamp:** {datetime.now().isoformat()}
-**{status_emoji} Overall Health:** {health_status}
-
-### ⚙️ System Components Status
-{self._format_component_status(health_data.get('components', {}))}
-
-### 📊 Performance Metrics
-- **CPU Usage:** {health_data.get('cpu_usage', 0):.1f}%
-- **Memory Usage:** {health_data.get('memory_usage', 0):.1f}MB
-- **Disk Usage:** {health_data.get('disk_usage', 0):.1f}%
-- **Network Status:** {health_data.get('network_status', 'UNKNOWN')}
-
-### 🚨 Active Alerts
-{self._format_alerts(health_data.get('alerts', []))}
-
-### 📝 Action Items
-{self._generate_health_actions(health_data)}
-
----
-*Generated automatically by VIPER Health Monitor*
-"""
-
-        # Create GitHub issue
+            # Create issue via GitHub API
             headers = {
                 'Authorization': f'token {self.github_token}',
                 'Accept': 'application/vnd.github.v3+json'
             }
 
-        # Get repo info from environment or config
-            repo_owner = os.getenv('GITHUB_REPO_OWNER', 'Stressica1')
-            repo_name = os.getenv('GITHUB_REPO_NAME', 'viper-')
-
-        issue_data = {
+            issue_data = {
                 'title': issue_title,
                 'body': issue_body,
-                'labels': ['system-health', 'automated', health_status.lower()]
+                'labels': ['performance', 'automated', 'viper-system']
             }
 
-        response = requests.post(
-                f'https://api.github.com/repos/{repo_owner}/{repo_name}/issues',
-                headers=headers,
-                json=issue_data
-            )
+            # Extract repo info from remote URL
+            if self.remote_url:
+                repo_info = self._extract_repo_info(self.remote_url)
+                if repo_info:
+                    api_url = f"{self.mcp_config['github_api_url']}/repos/{repo_info['owner']}/{repo_info['repo']}/issues"
 
-        if response.status_code == 201:
-                logger.info(f"✅ System health issue created: {issue_title}")
-                return True
-            else:
-                logger.error(f"❌ Failed to create health issue: {response.status_code} - {response.text}")
-                return False
+                    response = requests.post(api_url, headers=headers, json=issue_data)
 
-    except Exception as e:
-        logger.error(f"❌ Health issue creation failed: {e}")
+                    if response.status_code == 201:
+                        issue_number = response.json().get('number')
+                        logger.info(f"✅ Performance issue created: #{issue_number}")
+                        return True
+                    else:
+                        logger.error(f"❌ GitHub API error: {response.status_code} - {response.text}")
+
             return False
 
-    def _format_component_status(self, components: Dict[str, str]) -> str:
-        """Format component status for health report"""
-        if not components:
-            return "No component data available"
+        except Exception as e:
+            logger.error(f"❌ Performance issue creation failed: {e}")
+            return False
 
-    status_emojis = {
-        'HEALTHY': '🟢',
-            'WARNING': '🟡',
-            'ERROR': '🔴',
-            'UNKNOWN': '⚪'
-        }
-
-    formatted = ""
-    for component, status in components.items():
-        emoji = status_emojis.get(status, '⚪')
-            formatted += f"- {emoji} **{component}**: {status}\n"
-
-    return formatted.strip()
-
-    def _format_alerts(self, alerts: List[Dict]) -> str:
-        """Format active alerts for health report"""
-        if not alerts:
-            return "✅ No active alerts"
-
-    formatted = ""
-    for alert in alerts[:5]:  # Show top 5 alerts
-        level = alert.get('level', 'INFO')
-            message = alert.get('message', 'Unknown alert')
-            emoji = "🚨" if level == "CRITICAL" else "⚠️" if level == "WARNING" else "ℹ️"
-            formatted += f"- {emoji} **{level}**: {message}\n"
-
-    return formatted.strip()
-
-    def _generate_health_actions(self, health_data: Dict[str, Any]) -> str:
-        """Generate recommended actions based on health data"""
-        actions = []
-
-    overall_health = health_data.get('overall_health', 'UNKNOWN')
-    if overall_health != 'HEALTHY':
-        actions.append("🔧 **Investigate system components** - Check failing services")
-
-    cpu_usage = health_data.get('cpu_usage', 0)
-    if cpu_usage > 80:
-        actions.append("⚡ **High CPU usage** - Consider optimizing performance")
-
-    memory_usage = health_data.get('memory_usage', 0)
-    if memory_usage > 85:
-        actions.append("💾 **High memory usage** - Monitor for memory leaks")
-
-    alerts = health_data.get('alerts', [])
-    if alerts:
-        actions.append("🚨 **Review active alerts** - Address critical issues")
-
-    if not actions:
-        actions.append("✅ **System healthy** - No immediate action required")
-
-    return "\n".join(f"- {action}" for action in actions)
-
-    async def automated_performance_tracking(self, interval_minutes: int = 60):
-        """Run automated performance tracking every specified interval"""
-        logger.info(f"🚀 Starting automated performance tracking (every {interval_minutes} minutes)")
-
-    while True:
+    async def log_system_performance(self, performance_data: Dict[str, Any]):
+        """Log system performance to GitHub"""
         try:
-                # Collect current performance data
-                performance_data = await self._collect_performance_data()
+            # Add timestamp
+            performance_data['logged_at'] = datetime.now().isoformat()
 
-            # Create performance report
-                success = await self.create_performance_issue(performance_data)
+            # Store in local tracking
+            self.performance_logs.append(performance_data)
 
-            if success:
-                    logger.info(f"✅ Performance report created at {datetime.now().isoformat()}")
-                else:
-                    logger.warning("⚠️  Failed to create performance report")
+            # Create local performance log file
+            log_file = self.repo_path / f"performance_{datetime.now().strftime('%Y%m%d')}.json"
 
-            # Wait for next interval
-                await asyncio.sleep(interval_minutes * 60)
+            with open(log_file, 'a') as f:
+                json.dump(performance_data, f, default=str)
+                f.write('\n')
+
+            # Commit performance log
+            await self.commit_system_changes(
+                f"Performance log update - {datetime.now().strftime('%Y-%m-%d %H:%M')}",
+                [str(log_file)]
+            )
+
+            # Push to GitHub
+            await self.push_to_github()
+
+            logger.info("✅ System performance logged to GitHub")
+            return True
 
         except Exception as e:
-                logger.error(f"❌ Automated performance tracking failed: {e}")
-                await asyncio.sleep(300)  # Wait 5 minutes before retrying
+            logger.error(f"❌ Performance logging failed: {e}")
+            return False
 
-    async def _collect_performance_data(self) -> Dict[str, Any]:
-        """Collect current system performance data"""
+    async def create_release(self, version: str, release_notes: str):
+        """Create a GitHub release"""
         try:
-            import psutil
-            import platform
+            if not self.github_token:
+                return False
 
-        # System metrics
-            cpu_usage = psutil.cpu_percent(interval=1)
-            memory = psutil.virtual_memory()
-            disk = psutil.disk_usage('/')
-
-        # Trading system metrics (placeholder - would integrate with actual trading data)
-            performance_data = {
-                'timestamp': datetime.now().isoformat(),
-                'system_status': 'OPERATIONAL',
-                'cpu_usage': cpu_usage,
-                'memory_usage': memory.percent,
-                'disk_usage': disk.percent,
-                'pairs_scanned': 530,  # Would be dynamic
-                'pairs_qualified': 425,  # Would be dynamic
-                'qualification_rate': 80.2,  # Would be calculated
-                'total_volume': 100000000,  # Would be dynamic
-                'scan_time': 8.5,  # Would be measured
-                'api_calls': 1590,  # Would be tracked
-                'risk_per_trade': 2.0,
-                'stop_loss_triggers': 0,
-                'take_profit_triggers': 0,
-                'report_id': f"PERF-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
-                'total_pnl': 1250.75,
-                'active_components': 8,
-                'system_health': 'GOOD'
+            headers = {
+                'Authorization': f'token {self.github_token}',
+                'Accept': 'application/vnd.github.v3+json'
             }
 
-        return performance_data
-
-    except Exception as e:
-        logger.error(f"❌ Performance data collection failed: {e}")
-            return {
-                'timestamp': datetime.now().isoformat(),
-                'system_status': 'ERROR',
-                'error': str(e),
-                'report_id': f"ERROR-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+            release_data = {
+                'tag_name': f'v{version}',
+                'name': f'VIPER Trading System v{version}',
+                'body': release_notes,
+                'draft': False,
+                'prerelease': False
             }
 
+            if self.remote_url:
+                repo_info = self._extract_repo_info(self.remote_url)
+                if repo_info:
+                    api_url = f"{self.mcp_config['github_api_url']}/repos/{repo_info['owner']}/{repo_info['repo']}/releases"
 
-# Example usage and main execution
-async def main():
-    """Main function for GitHub MCP integration"""
-    import sys
+                    response = requests.post(api_url, headers=headers, json=release_data)
 
-    # Initialize GitHub MCP integration
+                    if response.status_code == 201:
+                        logger.info(f"✅ Release v{version} created on GitHub")
+                        return True
+                    else:
+                        logger.error(f"❌ GitHub release creation failed: {response.status_code}")
+
+            return False
+
+        except Exception as e:
+            logger.error(f"❌ Release creation failed: {e}")
+            return False
+
+    async def backup_system_state(self, system_state: Dict[str, Any]):
+        """Backup system state to GitHub"""
+        try:
+            # Create backup file
+            backup_file = self.repo_path / f"system_backup_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
+            with open(backup_file, 'w') as f:
+                json.dump(system_state, f, indent=2, default=str)
+
+            # Commit backup
+            await self.commit_system_changes(
+                f"System state backup - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}",
+                [str(backup_file)]
+            )
+
+            # Push to GitHub
+            await self.push_to_github()
+
+            logger.info("✅ System state backed up to GitHub")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ System backup failed: {e}")
+            return False
+
+    async def track_system_changes(self, change_description: str, affected_files: List[str]):
+        """Track system changes for version control"""
+        try:
+            change_data = {
+                'timestamp': datetime.now().isoformat(),
+                'description': change_description,
+                'affected_files': affected_files,
+                'commit_hash': None
+            }
+
+            # Commit the changes
+            success = await self.commit_system_changes(change_description, affected_files)
+
+            if success and self.repo:
+                # Get the latest commit hash
+                latest_commit = self.repo.head.commit
+                change_data['commit_hash'] = latest_commit.hexsha
+
+            # Track the change
+            self.commit_history.append(change_data)
+
+            logger.info(f"✅ System change tracked: {change_description}")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Change tracking failed: {e}")
+            return False
+
+    async def get_repository_status(self) -> Dict[str, Any]:
+        """Get comprehensive repository status"""
+        try:
+            status = {
+                'repository_path': str(self.repo_path),
+                'remote_url': self.remote_url,
+                'is_git_repo': self.repo is not None,
+                'total_commits': len(self.commit_history),
+                'performance_logs': len(self.performance_logs),
+                'last_commit': None,
+                'uncommitted_changes': False,
+                'branch_info': {}
+            }
+
+            if self.repo:
+                # Get last commit info
+                try:
+                    last_commit = self.repo.head.commit
+                    status['last_commit'] = {
+                        'hash': last_commit.hexsha,
+                        'message': last_commit.message,
+                        'author': last_commit.author.name,
+                        'date': last_commit.date.isoformat()
+                    }
+                except Exception:
+                    pass
+
+                # Check for uncommitted changes
+                status['uncommitted_changes'] = self.repo.is_dirty()
+
+                # Get branch info
+                try:
+                    current_branch = self.repo.active_branch.name
+                    status['branch_info'] = {
+                        'current_branch': current_branch,
+                        'remote_tracking': str(self.repo.active_branch.tracking_branch) if self.repo.active_branch.tracking_branch else None
+                    }
+                except Exception:
+                    pass
+
+            return status
+
+        except Exception as e:
+            logger.error(f"❌ Repository status check failed: {e}")
+            return {'error': str(e)}
+
+    async def create_feature_branch(self, feature_name: str) -> bool:
+        """Create a new feature branch"""
+        try:
+            if not self.repo:
+                return False
+
+            # Create and checkout new branch
+            branch_name = f"feature/{feature_name.replace(' ', '_').lower()}"
+            new_branch = self.repo.create_head(branch_name)
+            new_branch.checkout()
+
+            logger.info(f"✅ Feature branch created: {branch_name}")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Feature branch creation failed: {e}")
+            return False
+
+    async def merge_feature_branch(self, feature_branch: str, target_branch: str = 'main') -> bool:
+        """Merge feature branch into target branch"""
+        try:
+            if not self.repo:
+                return False
+
+            # Switch to target branch
+            self.repo.git.checkout(target_branch)
+
+            # Merge feature branch
+            self.repo.git.merge(feature_branch)
+
+            # Delete feature branch
+            self.repo.git.branch('-d', feature_branch)
+
+            logger.info(f"✅ Feature branch merged: {feature_branch} -> {target_branch}")
+            return True
+
+        except Exception as e:
+            logger.error(f"❌ Branch merge failed: {e}")
+            return False
+
+    def _extract_repo_info(self, remote_url: str) -> Optional[Dict[str, str]]:
+        """Extract repository owner and name from remote URL"""
+        try:
+            # Handle different URL formats
+            if 'github.com' in remote_url:
+                if remote_url.startswith('https://'):
+                    # https://github.com/owner/repo.git
+                    parts = remote_url.replace('https://github.com/', '').replace('.git', '').split('/')
+                elif remote_url.startswith('git@'):
+                    # git@github.com:owner/repo.git
+                    parts = remote_url.replace('git@github.com:', '').replace('.git', '').split('/')
+                else:
+                    return None
+
+                if len(parts) >= 2:
+                    return {
+                        'owner': parts[0],
+                        'repo': parts[1]
+                    }
+
+        except Exception as e:
+            logger.warning(f"⚠️  Could not extract repo info: {e}")
+
+        return None
+
+    async def get_commit_history(self, limit: int = 10) -> List[Dict[str, Any]]:
+        """Get recent commit history"""
+        try:
+            if not self.repo:
+                return []
+
+            commits = []
+            for commit in self.repo.iter_commits(max_count=limit):
+                commits.append({
+                    'hash': commit.hexsha,
+                    'message': commit.message,
+                    'author': commit.author.name,
+                    'date': commit.date.isoformat(),
+                    'files_changed': len(commit.stats.files) if hasattr(commit, 'stats') else 0
+                })
+
+            return commits
+
+        except Exception as e:
+            logger.error(f"❌ Commit history retrieval failed: {e}")
+            return []
+
+    async def create_pull_request(self, title: str, description: str, head_branch: str, base_branch: str = 'main') -> bool:
+        """Create a pull request"""
+        try:
+            if not self.github_token:
+                return False
+
+            headers = {
+                'Authorization': f'token {self.github_token}',
+                'Accept': 'application/vnd.github.v3+json'
+            }
+
+            pr_data = {
+                'title': title,
+                'body': description,
+                'head': head_branch,
+                'base': base_branch
+            }
+
+            if self.remote_url:
+                repo_info = self._extract_repo_info(self.remote_url)
+                if repo_info:
+                    api_url = f"{self.mcp_config['github_api_url']}/repos/{repo_info['owner']}/{repo_info['repo']}/pulls"
+
+                    response = requests.post(api_url, headers=headers, json=pr_data)
+
+                    if response.status_code == 201:
+                        pr_number = response.json().get('number')
+                        logger.info(f"✅ Pull request created: #{pr_number}")
+                        return True
+                    else:
+                        logger.error(f"❌ Pull request creation failed: {response.status_code}")
+
+            return False
+
+        except Exception as e:
+            logger.error(f"❌ Pull request creation failed: {e}")
+            return False
+
+# Example usage and testing functions
+async def test_github_integration():
+    """Test GitHub MCP integration"""
+    print("🔗 Testing GitHub MCP Integration...")
+
+    # Initialize integration
     github_mcp = GitHubMCPIntegration()
 
-    if len(sys.argv) > 1:
-    command = sys.argv[1]
+    # Test repository status
+    status = await github_mcp.get_repository_status()
+    print(f"📊 Repository Status: {json.dumps(status, indent=2)}")
 
-    if command == 'performance':
-        # Run performance tracking
-            await github_mcp.automated_performance_tracking(interval_minutes=60)
+    # Test commit history
+    commits = await github_mcp.get_commit_history(5)
+    print(f"📝 Recent Commits: {len(commits)} found")
 
-    elif command == 'commit':
-        # Commit current changes
-            message = sys.argv[2] if len(sys.argv) > 2 else "Automated commit"
-            await github_mcp.commit_system_changes(message)
+    # Test performance logging
+    test_performance = {
+        'system_status': 'TESTING',
+        'cpu_usage': 45.2,
+        'memory_usage': 67.8,
+        'total_trades_executed': 150,
+        'win_rate': 68.5,
+        'total_pnl': 1250.75
+    }
 
-    elif command == 'push':
-        # Push to GitHub
-            await github_mcp.push_to_github()
+    success = await github_mcp.log_system_performance(test_performance)
+    print(f"📈 Performance logging: {'SUCCESS' if success else 'FAILED'}")
 
-    else:
-        print("Usage: python github_mcp_integration.py [performance|commit|push]")
-    else:
-    print("GitHub MCP Integration initialized")
-    print("Available commands:")
-    print("  performance - Start automated performance tracking")
-    print("  commit <message> - Commit changes with message")
-    print("  push - Push changes to GitHub")
-
+    print("✅ GitHub MCP integration test completed")
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    import asyncio
+    asyncio.run(test_github_integration())
