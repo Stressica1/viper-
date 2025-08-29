@@ -35,6 +35,11 @@ MAX_EVENTS_PER_CHANNEL = int(os.getenv('MAX_EVENTS_PER_CHANNEL', '1000'))
 HEALTH_CHECK_INTERVAL = int(os.getenv('HEALTH_CHECK_INTERVAL', '30'))  # seconds
 DEAD_LETTER_TTL = int(os.getenv('DEAD_LETTER_TTL', '86400'))  # 24 hours
 
+# Service URLs for event forwarding
+STRATEGY_OPTIMIZER_URL = os.getenv('STRATEGY_OPTIMIZER_URL', 'http://strategy-optimizer:8004')
+VIPER_SCORING_SERVICE_URL = os.getenv('VIPER_SCORING_SERVICE_URL', 'http://viper-scoring-service:8009')
+SIGNAL_PROCESSOR_URL = os.getenv('SIGNAL_PROCESSOR_URL', 'http://signal-processor:8012')
+
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
 logging.basicConfig(
@@ -57,10 +62,11 @@ class EventSystemService:
         # Service URLs for health checks
         self.service_urls = {
             'market-data-manager': os.getenv('MARKET_DATA_MANAGER_URL', 'http://market-data-manager:8003'),
-            'viper-scoring-service': os.getenv('VIPER_SCORING_SERVICE_URL', 'http://viper-scoring-service:8009'),
+            'viper-scoring-service': VIPER_SCORING_SERVICE_URL,
             'live-trading-engine': os.getenv('LIVE_TRADING_ENGINE_URL', 'http://live-trading-engine:8007'),
             'risk-manager': os.getenv('RISK_MANAGER_URL', 'http://risk-manager:8002'),
-            'signal-processor': os.getenv('SIGNAL_PROCESSOR_URL', 'http://signal-processor:8000')
+            'signal-processor': SIGNAL_PROCESSOR_URL,
+            'strategy-optimizer': STRATEGY_OPTIMIZER_URL
         }
 
         logger.info("📡 Event System Service initialized")
