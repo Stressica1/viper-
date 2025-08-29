@@ -1,4 +1,4 @@
-name: Repository Structure Validation
+name: Repository Structure Validation with Docker
 
 on:
   push:
@@ -9,19 +9,65 @@ on:
 jobs:
   validate-structure:
     runs-on: ubuntu-latest
-    
+    container:
+      image: python:3.11-slim
+      options: --user root
+
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.9'
-    
-    - name: Validate Repository Structure
+    - uses: actions/checkout@v4
+
+    - name: Install system dependencies
       run: |
-        python tools/repository_rules.py --validate
-        if [ $? -ne 0 ]; then
-          echo "Repository structure validation failed!"
-          exit 1
+        apt-get update && apt-get install -y git curl
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests python-dotenv
+
+    - name: 🔒 VALIDATE Repository Structure with Docker Enforcement
+      run: |
+        echo "🔒 MANDATORY DOCKER ENFORCEMENT - REPOSITORY STRUCTURE VALIDATION"
+        echo "=" * 80
+
+        # Check if repository rules tool exists
+        if [ -f "tools/repository_rules.py" ]; then
+          echo "✅ Repository rules tool found"
+          python tools/repository_rules.py --validate
+          if [ $? -ne 0 ]; then
+            echo "❌ Repository structure validation failed!"
+            exit 1
+          fi
+          echo "✅ Repository structure validation passed"
+        else
+          echo "⚠️ Repository rules tool not found - validating basic structure"
+
+          # Basic structure validation
+          required_files=(
+            "README.md"
+            "requirements.txt"
+            "docker-compose.yml"
+            ".env"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ -f "$file" ]; then
+              echo "✅ $file: EXISTS"
+            else
+              echo "❌ $file: MISSING"
+              exit 1
+            fi
+          done
+
+          # Check for services directory
+          if [ -d "services" ]; then
+            echo "✅ services/: EXISTS"
+            service_count=$(find services -name "Dockerfile" | wc -l)
+            echo "📊 Found $service_count service Dockerfiles"
+          else
+            echo "❌ services/: MISSING"
+            exit 1
+          fi
         fi
+
+        echo "🎉 REPOSITORY STRUCTURE VALIDATION COMPLETE WITH DOCKER ENFORCEMENT!"

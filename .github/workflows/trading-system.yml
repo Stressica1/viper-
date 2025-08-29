@@ -13,6 +13,9 @@ jobs:
   # MANDATORY STEP: Docker & MCP Infrastructure Validation
   docker-mcp-validation:
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     outputs:
       docker-validated: ${{ steps.docker-check.outputs.validated }}
       mcp-validated: ${{ steps.mcp-check.outputs.validated }}
@@ -145,16 +148,18 @@ jobs:
   test:
     needs: docker-mcp-validation
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     if: needs.docker-mcp-validation.outputs.docker-validated == 'true' && needs.docker-mcp-validation.outputs.mcp-validated == 'true'
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get install -y git curl
 
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -328,6 +333,9 @@ jobs:
   docker-compose-validation:
     needs: docker-mcp-validation
     runs-on: ubuntu-latest
+    container:
+      image: docker:dind
+      options: --privileged --user root
     if: needs.docker-mcp-validation.outputs.docker-validated == 'true'
     steps:
     - uses: actions/checkout@v4
@@ -410,15 +418,17 @@ jobs:
   validate-config:
     needs: [docker-mcp-validation, docker-compose-validation]
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get install -y git curl
 
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install requests python-dotenv
@@ -505,8 +515,15 @@ jobs:
   security-scan:
     needs: docker-mcp-validation
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get install -y git curl
 
     - name: 🔒 ENFORCE Security Requirements
       run: |
@@ -557,9 +574,16 @@ jobs:
   deploy:
     needs: [test, validate-config, security-scan, docker-compose-validation]
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     if: github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get install -y git curl
 
     - name: 🔒 FINAL DEPLOYMENT ENFORCEMENT
       run: |
@@ -634,8 +658,17 @@ jobs:
   notify:
     needs: deploy
     runs-on: ubuntu-latest
+    container:
+      image: python:3.11-slim
+      options: --user root
     if: always()
     steps:
+    - uses: actions/checkout@v4
+
+    - name: Install system dependencies
+      run: |
+        apt-get update && apt-get install -y git curl
+
     - name: 🔒 NOTIFY DEPLOYMENT STATUS WITH ENFORCEMENT
       run: |
         if [ "${{ needs.deploy.result }}" = "success" ]; then
