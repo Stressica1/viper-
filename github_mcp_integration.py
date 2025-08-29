@@ -22,8 +22,15 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 import requests
-import git
-from git import Repo
+
+# Optional imports (gracefully handle missing dependencies)
+try:
+    import git
+    from git import Repo
+    GIT_AVAILABLE = True
+except ImportError:
+    print("⚠️ GitPython not available - some GitHub features may be limited")
+    GIT_AVAILABLE = False
 
 # Configure logging
 logging.basicConfig(
@@ -62,23 +69,25 @@ class GitHubMCPIntegration:
     def _initialize_repository(self):
         """Initialize Git repository"""
         try:
+            if not GIT_AVAILABLE:
+                logger.warning("⚠️ Git functionality disabled - GitPython not available")
+                self.repo = None
+                return
+                
             self.repo = Repo(self.repo_path)
             self.remote_url = self._get_remote_url()
             logger.info(f"✅ Git repository initialized: {self.repo_path}")
-        except git.InvalidGitRepositoryError:
-            logger.warning(f"⚠️  Not a git repository: {self.repo_path}")
-            self.repo = None
         except Exception as e:
-            logger.error(f"❌ Repository initialization failed: {e}")
+            logger.warning(f"⚠️ Repository initialization warning: {e}")
             self.repo = None
 
     def _get_remote_url(self) -> Optional[str]:
         """Get remote repository URL"""
         try:
-            if self.repo and self.repo.remotes:
+            if self.repo and self.repo.remotes and GIT_AVAILABLE:
                 return self.repo.remotes.origin.url
         except Exception as e:
-            logger.warning(f"⚠️  Could not get remote URL: {e}")
+            logger.warning(f"⚠️ Could not get remote URL: {e}")
         return None
 
     async def commit_system_changes(self, message: str, files_to_commit: List[str] = None):
