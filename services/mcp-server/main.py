@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - MCP Server
+# Rocket VIPER Trading Bot - MCP Server
 Model Context Protocol server for AI-powered trading operations
 
 Features:
@@ -709,7 +709,7 @@ class MCPServer:
                     commit_sha = latest_commit["sha"]
                     commit_message = latest_commit["commit"]["message"]
                     
-                    logger.info(f"✅ Latest commit fetched: {commit_sha[:8]} - {commit_message}")
+                    logger.info(f"# Check Latest commit fetched: {commit_sha[:8]} - {commit_message}")
                     
                     # Get commit details
                     commit_url = f"https://api.github.com/repos/{GITHUB_OWNER}/{GITHUB_REPO}/commits/{commit_sha}"
@@ -749,7 +749,7 @@ class MCPServer:
             if not GITHUB_PAT:
                 return {"error": "GitHub PAT not configured", "status": "error"}
 
-            logger.info("📊 Getting repository status...")
+            logger.info("# Chart Getting repository status...")
             
             # Handle both old (ghp_) and new (github_pat_) token formats
             if GITHUB_PAT.startswith("github_pat_"):
@@ -819,7 +819,7 @@ class MCPServer:
     async def validate_fetched_code(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Validate fetched code via MCP"""
         try:
-            logger.info("🔍 Validating fetched code...")
+            logger.info("# Search Validating fetched code...")
             
             # Basic validation checks
             validation_results = {
@@ -836,16 +836,16 @@ class MCPServer:
                         requirements = f.read()
                     if requirements.strip():
                         validation_results["dependency_check"] = True
-                        logger.info("✅ Dependencies file found and valid")
+                        logger.info("# Check Dependencies file found and valid")
                     else:
                         validation_results["dependency_check"] = False
-                        logger.warning("⚠️ Dependencies file is empty")
+                        logger.warning("# Warning Dependencies file is empty")
                 except Exception as e:
                     validation_results["dependency_check"] = False
-                    logger.error(f"❌ Error reading dependencies: {e}")
+                    logger.error(f"# X Error reading dependencies: {e}")
             else:
                 validation_results["dependency_check"] = False
-                logger.warning("⚠️ No requirements.txt found")
+                logger.warning("# Warning No requirements.txt found")
 
             # Check Python files for basic syntax
             python_files = []
@@ -867,9 +867,9 @@ class MCPServer:
 
             if syntax_errors:
                 validation_results["syntax_check"] = False
-                logger.warning(f"⚠️ Found {len(syntax_errors)} syntax errors")
+                logger.warning(f"# Warning Found {len(syntax_errors)} syntax errors")
             else:
-                logger.info("✅ Syntax validation passed")
+                logger.info("# Check Syntax validation passed")
 
             # Overall validation result
             all_valid = all(validation_results.values())
@@ -891,7 +891,7 @@ class MCPServer:
     async def deploy_code_updates(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """Deploy validated code updates via MCP"""
         try:
-            logger.info("🚀 Deploying code updates...")
+            logger.info("# Rocket Deploying code updates...")
             
             # Check if code was validated
             if not data.get("validation_passed", False):
@@ -911,11 +911,11 @@ class MCPServer:
                                          capture_output=True, text=True, timeout=300)
                     if result.returncode == 0:
                         deployment_results["dependencies_updated"] = True
-                        logger.info("✅ Dependencies updated successfully")
+                        logger.info("# Check Dependencies updated successfully")
                     else:
-                        logger.warning(f"⚠️ Dependency update failed: {result.stderr}")
+                        logger.warning(f"# Warning Dependency update failed: {result.stderr}")
                 except Exception as e:
-                    logger.error(f"❌ Error updating dependencies: {e}")
+                    logger.error(f"# X Error updating dependencies: {e}")
 
             # Restart services if needed
             if data.get("restart_services", False):
@@ -926,7 +926,7 @@ class MCPServer:
                         logger.info(f"🔄 Restarting service: {service}")
                         deployment_results["services_restarted"].append(service)
                     except Exception as e:
-                        logger.error(f"❌ Error restarting {service}: {e}")
+                        logger.error(f"# X Error restarting {service}: {e}")
 
             deployment_results["deployment_status"] = "completed"
             
@@ -964,7 +964,7 @@ class MCPServer:
                 if result.returncode == 0:
                     rollback_results["current_commit"] = result.stdout.strip()[:8]
             except Exception as e:
-                logger.warning(f"⚠️ Could not get current commit: {e}")
+                logger.warning(f"# Warning Could not get current commit: {e}")
 
             # Perform rollback
             try:
@@ -973,12 +973,12 @@ class MCPServer:
                 if result.returncode == 0:
                     rollback_results["rollback_status"] = "completed"
                     rollback_results["previous_commit"] = target_commit[:8]
-                    logger.info(f"✅ Rollback completed to commit {target_commit[:8]}")
+                    logger.info(f"# Check Rollback completed to commit {target_commit[:8]}")
                 else:
-                    logger.error(f"❌ Rollback failed: {result.stderr}")
+                    logger.error(f"# X Rollback failed: {result.stderr}")
                     rollback_results["rollback_status"] = "failed"
             except Exception as e:
-                logger.error(f"❌ Error during rollback: {e}")
+                logger.error(f"# X Error during rollback: {e}")
                 rollback_results["rollback_status"] = "failed"
 
             return {
@@ -1004,7 +1004,7 @@ def main():
     # Get port from environment
     port = int(os.getenv('MCP_SERVER_PORT', '8015'))
 
-    logger.info(f"🚀 Starting VIPER MCP Server on port {port}")
+    logger.info(f"# Rocket Starting VIPER MCP Server on port {port}")
     logger.info("📋 MCP Capabilities:")
     capabilities = server.get_capabilities()
     for category, functions in capabilities.items():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Market Data Streamer
+# Rocket VIPER Trading Bot - Market Data Streamer
 Real-time market data streaming and processing service
 
 Features:
@@ -60,7 +60,7 @@ class MarketDataStreamer:
             # Connect to Redis
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
 
             # Load exchange credentials
             self.load_exchange_credentials()
@@ -78,10 +78,10 @@ class MarketDataStreamer:
                     'watchTrades': True,
                 }
             })
-            logger.info("✅ Connected to Bitget exchange")
+            logger.info("# Check Connected to Bitget exchange")
 
         except Exception as e:
-            logger.error(f"❌ Failed to connect services: {e}")
+            logger.error(f"# X Failed to connect services: {e}")
             raise
 
     def load_exchange_credentials(self):
@@ -105,10 +105,10 @@ class MarketDataStreamer:
             )
             self.api_password = response.json().get('value')
 
-            logger.info("✅ Loaded exchange credentials from vault")
+            logger.info("# Check Loaded exchange credentials from vault")
 
         except Exception as e:
-            logger.error(f"❌ Failed to load credentials: {e}")
+            logger.error(f"# X Failed to load credentials: {e}")
             raise
 
     async def stream_market_data(self, symbol: str):
@@ -165,7 +165,7 @@ class MarketDataStreamer:
                     await asyncio.sleep(self.update_interval)
 
             except Exception as e:
-                logger.error(f"❌ Error streaming {symbol}: {e}")
+                logger.error(f"# X Error streaming {symbol}: {e}")
                 reconnect_count += 1
                 if reconnect_count < self.max_reconnect_attempts:
                     logger.info(f"🔄 Reconnecting in {self.reconnect_delay}s... ({reconnect_count}/{self.max_reconnect_attempts})")
@@ -176,11 +176,11 @@ class MarketDataStreamer:
         try:
             self.redis_client.setex(key, 300, json.dumps(data))  # 5 minute cache
         except Exception as e:
-            logger.error(f"❌ Failed to cache data: {e}")
+            logger.error(f"# X Failed to cache data: {e}")
 
     async def start_streaming(self, symbols: List[str]):
         """Start streaming for multiple symbols"""
-        logger.info(f"🚀 Starting market data streaming for {len(symbols)} symbols")
+        logger.info(f"# Rocket Starting market data streaming for {len(symbols)} symbols")
 
         tasks = []
         for symbol in symbols:
@@ -200,7 +200,7 @@ class MarketDataStreamer:
 
         thread = threading.Thread(target=run_streaming, daemon=True)
         thread.start()
-        logger.info("🎯 Market data streaming started in background")
+        logger.info("# Target Market data streaming started in background")
 
     def get_cached_data(self, symbol: str, data_type: str) -> Optional[Dict]:
         """Get cached market data"""
@@ -209,13 +209,13 @@ class MarketDataStreamer:
             data = self.redis_client.get(key)
             return json.loads(data) if data else None
         except Exception as e:
-            logger.error(f"❌ Failed to get cached data: {e}")
+            logger.error(f"# X Failed to get cached data: {e}")
             return None
 
     def start(self):
         """Start the market data streamer"""
         try:
-            logger.info("🚀 Starting Market Data Streamer...")
+            logger.info("# Rocket Starting Market Data Streamer...")
 
             # Connect to services
             self.connect_services()
@@ -227,7 +227,7 @@ class MarketDataStreamer:
             # Filter for 25x leverage pairs only
             leverage_pairs = self.filter_leverage_pairs(symbols[:100])  # Limit to first 100 for now
 
-            logger.info(f"📊 Found {len(leverage_pairs)} leverage pairs to stream")
+            logger.info(f"# Chart Found {len(leverage_pairs)} leverage pairs to stream")
 
             # Start streaming
             self.is_running = True
@@ -241,7 +241,7 @@ class MarketDataStreamer:
             logger.info("⏹️ Stopping Market Data Streamer...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Market Data Streamer error: {e}")
+            logger.error(f"# X Market Data Streamer error: {e}")
             self.stop()
 
     def filter_leverage_pairs(self, symbols: List[str]) -> List[str]:
@@ -262,7 +262,7 @@ class MarketDataStreamer:
     def stop(self):
         """Stop the market data streamer"""
         self.is_running = False
-        logger.info("✅ Market Data Streamer stopped")
+        logger.info("# Check Market Data Streamer stopped")
 
 def create_app():
     """Create FastAPI application for health checks and metrics"""

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - MCP Swap Trader for All Pairs
+# Rocket VIPER Trading System - MCP Swap Trader for All Pairs
 Execute swap trades across all available Bitget pairs via MCP server
 
 Features:
@@ -71,8 +71,8 @@ class MCPSwapTrader:
         self.max_positions = 15  # Maximum concurrent positions
         self.min_volume_threshold = 1000000  # Minimum 24h volume
 
-        print(f"📊 Loaded {len(self.all_pairs)} swap pairs")
-        print(f"🎯 Risk per trade: {self.risk_per_trade*100}%")
+        print(f"# Chart Loaded {len(self.all_pairs)} swap pairs")
+        print(f"# Target Risk per trade: {self.risk_per_trade*100}%")
 
     def load_all_pairs(self) -> None:
         """Load all available swap pairs from Bitget"""
@@ -80,11 +80,11 @@ class MCPSwapTrader:
             markets = self.exchange.loadMarkets()
             self.all_pairs = [
                 symbol for symbol in markets.keys()
-                if markets[symbol]['active'] and
+                if markets[symbol]['active'] and:
                 markets[symbol]['type'] == 'swap' and
                 markets[symbol]['quote'] == 'USDT'
             ]
-            print(f"✅ Loaded {len(self.all_pairs)} active swap pairs")
+            print(f"# Check Loaded {len(self.all_pairs)} active swap pairs")
         except Exception as e:
             self.all_pairs = []
 
@@ -170,7 +170,7 @@ class MCPSwapTrader:
             return None
 
         except Exception as e:
-            print(f"❌ Error generating signal for {symbol}: {e}")
+            print(f"# X Error generating signal for {symbol}: {e}")
             return None
 
     def execute_mcp_trade(self, signal: Dict) -> bool:
@@ -202,12 +202,12 @@ class MCPSwapTrader:
                         'entry_time': datetime.now(),
                         'entry_price': signal['price']
                     }
-                    print(f"✅ MCP Trade executed: {signal['symbol']} {signal['signal']} at ${signal['price']}")
+                    print(f"# Check MCP Trade executed: {signal['symbol']} {signal['signal']} at ${signal['price']}")
                     return True
                 else:
-                    print(f"❌ MCP Trade failed: {result.get('error', 'Unknown error')}")
+                    print(f"# X MCP Trade failed: {result.get('error', 'Unknown error')}")
             else:
-                print(f"❌ MCP Server error: {response.status_code}")
+                print(f"# X MCP Server error: {response.status_code}")
 
             return False
 
@@ -264,20 +264,20 @@ class MCPSwapTrader:
                     if result.get('success'):
                         del self.active_positions[symbol]
                     else:
-                        print(f"❌ Failed to close position: {result.get('error', 'Unknown error')}")
+                        print(f"# X Failed to close position: {result.get('error', 'Unknown error')}")
                 else:
-                    print(f"❌ MCP Server error closing position: {response.status_code}")
+                    print(f"# X MCP Server error closing position: {response.status_code}")
 
         except Exception as e:
 
     def start_mcp_swap_trading(self) -> None:
         """Start MCP-powered swap trading for all pairs"""
-        print("\n🚀 STARTING MCP SWAP TRADING FOR ALL PAIRS...")
+        print("\n# Rocket STARTING MCP SWAP TRADING FOR ALL PAIRS...")
         print("🔥 Scanning and trading all available swap pairs")
         print("⚡ Using 50x leverage with 2% risk per trade")
 
         if not self.check_mcp_server():
-            print("❌ MCP Server not accessible. Please ensure MCP server is running.")
+            print("# X MCP Server not accessible. Please ensure MCP server is running.")
             return
 
         if not self.all_pairs:
@@ -289,11 +289,11 @@ class MCPSwapTrader:
         try:
             while self.is_running:
                 scan_count += 1
-                print(f"\n🔍 Market Scan #{scan_count} - {datetime.now().strftime('%H:%M:%S')}")
+                print(f"\n# Search Market Scan #{scan_count} - {datetime.now().strftime('%H:%M:%S')}")
 
                 # Limit concurrent positions
                 if len(self.active_positions) >= self.max_positions:
-                    print(f"📊 Max positions reached ({self.max_positions}). Monitoring existing positions...")
+                    print(f"# Chart Max positions reached ({self.max_positions}). Monitoring existing positions...")
                     self.monitor_positions()
                     time.sleep(30)
                     continue
@@ -320,20 +320,20 @@ class MCPSwapTrader:
                             signal = self.generate_signal(symbol, viper_score, market_data)
                             if signal:
                                 opportunities_found += 1
-                                print(f"    🎯 OPPORTUNITY: {signal['signal']} signal with {signal['confidence']:.2f} confidence")
+                                print(f"    # Target OPPORTUNITY: {signal['signal']} signal with {signal['confidence']:.2f} confidence")
 
                                 # Execute trade via MCP
                                 if self.execute_mcp_trade(signal):
-                                    print(f"    ✅ Trade executed via MCP for {symbol}")
+                                    print(f"    # Check Trade executed via MCP for {symbol}")
 
                     except Exception as e:
 
                 if opportunities_found == 0:
-                    print("  📊 No trading opportunities found in this scan")
+                    print("  # Chart No trading opportunities found in this scan")
 
                 # Monitor existing positions
                 if self.active_positions:
-                    print(f"\n📊 Active Positions: {len(self.active_positions)}")
+                    print(f"\n# Chart Active Positions: {len(self.active_positions)}")
                     self.monitor_positions()
 
                 # Wait before next scan
@@ -360,16 +360,16 @@ class MCPSwapTrader:
 
 def main():
     """Main entry point"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER MCP SWAP TRADER - ALL PAIRS TRADING                               ║
-║ 🔥 Automated Swap Trading | 📊 50x Leverage | 🎯 MCP Integration            ║
-║ ⚡ Real-time Scanning | 🧠 AI Signals | 📈 Risk Management                  ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER MCP SWAP TRADER - ALL PAIRS TRADING                               #
+# 🔥 Automated Swap Trading | # Chart 50x Leverage | # Target MCP Integration            #
+# ⚡ Real-time Scanning | 🧠 AI Signals | 📈 Risk Management                  #
+#==============================================================================#
     """)
 
     # Check API credentials
     if not all([BITGET_API_KEY, BITGET_API_SECRET, BITGET_API_PASSWORD]):
-        print("⚠️  Warning: API credentials not found in environment variables")
+        print("# Warning  Warning: API credentials not found in environment variables")
         print("   Some features may be limited without proper credentials")
         print("   Trading signals will still be generated based on public market data\n")
 

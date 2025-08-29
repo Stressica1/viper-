@@ -314,7 +314,7 @@ class MCPRulesEngine:
     def update_rule(self, rule_name: str, new_value: Any, requester: str = "system") -> bool:
         """Update a rule value with proper validation and permissions"""
         if rule_name not in self.rules:
-            self.logger.error(f"❌ Rule not found: {rule_name}")
+            self.logger.error(f"# X Rule not found: {rule_name}")
             return False
 
         rule = self.rules[rule_name]
@@ -420,7 +420,7 @@ class MCPRulesEngine:
     def activate_emergency_mode(self, reason: str, requester: str):
         """Activate emergency mode with override protocols"""
         if not self.get_rule_value("emergency_stop_enabled"):
-            self.logger.error("❌ Cannot activate emergency mode - emergency protocols disabled")
+            self.logger.error("# X Cannot activate emergency mode - emergency protocols disabled")
             return False
 
         self.emergency_mode = True
@@ -469,7 +469,7 @@ class MCPRulesEngine:
             "requester": requester
         })
 
-        self.logger.info(f"✅ EMERGENCY MODE DEACTIVATED (by {requester})")
+        self.logger.info(f"# Check EMERGENCY MODE DEACTIVATED (by {requester})")
         return True
 
     def get_rules_summary(self) -> Dict[str, Any]:
@@ -519,7 +519,7 @@ class MCPRulesEngine:
 
             # Only allow import by admin
             if requester not in ["admin", "system"]:
-                self.logger.error(f"❌ Ruleset import denied for {requester}")
+                self.logger.error(f"# X Ruleset import denied for {requester}")
                 return False
 
             # Validate and import rules
@@ -543,7 +543,7 @@ class MCPRulesEngine:
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Ruleset import failed: {e}")
+            self.logger.error(f"# X Ruleset import failed: {e}")
             return False
 
 def main():

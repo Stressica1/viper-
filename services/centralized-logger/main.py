@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Centralized Logger
+# Rocket VIPER Trading Bot - Centralized Logger
 Unified logging service for all microservices
 
 Features:
@@ -93,9 +93,9 @@ class LogAggregator:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL)
             self.redis_client.ping()
-            logger.info("✅ Connected to Redis")
+            logger.info("# Check Connected to Redis")
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             raise
 
     def setup_alert_rules(self):
@@ -168,7 +168,7 @@ class LogAggregator:
             logger.debug(f"📝 Processed log from {service}: {log_entry.level} - {log_entry.message[:50]}...")
 
         except Exception as e:
-            logger.error(f"❌ Error processing log entry: {e}")
+            logger.error(f"# X Error processing log entry: {e}")
 
     def send_to_elasticsearch(self, log_entry: LogEntry):
         """Send log entry to Elasticsearch"""
@@ -196,7 +196,7 @@ class LogAggregator:
             )
 
             if response.status_code not in [200, 201]:
-                logger.warning(f"⚠️ Failed to index log in Elasticsearch: {response.text}")
+                logger.warning(f"# Warning Failed to index log in Elasticsearch: {response.text}")
 
         except Exception as e:
             logger.debug(f"Debug: Elasticsearch not available: {e}")
@@ -225,7 +225,7 @@ class LogAggregator:
                     logger.warning(f"🚨 Log alert: {rule_name} for {service}")
 
         except Exception as e:
-            logger.error(f"❌ Error checking alerts: {e}")
+            logger.error(f"# X Error checking alerts: {e}")
 
     def subscribe_to_logs(self):
         """Subscribe to log streams from all services"""
@@ -263,10 +263,10 @@ class LogAggregator:
                         log_data = json.loads(message['data'])
                         self.process_log_entry(log_data)
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode log message: {e}")
+                        logger.error(f"# X Failed to decode log message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in log subscription: {e}")
+            logger.error(f"# X Error in log subscription: {e}")
 
     def start_background_processing(self):
         """Start background log processing"""
@@ -275,7 +275,7 @@ class LogAggregator:
 
         thread = threading.Thread(target=run_log_processor, daemon=True)
         thread.start()
-        logger.info("🎯 Log processing started")
+        logger.info("# Target Log processing started")
 
     def get_logs_by_service(self, service: str, limit: int = 100) -> List[Dict]:
         """Get logs for a specific service"""
@@ -334,7 +334,7 @@ class LogAggregator:
     def start(self):
         """Start the log aggregator"""
         try:
-            logger.info("🚀 Starting Centralized Logger...")
+            logger.info("# Rocket Starting Centralized Logger...")
 
             # Connect to Redis
             self.connect_redis()
@@ -357,13 +357,13 @@ class LogAggregator:
             logger.info("⏹️ Stopping Centralized Logger...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Centralized Logger error: {e}")
+            logger.error(f"# X Centralized Logger error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the log aggregator"""
         self.is_running = False
-        logger.info("✅ Centralized Logger stopped")
+        logger.info("# Check Centralized Logger stopped")
 
 # Global log aggregator instance
 log_aggregator = LogAggregator()

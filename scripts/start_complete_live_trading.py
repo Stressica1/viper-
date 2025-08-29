@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 COMPLETE LIVE TRADING SYSTEM LAUNCHER
+# Rocket COMPLETE LIVE TRADING SYSTEM LAUNCHER
 Direct launcher for VIPER live trading with all components connected
 """
 
@@ -23,7 +23,7 @@ if 'logger' not in globals():
 
 async def start_complete_system():
     """Start the complete VIPER live trading system with mandatory enforcement"""
-    print("🚀 STARTING COMPLETE VIPER LIVE TRADING SYSTEM")
+    print("# Rocket STARTING COMPLETE VIPER LIVE TRADING SYSTEM")
     
     # Enforce Docker and MCP requirements first
     try:
@@ -46,7 +46,7 @@ async def start_complete_system():
         # Import the main trader
         from viper_async_trader import ViperAsyncTrader
 
-        print("🔧 Initializing Complete Trading System...")
+        print("# Tool Initializing Complete Trading System...")
         trader = ViperAsyncTrader()
 
         print(f"   • Risk per Trade: {trader.risk_per_trade*100}%")
@@ -83,12 +83,12 @@ async def start_complete_system():
             except KeyboardInterrupt:
                 break
             except Exception as e:
-                logger.error(f"❌ System error: {e}")
+                logger.error(f"# X System error: {e}")
                 await asyncio.sleep(30)  # Wait before retry
 
 
     except Exception as e:
-        logger.error(f"❌ Failed to start system: {e}")
+        logger.error(f"# X Failed to start system: {e}")
         return False
 
     return True
@@ -97,7 +97,7 @@ if __name__ == "__main__":
     try:
         success = asyncio.run(start_complete_system())
         if success:
-            print("🎉 Complete VIPER system ran successfully!")
+            print("# Party Complete VIPER system ran successfully!")
             sys.exit(0)
         else:
             sys.exit(1)

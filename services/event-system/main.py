@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Event System Service
+# Rocket VIPER Trading Bot - Event System Service
 Redis-based pub/sub event system for real-time communication between services
 
 Features:
@@ -70,10 +70,10 @@ class EventSystemService:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def publish_event(self, channel: str, event_data: Dict[str, Any], ttl: Optional[int] = None) -> bool:
@@ -103,7 +103,7 @@ class EventSystemService:
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to publish event to {channel}: {e}")
+            logger.error(f"# X Failed to publish event to {channel}: {e}")
             return False
 
     def get_channel_events(self, channel: str, limit: int = 100) -> List[Dict]:
@@ -122,13 +122,13 @@ class EventSystemService:
             return events
 
         except Exception as e:
-            logger.error(f"❌ Failed to get events from {channel}: {e}")
+            logger.error(f"# X Failed to get events from {channel}: {e}")
             return []
 
     def register_event_processor(self, channel: str, processor_func):
         """Register an event processor for a specific channel"""
         self.event_processors[channel] = processor_func
-        logger.info(f"🔧 Registered processor for channel: {channel}")
+        logger.info(f"# Tool Registered processor for channel: {channel}")
 
     def process_trading_signals(self, event_data: Dict):
         """Process trading signals and route to appropriate services"""
@@ -140,7 +140,7 @@ class EventSystemService:
             if not symbol or not signal_type:
                 return
 
-            logger.info(f"🎯 Processing {signal_type} signal for {symbol}")
+            logger.info(f"# Target Processing {signal_type} signal for {symbol}")
 
             # Route to risk manager for validation
             risk_event = {
@@ -168,7 +168,7 @@ class EventSystemService:
             })
 
         except Exception as e:
-            logger.error(f"❌ Error processing trading signal: {e}")
+            logger.error(f"# X Error processing trading signal: {e}")
 
     def process_risk_alerts(self, event_data: Dict):
         """Process risk alerts and take appropriate actions"""
@@ -191,7 +191,7 @@ class EventSystemService:
             self.publish_event('risk_log', alert)
 
         except Exception as e:
-            logger.error(f"❌ Error processing risk alert: {e}")
+            logger.error(f"# X Error processing risk alert: {e}")
 
     def process_service_status(self, event_data: Dict):
         """Process service status updates"""
@@ -205,10 +205,10 @@ class EventSystemService:
                     'last_update': datetime.now().isoformat()
                 }
 
-                logger.debug(f"📊 Updated status for {service_name}")
+                logger.debug(f"# Chart Updated status for {service_name}")
 
         except Exception as e:
-            logger.error(f"❌ Error processing service status: {e}")
+            logger.error(f"# X Error processing service status: {e}")
 
     async def check_service_health(self):
         """Check health of all registered services"""
@@ -234,7 +234,7 @@ class EventSystemService:
                             }
 
                     except Exception as e:
-                        logger.error(f"❌ Health check failed for {service_name}: {e}")
+                        logger.error(f"# X Health check failed for {service_name}: {e}")
                         self.service_health[service_name] = {
                             'status': {},
                             'last_update': datetime.now().isoformat(),
@@ -253,7 +253,7 @@ class EventSystemService:
                 await asyncio.sleep(HEALTH_CHECK_INTERVAL)
 
             except Exception as e:
-                logger.error(f"❌ Error in health check loop: {e}")
+                logger.error(f"# X Error in health check loop: {e}")
                 await asyncio.sleep(5)
 
     def get_overall_health(self) -> str:
@@ -262,7 +262,7 @@ class EventSystemService:
             return 'unknown'
 
         unhealthy_count = sum(1 for service in self.service_health.values()
-                            if service.get('health') == 'unhealthy')
+                            if service.get('health') == 'unhealthy'):
 
         if unhealthy_count == 0:
             return 'healthy'
@@ -310,12 +310,12 @@ class EventSystemService:
                             logger.debug(f"📨 Received event on {channel}: {event_data.get('id', 'unknown')}")
 
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode message: {e}")
+                        logger.error(f"# X Failed to decode message: {e}")
                     except Exception as e:
-                        logger.error(f"❌ Error processing message: {e}")
+                        logger.error(f"# X Error processing message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in event subscription: {e}")
+            logger.error(f"# X Error in event subscription: {e}")
 
     def start_background_tasks(self):
         """Start background event processing tasks"""
@@ -327,12 +327,12 @@ class EventSystemService:
         health_thread = threading.Thread(target=lambda: asyncio.run(self.check_service_health()), daemon=True)
         health_thread.start()
 
-        logger.info("🎯 Event processing started in background")
+        logger.info("# Target Event processing started in background")
 
     def start(self):
         """Start the event system service"""
         try:
-            logger.info("🚀 Starting Event System Service...")
+            logger.info("# Rocket Starting Event System Service...")
 
             # Connect to Redis
             if not self.initialize_redis():
@@ -362,13 +362,13 @@ class EventSystemService:
             logger.info("⏹️ Stopping Event System Service...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ Event System Service error: {e}")
+            logger.error(f"# X Event System Service error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the event system service"""
         self.is_running = False
-        logger.info("✅ Event System Service stopped")
+        logger.info("# Check Event System Service stopped")
 
 # FastAPI application
 app = FastAPI(
@@ -383,12 +383,12 @@ event_service = EventSystemService()
 async def startup_event():
     """Initialize services on startup"""
     if not event_service.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     # Start background tasks
     asyncio.create_task(asyncio.to_thread(event_service.start_background_tasks))
-    logger.info("✅ Event System Service started successfully")
+    logger.info("# Check Event System Service started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():

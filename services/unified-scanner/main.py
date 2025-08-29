@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Unified Scanner Service
+# Rocket VIPER Trading Bot - Unified Scanner Service
 Comprehensive market scanning, pair analysis, and opportunity detection
 
 Features:
@@ -57,7 +57,7 @@ class UnifiedScannerService:
         # Initialize exchange for direct API calls when needed
         self.initialize_exchange()
 
-        logger.info("🔍 Unified Scanner Service initialized")
+        logger.info("# Search Unified Scanner Service initialized")
 
     def initialize_exchange(self) -> bool:
         """Initialize exchange connection for direct API access"""
@@ -67,7 +67,7 @@ class UnifiedScannerService:
             api_password = os.getenv('BITGET_API_PASSWORD', '')
 
             if not all([api_key, api_secret, api_password]):
-                logger.warning("⚠️ Missing API credentials for direct exchange access")
+                logger.warning("# Warning Missing API credentials for direct exchange access")
                 return False
 
             self.exchange = ccxt.bitget({
@@ -84,11 +84,11 @@ class UnifiedScannerService:
             })
 
             self.exchange.load_markets()
-            logger.info("✅ Exchange connection initialized")
+            logger.info("# Check Exchange connection initialized")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
+            logger.error(f"# X Failed to initialize exchange: {e}")
             return False
 
     def initialize_redis(self) -> bool:
@@ -96,16 +96,16 @@ class UnifiedScannerService:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def fetch_all_trading_pairs(self) -> List[str]:
         """Fetch all available USDT trading pairs"""
         try:
-            logger.info("🔍 Discovering all available trading pairs...")
+            logger.info("# Search Discovering all available trading pairs...")
 
             # Use market data manager if available
             try:
@@ -113,22 +113,22 @@ class UnifiedScannerService:
                 if response.status_code == 200:
                     data = response.json()
                     all_pairs = data.get('symbols', [])
-                    logger.info(f"✅ Retrieved {len(all_pairs)} pairs from market data manager")
+                    logger.info(f"# Check Retrieved {len(all_pairs)} pairs from market data manager")
                     return all_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else all_pairs
             except Exception as e:
-                logger.warning(f"⚠️ Market data manager unavailable: {e}")
+                logger.warning(f"# Warning Market data manager unavailable: {e}")
 
             # Fallback to direct API call
             if self.exchange:
                 usdt_pairs = [s for s in self.exchange.symbols if ':USDT' in s and self.exchange.market(s).get('active', False)]
-                logger.info(f"✅ Found {len(usdt_pairs)} USDT pairs via direct API")
+                logger.info(f"# Check Found {len(usdt_pairs)} USDT pairs via direct API")
                 return usdt_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else usdt_pairs
 
-            logger.error("❌ No method available to fetch trading pairs")
+            logger.error("# X No method available to fetch trading pairs")
             return []
 
         except Exception as e:
-            logger.error(f"❌ Error fetching trading pairs: {e}")
+            logger.error(f"# X Error fetching trading pairs: {e}")
             return []
 
     def scan_pair_details(self, symbol: str) -> Dict:
@@ -137,7 +137,7 @@ class UnifiedScannerService:
             # Get market data from market data manager
             response = requests.get(f"{self.market_data_manager_url}/api/market/{symbol}", timeout=5)
             if response.status_code != 200:
-                logger.warning(f"⚠️ Cannot fetch market data for {symbol}")
+                logger.warning(f"# Warning Cannot fetch market data for {symbol}")
                 return {'symbol': symbol, 'error': 'market_data_unavailable'}
 
             market_data = response.json()
@@ -183,12 +183,12 @@ class UnifiedScannerService:
                     score_data = score_response.json()
                     pair_info['viper_score'] = score_data
             except Exception as e:
-                logger.debug(f"⚠️ VIPER scoring unavailable for {symbol}: {e}")
+                logger.debug(f"# Warning VIPER scoring unavailable for {symbol}: {e}")
 
             return pair_info
 
         except Exception as e:
-            logger.error(f"❌ Error scanning pair {symbol}: {e}")
+            logger.error(f"# X Error scanning pair {symbol}: {e}")
             return {'symbol': symbol, 'error': str(e)}
 
     def check_leverage_availability(self, symbol: str) -> bool:
@@ -217,7 +217,7 @@ class UnifiedScannerService:
             return False
 
         except Exception as e:
-            logger.error(f"❌ Error checking leverage for {symbol}: {e}")
+            logger.error(f"# X Error checking leverage for {symbol}: {e}")
             return False
 
     def generate_trading_signals(self, pair_info: Dict) -> Optional[Dict]:
@@ -263,7 +263,7 @@ class UnifiedScannerService:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error generating signal for {pair_info.get('symbol', 'unknown')}: {e}")
+            logger.error(f"# X Error generating signal for {pair_info.get('symbol', 'unknown')}: {e}")
             return None
 
     def scan_pairs_batch(self, symbols: List[str]) -> Dict[str, Any]:
@@ -301,13 +301,13 @@ class UnifiedScannerService:
             except Exception as e:
                 error_info = {'symbol': symbol, 'error': str(e)}
                 batch_results['errors'].append(error_info)
-                logger.error(f"❌ Error scanning {symbol}: {e}")
+                logger.error(f"# X Error scanning {symbol}: {e}")
 
         return batch_results
 
     def perform_comprehensive_scan(self) -> Dict[str, Any]:
         """Perform comprehensive scan of all trading pairs"""
-        logger.info("🔍 Starting comprehensive market scan...")
+        logger.info("# Search Starting comprehensive market scan...")
 
         # Fetch all available pairs
         all_symbols = self.fetch_all_trading_pairs()
@@ -315,7 +315,7 @@ class UnifiedScannerService:
         if not all_symbols:
             return {'error': 'No trading pairs available'}
 
-        logger.info(f"📊 Scanning {len(all_symbols)} trading pairs")
+        logger.info(f"# Chart Scanning {len(all_symbols)} trading pairs")
 
         # Process in batches
         all_results = {
@@ -362,7 +362,7 @@ class UnifiedScannerService:
         scan_key = f"scan_results:{int(time.time())}"
         self.redis_client.setex(scan_key, 3600, json.dumps(all_results))  # 1 hour cache
 
-        logger.info(f"✅ Comprehensive scan completed: {len(all_results['signals_generated'])} signals generated")
+        logger.info(f"# Check Comprehensive scan completed: {len(all_results['signals_generated'])} signals generated")
         return all_results
 
     def start_periodic_scanning(self):
@@ -386,7 +386,7 @@ class UnifiedScannerService:
                     time.sleep(SCAN_INTERVAL_SECONDS)
 
                 except Exception as e:
-                    logger.error(f"❌ Error in scanning loop: {e}")
+                    logger.error(f"# X Error in scanning loop: {e}")
                     time.sleep(60)  # Wait before retrying
 
         if SCAN_INTERVAL_SECONDS > 0:
@@ -413,7 +413,7 @@ class UnifiedScannerService:
             return recent_scans
 
         except Exception as e:
-            logger.error(f"❌ Error getting scan history: {e}")
+            logger.error(f"# X Error getting scan history: {e}")
             return []
 
     def get_opportunities(self, min_score: float = 80, limit: int = 20) -> List[Dict]:
@@ -435,7 +435,7 @@ class UnifiedScannerService:
             return opportunities[:limit]
 
         except Exception as e:
-            logger.error(f"❌ Error getting opportunities: {e}")
+            logger.error(f"# X Error getting opportunities: {e}")
             return []
 
 # FastAPI application
@@ -451,19 +451,19 @@ scanner_service = UnifiedScannerService()
 async def startup_event():
     """Initialize services on startup"""
     if not scanner_service.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     if scanner_service.initialize_exchange():
-        logger.info("✅ Exchange connection available")
+        logger.info("# Check Exchange connection available")
     else:
-        logger.warning("⚠️ Exchange connection not available - some features limited")
+        logger.warning("# Warning Exchange connection not available - some features limited")
 
     # Start periodic scanning
     scanner_service.is_running = True
     scanner_service.start_periodic_scanning()
 
-    logger.info("✅ Unified Scanner Service started successfully")
+    logger.info("# Check Unified Scanner Service started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Unified Market Data Manager
+# Rocket VIPER Trading Bot - Unified Market Data Manager
 Centralized market data collection, caching, and distribution service
 
 Features:
@@ -59,13 +59,13 @@ class UnifiedMarketDataManager:
         self.enable_streaming = os.getenv('ENABLE_DATA_STREAMING', 'true').lower() == 'true'
         self.streaming_interval = int(os.getenv('STREAMING_INTERVAL', '5'))  # seconds
 
-        logger.info("🚀 Unified Market Data Manager initialized")
+        logger.info("# Rocket Unified Market Data Manager initialized")
 
     def initialize_exchange(self) -> bool:
         """Initialize Bitget exchange connection"""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
-                logger.error("❌ Missing API credentials for market data")
+                logger.error("# X Missing API credentials for market data")
                 return False
 
             self.exchange = ccxt.bitget({
@@ -84,11 +84,11 @@ class UnifiedMarketDataManager:
 
             # Load markets
             self.exchange.load_markets()
-            logger.info(f"✅ Exchange initialized with {len(self.exchange.symbols)} markets")
+            logger.info(f"# Check Exchange initialized with {len(self.exchange.symbols)} markets")
             return True
 
         except Exception as e:
-            logger.error(f"❌ Failed to initialize exchange: {e}")
+            logger.error(f"# X Failed to initialize exchange: {e}")
             return False
 
     def initialize_redis(self) -> bool:
@@ -96,10 +96,10 @@ class UnifiedMarketDataManager:
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def get_all_symbols(self) -> List[str]:
@@ -131,7 +131,7 @@ class UnifiedMarketDataManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error fetching ticker for {symbol}: {e}")
+            logger.error(f"# X Error fetching ticker for {symbol}: {e}")
             return None
 
     def fetch_orderbook_data(self, symbol: str, depth: int = 5) -> Optional[Dict]:
@@ -149,7 +149,7 @@ class UnifiedMarketDataManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error fetching orderbook for {symbol}: {e}")
+            logger.error(f"# X Error fetching orderbook for {symbol}: {e}")
             return None
 
     def fetch_ohlcv_data(self, symbol: str, timeframe: str = '1h', limit: int = 100) -> Optional[Dict]:
@@ -167,7 +167,7 @@ class UnifiedMarketDataManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error fetching OHLCV for {symbol}: {e}")
+            logger.error(f"# X Error fetching OHLCV for {symbol}: {e}")
             return None
 
     def fetch_market_data_batch(self, symbols: List[str]) -> Dict[str, Dict]:
@@ -198,10 +198,10 @@ class UnifiedMarketDataManager:
                     cache_key = f"market_data:{symbol}"
                     self.redis_client.setex(cache_key, CACHE_TTL, json.dumps(market_data))
 
-                    logger.debug(f"✅ Fetched market data for {symbol}")
+                    logger.debug(f"# Check Fetched market data for {symbol}")
 
             except Exception as e:
-                logger.error(f"❌ Error in batch fetch for {symbol}: {e}")
+                logger.error(f"# X Error in batch fetch for {symbol}: {e}")
 
         return batch_data
 
@@ -216,7 +216,7 @@ class UnifiedMarketDataManager:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting cached data for {symbol}: {e}")
+            logger.error(f"# X Error getting cached data for {symbol}: {e}")
             return None
 
     def publish_market_data(self, symbol: str, data: Dict):
@@ -241,7 +241,7 @@ class UnifiedMarketDataManager:
                 self.redis_client.publish('market_data:orderbook', json.dumps(data['orderbook']))
 
         except Exception as e:
-            logger.error(f"❌ Error publishing market data for {symbol}: {e}")
+            logger.error(f"# X Error publishing market data for {symbol}: {e}")
 
     def stream_market_data(self):
         """Stream market data in real-time"""
@@ -252,7 +252,7 @@ class UnifiedMarketDataManager:
                 symbols = self.get_all_symbols()
 
                 if not symbols:
-                    logger.warning("⚠️ No symbols available for streaming")
+                    logger.warning("# Warning No symbols available for streaming")
                     time.sleep(10)
                     continue
 
@@ -289,7 +289,7 @@ class UnifiedMarketDataManager:
                 time.sleep(self.streaming_interval)
 
             except Exception as e:
-                logger.error(f"❌ Error in streaming loop: {e}")
+                logger.error(f"# X Error in streaming loop: {e}")
                 time.sleep(5)
 
     def start_streaming(self):
@@ -298,7 +298,7 @@ class UnifiedMarketDataManager:
             self.is_running = True
             streaming_thread = threading.Thread(target=self.stream_market_data, daemon=True)
             streaming_thread.start()
-            logger.info("✅ Market data streaming started")
+            logger.info("# Check Market data streaming started")
 
     def stop_streaming(self):
         """Stop market data streaming"""
@@ -335,7 +335,7 @@ class UnifiedMarketDataManager:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error getting market overview: {e}")
+            logger.error(f"# X Error getting market overview: {e}")
             return {'error': str(e)}
 
 # FastAPI application
@@ -351,18 +351,18 @@ market_data_manager = UnifiedMarketDataManager()
 async def startup_event():
     """Initialize services on startup"""
     if not market_data_manager.initialize_exchange():
-        logger.error("❌ Failed to initialize exchange")
+        logger.error("# X Failed to initialize exchange")
         return
 
     if not market_data_manager.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     # Start streaming if enabled
     if market_data_manager.enable_streaming:
         market_data_manager.start_streaming()
 
-    logger.info("✅ Market Data Manager started successfully")
+    logger.info("# Check Market Data Manager started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -511,13 +511,13 @@ async def get_market_stats():
     try:
         total_symbols = len(market_data_manager.market_data_cache)
         updates_in_last_minute = sum(1 for timestamp in market_data_manager.last_update.values()
-                                   if isinstance(timestamp, datetime) and
+                                   if isinstance(timestamp, datetime) and:
                                    (datetime.now() - timestamp).seconds < 60)
 
         return {
             'total_symbols': total_symbols,
             'active_symbols': len([s for s in market_data_manager.market_data_cache.keys()
-                                 if market_data_manager.market_data_cache[s].get('ticker', {}).get('volume', 0) > 0]),
+                                 if market_data_manager.market_data_cache[s].get('ticker', {}).get('volume', 0) > 0]),:
             'recent_updates': updates_in_last_minute,
             'cache_size': len(market_data_manager.market_data_cache),
             'streaming_active': market_data_manager.is_running,

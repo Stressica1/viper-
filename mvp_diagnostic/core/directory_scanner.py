@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 MVP DIRECTORY SCANNER
+# Rocket MVP DIRECTORY SCANNER
 Comprehensive file system analysis for the VIPER diagnostic system
 """
 
@@ -92,7 +92,7 @@ class DirectoryScanner:
 
     def generate_scan_report(self, scan_results: Dict[str, Any]) -> str:
         """Generate human-readable scan report"""
-        report = f"""# 📊 DIRECTORY SCAN REPORT
+        report = f"""# # Chart DIRECTORY SCAN REPORT
 **Timestamp:** {scan_results['scan_timestamp']}
 **Root Path:** {scan_results['root_path']}
 
@@ -114,7 +114,7 @@ class DirectoryScanner:
                 report += f"- {large_file['path']}: {large_file['size_mb']:.1f}MB\n"
 
         if scan_results['issues_found']:
-            report += f"\n## ⚠️ Issues Found\n"
+            report += f"\n## # Warning Issues Found\n"
             for issue in scan_results['issues_found'][:5]:  # Top 5
                 report += f"- **{issue['file']}:** {issue['error']}\n"
 

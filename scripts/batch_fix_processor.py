@@ -317,7 +317,7 @@ class BatchFixProcessor:
 🔄 BATCH PROCESSING REPORT
 {'='*40}
 
-📊 OVERVIEW
+# Chart OVERVIEW
   Total Jobs: {results['total_jobs']}
   Completed: {results['completed_jobs']}
   Failed: {results['failed_jobs']}
@@ -328,7 +328,7 @@ class BatchFixProcessor:
 """
 
         for job_result in results['jobs']:
-            status_icon = "✅" if job_result.get('status') == 'completed' else "❌"
+            status_icon = "# Check" if job_result.get('status') == 'completed' else "# X"
             report += f"  {status_icon} {job_result.get('job_id', 'Unknown')}\n"
 
             if 'result' in job_result and job_result['result']:
@@ -379,14 +379,14 @@ class BatchFixOrchestrator:
         # Critical issues first
         if critical_issues:
             critical_job_ids = self.processor.submit_critical_issues(critical_issues)
-            print(f"✅ Submitted {len(critical_job_ids)} critical jobs")
+            print(f"# Check Submitted {len(critical_job_ids)} critical jobs")
 
         # High priority issues
         if high_issues:
             high_batches = self.fixer.create_fix_batches(high_issues)
             for batch in high_batches:
                 self.processor.submit_job(batch, priority=2)
-            print(f"✅ Submitted {len(high_batches)} high-priority batches")
+            print(f"# Check Submitted {len(high_batches)} high-priority batches")
 
         # Medium and low priority
         remaining_issues = medium_issues + low_issues
@@ -395,7 +395,7 @@ class BatchFixOrchestrator:
             for batch in remaining_batches:
                 priority = 3 if any(i['severity'] == 'MEDIUM' for i in batch.issues) else 4
                 self.processor.submit_job(batch, priority=priority)
-            print(f"✅ Submitted {len(remaining_batches)} standard batches")
+            print(f"# Check Submitted {len(remaining_batches)} standard batches")
 
         # Process queue
         results = self.processor.process_queue()
@@ -471,7 +471,7 @@ def main():
         sys.exit(0)
     else:
         failed_jobs = result['results']['failed_jobs']
-        print(f"⚠️  {failed_jobs} jobs failed - manual review required")
+        print(f"# Warning  {failed_jobs} jobs failed - manual review required")
         sys.exit(1)
 
 if __name__ == '__main__':

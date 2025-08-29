@@ -55,14 +55,14 @@ class ViperTerminal:
     def print_banner(self):
         """Display VIPER system banner"""
         banner_text = """
-    ██╗   ██╗██╗██████╗ ███████╗██████╗ 
-    ██║   ██║██║██╔══██╗██╔════╝██╔══██╗
-    ██║   ██║██║██████╔╝█████╗  ██████╔╝
-    ╚██╗ ██╔╝██║██╔═══╝ ██╔══╝  ██╔══██╗
-     ╚████╔╝ ██║██║     ███████╗██║  ██║
-      ╚═══╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝
+    ██#   ██#██#██████# ███████#██████# 
+    ██#   ██#██#██#==██#██#====#██#==██#
+    ██#   ██#██#██████##█████#  ██████##
+    #██# ██##██#██#===# ██#==#  ██#==██#
+     #████## ██#██#     ███████#██#  ██#
+      #===#  #=##=#     #======##=#  #=#
                                         
-    🚀 AI-Powered Trading System v2.5.4
+    # Rocket AI-Powered Trading System v2.5.4
         """
         
         if RICH_AVAILABLE:
@@ -83,14 +83,14 @@ class ViperTerminal:
             return
             
         # Create status table
-        table = Table(title="🔧 System Status", box=box.ROUNDED)
+        table = Table(title="# Tool System Status", box=box.ROUNDED)
         table.add_column("Component", style="cyan", no_wrap=True)
         table.add_column("Status", justify="center")
         table.add_column("Details", style="white")
         
         for component, info in status_data.items():
             status_color = "green" if info.get('healthy', False) else "red"
-            status_icon = "✅" if info.get('healthy', False) else "❌"
+            status_icon = "# Check" if info.get('healthy', False) else "# X"
             
             table.add_row(
                 component,
@@ -114,7 +114,7 @@ class ViperTerminal:
         )
         
         # Metrics table
-        metrics_table = Table(title="📊 Performance Metrics", box=box.SIMPLE_HEAD)
+        metrics_table = Table(title="# Chart Performance Metrics", box=box.SIMPLE_HEAD)
         metrics_table.add_column("Metric", style="cyan")
         metrics_table.add_column("Value", justify="right")
         metrics_table.add_column("Change", justify="right")
@@ -197,7 +197,7 @@ class ViperTerminal:
             
         panel = Panel(
             f"[red]{error_msg}[/]\n\n{details or ''}", 
-            title="❌ Error",
+            title="# X Error",
             border_style="red",
             padding=(1, 2)
         )
@@ -211,7 +211,7 @@ class ViperTerminal:
             
         panel = Panel(
             f"[yellow]{warning_msg}[/]\n\n{details or ''}", 
-            title="⚠️ Warning",
+            title="# Warning Warning",
             border_style="yellow",
             padding=(1, 2)
         )
@@ -225,7 +225,7 @@ class ViperTerminal:
             
         panel = Panel(
             f"[green]{success_msg}[/]\n\n{details or ''}", 
-            title="✅ Success",
+            title="# Check Success",
             border_style="green",
             padding=(1, 2)
         )
@@ -238,7 +238,7 @@ class ViperTerminal:
                 for key, value in values.items():
             return
             
-        tree = Tree("🔧 Configuration Summary")
+        tree = Tree("# Tool Configuration Summary")
         
         for section, values in config.items():
             section_branch = tree.add(f"[bold cyan]{section.title()}[/]")

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🔧 MCP ERROR FIXER - AUTOMATED CODE FIXING SYSTEM
+# Tool MCP ERROR FIXER - AUTOMATED CODE FIXING SYSTEM
 ===============================================
 
 Powered by Code Analyzer MCP Server for intelligent, automated error resolution.
@@ -243,7 +243,7 @@ class MCPErrorFixer:
 
     def process_fix_batch(self, batch: FixBatch) -> FixBatch:
         """Process a single batch of fixes"""
-        print(f"\n🔧 Processing {batch.batch_id}: {batch.file_path}")
+        print(f"\n# Tool Processing {batch.batch_id}: {batch.file_path}")
         batch.status = "in_progress"
 
         # Create backup if enabled
@@ -264,7 +264,7 @@ class MCPErrorFixer:
                 batch.status = "completed" if manual_result['success'] else "failed"
 
         except Exception as e:
-            print(f"❌ Error processing batch {batch.batch_id}: {e}")
+            print(f"# X Error processing batch {batch.batch_id}: {e}")
             batch.status = "failed"
 
         batch.completed_at = datetime.now().isoformat()
@@ -415,7 +415,7 @@ class MCPErrorFixer:
 
     def run_fix_process(self, scan_file: str = None) -> Dict[str, Any]:
         """Run the complete fix process"""
-        print("🔧 MCP ERROR FIXER - AUTOMATED CODE FIXING")
+        print("# Tool MCP ERROR FIXER - AUTOMATED CODE FIXING")
 
         if self.config.dry_run:
             print("🧪 DRY RUN MODE - No actual changes will be made")
@@ -425,7 +425,7 @@ class MCPErrorFixer:
         if not issues:
             return {'error': 'No scan results found'}
 
-        print(f"📊 Loaded {len(issues)} issues from scan results")
+        print(f"# Chart Loaded {len(issues)} issues from scan results")
 
         # Create fix batches
         batches = self.create_fix_batches(issues)
@@ -448,7 +448,7 @@ class MCPErrorFixer:
         # Generate report
         report = self._generate_fix_report(processed_batches, successful_fixes, failed_fixes)
 
-        print(f"📊 Total batches processed: {len(processed_batches)}")
+        print(f"# Chart Total batches processed: {len(processed_batches)}")
 
         return {
             'total_batches': len(processed_batches),
@@ -497,15 +497,15 @@ class MCPErrorFixer:
             failed_fixes.extend([f for f in batch.fixes if not f.success])
 
         if failed_fixes:
-            recommendations.append("🔍 Manual review needed for failed fixes")
+            recommendations.append("# Search Manual review needed for failed fixes")
             recommendations.append("🛠️ Consider updating MCP server configuration")
 
         # Success recommendations
         success_rate = len([b for b in batches if b.status == 'completed']) / len(batches)
         if success_rate > 0.8:
-            recommendations.append("✅ High success rate - automation working well")
+            recommendations.append("# Check High success rate - automation working well")
         elif success_rate < 0.5:
-            recommendations.append("⚠️ Low success rate - review MCP integration")
+            recommendations.append("# Warning Low success rate - review MCP integration")
 
         return recommendations
 
@@ -540,10 +540,10 @@ def main():
         sys.exit(1)
     else:
         success_rate = (result['successful_fixes'] / max(result['successful_fixes'] + result['failed_fixes'], 1)) * 100
-        print(f"🎉 Fix process completed with {success_rate:.1f}% success rate")
+        print(f"# Party Fix process completed with {success_rate:.1f}% success rate")
 
         if result['failed_fixes'] > 0:
-            print(f"⚠️  {result['failed_fixes']} fixes failed - manual review required")
+            print(f"# Warning  {result['failed_fixes']} fixes failed - manual review required")
             sys.exit(1)
         else:
             sys.exit(0)

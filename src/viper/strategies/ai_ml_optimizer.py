@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER AI/ML Trading Optimizer
+# Rocket VIPER AI/ML Trading Optimizer
 Advanced optimization for entry points and TP/SL levels using machine learning
 """
 
@@ -84,14 +84,14 @@ class AIMLOptimizer:
                 # Add technical indicators
                 df = self.add_technical_indicators(df)
 
-                logger.info(f"📊 Collected {len(df)} market data points for {symbol}")
+                logger.info(f"# Chart Collected {len(df)} market data points for {symbol}")
                 return df
             else:
-                logger.error(f"❌ Failed to collect market data: {response.status_code}")
+                logger.error(f"# X Failed to collect market data: {response.status_code}")
                 return pd.DataFrame()
 
         except Exception as e:
-            logger.error(f"❌ Error collecting market data: {e}")
+            logger.error(f"# X Error collecting market data: {e}")
             return pd.DataFrame()
 
     def add_technical_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -137,7 +137,7 @@ class AIMLOptimizer:
             return df
 
         except Exception as e:
-            logger.error(f"❌ Error adding technical indicators: {e}")
+            logger.error(f"# X Error adding technical indicators: {e}")
             return df
 
     def prepare_ml_features(self, df: pd.DataFrame, target_period: int = 5) -> Tuple[np.ndarray, np.ndarray]:
@@ -159,7 +159,7 @@ class AIMLOptimizer:
             df_clean = df.dropna()
 
             if len(df_clean) < 100:
-                logger.warning("⚠️ Insufficient data for ML training")
+                logger.warning("# Warning Insufficient data for ML training")
                 return np.array([]), np.array([])
 
             # Prepare features and targets
@@ -170,18 +170,18 @@ class AIMLOptimizer:
             # Scale features
             X_scaled = self.scaler.fit_transform(X)
 
-            logger.info(f"🎯 Prepared {len(X_scaled)} samples for ML training")
+            logger.info(f"# Target Prepared {len(X_scaled)} samples for ML training")
             return X_scaled, y_entry, y_tp_sl
 
         except Exception as e:
-            logger.error(f"❌ Error preparing ML features: {e}")
+            logger.error(f"# X Error preparing ML features: {e}")
             return np.array([]), np.array([]), np.array([])
 
     def train_entry_model(self, X: np.ndarray, y: np.ndarray) -> bool:
         """Train ML model for entry point prediction"""
         try:
             if len(X) == 0 or len(y) == 0:
-                logger.error("❌ No data for entry model training")
+                logger.error("# X No data for entry model training")
                 return False
 
             # Split data
@@ -203,7 +203,7 @@ class AIMLOptimizer:
             train_score = self.entry_model.score(X_train, y_train)
             test_score = self.entry_model.score(X_test, y_test)
 
-            logger.info(f"🎯 Entry Model - Train R²: {train_score:.4f}, Test R²: {test_score:.4f}")
+            logger.info(f"# Target Entry Model - Train R²: {train_score:.4f}, Test R²: {test_score:.4f}")
 
             # Feature importance
             feature_importance = dict(zip([
@@ -212,19 +212,19 @@ class AIMLOptimizer:
                 'bb_upper', 'bb_lower', 'bb_middle', 'volume_sma', 'volatility', 'trend_strength'
             ], self.entry_model.feature_importances_))
 
-            logger.info(f"🔍 Top features: {dict(sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5])}")
+            logger.info(f"# Search Top features: {dict(sorted(feature_importance.items(), key=lambda x: x[1], reverse=True)[:5])}")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error training entry model: {e}")
+            logger.error(f"# X Error training entry model: {e}")
             return False
 
     def train_tp_sl_model(self, X: np.ndarray, y: np.ndarray) -> bool:
         """Train ML model for TP/SL optimization"""
         try:
             if len(X) == 0 or len(y) == 0:
-                logger.error("❌ No data for TP/SL model training")
+                logger.error("# X No data for TP/SL model training")
                 return False
 
             # Split data
@@ -246,24 +246,24 @@ class AIMLOptimizer:
             train_score = self.tp_sl_model.score(X_train, y_train)
             test_score = self.tp_sl_model.score(X_test, y_test)
 
-            logger.info(f"🎯 TP/SL Model - Train R²: {train_score:.4f}, Test R²: {test_score:.4f}")
+            logger.info(f"# Target TP/SL Model - Train R²: {train_score:.4f}, Test R²: {test_score:.4f}")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Error training TP/SL model: {e}")
+            logger.error(f"# X Error training TP/SL model: {e}")
             return False
 
     def optimize_entry_points(self, df: pd.DataFrame) -> Dict[str, Any]:
         """Optimize entry points using ML predictions with enhanced mathematical validation"""
         try:
             if self.entry_model is None:
-                logger.error("❌ Entry model not trained")
+                logger.error("# X Entry model not trained")
                 return {}
 
             # Get latest data with mathematical validation
             if len(df) == 0:
-                logger.error("❌ No data provided for entry optimization")
+                logger.error("# X No data provided for entry optimization")
                 return {}
                 
             latest_data = df.iloc[-1:]
@@ -278,22 +278,22 @@ class AIMLOptimizer:
             # Validate all required features are present
             missing_features = [col for col in feature_cols if col not in latest_data.columns]
             if missing_features:
-                logger.warning(f"⚠️ Missing features: {missing_features}")
+                logger.warning(f"# Warning Missing features: {missing_features}")
                 # Use available features only
                 feature_cols = [col for col in feature_cols if col in latest_data.columns]
             
             if len(feature_cols) == 0:
-                logger.error("❌ No valid features available for optimization")
+                logger.error("# X No valid features available for optimization")
                 return {}
 
             X_latest = latest_data[feature_cols].values
             
             # Mathematical validation: Check for NaN or infinite values
             if np.any(np.isnan(X_latest)) or np.any(np.isinf(X_latest)):
-                logger.error("❌ Invalid data detected (NaN or infinite values)")
+                logger.error("# X Invalid data detected (NaN or infinite values)")
                 # Clean the data
                 X_latest = np.nan_to_num(X_latest, nan=0.0, posinf=1.0, neginf=-1.0)
-                logger.info("✅ Data cleaned: NaN/inf values replaced")
+                logger.info("# Check Data cleaned: NaN/inf values replaced")
             
             X_scaled = self.scaler.transform(X_latest)
 
@@ -342,11 +342,11 @@ class AIMLOptimizer:
                 'optimization_config': self.optimal_entry_configs
             }
 
-            logger.info(f"🎯 Entry Optimization: Signal={entry_signal:.3f}, Confidence={confidence:.3f}, Recommendation={recommendation}")
+            logger.info(f"# Target Entry Optimization: Signal={entry_signal:.3f}, Confidence={confidence:.3f}, Recommendation={recommendation}")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Error optimizing entry points: {e}")
+            logger.error(f"# X Error optimizing entry points: {e}")
             return {
                 'error': str(e),
                 'timestamp': datetime.now().isoformat(),
@@ -398,7 +398,7 @@ class AIMLOptimizer:
             return enhanced_signal
             
         except Exception as e:
-            logger.warning(f"⚠️ Error applying optimal entry configs: {e}")
+            logger.warning(f"# Warning Error applying optimal entry configs: {e}")
             return base_signal  # Return original signal on error
     
     def calculate_optimal_recommendation(self, signal: float, confidence: float) -> str:
@@ -450,7 +450,7 @@ class AIMLOptimizer:
             return float(np.clip(risk_adjusted, 0.0, 1.0))
             
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating risk-adjusted signal: {e}")
+            logger.warning(f"# Warning Error calculating risk-adjusted signal: {e}")
             return signal
     
     def calculate_data_quality_score(self, data: np.ndarray) -> float:
@@ -473,7 +473,7 @@ class AIMLOptimizer:
             return float(max(quality_score, 0.0))
             
         except Exception as e:
-            logger.warning(f"⚠️ Error calculating data quality score: {e}")
+            logger.warning(f"# Warning Error calculating data quality score: {e}")
             return 0.5  # Neutral score on error
     
     def calculate_signal_stability(self, signal: float) -> float:
@@ -498,7 +498,7 @@ class AIMLOptimizer:
         """Optimize TP/SL levels using ML predictions"""
         try:
             if self.tp_sl_model is None:
-                logger.error("❌ TP/SL model not trained")
+                logger.error("# X TP/SL model not trained")
                 return {}
 
             # Get latest data
@@ -544,11 +544,11 @@ class AIMLOptimizer:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"🎯 TP/SL Optimization: TP {tp_percent:.2%}, SL {sl_percent:.2%}, RR {risk_reward_ratio:.2f}")
+            logger.info(f"# Target TP/SL Optimization: TP {tp_percent:.2%}, SL {sl_percent:.2%}, RR {risk_reward_ratio:.2f}")
             return result
 
         except Exception as e:
-            logger.error(f"❌ Error optimizing TP/SL levels: {e}")
+            logger.error(f"# X Error optimizing TP/SL levels: {e}")
             return {}
 
     def run_comprehensive_backtest(self, symbol: str = "BTCUSDT", initial_balance: float = 10000.0) -> Dict[str, Any]:
@@ -600,11 +600,11 @@ class AIMLOptimizer:
                 'timestamp': datetime.now().isoformat()
             }
 
-            logger.info(f"📊 Backtest Results: {report['win_rate']:.1%} win rate, {report['total_return']:.2%} return")
+            logger.info(f"# Chart Backtest Results: {report['win_rate']:.1%} win rate, {report['total_return']:.2%} return")
             return report
 
         except Exception as e:
-            logger.error(f"❌ Error in comprehensive backtest: {e}")
+            logger.error(f"# X Error in comprehensive backtest: {e}")
             return {'error': str(e)}
 
     def simulate_backtest(self, df: pd.DataFrame, initial_balance: float) -> Dict[str, Any]:
@@ -688,7 +688,7 @@ class AIMLOptimizer:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error in backtest simulation: {e}")
+            logger.error(f"# X Error in backtest simulation: {e}")
             return {}
 
     def get_optimization_recommendations(self) -> Dict[str, Any]:
@@ -717,7 +717,7 @@ class AIMLOptimizer:
             return recommendations
 
         except Exception as e:
-            logger.error(f"❌ Error getting optimization recommendations: {e}")
+            logger.error(f"# X Error getting optimization recommendations: {e}")
             return {'error': str(e)}
 
     def analyze_market_conditions(self, df: pd.DataFrame) -> Dict[str, Any]:
@@ -737,7 +737,7 @@ class AIMLOptimizer:
             return conditions
 
         except Exception as e:
-            logger.error(f"❌ Error analyzing market conditions: {e}")
+            logger.error(f"# X Error analyzing market conditions: {e}")
             return {}
 
     def assess_risk_level(self, df: pd.DataFrame) -> str:
@@ -769,7 +769,7 @@ class AIMLOptimizer:
                 return 'LOW'
 
         except Exception as e:
-            logger.error(f"❌ Error assessing risk level: {e}")
+            logger.error(f"# X Error assessing risk level: {e}")
             return 'UNKNOWN'
 
 def main():
@@ -785,7 +785,7 @@ def main():
 
 
     # Get current optimization recommendations
-    print("\n🎯 CURRENT OPTIMIZATION RECOMMENDATIONS:")
+    print("\n# Target CURRENT OPTIMIZATION RECOMMENDATIONS:")
     recommendations = optimizer.get_optimization_recommendations()
 
     if 'error' not in recommendations:

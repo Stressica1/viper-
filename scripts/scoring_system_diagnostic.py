@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Comprehensive Scoring System Diagnostic
+# Rocket VIPER Trading System - Comprehensive Scoring System Diagnostic
 Complete analysis and diagnosis of the VIPER scoring system and components
 
 Features:
@@ -77,10 +77,10 @@ class VIPERScoringDiagnostic:
 
     def print_header(self):
         """Print diagnostic header"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🔍 VIPER SCORING SYSTEM DIAGNOSTIC - COMPLETE ANALYSIS                        ║
-║ Comprehensive diagnosis of VIPER scoring algorithm and components             ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Search VIPER SCORING SYSTEM DIAGNOSTIC - COMPLETE ANALYSIS                        #
+# Comprehensive diagnosis of VIPER scoring algorithm and components             #
+#==============================================================================#
 """)
 
     def check_service_health(self, service_name: str, port: int) -> Dict:
@@ -433,14 +433,14 @@ class VIPERScoringDiagnostic:
 
         # Check component status
         if self.diagnostic_report['components'].get('signal_processor', {}).get('service_status', {}).get('status') != 'HEALTHY':
-            recommendations.append("🔧 Restart signal processor service")
-            recommendations.append("🔧 Check signal processor logs for errors")
+            recommendations.append("# Tool Restart signal processor service")
+            recommendations.append("# Tool Check signal processor logs for errors")
 
         # Check algorithm implementation
         algo_analysis = self.diagnostic_report.get('scoring_algorithm', {}).get('algorithm_analysis', {})
         if algo_analysis.get('implementation_status') != 'COMPLETE':
-            recommendations.append("🔧 Complete VIPER algorithm implementation")
-            recommendations.append("🔧 Add missing scoring components")
+            recommendations.append("# Tool Complete VIPER algorithm implementation")
+            recommendations.append("# Tool Add missing scoring components")
 
         # Check scoring performance
         perf_metrics = self.diagnostic_report.get('performance_metrics', {})
@@ -451,14 +451,14 @@ class VIPERScoringDiagnostic:
         # Check data quality
         data_ingestion = self.diagnostic_report.get('scoring_pipeline', {}).get('data_ingestion', {})
         if not all(data_ingestion.get('data_quality', {}).values()):
-            recommendations.append("📊 Improve market data quality")
-            recommendations.append("📊 Add data validation and fallback mechanisms")
+            recommendations.append("# Chart Improve market data quality")
+            recommendations.append("# Chart Add data validation and fallback mechanisms")
 
         return recommendations
 
     def run_complete_diagnostic(self):
         """Run complete diagnostic suite"""
-        print("🚀 Starting Complete VIPER Scoring System Diagnostic...")
+        print("# Rocket Starting Complete VIPER Scoring System Diagnostic...")
 
         # Component diagnosis
         self.diagnostic_report['components']['signal_processor'] = self.diagnose_signal_processor()
@@ -504,13 +504,13 @@ class VIPERScoringDiagnostic:
             'CRITICAL': '🔴',
             'UNKNOWN': '⚪'
         }
-        print(f"\n📊 OVERALL SYSTEM STATUS: {status_color.get(status, '⚪')} {status}")
+        print(f"\n# Chart OVERALL SYSTEM STATUS: {status_color.get(status, '⚪')} {status}")
 
         # Component Status
         for component_name, component_data in report.get('components', {}).items():
             if 'service_status' in component_data:
                 status = component_data['service_status']['status']
-                status_icon = '✅' if status == 'HEALTHY' else '❌' if status == 'DOWN' else '⚠️'
+                status_icon = '# Check' if status == 'HEALTHY' else '# X' if status == 'DOWN' else '# Warning'
                 print(f"  {status_icon} {component_name}: {status}")
 
         # Algorithm Analysis
@@ -518,7 +518,7 @@ class VIPERScoringDiagnostic:
         if algo_analysis:
             print(f"  📈 Implementation Status: {algo_analysis.get('implementation_status', 'UNKNOWN')}")
             for comp, present in algo_analysis.get('components', {}).items():
-                icon = '✅' if present else '❌'
+                icon = '# Check' if present else '# X'
 
             for factor, weight in algo_analysis.get('weights', {}).items():
 
@@ -530,7 +530,7 @@ class VIPERScoringDiagnostic:
         pipeline = report.get('scoring_pipeline', {})
         if pipeline.get('score_calculation'):
             calc = pipeline['score_calculation']
-            print(f"  🎯 Scores Generated: {calc.get('scores_generated', 0)}")
+            print(f"  # Target Scores Generated: {calc.get('scores_generated', 0)}")
             print(f"  🔴 High Confidence Signals: {calc.get('high_confidence_signals', 0)}")
 
         # Issues Found
@@ -577,7 +577,7 @@ def main():
                     json.dump(report, f, indent=2, default=str)
                 print(f"💾 Fallback report saved to: {fallback_file}")
             except Exception as fallback_e:
-                print(f"❌ Fallback save also failed: {fallback_e}")
+                print(f"# X Fallback save also failed: {fallback_e}")
 
     except Exception as e:
         import traceback

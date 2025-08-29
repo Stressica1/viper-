@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Structured Logger
+# Rocket VIPER Trading Bot - Structured Logger
 Unified logging utility for all microservices
 
 Features:

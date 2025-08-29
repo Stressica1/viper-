@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-🚀 COMPREHENSIVE STRATEGY BACKTESTER FOR LOWER TIMEFRAMES
+# Rocket COMPREHENSIVE STRATEGY BACKTESTER FOR LOWER TIMEFRAMES
 Advanced backtesting engine specifically designed for 30min and under timeframes
 
 Features:
-✅ Multiple strategy comparison for lower timeframes (5m, 15m, 30m)
-✅ Enhanced visual display with interactive charts and tables
-✅ Monte Carlo simulation for robust results
-✅ Walk-forward analysis for out-of-sample validation
-✅ Performance ranking and strategy selection
-✅ Real-time progress monitoring with beautiful displays
-✅ Automated best strategy selection for live trading
+# Check Multiple strategy comparison for lower timeframes (5m, 15m, 30m)
+# Check Enhanced visual display with interactive charts and tables
+# Check Monte Carlo simulation for robust results
+# Check Walk-forward analysis for out-of-sample validation
+# Check Performance ranking and strategy selection
+# Check Real-time progress monitoring with beautiful displays
+# Check Automated best strategy selection for live trading
 """
 
 import asyncio
@@ -38,6 +38,7 @@ from dataclasses import dataclass, asdict
 sys.path.append(str(Path(__file__).parent))
 
 try:
+    pass
 except ImportError as e:
     logging.warning(f"Some imports failed: {e}")
 
@@ -119,7 +120,7 @@ class ComprehensiveStrategyBacktester:
         self.all_results: List[BacktestResult] = []
         self.strategy_rankings: List[StrategyRanking] = []
         
-        logger.info("🚀 Comprehensive Strategy Backtester initialized")
+        logger.info("# Rocket Comprehensive Strategy Backtester initialized")
         
     def _initialize_strategies(self) -> List[StrategyConfig]:
         """Initialize available trading strategies"""
@@ -190,9 +191,9 @@ class ComprehensiveStrategyBacktester:
     
     async def run_comprehensive_backtest(self) -> Dict[str, Any]:
         """Run comprehensive backtesting for all strategies and timeframes"""
-        console.print("\n🚀 [bold blue]COMPREHENSIVE STRATEGY BACKTESTING STARTED[/bold blue]")
-        console.print(f"📊 Testing {len(self.strategies)} strategies across {len(self.timeframes)} timeframes")
-        console.print(f"🎯 Focus: Lower timeframes (30min and under)")
+        console.print("\n# Rocket [bold blue]COMPREHENSIVE STRATEGY BACKTESTING STARTED[/bold blue]")
+        console.print(f"# Chart Testing {len(self.strategies)} strategies across {len(self.timeframes)} timeframes")
+        console.print(f"# Target Focus: Lower timeframes (30min and under)")
         
         start_time = datetime.now()
         
@@ -242,7 +243,7 @@ class ComprehensiveStrategyBacktester:
         report = await self._generate_comprehensive_report()
         
         execution_time = (datetime.now() - start_time).total_seconds()
-        console.print(f"\n✅ [bold green]Backtesting completed in {execution_time:.2f} seconds[/bold green]")
+        console.print(f"\n# Check [bold green]Backtesting completed in {execution_time:.2f} seconds[/bold green]")
         
         return report
     
@@ -519,7 +520,7 @@ class ComprehensiveStrategyBacktester:
         if not self.all_results:
             return
         
-        console.print("\n📊 [bold blue]ANALYZING AND RANKING STRATEGIES[/bold blue]")
+        console.print("\n# Chart [bold blue]ANALYZING AND RANKING STRATEGIES[/bold blue]")
         
         # Group results by strategy and timeframe
         strategy_timeframe_results = {}
@@ -584,7 +585,7 @@ class ComprehensiveStrategyBacktester:
         
         self.strategy_rankings = rankings
         
-        console.print(f"✅ Analyzed {len(rankings)} strategy-timeframe combinations")
+        console.print(f"# Check Analyzed {len(rankings)} strategy-timeframe combinations")
     
     async def _generate_comprehensive_report(self) -> Dict[str, Any]:
         """Generate comprehensive backtesting report with enhanced display"""
@@ -648,7 +649,7 @@ class ComprehensiveStrategyBacktester:
     
     async def _display_performance_charts(self):
         """Generate and display performance visualization charts"""
-        console.print("\n📊 [bold blue]GENERATING PERFORMANCE VISUALIZATIONS[/bold blue]")
+        console.print("\n# Chart [bold blue]GENERATING PERFORMANCE VISUALIZATIONS[/bold blue]")
         
         # Set up the plotting style
         plt.style.use('seaborn-v0_8')
@@ -685,7 +686,7 @@ class ComprehensiveStrategyBacktester:
                             s=100, alpha=0.7, edgecolors='black', linewidth=0.5)
         ax2.set_xlabel('Risk-Adjusted Return')
         ax2.set_ylabel('Consistency Score')
-        ax2.set_title('🎯 Risk-Return vs Consistency')
+        ax2.set_title('# Target Risk-Return vs Consistency')
         ax2.grid(True, alpha=0.3)
         
         # Add colorbar
@@ -709,7 +710,7 @@ class ComprehensiveStrategyBacktester:
         
         ax3.set_xlabel('Timeframe')
         ax3.set_ylabel('Total Return')
-        ax3.set_title('📊 Performance Distribution by Timeframe')
+        ax3.set_title('# Chart Performance Distribution by Timeframe')
         ax3.grid(True, alpha=0.3)
         
         # 4. Win Rate vs Profit Factor
@@ -728,7 +729,7 @@ class ComprehensiveStrategyBacktester:
         # Save the chart
         chart_file = self.results_path / f"performance_analysis_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
         plt.savefig(chart_file, dpi=300, bbox_inches='tight')
-        console.print(f"📊 Performance charts saved to: {chart_file}")
+        console.print(f"# Chart Performance charts saved to: {chart_file}")
         
         # Display chart path
         console.print(f"🖼️  [bold blue]Charts generated and saved[/bold blue]")
@@ -737,7 +738,7 @@ class ComprehensiveStrategyBacktester:
     
     def _get_best_strategy_recommendation(self) -> Dict[str, Any]:
         """Get the best strategy recommendation for each timeframe"""
-        console.print("\n🎯 [bold green]BEST STRATEGY RECOMMENDATIONS[/bold green]")
+        console.print("\n# Target [bold green]BEST STRATEGY RECOMMENDATIONS[/bold green]")
         
         best_strategies = {}
         
@@ -756,13 +757,13 @@ class ComprehensiveStrategyBacktester:
         
         # Display recommendations in a panel
         recommendation_text = Text()
-        recommendation_text.append("🚀 OPTIMAL STRATEGIES FOR LOWER TIMEFRAMES\n\n", style="bold blue")
+        recommendation_text.append("# Rocket OPTIMAL STRATEGIES FOR LOWER TIMEFRAMES\n\n", style="bold blue")
         
         for timeframe, strategy in best_strategies.items():
             recommendation_text.append(f"⏰ {timeframe}: ", style="bold yellow")
             recommendation_text.append(f"{strategy['strategy_name']}\n", style="cyan")
-            recommendation_text.append(f"   📊 Score: {strategy['composite_score']:.3f} | ", style="dim")
-            recommendation_text.append(f"🎯 Risk-Adj Return: {strategy['risk_adjusted_return']:.3f}\n", style="dim")
+            recommendation_text.append(f"   # Chart Score: {strategy['composite_score']:.3f} | ", style="dim")
+            recommendation_text.append(f"# Target Risk-Adj Return: {strategy['risk_adjusted_return']:.3f}\n", style="dim")
             recommendation_text.append(f"   {strategy['recommendation']}\n\n", style="green")
         
         # Overall best strategy
@@ -772,7 +773,7 @@ class ComprehensiveStrategyBacktester:
             recommendation_text.append(f"   {overall_best.strategy_name} ({overall_best.timeframe})\n", style="bold cyan")
             recommendation_text.append(f"   Composite Score: {overall_best.composite_score:.3f}", style="bold green")
         
-        console.print(Panel(recommendation_text, title="🎯 STRATEGY RECOMMENDATIONS", border_style="green"))
+        console.print(Panel(recommendation_text, title="# Target STRATEGY RECOMMENDATIONS", border_style="green"))
         
         return {
             'by_timeframe': best_strategies,
@@ -786,23 +787,23 @@ class ComprehensiveStrategyBacktester:
 async def main():
     """Main execution function"""
     try:
-        console.print("\n🚀 [bold blue]COMPREHENSIVE STRATEGY BACKTESTER[/bold blue]")
-        console.print("📊 [yellow]Focusing on Lower Timeframes (30min and under)[/yellow]\n")
+        console.print("\n# Rocket [bold blue]COMPREHENSIVE STRATEGY BACKTESTER[/bold blue]")
+        console.print("# Chart [yellow]Focusing on Lower Timeframes (30min and under)[/yellow]\n")
         
         backtester = ComprehensiveStrategyBacktester()
         
         # Run comprehensive backtesting
         report = await backtester.run_comprehensive_backtest()
         
-        console.print("\n✅ [bold green]BACKTESTING COMPLETED SUCCESSFULLY![/bold green]")
+        console.print("\n# Check [bold green]BACKTESTING COMPLETED SUCCESSFULLY![/bold green]")
         console.print(f"📄 [cyan]Total backtests: {report['total_backtests']}[/cyan]")
-        console.print(f"🎯 [cyan]Best overall strategy: {report['best_strategy']['overall_best']['strategy_name']} ({report['best_strategy']['overall_best']['timeframe']})[/cyan]")
+        console.print(f"# Target [cyan]Best overall strategy: {report['best_strategy']['overall_best']['strategy_name']} ({report['best_strategy']['overall_best']['timeframe']})[/cyan]")
         
         return report
         
     except Exception as e:
         logger.error(f"Error in main execution: {e}")
-        console.print(f"❌ [bold red]Error: {e}[/bold red]")
+        console.print(f"# X [bold red]Error: {e}[/bold red]")
         return None
 
 if __name__ == "__main__":

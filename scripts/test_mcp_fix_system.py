@@ -23,7 +23,7 @@ def test_mcp_fix_system():
 
     # Load scan results
     scan_file = "reports/comprehensive_bug_scan.json"
-    print(f"📊 Loading scan results from: {scan_file}")
+    print(f"# Chart Loading scan results from: {scan_file}")
 
     try:
         with open(scan_file, 'r', encoding='utf-8') as f:
@@ -59,7 +59,7 @@ def test_mcp_fix_system():
     for i, issue in enumerate(test_issues, 1):
         print(f"  {i}. {issue['rule_id']}: {issue['message'][:50]}...")
 
-    print("🎯 System is ready for full-scale operation")
+    print("# Target System is ready for full-scale operation")
 
     return True
 

@@ -193,7 +193,7 @@ class ComprehensiveBugDetector:
 
                 # Show progress
                 if processed_files % 10 == 0:
-                    print(f"  📊 Progress: {processed_files}/{len(python_files)} files")
+                    print(f"  # Chart Progress: {processed_files}/{len(python_files)} files")
 
             except Exception as e:
                 self.findings.append(BugFinding(
@@ -224,7 +224,7 @@ class ComprehensiveBugDetector:
             recommendations=recommendations
         )
 
-        print(f"📊 Total files scanned: {processed_files}")
+        print(f"# Chart Total files scanned: {processed_files}")
         print(f"⏱️  Execution time: {execution_time:.2f} seconds")
         print(f"🔴 Critical: {summary.get('critical_count', 0)}")
         print(f"🟡 Medium: {summary.get('medium_count', 0)}")
@@ -516,7 +516,7 @@ class ComprehensiveBugDetector:
         if summary['critical_count'] > 0:
             recommendations.append("🚨 CRITICAL: Fix all critical issues immediately - these may prevent the code from running")
         if summary['high_count'] > 0:
-            recommendations.append("⚠️ HIGH PRIORITY: Address high-severity issues that could cause runtime errors or security problems")
+            recommendations.append("# Warning HIGH PRIORITY: Address high-severity issues that could cause runtime errors or security problems")
         if summary['medium_count'] > 0:
             recommendations.append("📋 MEDIUM: Review medium-severity issues for code quality and maintainability improvements")
 
@@ -586,7 +586,7 @@ def main():
 
     # Exit with error code if critical issues found
     if results.summary.get('critical_count', 0) > 0:
-        print("❌ Critical issues found - review and fix before proceeding")
+        print("# X Critical issues found - review and fix before proceeding")
         sys.exit(1)
     else:
         sys.exit(0)

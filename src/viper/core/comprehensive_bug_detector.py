@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """
-🔍 COMPREHENSIVE BUG DETECTOR FOR VIPER TRADING SYSTEM
+# Search COMPREHENSIVE BUG DETECTOR FOR VIPER TRADING SYSTEM
 Advanced multi-layer bug detection and analysis system
 
-⚠️  IMPORTANT: ONLY SCANS THE CURRENT REPOSITORY/DIRECTORY
+# Warning  IMPORTANT: ONLY SCANS THE CURRENT REPOSITORY/DIRECTORY
    Does NOT scan entire computer or system files
 
 Features:
-✅ Static code analysis for bugs
-✅ Logic error detection
-✅ Performance bottleneck identification
-✅ Security vulnerability scanning
-✅ Integration issue detection
-✅ Data validation problem identification
-✅ Error handling gap analysis
-✅ Memory leak detection
-✅ Race condition analysis
-✅ SQL injection vulnerability checks
-✅ API endpoint security validation
+# Check Static code analysis for bugs
+# Check Logic error detection
+# Check Performance bottleneck identification
+# Check Security vulnerability scanning
+# Check Integration issue detection
+# Check Data validation problem identification
+# Check Error handling gap analysis
+# Check Memory leak detection
+# Check Race condition analysis
+# Check SQL injection vulnerability checks
+# Check API endpoint security validation
 """
 
 import os
@@ -105,7 +105,7 @@ class ComprehensiveBugDetector:
         # Performance issue patterns
         self._load_performance_patterns()
 
-        logger.info("🔍 Comprehensive Bug Detector initialized")
+        logger.info("# Search Comprehensive Bug Detector initialized")
 
     def _load_detection_patterns(self):
         """Load common bug detection patterns"""
@@ -198,7 +198,7 @@ class ComprehensiveBugDetector:
             scan_results['recommendations'] = self._generate_recommendations()
 
         except Exception as e:
-            logger.error(f"❌ Bug scan failed: {e}")
+            logger.error(f"# X Bug scan failed: {e}")
             scan_results['error'] = str(e)
 
         finally:
@@ -215,8 +215,8 @@ class ComprehensiveBugDetector:
 
     async def _static_code_analysis(self):
         """Perform static code analysis for common bugs"""
-        print(f"🔍 Analyzing Python files in current repository: {self.scan_path}")
-        print("⚠️  ONLY SCANNING CURRENT REPOSITORY - NOT ENTIRE COMPUTER")
+        print(f"# Search Analyzing Python files in current repository: {self.scan_path}")
+        print("# Warning  ONLY SCANNING CURRENT REPOSITORY - NOT ENTIRE COMPUTER")
 
         # Only scan Python files in current repository
         python_files = list(self.scan_path.rglob('*.py'))
@@ -240,7 +240,7 @@ class ComprehensiveBugDetector:
             except Exception as e:
                 logger.warning(f"Error analyzing {file_path}: {e}")
 
-        print(f"✅ Static analysis complete: {self.scan_stats['files_scanned']} Python files analyzed")
+        print(f"# Check Static analysis complete: {self.scan_stats['files_scanned']} Python files analyzed")
 
     async def _analyze_line_for_bugs(self, file_path: Path, line_num: int, line: str, context: str):
         """Analyze a single line for potential bugs"""
@@ -672,7 +672,7 @@ class ComprehensiveBugDetector:
 
     async def _data_validation_analysis(self):
         """Analyze data validation issues in Python files"""
-        print("📊 Analyzing data validation in Python files...")
+        print("# Chart Analyzing data validation in Python files...")
 
         # Only scan Python files
         python_files = list(self.scan_path.rglob('*.py'))
@@ -773,7 +773,7 @@ class ComprehensiveBugDetector:
             recommendations.append("🚨 CRITICAL: Address all Critical severity issues immediately - they pose serious security or functionality risks")
 
         if severity_breakdown['High'] > 0:
-            recommendations.append("⚠️ HIGH PRIORITY: Fix High severity issues to prevent security vulnerabilities and major bugs")
+            recommendations.append("# Warning HIGH PRIORITY: Fix High severity issues to prevent security vulnerabilities and major bugs")
 
         # Type-specific recommendations
         if 'SQL Injection' in bug_type_breakdown:
@@ -800,7 +800,7 @@ class ComprehensiveBugDetector:
             "🧪 TESTING: Implement comprehensive unit and integration tests",
             "📚 DOCUMENTATION: Add docstrings and type hints to all functions",
             "🔄 CI/CD: Set up automated testing and security scanning in CI/CD pipeline",
-            "📊 MONITORING: Implement application monitoring and error tracking"
+            "# Chart MONITORING: Implement application monitoring and error tracking"
         ])
 
         return recommendations
@@ -821,14 +821,14 @@ class ComprehensiveBugDetector:
         severity = scan_results['severity_breakdown']
         bug_types = scan_results['bug_type_breakdown']
 
-        print(f"📊 Files Scanned: {stats['files_scanned']}")
+        print(f"# Chart Files Scanned: {stats['files_scanned']}")
         print(f"📝 Lines Analyzed: {stats['lines_analyzed']}")
         print(f"🐛 Bugs Found: {len(scan_results['bugs_found'])}")
         print(f"⏱️ Scan Duration: {stats['scan_duration']:.2f}s")
 
         for sev, count in severity.items():
             if count > 0:
-                icon = {'Critical': '🚨', 'High': '⚠️', 'Medium': '🟡', 'Low': 'ℹ️', 'Info': '📝'}.get(sev, '❓')
+                icon = {'Critical': '🚨', 'High': '# Warning', 'Medium': '🟡', 'Low': 'ℹ️', 'Info': '📝'}.get(sev, '❓')
 
         sorted_types = sorted(bug_types.items(), key=lambda x: x[1], reverse=True)
         for bug_type, count in sorted_types[:10]:  # Show top 10
@@ -839,7 +839,7 @@ class ComprehensiveBugDetector:
         if severity['Critical'] > 0 or severity['High'] > 0:
             print("🚨 ACTION REQUIRED: Critical/High severity issues detected!")
         else:
-            print("✅ SCAN COMPLETE: No critical issues found")
+            print("# Check SCAN COMPLETE: No critical issues found")
 
 class LogicErrorAnalyzer(ast.NodeVisitor):
     """AST-based logic error analyzer"""
@@ -936,9 +936,9 @@ async def main():
     print(f"   Medium Priority: {severity_breakdown.get('Medium', 0)}")
 
     if total_bugs == 0:
-        print("\\n🎉 EXCELLENT! No bugs detected in the codebase!")
+        print("\\n# Party EXCELLENT! No bugs detected in the codebase!")
     elif severity_breakdown.get('Critical', 0) == 0:
-        print("\\n✅ GOOD! No critical issues found - only minor improvements needed.")
+        print("\\n# Check GOOD! No critical issues found - only minor improvements needed.")
     else:
         print("\\n🚨 ATTENTION REQUIRED! Critical issues detected that need immediate fixing.")
 

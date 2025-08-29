@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 ADVANCED TREND DIRECTION DETECTOR
+# Target ADVANCED TREND DIRECTION DETECTOR
 Stable trend detection with ATR, moving averages, and Fibonacci levels
 Features:
 - Multi-timeframe trend confirmation
@@ -85,8 +85,8 @@ class AdvancedTrendDetector:
         self.trend_history = {}  # Store trend signals per symbol
         self.last_signals = {}   # Last signal per symbol to prevent flipping
         
-        logger.info("🎯 Advanced Trend Detector initialized")
-        logger.info(f"📊 Config: MA({self.config.fast_ma_length},{self.config.slow_ma_length},{self.config.trend_ma_length}) "
+        logger.info("# Target Advanced Trend Detector initialized")
+        logger.info(f"# Chart Config: MA({self.config.fast_ma_length},{self.config.slow_ma_length},{self.config.trend_ma_length}) "
                    f"ATR({self.config.atr_length}x{self.config.atr_multiplier}) "
                    f"MinBars({self.config.min_trend_bars})")
 
@@ -102,11 +102,11 @@ class AdvancedTrendDetector:
             })
             
             self.exchange.load_markets()
-            logger.info("✅ Exchange connected for trend analysis")
+            logger.info("# Check Exchange connected for trend analysis")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to connect exchange: {e}")
+            logger.error(f"# X Failed to connect exchange: {e}")
             return False
 
     async def get_ohlcv_data(self, symbol: str, timeframe: str, limit: int = 200) -> Optional[pd.DataFrame]:
@@ -133,7 +133,7 @@ class AdvancedTrendDetector:
 
                 return df
             except Exception as df_error:
-                logger.error(f"❌ DataFrame construction failed: {df_error}")
+                logger.error(f"# X DataFrame construction failed: {df_error}")
                 logger.error(f"   OHLCV data type: {type(ohlcv)}")
                 logger.error(f"   OHLCV length: {len(ohlcv) if ohlcv else 0}")
                 if ohlcv:
@@ -142,7 +142,7 @@ class AdvancedTrendDetector:
                 return None
             
         except Exception as e:
-            logger.error(f"❌ Error fetching OHLCV for {symbol} {timeframe}: {e}")
+            logger.error(f"# X Error fetching OHLCV for {symbol} {timeframe}: {e}")
             return None
 
     def calculate_atr(self, df: pd.DataFrame, period: int = None) -> pd.Series:
@@ -184,14 +184,14 @@ class AdvancedTrendDetector:
             low = recent_data.iloc[i]['low']
             
             # Check if it's a swing high
-            if (high > recent_data.iloc[i-1]['high'] and 
+            if (high > recent_data.iloc[i-1]['high'] and:
                 high > recent_data.iloc[i-2]['high'] and
                 high > recent_data.iloc[i+1]['high'] and 
                 high > recent_data.iloc[i+2]['high']):
                 swing_highs.append(high)
             
             # Check if it's a swing low
-            if (low < recent_data.iloc[i-1]['low'] and 
+            if (low < recent_data.iloc[i-1]['low'] and:
                 low < recent_data.iloc[i-2]['low'] and
                 low < recent_data.iloc[i+1]['low'] and 
                 low < recent_data.iloc[i+2]['low']):
@@ -406,7 +406,7 @@ class AdvancedTrendDetector:
             # Store signal
             self.last_signals[symbol] = signal
             
-            logger.info(f"🎯 {symbol} Trend: {trend_direction.value} ({trend_strength.value}/5) "
+            logger.info(f"# Target {symbol} Trend: {trend_direction.value} ({trend_strength.value}/5) "
                        f"Conf:{confidence:.2f} ATR:{atr_value:.6f} "
                        f"S/R:{support_level:.6f}/{resistance_level:.6f} "
                        f"FibConf:{fib_confluence:.2f}")
@@ -414,7 +414,7 @@ class AdvancedTrendDetector:
             return signal
             
         except Exception as e:
-            logger.error(f"❌ Error detecting trend for {symbol}: {e}")
+            logger.error(f"# X Error detecting trend for {symbol}: {e}")
             return None
 
     async def multi_timeframe_analysis(self, symbol: str) -> Dict[str, TrendSignal]:
@@ -489,7 +489,7 @@ async def test_trend_detector():
             signal = await detector.detect_trend(symbol)
             
             if signal:
-                logger.info(f"📊 {symbol}: {signal.direction.value} "
+                logger.info(f"# Chart {symbol}: {signal.direction.value} "
                            f"Strength:{signal.strength.value}/5 "
                            f"Confidence:{signal.confidence:.2f}")
             
@@ -498,7 +498,7 @@ async def test_trend_detector():
             consensus = detector.get_consensus_trend(mtf_signals)
             
             if consensus:
-                logger.info(f"🎯 {symbol} Consensus: {consensus.direction.value} "
+                logger.info(f"# Target {symbol} Consensus: {consensus.direction.value} "
                            f"Confidence:{consensus.confidence:.2f}")
         
         detector.exchange.close()

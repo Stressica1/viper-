@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Circuit Breaker Utility
+# Rocket VIPER Trading Bot - Circuit Breaker Utility
 Implements circuit breaker patterns and retry logic for microservice communication
 
 Features:
@@ -57,7 +57,7 @@ class CircuitBreaker:
         self.redis_client = redis_client
         self.redis_key = f"viper:circuit_breaker:{service_name}"
 
-        logger.info(f"🚀 Circuit breaker initialized for {service_name}")
+        logger.info(f"# Rocket Circuit breaker initialized for {service_name}")
 
     def _load_state_from_redis(self) -> None:
         """Load circuit breaker state from Redis"""
@@ -121,7 +121,7 @@ class CircuitBreaker:
             if self.success_count >= 3:  # Require 3 consecutive successes
                 self.state = CircuitState.CLOSED
                 self.failure_count = 0
-                logger.info(f"✅ Circuit breaker for {self.service_name} CLOSED (service recovered)")
+                logger.info(f"# Check Circuit breaker for {self.service_name} CLOSED (service recovered)")
             self._save_state_to_redis()
 
     def _record_failure(self) -> None:
@@ -219,13 +219,13 @@ import secrets
 
                 result = await func(*args, **kwargs)
                 if attempt > 0:
-                    logger.info(f"✅ Retry successful for {func.__name__}")
+                    logger.info(f"# Check Retry successful for {func.__name__}")
                 return result
 
             except Exception as e:
                 last_exception = e
                 if attempt == self.max_retries:
-                    logger.error(f"❌ All {self.max_retries + 1} attempts failed for {func.__name__}: {e}")
+                    logger.error(f"# X All {self.max_retries + 1} attempts failed for {func.__name__}: {e}")
                     raise e
                 else:
                     logger.warning(f"Attempt {attempt + 1} failed for {func.__name__}: {e}")

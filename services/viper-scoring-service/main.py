@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Centralized VIPER Scoring Service
+# Rocket VIPER Trading Bot - Centralized VIPER Scoring Service
 Standardized signal generation and scoring algorithm for all trading operations
 
 Features:
@@ -76,17 +76,17 @@ class VIPERScoringService:
         self.price_period = int(os.getenv('PRICE_PERIOD', '4'))     # hours
         self.range_period = int(os.getenv('RANGE_PERIOD', '24'))    # hours
 
-        logger.info("🎯 VIPER Scoring Service initialized")
+        logger.info("# Target VIPER Scoring Service initialized")
 
     def initialize_redis(self) -> bool:
         """Initialize Redis connection"""
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def calculate_volume_score(self, market_data: Dict, symbol: str) -> float:
@@ -119,7 +119,7 @@ class VIPERScoringService:
             return max(0, min(100, volume_score))
 
         except Exception as e:
-            logger.error(f"❌ Error calculating volume score for {symbol}: {e}")
+            logger.error(f"# X Error calculating volume score for {symbol}: {e}")
             return 0.0
 
     def calculate_price_score(self, market_data: Dict, symbol: str) -> float:
@@ -159,7 +159,7 @@ class VIPERScoringService:
             return max(0, min(100, price_score))
 
         except Exception as e:
-            logger.error(f"❌ Error calculating price score for {symbol}: {e}")
+            logger.error(f"# X Error calculating price score for {symbol}: {e}")
             return 50.0
 
     def calculate_execution_cost(self, market_data: Dict, position_size_usd: float = 5000) -> float:
@@ -199,7 +199,7 @@ class VIPERScoringService:
             return max(0.01, total_execution_cost)  # Minimum 1 cent
             
         except Exception as e:
-            logger.error(f"❌ Error calculating execution cost: {e}")
+            logger.error(f"# X Error calculating execution cost: {e}")
             return 5.0  # Conservative default
 
     def calculate_external_score(self, market_data: Dict, symbol: str) -> float:
@@ -258,7 +258,7 @@ class VIPERScoringService:
             return max(0, min(100, external_score))
 
         except Exception as e:
-            logger.error(f"❌ Error calculating external score for {symbol}: {e}")
+            logger.error(f"# X Error calculating external score for {symbol}: {e}")
             return 50.0
 
     def calculate_s1s2r1r2_levels(self, market_data: Dict, symbol: str) -> Dict[str, float]:
@@ -292,7 +292,7 @@ class VIPERScoringService:
             }
             
         except Exception as e:
-            logger.error(f"❌ Error calculating S1S2R1R2 levels for {symbol}: {e}")
+            logger.error(f"# X Error calculating S1S2R1R2 levels for {symbol}: {e}")
             return {'S2': 0, 'S1': 0, 'R1': 0, 'R2': 0, 'pivot': 0}
 
     def calculate_range_score(self, market_data: Dict, symbol: str) -> float:
@@ -387,7 +387,7 @@ class VIPERScoringService:
             return max(0, min(100, final_range_score))
 
         except Exception as e:
-            logger.error(f"❌ Error calculating range score for {symbol}: {e}")
+            logger.error(f"# X Error calculating range score for {symbol}: {e}")
             return 50.0
 
     def calculate_viper_score(self, market_data: Dict, symbol: str) -> Dict[str, Any]:
@@ -450,7 +450,7 @@ class VIPERScoringService:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error calculating VIPER score for {symbol}: {e}")
+            logger.error(f"# X Error calculating VIPER score for {symbol}: {e}")
             return {
                 'overall_score': 0.0,
                 'strength': SignalStrength.WEAK.value,
@@ -471,7 +471,7 @@ class VIPERScoringService:
 
             # Check maximum signals per symbol
             symbol_signals = [s for s in self.active_signals.values()
-                            if isinstance(s, dict) and s.get('symbol') == symbol]
+                            if isinstance(s, dict) and s.get('symbol') == symbol]:
 
             if len(symbol_signals) >= MAX_SIGNALS_PER_SYMBOL:
                 return None
@@ -582,12 +582,12 @@ class VIPERScoringService:
             if len(self.signal_history[symbol]) > 100:
                 self.signal_history[symbol] = self.signal_history[symbol][-100:]
 
-            logger.info(f"🎯 Generated {signal_type.value} signal for {symbol} (Score: {overall_score:.1f})")
+            logger.info(f"# Target Generated {signal_type.value} signal for {symbol} (Score: {overall_score:.1f})")
 
             return signal
 
         except Exception as e:
-            logger.error(f"❌ Error generating signal for {symbol}: {e}")
+            logger.error(f"# X Error generating signal for {symbol}: {e}")
             return None
 
     def process_market_data(self, market_data: Dict):
@@ -612,7 +612,7 @@ class VIPERScoringService:
                 logger.info(f"📡 Published {signal['type']} signal for {symbol}")
 
         except Exception as e:
-            logger.error(f"❌ Error processing market data: {e}")
+            logger.error(f"# X Error processing market data: {e}")
 
     def subscribe_to_market_data(self):
         """Subscribe to market data streams"""
@@ -635,10 +635,10 @@ class VIPERScoringService:
                         data = json.loads(message['data'])
                         self.process_market_data(data)
                     except json.JSONDecodeError as e:
-                        logger.error(f"❌ Failed to decode message: {e}")
+                        logger.error(f"# X Failed to decode message: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in market data subscription: {e}")
+            logger.error(f"# X Error in market data subscription: {e}")
 
     def start_background_processing(self):
         """Start signal processing in background thread"""
@@ -647,13 +647,13 @@ class VIPERScoringService:
 
         thread = threading.Thread(target=run_processor, daemon=True)
         thread.start()
-        logger.info("🎯 Signal processing started in background")
+        logger.info("# Target Signal processing started in background")
 
     def get_active_signals(self, symbol: Optional[str] = None) -> Dict[str, Any]:
         """Get active signals, optionally filtered by symbol"""
         if symbol:
             return {k: v for k, v in self.active_signals.items()
-                   if isinstance(v, dict) and v.get('symbol') == symbol}
+                   if isinstance(v, dict) and v.get('symbol') == symbol}:
         return self.active_signals.copy()
 
     def get_signal_history(self, symbol: str, limit: int = 50) -> List[Dict]:
@@ -683,13 +683,13 @@ class VIPERScoringService:
             return None
 
         except Exception as e:
-            logger.error(f"❌ Error getting cached data for {symbol}: {e}")
+            logger.error(f"# X Error getting cached data for {symbol}: {e}")
             return None
 
     def start(self):
         """Start the VIPER scoring service"""
         try:
-            logger.info("🚀 Starting VIPER Scoring Service...")
+            logger.info("# Rocket Starting VIPER Scoring Service...")
 
             # Connect to Redis
             if not self.initialize_redis():
@@ -717,13 +717,13 @@ class VIPERScoringService:
             logger.info("⏹️ Stopping VIPER Scoring Service...")
             self.stop()
         except Exception as e:
-            logger.error(f"❌ VIPER Scoring Service error: {e}")
+            logger.error(f"# X VIPER Scoring Service error: {e}")
             self.stop()
 
     def stop(self):
         """Stop the VIPER scoring service"""
         self.is_running = False
-        logger.info("✅ VIPER Scoring Service stopped")
+        logger.info("# Check VIPER Scoring Service stopped")
 
 # FastAPI application
 app = FastAPI(
@@ -738,12 +738,12 @@ viper_service = VIPERScoringService()
 async def startup_event():
     """Initialize services on startup"""
     if not viper_service.initialize_redis():
-        logger.error("❌ Failed to initialize Redis")
+        logger.error("# X Failed to initialize Redis")
         return
 
     # Start background processing
     asyncio.create_task(asyncio.to_thread(viper_service.start_background_processing))
-    logger.info("✅ VIPER Scoring Service started successfully")
+    logger.info("# Check VIPER Scoring Service started successfully")
 
 @app.on_event("shutdown")
 async def shutdown_event():
@@ -888,7 +888,7 @@ async def get_scoring_stats():
         if viper_service.active_signals:
             scores = [s.get('viper_score', {}).get('overall_score', 0)
                      for s in viper_service.active_signals.values()
-                     if isinstance(s, dict)]
+                     if isinstance(s, dict)]:
             if scores:
                 avg_score = sum(scores) / len(scores)
 
@@ -899,9 +899,9 @@ async def get_scoring_stats():
             "average_active_score": round(avg_score, 2),
             "signals_by_type": {
                 "LONG": len([s for s in viper_service.active_signals.values()
-                           if isinstance(s, dict) and s.get('type') == 'LONG']),
+                           if isinstance(s, dict) and s.get('type') == 'LONG']),:
                 "SHORT": len([s for s in viper_service.active_signals.values()
-                            if isinstance(s, dict) and s.get('type') == 'SHORT'])
+                            if isinstance(s, dict) and s.get('type') == 'SHORT']):
             }
         }
     except Exception as e:

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER COMPLETE SYSTEM LAUNCHER
+# Rocket VIPER COMPLETE SYSTEM LAUNCHER
 One-command launch for the fully optimized AI/ML trading system
 """
 
@@ -29,16 +29,16 @@ class ViperSystemLauncher:
         
     def print_banner(self):
         """Print the VIPER launch banner"""
-╔══════════════════════════════════════════════════════════════════════════════╗
-║ 🚀 VIPER COMPLETE AI/ML OPTIMIZED TRADING SYSTEM                           ║
-║ 🔥 AI-Powered Entry Points | 🎯 ML-Optimized TP/SL | 📊 Real-Time Backtest ║
-║ ⚡ Live Parameter Optimization | 🛡️ Enterprise Risk Management               ║
-║ 🤖 Machine Learning Integration | 📈 Continuous Strategy Improvement         ║
-╠══════════════════════════════════════════════════════════════════════════════╣
-║ ⚠️  HIGH-FREQUENCY ALGORITHMIC TRADING SYSTEM                               ║
-║ 🛑 EMERGENCY STOP: Ctrl+C | EMERGENCY KILL: docker compose down            ║
-║ 📊 MONITORING: http://localhost:8000 | OPTIMIZATION LOGS: Current Terminal ║
-╚══════════════════════════════════════════════════════════════════════════════╝
+#==============================================================================#
+# # Rocket VIPER COMPLETE AI/ML OPTIMIZED TRADING SYSTEM                           #
+# 🔥 AI-Powered Entry Points | # Target ML-Optimized TP/SL | # Chart Real-Time Backtest #
+# ⚡ Live Parameter Optimization | 🛡️ Enterprise Risk Management               #
+# 🤖 Machine Learning Integration | 📈 Continuous Strategy Improvement         #
+╠==============================================================================╣
+# # Warning  HIGH-FREQUENCY ALGORITHMIC TRADING SYSTEM                               #
+# 🛑 EMERGENCY STOP: Ctrl+C | EMERGENCY KILL: docker compose down            #
+# # Chart MONITORING: http://localhost:8000 | OPTIMIZATION LOGS: Current Terminal #
+#==============================================================================#
         """)
     
     def check_requirements(self) -> bool:
@@ -85,7 +85,7 @@ class ViperSystemLauncher:
                 time.sleep(15)
                 return True
             else:
-                print(f"❌ Failed to start services: {result.stderr}")
+                print(f"# X Failed to start services: {result.stderr}")
                 return False
                 
         except subprocess.TimeoutExpired:
@@ -125,13 +125,13 @@ class ViperSystemLauncher:
                     if response.status_code == 200:
                         healthy_count += 1
                     else:
-                        print(f"   ❌ {name}: HTTP {response.status_code}")
+                        print(f"   # X {name}: HTTP {response.status_code}")
                 except Exception as e:
         
         total_services = len(services)
         health_rate = healthy_count / total_services
         
-        print(f"   📊 Service Health: {healthy_count}/{total_services} ({health_rate:.1%})")
+        print(f"   # Chart Service Health: {healthy_count}/{total_services} ({health_rate:.1%})")
         
         return health_rate >= 0.7  # 70% minimum health
     
@@ -155,7 +155,7 @@ class ViperSystemLauncher:
     
     def start_optimized_trading(self) -> bool:
         """Start the AI/ML optimized trading system"""
-        print("\n🚀 STARTING AI/ML OPTIMIZED TRADING SYSTEM...")
+        print("\n# Rocket STARTING AI/ML OPTIMIZED TRADING SYSTEM...")
         
         try:
             # Start the optimized system
@@ -194,7 +194,7 @@ class ViperSystemLauncher:
         try:
             # Step 1: Check requirements
             if not self.check_requirements():
-                print("\n❌ System requirements not met. Please install missing components.")
+                print("\n# X System requirements not met. Please install missing components.")
                 return
             
             # Step 2: Start Docker services
@@ -203,17 +203,17 @@ class ViperSystemLauncher:
             
             # Step 3: Verify services
             if not self.verify_services():
-                print("\n⚠️ Some services are not healthy, but proceeding...")
+                print("\n# Warning Some services are not healthy, but proceeding...")
             
             # Step 4: Run comprehensive backtest
             backtest_success = self.run_comprehensive_backtest()
             
             # Step 5: Start optimized trading system
             if not self.start_optimized_trading():
-                print("\n❌ Failed to start optimized trading system.")
+                print("\n# X Failed to start optimized trading system.")
                 return
             
-            print("🎉 VIPER COMPLETE AI/ML OPTIMIZED TRADING SYSTEM SUCCESSFULLY LAUNCHED!")
+            print("# Party VIPER COMPLETE AI/ML OPTIMIZED TRADING SYSTEM SUCCESSFULLY LAUNCHED!")
             print("   • Live Dashboard: http://localhost:8000")
             print("   • Performance Metrics: http://localhost:8000/metrics")
             
@@ -229,7 +229,7 @@ class ViperSystemLauncher:
             # Cleanup
             if self.optimized_system_running:
             
-            print("\n✅ VIPER Optimized Trading System shutdown complete")
+            print("\n# Check VIPER Optimized Trading System shutdown complete")
 
 def main():
     """Main entry point"""

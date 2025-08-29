@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading System - Advanced Crypto Scalping System
+# Rocket VIPER Trading System - Advanced Crypto Scalping System
 Elite scalping system using sophisticated indicators and micro-positioning
 
 Features:
@@ -180,7 +180,7 @@ class AdvancedScalpingEngine:
             return cumulative_volume_price / cumulative_volume if cumulative_volume > 0 else 0
 
         except Exception as e:
-            print(f"❌ Error calculating VWAP for {symbol}: {e}")
+            print(f"# X Error calculating VWAP for {symbol}: {e}")
             return 0
 
     def calculate_rsi(self, prices: List[float], period: int = 14) -> float:
@@ -309,7 +309,7 @@ class AdvancedScalpingEngine:
             )
 
         except Exception as e:
-            print(f"❌ Error getting market indicators for {symbol}: {e}")
+            print(f"# X Error getting market indicators for {symbol}: {e}")
             return MarketIndicators(0, 50, 0, 0, 0, 0, 0, {}, {}, 0, 0)
 
     def detect_scalping_signal(self, symbol: str) -> Tuple[ScalpSignal, float, Dict]:
@@ -388,7 +388,7 @@ class AdvancedScalpingEngine:
             }
 
         except Exception as e:
-            print(f"❌ Error detecting scalping signal for {symbol}: {e}")
+            print(f"# X Error detecting scalping signal for {symbol}: {e}")
             return ScalpSignal.HOLD, 0, {}
 
     def calculate_position_size(self, symbol: str, confidence: float, leverage: int = 50) -> float:
@@ -421,7 +421,7 @@ class AdvancedScalpingEngine:
             return position_size
 
         except Exception as e:
-            print(f"❌ Error calculating position size for {symbol}: {e}")
+            print(f"# X Error calculating position size for {symbol}: {e}")
             return 0.005  # Conservative fallback
 
     def execute_scalp_trade(self, symbol: str, signal: ScalpSignal, confidence: float, analysis_data: Dict):
@@ -468,11 +468,11 @@ class AdvancedScalpingEngine:
             # Update session statistics
             self.session_stats['trades_executed'] += 1
 
-            print(f"🎯 Executed {signal.value} scalp on {symbol}")
+            print(f"# Target Executed {signal.value} scalp on {symbol}")
             return True, f"Scalp position opened for {symbol}"
 
         except Exception as e:
-            print(f"❌ Error executing scalp trade for {symbol}: {e}")
+            print(f"# X Error executing scalp trade for {symbol}: {e}")
             return False, str(e)
 
     def manage_positions(self):
@@ -540,7 +540,7 @@ class AdvancedScalpingEngine:
                         positions_to_close.append((symbol, pnl_pct, exit_reason))
 
                 except Exception as e:
-                    print(f"❌ Error managing position for {symbol}: {e}")
+                    print(f"# X Error managing position for {symbol}: {e}")
 
             # Close positions
             for symbol, pnl_pct, exit_reason in positions_to_close:
@@ -577,7 +577,7 @@ class AdvancedScalpingEngine:
             del self.positions[symbol]
 
         except Exception as e:
-            print(f"❌ Error closing position for {symbol}: {e}")
+            print(f"# X Error closing position for {symbol}: {e}")
 
     def get_session_statistics(self) -> Dict:
         """Get comprehensive session statistics"""
@@ -602,8 +602,8 @@ class AdvancedScalpingEngine:
 
     def run_scalping_session(self, symbols: List[str], duration_minutes: int = 60):
         """Run a complete scalping session"""
-        print("🚀 Starting Advanced Crypto Scalping Session")
-        print(f"📊 Monitoring {len(symbols)} symbols for {duration_minutes} minutes")
+        print("# Rocket Starting Advanced Crypto Scalping Session")
+        print(f"# Chart Monitoring {len(symbols)} symbols for {duration_minutes} minutes")
 
         session_start = time.time()
 

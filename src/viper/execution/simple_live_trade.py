@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 SIMPLE LIVE TRADE EXECUTION
+# Rocket SIMPLE LIVE TRADE EXECUTION
 Direct trade execution for testing purposes
 """
 
@@ -33,7 +33,7 @@ class SimpleLiveTrader:
         self.api_password = os.getenv('BITGET_API_PASSWORD')
 
         if not all([self.api_key, self.api_secret, self.api_password]):
-            raise Exception("❌ Missing API credentials")
+            raise Exception("# X Missing API credentials")
 
         # Initialize exchange
         self.exchange = ccxt.bitget({
@@ -48,12 +48,12 @@ class SimpleLiveTrader:
             }
         })
 
-        logger.info("🚀 Simple Live Trader initialized")
+        logger.info("# Rocket Simple Live Trader initialized")
 
     async def execute_test_trade(self):
         """Execute a simple test trade"""
 
-        print("⚠️  WARNING: This will execute a REAL trade!")
+        print("# Warning  WARNING: This will execute a REAL trade!")
 
         try:
             # Step 1: Check account balance
@@ -102,7 +102,7 @@ class SimpleLiveTrader:
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Trade execution failed: {e}")
+            logger.error(f"# X Trade execution failed: {e}")
             return False
 
     async def get_account_balance(self):
@@ -164,7 +164,7 @@ class SimpleLiveTrader:
     async def monitor_position(self, symbol, duration_seconds):
         """Monitor position for a short duration"""
 
-        print(f"📊 Monitoring {symbol} for {duration_seconds} seconds...")
+        print(f"# Chart Monitoring {symbol} for {duration_seconds} seconds...")
 
         try:
             for i in range(duration_seconds // 5):
@@ -184,7 +184,7 @@ class SimpleLiveTrader:
 async def main():
     """Main execution function"""
 
-    print("⚠️  WARNING: This will execute REAL trades with REAL money!")
+    print("# Warning  WARNING: This will execute REAL trades with REAL money!")
 
     # Initialize trader
     trader = SimpleLiveTrader()
@@ -193,7 +193,7 @@ async def main():
     success = await trader.execute_test_trade()
 
     if success:
-        print("\n🎉 SIMPLE LIVE TRADE EXECUTION SUCCESSFUL!")
+        print("\n# Party SIMPLE LIVE TRADE EXECUTION SUCCESSFUL!")
         print("💰 A trade has been placed on Bitget exchange")
         print("   1. Check your Bitget account for the position")
         print("   2. Monitor the trade manually if needed")

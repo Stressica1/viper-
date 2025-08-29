@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Trading Bot - Complete Trade Execution Workflow
+# Rocket VIPER Trading Bot - Complete Trade Execution Workflow
 Demonstrates end-to-end trading from signal generation to execution with TP/SL/TSL
 """
 
@@ -61,10 +61,10 @@ class TradingWorkflow:
                 response = requests.get(f"{url}/health", timeout=5)
                 if response.status_code == 200:
                 else:
-                    print(f"   ❌ {name}: Status {response.status_code}")
+                    print(f"   # X {name}: Status {response.status_code}")
                     all_running = False
             except Exception as e:
-                print(f"   ❌ {name}: Not accessible ({str(e)[:50]}...)")
+                print(f"   # X {name}: Not accessible ({str(e)[:50]}...)")
                 all_running = False
 
         return all_running
@@ -82,11 +82,11 @@ class TradingWorkflow:
                 data = response.json()
                 ticker = data.get('ticker', {})
                 price = ticker.get('last', ticker.get('close', 0))
-                print(f"   📊 24h Change: {ticker.get('percentage', 0):.2f}%")
+                print(f"   # Chart 24h Change: {ticker.get('percentage', 0):.2f}%")
                 print(f"   💰 24h Volume: {ticker.get('quoteVolume', 0):.2f}")
                 return ticker
             else:
-                print(f"   ❌ Failed to get market data: {response.status_code}")
+                print(f"   # X Failed to get market data: {response.status_code}")
                 return None
 
         except Exception as e:
@@ -115,15 +115,15 @@ class TradingWorkflow:
                 signal = signal_data.get('signal')
 
                 if signal:
-                    print(f"   🎯 Signal Generated: {signal.get('side', 'UNKNOWN')}")
+                    print(f"   # Target Signal Generated: {signal.get('side', 'UNKNOWN')}")
                     print(f"   💯 Confidence: {signal.get('confidence', 0):.2f}")
-                    print(f"   📊 VIPER Score: {signal_data.get('viper_score', 0):.2f}")
+                    print(f"   # Chart VIPER Score: {signal_data.get('viper_score', 0):.2f}")
                     return signal
                 else:
-                    print("   📊 No signal generated (market conditions not favorable)")
+                    print("   # Chart No signal generated (market conditions not favorable)")
                     return None
             else:
-                print(f"   ❌ Signal generation failed: {response.status_code}")
+                print(f"   # X Signal generation failed: {response.status_code}")
                 return None
 
         except Exception as e:
@@ -165,9 +165,9 @@ class TradingWorkflow:
                 position_size = max_position_value / entry_price
 
             print(f"   💰 Account Balance: ${account_balance:.2f}")
-            print(f"   📊 Position Size: {position_size:.6f} BTC")
+            print(f"   # Chart Position Size: {position_size:.6f} BTC")
             print(f"   💵 Position Value: ${position_value:.2f}")
-            print(f"   🎯 Risk per Trade: {(self.risk_per_trade * 100):.1f}%")
+            print(f"   # Target Risk per Trade: {(self.risk_per_trade * 100):.1f}%")
 
             # Calculate TP/SL/TSL levels
             tp_sl_request = {
@@ -205,13 +205,13 @@ class TradingWorkflow:
 
                 print(f"   📉 Stop Loss: ${levels['stop_loss']:.2f}")
                 print(f"   📈 Take Profit: ${levels['take_profit']:.2f}")
-                print(f"   🎯 Trailing Stop: ${levels['trailing_stop']:.2f}")
-                print(f"   🚀 Risk Amount: ${validated_signal['risk_amount']:.2f}")
+                print(f"   # Target Trailing Stop: ${levels['trailing_stop']:.2f}")
+                print(f"   # Rocket Risk Amount: ${validated_signal['risk_amount']:.2f}")
                 print(f"   💎 Potential Profit: ${validated_signal['potential_profit']:.2f}")
 
                 return validated_signal
             else:
-                print(f"   ❌ TP/SL calculation failed: {tp_sl_response.status_code}")
+                print(f"   # X TP/SL calculation failed: {tp_sl_response.status_code}")
                 return None
 
         except Exception as e:
@@ -253,11 +253,11 @@ class TradingWorkflow:
                     if placement.get('take_profit_order'):
                         print(f"      • Take Profit: {placement['take_profit_order']}")
                 else:
-                    print(f"   ⚠️  Some orders failed: {placement['errors']}")
+                    print(f"   # Warning  Some orders failed: {placement['errors']}")
 
                 return order_result
             else:
-                print(f"   ❌ Order execution failed: {response.status_code}")
+                print(f"   # X Order execution failed: {response.status_code}")
                 return None
 
         except Exception as e:
@@ -277,14 +277,14 @@ class TradingWorkflow:
         }
 
         print(f"   ⏰ Start Time: {start_time.strftime('%H:%M:%S')}")
-        print(f"   📊 Monitoring {symbol} for price movements and triggers...")
+        print(f"   # Chart Monitoring {symbol} for price movements and triggers...")
 
         try:
             while (datetime.now() - start_time).seconds < (duration_minutes * 60):
                 # Get current market data
                 market_data = await self.get_market_data()
                 if not market_data:
-                    print("   ⚠️  Cannot get market data, continuing...")
+                    print("   # Warning  Cannot get market data, continuing...")
                     await asyncio.sleep(10)
                     continue
 
@@ -314,7 +314,7 @@ class TradingWorkflow:
 
                     if update_result.get('action_taken'):
                         action = update_result['action_taken']
-                        print(f"\n   🎯 ACTION TRIGGERED: {action['action']}")
+                        print(f"\n   # Target ACTION TRIGGERED: {action['action']}")
 
                         monitoring_results['actions_taken'].append(action)
 
@@ -326,9 +326,9 @@ class TradingWorkflow:
                         position = update_result.get('position')
                         if position:
                             pnl = position.get('unrealized_pnl', 0)
-                            print(f"   📊 Price: ${current_price:.2f} | P&L: ${pnl:.2f}", end='\r')
+                            print(f"   # Chart Price: ${current_price:.2f} | P&L: ${pnl:.2f}", end='\r')
                 else:
-                    print(f"   ⚠️  Price update failed: {response.status_code}")
+                    print(f"   # Warning  Price update failed: {response.status_code}")
 
                 await asyncio.sleep(5)  # Check every 5 seconds
 
@@ -348,16 +348,16 @@ class TradingWorkflow:
                 final_status = status_response.json()
                 monitoring_results['final_position'] = final_status
             else:
-                print(f"\n   ⚠️  Could not get final position status")
+                print(f"\n   # Warning  Could not get final position status")
 
         except Exception as e:
-            print(f"\n   ⚠️  Error getting final status: {e}")
+            print(f"\n   # Warning  Error getting final status: {e}")
 
         return monitoring_results
 
     async def run_complete_workflow(self):
         """Run the complete trading workflow"""
-        print("🎯 Starting Complete VIPER Trading Workflow...")
+        print("# Target Starting Complete VIPER Trading Workflow...")
 
         # Step 1: Check system status
         if not await self.check_system_status():
@@ -372,7 +372,7 @@ class TradingWorkflow:
         # Step 3: Generate trading signal
         signal = await self.generate_trading_signal(market_data)
         if not signal:
-            print("\n📊 No trading signal generated. Market conditions may not be favorable.")
+            print("\n# Chart No trading signal generated. Market conditions may not be favorable.")
             print("   This is normal - the VIPER strategy is conservative.")
             return
 
@@ -394,9 +394,9 @@ class TradingWorkflow:
         try:
             monitoring_results = await self.monitor_position(symbol, duration_minutes=5)
 
-            print(f"   📊 Status: {monitoring_results['final_status']}")
+            print(f"   # Chart Status: {monitoring_results['final_status']}")
             print(f"   📈 Price Updates: {len(monitoring_results['price_updates'])}")
-            print(f"   🎯 Actions Taken: {len(monitoring_results['actions_taken'])}")
+            print(f"   # Target Actions Taken: {len(monitoring_results['actions_taken'])}")
 
             if monitoring_results['actions_taken']:
                 for action in monitoring_results['actions_taken']:
@@ -404,8 +404,8 @@ class TradingWorkflow:
 
         except KeyboardInterrupt:
 
-        print("🎉 COMPLETE VIPER TRADING WORKFLOW FINISHED!")
-        print("\n🚀 The VIPER trading system is fully operational!")
+        print("# Party COMPLETE VIPER TRADING WORKFLOW FINISHED!")
+        print("\n# Rocket The VIPER trading system is fully operational!")
         print("   Ready for live trading with complete risk management!")
 
 async def main():

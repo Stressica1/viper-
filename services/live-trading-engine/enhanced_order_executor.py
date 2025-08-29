@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Enhanced Order Execution System
+# Rocket VIPER Enhanced Order Execution System
 Advanced order placement with sophisticated TP/SL/TSL management
 
 Features:
@@ -180,7 +180,7 @@ class EnhancedOrderExecutor:
         self.daily_loss_limit = float(os.getenv('DAILY_LOSS_LIMIT', '0.05'))  # 5%
         self.max_positions = int(os.getenv('MAX_POSITIONS', '15'))
         
-        logger.info("🏗️ Enhanced Order Executor initialized")
+        logger.info("# Construction Enhanced Order Executor initialized")
     
     async def initialize(self) -> bool:
         """Initialize the order executor"""
@@ -194,11 +194,11 @@ class EnhancedOrderExecutor:
             asyncio.create_task(self._position_monitoring_loop())
             asyncio.create_task(self._tp_sl_tsl_monitoring_loop())
             
-            logger.info("✅ Enhanced Order Executor initialized")
+            logger.info("# Check Enhanced Order Executor initialized")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize order executor: {e}")
+            logger.error(f"# X Failed to initialize order executor: {e}")
             return False
     
     async def submit_order(self, order_request: OrderRequest) -> Dict[str, Any]:
@@ -256,7 +256,7 @@ class EnhancedOrderExecutor:
                 self.execution_stats['successful_orders'] += 1
                 
                 # Set up TP/SL/TSL if specified
-                if any([order_request.take_profit_price, order_request.stop_loss_price, 
+                if any([order_request.take_profit_price, order_request.stop_loss_price,:
                        order_request.trailing_stop_percent]):
                     await self._setup_tp_sl_tsl(order, order_request, execution_result)
                 
@@ -282,7 +282,7 @@ class EnhancedOrderExecutor:
             }
             
         except Exception as e:
-            logger.error(f"❌ Order submission error: {e}")
+            logger.error(f"# X Order submission error: {e}")
             return {
                 'success': False,
                 'error': str(e),
@@ -318,7 +318,7 @@ class EnhancedOrderExecutor:
             if order_value > self.max_position_size:
                 # Adjust quantity to maximum allowed
                 adjusted_quantity = self.max_position_size / current_price
-                logger.warning(f"⚠️ Reducing order quantity to meet position limits: {adjusted_quantity}")
+                logger.warning(f"# Warning Reducing order quantity to meet position limits: {adjusted_quantity}")
             else:
                 adjusted_quantity = request.quantity
             
@@ -343,7 +343,7 @@ class EnhancedOrderExecutor:
             }
             
         except Exception as e:
-            logger.error(f"❌ Order validation error: {e}")
+            logger.error(f"# X Order validation error: {e}")
             return {'valid': False, 'error': str(e)}
     
     async def _check_risk_limits(self, request: OrderRequest) -> Dict[str, Any]:
@@ -372,15 +372,15 @@ class EnhancedOrderExecutor:
                         if not risk_result.get('allowed', False):
                             return {'allowed': False, 'reason': risk_result.get('reason', 'Risk limit exceeded')}
                     else:
-                        logger.warning(f"⚠️ Risk manager check failed: {response.status_code}")
+                        logger.warning(f"# Warning Risk manager check failed: {response.status_code}")
                         
             except Exception as e:
-                logger.warning(f"⚠️ Risk manager communication error: {e}")
+                logger.warning(f"# Warning Risk manager communication error: {e}")
             
             return {'allowed': True}
             
         except Exception as e:
-            logger.error(f"❌ Risk limit check error: {e}")
+            logger.error(f"# X Risk limit check error: {e}")
             return {'allowed': False, 'reason': str(e)}
     
     async def _get_market_data(self, symbol: str) -> Optional[Dict]:
@@ -391,11 +391,11 @@ class EnhancedOrderExecutor:
                 if response.status_code == 200:
                     return response.json()
                 else:
-                    logger.warning(f"⚠️ Failed to get market data for {symbol}: {response.status_code}")
+                    logger.warning(f"# Warning Failed to get market data for {symbol}: {response.status_code}")
                     return None
                     
         except Exception as e:
-            logger.error(f"❌ Error getting market data for {symbol}: {e}")
+            logger.error(f"# X Error getting market data for {symbol}: {e}")
             return None
     
     async def _determine_execution_strategy(self, request: OrderRequest) -> Dict[str, Any]:
@@ -459,7 +459,7 @@ class EnhancedOrderExecutor:
                 }
                 
         except Exception as e:
-            logger.error(f"❌ Strategy determination error: {e}")
+            logger.error(f"# X Strategy determination error: {e}")
             # Fallback strategy
             return {
                 'order_type': OrderType.LIMIT,
@@ -499,7 +499,7 @@ class EnhancedOrderExecutor:
             return max(0.01, min(5.0, total_cost))  # Cap between 0.01% and 5%
             
         except Exception as e:
-            logger.error(f"❌ Execution cost calculation error: {e}")
+            logger.error(f"# X Execution cost calculation error: {e}")
             return 1.0  # Default moderate cost
     
     async def _calculate_optimal_limit_price(self, current_price: float, side: OrderSide, 
@@ -544,7 +544,7 @@ class EnhancedOrderExecutor:
                     return best_ask - (spread * 0.3)  # 30% through the spread
                     
         except Exception as e:
-            logger.error(f"❌ Optimal price calculation error: {e}")
+            logger.error(f"# X Optimal price calculation error: {e}")
             # Fallback
             buffer = 0.001
             if side == OrderSide.BUY:
@@ -585,14 +585,14 @@ class EnhancedOrderExecutor:
                 }
                 
         except Exception as e:
-            logger.error(f"❌ Market order execution error: {e}")
+            logger.error(f"# X Market order execution error: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _execute_limit_order(self, order: Order, request: OrderRequest, strategy: Dict) -> Dict[str, Any]:
         """Execute limit order with monitoring"""
         try:
             order.price = strategy['price']
-            logger.info(f"📊 Executing limit order: {order.symbol} {order.side.value} {order.quantity} @ {order.price}")
+            logger.info(f"# Chart Executing limit order: {order.symbol} {order.side.value} {order.quantity} @ {order.price}")
             
             # Submit to exchange
             exchange_result = await self._submit_to_exchange(order, "LIMIT")
@@ -618,7 +618,7 @@ class EnhancedOrderExecutor:
                 }
                 
         except Exception as e:
-            logger.error(f"❌ Limit order execution error: {e}")
+            logger.error(f"# X Limit order execution error: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _execute_twap_order(self, order: Order, request: OrderRequest, strategy: Dict) -> Dict[str, Any]:
@@ -656,16 +656,16 @@ class EnhancedOrderExecutor:
                     if slice_result['success']:
                         filled_quantities.append(slice_quantity)
                         fill_prices.append(slice_result['fill_price'])
-                        logger.info(f"✅ TWAP slice {i+1}/{slices} filled @ {slice_result['fill_price']}")
+                        logger.info(f"# Check TWAP slice {i+1}/{slices} filled @ {slice_result['fill_price']}")
                     else:
-                        logger.warning(f"⚠️ TWAP slice {i+1}/{slices} failed")
+                        logger.warning(f"# Warning TWAP slice {i+1}/{slices} failed")
                     
                     # Wait before next slice (except for last slice)
                     if i < slices - 1:
                         await asyncio.sleep(slice_interval)
                         
                 except Exception as e:
-                    logger.error(f"❌ TWAP slice {i+1} error: {e}")
+                    logger.error(f"# X TWAP slice {i+1} error: {e}")
             
             # Calculate average fill
             if filled_quantities:
@@ -691,7 +691,7 @@ class EnhancedOrderExecutor:
                 return {'success': False, 'error': 'No TWAP slices filled'}
                 
         except Exception as e:
-            logger.error(f"❌ TWAP execution error: {e}")
+            logger.error(f"# X TWAP execution error: {e}")
             return {'success': False, 'error': str(e)}
     
     async def _execute_stop_order(self, order: Order, request: OrderRequest, strategy: Dict) -> Dict[str, Any]:
@@ -752,7 +752,7 @@ class EnhancedOrderExecutor:
                     }
                     
         except Exception as e:
-            logger.error(f"❌ Exchange submission error: {e}")
+            logger.error(f"# X Exchange submission error: {e}")
             # Simulate successful execution for testing
             market_data = await self._get_market_data(order.symbol)
             current_price = market_data.get('ticker', {}).get('price', 0) if market_data else 100
@@ -808,10 +808,10 @@ class EnhancedOrderExecutor:
             # Update fees
             self.execution_stats['total_fees'] += order.fees
             
-            logger.info(f"✅ Position updated: {symbol} - Size: {position.size}, Entry: {position.entry_price}")
+            logger.info(f"# Check Position updated: {symbol} - Size: {position.size}, Entry: {position.entry_price}")
             
         except Exception as e:
-            logger.error(f"❌ Position update error: {e}")
+            logger.error(f"# X Position update error: {e}")
     
     async def _setup_tp_sl_tsl(self, order: Order, request: OrderRequest, execution_result: Dict):
         """Set up Take Profit, Stop Loss, and Trailing Stop orders"""
@@ -823,12 +823,12 @@ class EnhancedOrderExecutor:
             # Set up Take Profit
             if request.take_profit_price:
                 position.take_profit = request.take_profit_price
-                logger.info(f"✅ Take Profit set for {order.symbol}: {request.take_profit_price}")
+                logger.info(f"# Check Take Profit set for {order.symbol}: {request.take_profit_price}")
             
             # Set up Stop Loss
             if request.stop_loss_price:
                 position.stop_loss = request.stop_loss_price
-                logger.info(f"✅ Stop Loss set for {order.symbol}: {request.stop_loss_price}")
+                logger.info(f"# Check Stop Loss set for {order.symbol}: {request.stop_loss_price}")
             
             # Set up Trailing Stop
             if request.trailing_stop_percent:
@@ -841,10 +841,10 @@ class EnhancedOrderExecutor:
                 else:
                     position.trailing_stop = position.current_price * (1 + position.trailing_callback)
                 
-                logger.info(f"✅ Trailing Stop set for {order.symbol}: {position.trailing_callback*100}%")
+                logger.info(f"# Check Trailing Stop set for {order.symbol}: {position.trailing_callback*100}%")
             
         except Exception as e:
-            logger.error(f"❌ TP/SL/TSL setup error: {e}")
+            logger.error(f"# X TP/SL/TSL setup error: {e}")
     
     async def _monitor_order_execution(self, order: Order, request: OrderRequest):
         """Monitor order execution and handle partial fills"""
@@ -862,7 +862,7 @@ class EnhancedOrderExecutor:
                     order.avg_fill_price = status_update.get('avg_price', 0)
                     
                     await self._update_position_from_fill(order)
-                    logger.info(f"✅ Order {order.id} fully filled @ {order.avg_fill_price}")
+                    logger.info(f"# Check Order {order.id} fully filled @ {order.avg_fill_price}")
                     break
                     
                 elif status_update['status'] == 'PARTIALLY_FILLED':
@@ -875,11 +875,11 @@ class EnhancedOrderExecutor:
             
             # Handle timeout
             if order.status not in [OrderStatus.FILLED, OrderStatus.CANCELED]:
-                logger.warning(f"⚠️ Order {order.id} execution timeout - canceling")
+                logger.warning(f"# Warning Order {order.id} execution timeout - canceling")
                 await self._cancel_order(order)
                 
         except Exception as e:
-            logger.error(f"❌ Order monitoring error: {e}")
+            logger.error(f"# X Order monitoring error: {e}")
     
     async def _check_order_status(self, order: Order) -> Dict[str, Any]:
         """Check order status from exchange"""
@@ -893,7 +893,7 @@ class EnhancedOrderExecutor:
             }
             
         except Exception as e:
-            logger.error(f"❌ Order status check error: {e}")
+            logger.error(f"# X Order status check error: {e}")
             return {'status': 'UNKNOWN'}
     
     async def _cancel_order(self, order: Order) -> bool:
@@ -906,7 +906,7 @@ class EnhancedOrderExecutor:
                     
                     if response.status_code == 200:
                         order.status = OrderStatus.CANCELED
-                        logger.info(f"✅ Order {order.id} canceled")
+                        logger.info(f"# Check Order {order.id} canceled")
                         return True
             else:
                 # Local cancellation
@@ -914,7 +914,7 @@ class EnhancedOrderExecutor:
                 return True
                 
         except Exception as e:
-            logger.error(f"❌ Order cancellation error: {e}")
+            logger.error(f"# X Order cancellation error: {e}")
             return False
     
     async def _order_monitoring_loop(self):
@@ -935,7 +935,7 @@ class EnhancedOrderExecutor:
                 await asyncio.sleep(10)  # Check every 10 seconds
                 
             except Exception as e:
-                logger.error(f"❌ Order monitoring loop error: {e}")
+                logger.error(f"# X Order monitoring loop error: {e}")
                 await asyncio.sleep(10)
     
     async def _position_monitoring_loop(self):
@@ -963,7 +963,7 @@ class EnhancedOrderExecutor:
                 await asyncio.sleep(30)  # Update every 30 seconds
                 
             except Exception as e:
-                logger.error(f"❌ Position monitoring loop error: {e}")
+                logger.error(f"# X Position monitoring loop error: {e}")
                 await asyncio.sleep(30)
     
     async def _tp_sl_tsl_monitoring_loop(self):
@@ -995,7 +995,7 @@ class EnhancedOrderExecutor:
                 await asyncio.sleep(5)  # Check every 5 seconds for TP/SL/TSL
                 
             except Exception as e:
-                logger.error(f"❌ TP/SL/TSL monitoring error: {e}")
+                logger.error(f"# X TP/SL/TSL monitoring error: {e}")
                 await asyncio.sleep(5)
     
     def _should_trigger_tp(self, position: Position, current_price: float) -> bool:
@@ -1050,12 +1050,12 @@ class EnhancedOrderExecutor:
                     logger.info(f"📉 Trailing stop updated for {position.symbol}: {old_stop:.4f} -> {new_stop:.4f}")
             
         except Exception as e:
-            logger.error(f"❌ Trailing stop update error: {e}")
+            logger.error(f"# X Trailing stop update error: {e}")
     
     async def _execute_tp_sl_exit(self, position: Position, trigger_type: str, current_price: float):
         """Execute TP/SL/TSL exit order"""
         try:
-            logger.info(f"🎯 {trigger_type} triggered for {position.symbol} @ {current_price}")
+            logger.info(f"# Target {trigger_type} triggered for {position.symbol} @ {current_price}")
             
             # Create exit order
             exit_side = OrderSide.SELL if position.side == PositionSide.LONG else OrderSide.BUY
@@ -1078,16 +1078,16 @@ class EnhancedOrderExecutor:
                 else:
                     position.realized_pnl = (position.entry_price - current_price) * position.size
                 
-                logger.info(f"✅ {trigger_type} executed for {position.symbol}, P&L: ${position.realized_pnl:.2f}")
+                logger.info(f"# Check {trigger_type} executed for {position.symbol}, P&L: ${position.realized_pnl:.2f}")
                 
                 # Remove position
                 del self.positions[position.symbol]
                 
             else:
-                logger.error(f"❌ {trigger_type} execution failed for {position.symbol}")
+                logger.error(f"# X {trigger_type} execution failed for {position.symbol}")
                 
         except Exception as e:
-            logger.error(f"❌ TP/SL exit execution error: {e}")
+            logger.error(f"# X TP/SL exit execution error: {e}")
     
     def get_order_status(self, order_id: str) -> Optional[Dict]:
         """Get order status"""
@@ -1154,7 +1154,7 @@ class EnhancedOrderExecutor:
     def start(self):
         """Start the order executor"""
         self.is_running = True
-        logger.info("🚀 Enhanced Order Executor started")
+        logger.info("# Rocket Enhanced Order Executor started")
     
     def stop(self):
         """Stop the order executor"""

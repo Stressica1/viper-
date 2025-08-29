@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Repository Structure Rules & Enforcement
+# Rocket VIPER Repository Structure Rules & Enforcement
 Complete repository organization rules and enforcement system
 """
 
@@ -137,7 +137,7 @@ class RepositoryRules:
         # Check root directory for violations
         for item in self.repo_root.iterdir():
             if item.is_file() and not item.name.startswith('.'):
-                if (item.name not in self.required_root_files and 
+                if (item.name not in self.required_root_files and:
                     item.name not in self.allowed_root_files):
                     
                     # Check against forbidden patterns
@@ -164,7 +164,7 @@ class RepositoryRules:
         """Get all files in repository (excluding .git)"""
         files = []
         for item in self.repo_root.rglob('*'):
-            if (item.is_file() and 
+            if (item.is_file() and:
                 '.git' not in item.parts and 
                 '__pycache__' not in item.parts):
                 files.append(item)
@@ -176,7 +176,7 @@ class RepositoryRules:
         relative_path = str(file_path.relative_to(self.repo_root))
         
         # Don't suggest moves for files that are already in acceptable locations
-        if (file_path.name in self.required_root_files or 
+        if (file_path.name in self.required_root_files or:
             file_path.name in self.allowed_root_files):
             return ""
         
@@ -229,7 +229,7 @@ class RepositoryRules:
         violations = self.validate_structure()
         
         report = f"""
-# 🚀 VIPER Repository Structure Violations Report
+# # Rocket VIPER Repository Structure Violations Report
 Generated: {datetime.now().isoformat()}
 
 ## Summary
@@ -249,7 +249,7 @@ Generated: {datetime.now().isoformat()}
                 report += "\n"
         
         if sum(len(v) for v in violations.values()) == 0:
-            report += "## ✅ Repository Structure is Clean!\n\nNo violations found.\n"
+            report += "## # Check Repository Structure is Clean!\n\nNo violations found.\n"
         
         return report
 
@@ -274,7 +274,7 @@ def main():
     total_violations = sum(len(v) for v in violations.values())
     
     if total_violations > 0:
-        print("❌ Repository structure violations detected!")
+        print("# X Repository structure violations detected!")
         print("Run 'python tools/repository_rules.py --report' for details")
         sys.exit(1)
     
@@ -289,7 +289,7 @@ if __name__ == "__main__":
             with open(pre_commit_path, 'w') as f:
                 f.write(pre_commit_config)
             pre_commit_path.chmod(0o755)
-            print(f"✅ Created pre-commit hook: {pre_commit_path}")
+            print(f"# Check Created pre-commit hook: {pre_commit_path}")
 
     def setup_ci_validation(self):
         """Create GitHub Actions workflow for structure validation"""
@@ -320,7 +320,7 @@ jobs:
     - name: Validate Repository Structure
       run: |
         python tools/repository_rules.py --validate
-        if [ $? -ne 0 ]; then
+        if [ $? -ne 0 ]; then:
           echo "Repository structure validation failed!"
           exit 1
         fi
@@ -359,7 +359,7 @@ def main():
         with open(report_path, 'w') as f:
             f.write(report)
         
-        print(f"📊 Violations report saved to: {report_path}")
+        print(f"# Chart Violations report saved to: {report_path}")
     
     if args.setup_enforcement:
         rules.create_enforcement_tools()
@@ -370,7 +370,7 @@ def main():
         total_violations = sum(len(v) for v in violations.values())
         
         if total_violations > 0:
-            print(f"❌ Repository structure has {total_violations} violations")
+            print(f"# X Repository structure has {total_violations} violations")
             print("Run with --report for detailed information")
             sys.exit(1)
         else:

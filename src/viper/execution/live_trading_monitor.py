@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-📊 VIPER Live Trading Monitor
+# Chart VIPER Live Trading Monitor
 Real-time monitoring dashboard for live trading operations
 """
 
@@ -65,9 +65,9 @@ class LiveTradingMonitor:
             for name, url in services.items():
                 try:
                     response = requests.get(url, timeout=3)
-                    status['services'][name] = '✅' if response.status_code == 200 else '❌'
+                    status['services'][name] = '# Check' if response.status_code == 200 else '# X'
                 except Exception:
-                    status['services'][name] = '❌'
+                    status['services'][name] = '# X'
 
             # Trading data
             try:
@@ -133,7 +133,7 @@ class LiveTradingMonitor:
         height, width = stdscr.getmaxyx()
 
         # Header
-        header = "🚀 VIPER LIVE TRADING MONITOR"
+        header = "# Rocket VIPER LIVE TRADING MONITOR"
         stdscr.addstr(0, (width - len(header)) // 2, header, curses.A_BOLD)
 
         # Timestamp
@@ -148,13 +148,13 @@ class LiveTradingMonitor:
         stdscr.addstr(3, 0, "🏥 SERVICE STATUS:", curses.A_BOLD)
         y_pos = 4
         for service, status in status.get('services', {}).items():
-            color = curses.color_pair(1) if status == '✅' else curses.color_pair(2)
+            color = curses.color_pair(1) if status == '# Check' else curses.color_pair(2)
             stdscr.addstr(y_pos, 2, f"{service}: {status}", color)
             y_pos += 1
 
         # Trading Status
         y_pos += 1
-        stdscr.addstr(y_pos, 0, "📊 TRADING STATUS:", curses.A_BOLD)
+        stdscr.addstr(y_pos, 0, "# Chart TRADING STATUS:", curses.A_BOLD)
         y_pos += 1
         trading = status.get('trading', {})
         stdscr.addstr(y_pos, 2, f"Active Positions: {trading.get('active_positions', 0)}", curses.color_pair(4))
@@ -248,7 +248,7 @@ class LiveTradingMonitor:
 
         summary = {
             'timestamp': datetime.now().isoformat(),
-            'services_healthy': sum(1 for s in status.get('services', {}).values() if s == '✅'),
+            'services_healthy': sum(1 for s in status.get('services', {}).values() if s == '# Check'),
             'total_services': len(status.get('services', {})),
             'active_positions': status.get('trading', {}).get('active_positions', 0),
             'current_balance': status.get('performance', {}).get('current_balance', 0),

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER TRADING BOT - FIXED & READY TO TRADE
+# Rocket VIPER TRADING BOT - FIXED & READY TO TRADE
 Complete standalone trading system that works 100%
 """
 
@@ -52,17 +52,17 @@ class VIPERFixedTrader:
         # Price history for signal generation
         self.price_history = {symbol: [] for symbol in self.symbols}
 
-        logger.info("🚀 VIPER FIXED TRADER INITIALIZED")
-        logger.info("✅ Environment variables loaded")
-        logger.info(f"📊 Max leverage: {self.max_leverage}x")
+        logger.info("# Rocket VIPER FIXED TRADER INITIALIZED")
+        logger.info("# Check Environment variables loaded")
+        logger.info(f"# Chart Max leverage: {self.max_leverage}x")
         logger.info(f"💰 Position size: ${self.position_size_usdt}")
-        logger.info(f"🎯 Max positions: {self.max_positions}")
+        logger.info(f"# Target Max positions: {self.max_positions}")
 
     def connect_bitget(self):
         """Connect to Bitget with proper configuration"""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
-                logger.error("❌ Missing API credentials. Please set:")
+                logger.error("# X Missing API credentials. Please set:")
                 logger.error("   BITGET_API_KEY")
                 logger.error("   BITGET_API_SECRET")
                 logger.error("   BITGET_API_PASSWORD")
@@ -85,28 +85,28 @@ class VIPERFixedTrader:
 
             # Test connection
             markets = self.exchange.load_markets()
-            logger.info(f"✅ Bitget Connected - {len(markets)} markets loaded")
+            logger.info(f"# Check Bitget Connected - {len(markets)} markets loaded")
 
             # Test balance fetch
             balance = self.exchange.fetch_balance({'type': 'swap'})
             if 'USDT' in balance:
                 self.real_balance = float(balance['USDT']['free'])
-                logger.info(f"✅ Balance: ${self.real_balance:.2f} USDT")
+                logger.info(f"# Check Balance: ${self.real_balance:.2f} USDT")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Connection failed: {e}")
+            logger.error(f"# X Connection failed: {e}")
             return False
 
     def set_position_mode(self, symbol: str):
         """Set position mode to hedge mode"""
         try:
             self.exchange.set_position_mode(True, symbol)  # True = hedge mode
-            logger.debug(f"✅ Position mode set for {symbol}")
+            logger.debug(f"# Check Position mode set for {symbol}")
             return True
         except Exception as e:
-            logger.debug(f"⚠️ Position mode already set for {symbol}: {e}")
+            logger.debug(f"# Warning Position mode already set for {symbol}: {e}")
             return True  # Continue anyway
 
     def update_price_history(self, symbol: str, price: float):
@@ -144,21 +144,21 @@ class VIPERFixedTrader:
             signal = None
 
             # Strong bullish signals
-            if (current_price > sma_short > sma_long and
+            if (current_price > sma_short > sma_long and:
                 momentum > 0.5 and
                 change_24h > 0.5 and
                 len([p for p in history[-5:] if p > sma_short]) >= 3):
                 signal = 'buy'
 
             # Strong bearish signals
-            elif (current_price < sma_short < sma_long and
+            elif (current_price < sma_short < sma_long and:
                   momentum < -0.5 and
                   change_24h < -0.5 and
                   len([p for p in history[-5:] if p < sma_short]) >= 3):
                 signal = 'sell'
 
             if signal:
-                logger.info(f"🎯 Signal generated for {symbol}: {signal.upper()}")
+                logger.info(f"# Target Signal generated for {symbol}: {signal.upper()}")
                 logger.info(".4f")
                 logger.info(".2f")
                 logger.info(".2f")
@@ -166,7 +166,7 @@ class VIPERFixedTrader:
             return signal
 
         except Exception as e:
-            logger.error(f"❌ Error calculating signal for {symbol}: {e}")
+            logger.error(f"# X Error calculating signal for {symbol}: {e}")
             return None
 
     def execute_trade(self, symbol: str, side: str) -> Optional[Dict]:
@@ -186,8 +186,8 @@ class VIPERFixedTrader:
             # Ensure minimum position size
             position_size = max(position_size, 0.001)
 
-            logger.info(f"🚀 EXECUTING {side.upper()} ORDER")
-            logger.info(f"   📊 Symbol: {symbol}")
+            logger.info(f"# Rocket EXECUTING {side.upper()} ORDER")
+            logger.info(f"   # Chart Symbol: {symbol}")
             logger.info(".6f")
             logger.info(f"   🔄 Leverage: {self.max_leverage}x")
             logger.info(".2f")
@@ -207,7 +207,7 @@ class VIPERFixedTrader:
                 }
             )
 
-            logger.info(f"✅ ORDER EXECUTED: {order['id']}")
+            logger.info(f"# Check ORDER EXECUTED: {order['id']}")
 
             # Store position
             self.active_positions[symbol] = {
@@ -223,7 +223,7 @@ class VIPERFixedTrader:
             return order
 
         except Exception as e:
-            logger.error(f"❌ Trade execution failed for {symbol}: {e}")
+            logger.error(f"# X Trade execution failed for {symbol}: {e}")
             return None
 
     def close_position(self, symbol: str, reason: str):
@@ -248,7 +248,7 @@ class VIPERFixedTrader:
                 }
             )
 
-            logger.info(f"✅ POSITION CLOSED: {symbol} ({reason})")
+            logger.info(f"# Check POSITION CLOSED: {symbol} ({reason})")
 
             # Calculate P&L for statistics
             current_price = close_order.get('average', close_order.get('price', 0))
@@ -269,7 +269,7 @@ class VIPERFixedTrader:
             del self.active_positions[symbol]
 
         except Exception as e:
-            logger.error(f"❌ Error closing position {symbol}: {e}")
+            logger.error(f"# X Error closing position {symbol}: {e}")
 
     def monitor_positions(self):
         """Monitor positions and manage risk"""
@@ -305,10 +305,10 @@ class VIPERFixedTrader:
                         self.close_position(symbol, "STOP_LOSS")
 
                 except Exception as e:
-                    logger.error(f"❌ Error monitoring {symbol}: {e}")
+                    logger.error(f"# X Error monitoring {symbol}: {e}")
 
         except Exception as e:
-            logger.error(f"❌ Error in position monitoring: {e}")
+            logger.error(f"# X Error in position monitoring: {e}")
 
     def scan_opportunities(self) -> List[str]:
         """Scan for trading opportunities"""
@@ -324,13 +324,13 @@ class VIPERFixedTrader:
                     opportunities.append((symbol, signal))
 
         except Exception as e:
-            logger.error(f"❌ Error scanning opportunities: {e}")
+            logger.error(f"# X Error scanning opportunities: {e}")
 
         return opportunities
 
     def run_trading_loop(self):
         """Run the main trading loop"""
-        logger.info("🚀 STARTING VIPER TRADING LOOP")
+        logger.info("# Rocket STARTING VIPER TRADING LOOP")
         logger.info("=" * 80)
 
         self.is_running = True
@@ -353,7 +353,7 @@ class VIPERFixedTrader:
                         symbol, side = opportunities[0]
                         order = self.execute_trade(symbol, side)
                         if order:
-                            logger.info("✅ New position opened successfully!")
+                            logger.info("# Check New position opened successfully!")
 
                         time.sleep(2)  # Brief pause between trades
 
@@ -363,11 +363,11 @@ class VIPERFixedTrader:
                     if 'USDT' in balance:
                         self.real_balance = float(balance['USDT']['free'])
                 except Exception as e:
-                    logger.error(f"❌ Error updating balance: {e}")
+                    logger.error(f"# X Error updating balance: {e}")
 
                 # Status display
                 win_rate = (self.wins / max(self.total_trades, 1)) * 100
-                logger.info("📊 STATUS UPDATE:")
+                logger.info("# Chart STATUS UPDATE:")
                 logger.info(".2f")
                 logger.info(f"   Active Positions: {len(self.active_positions)}/{self.max_positions}")
                 logger.info(f"   Total Trades: {self.total_trades}")
@@ -382,35 +382,35 @@ class VIPERFixedTrader:
         except KeyboardInterrupt:
             logger.info("\n🛑 Trading interrupted by user")
         except Exception as e:
-            logger.error(f"\n❌ Fatal error in trading loop: {e}")
+            logger.error(f"\n# X Fatal error in trading loop: {e}")
         finally:
             # Close all positions on shutdown
             logger.info("\n🔄 Closing all positions...")
             for symbol in list(self.active_positions.keys()):
                 self.close_position(symbol, "SHUTDOWN")
 
-            logger.info("✅ Trading system shutdown complete")
+            logger.info("# Check Trading system shutdown complete")
 
     def show_system_info(self):
         """Display system information"""
         logger.info("=" * 80)
-        logger.info("🚀 VIPER TRADING BOT - SYSTEM INFO")
+        logger.info("# Rocket VIPER TRADING BOT - SYSTEM INFO")
         logger.info("=" * 80)
-        logger.info("✅ Fixed Bitget API integration")
-        logger.info("✅ Proper position mode handling")
-        logger.info("✅ Risk management with take profit/stop loss")
-        logger.info("✅ Multi-symbol universe scanning")
-        logger.info("✅ Real-time position monitoring")
+        logger.info("# Check Fixed Bitget API integration")
+        logger.info("# Check Proper position mode handling")
+        logger.info("# Check Risk management with take profit/stop loss")
+        logger.info("# Check Multi-symbol universe scanning")
+        logger.info("# Check Real-time position monitoring")
         logger.info("=" * 80)
 
 def main():
     """Main entry point"""
-    logger.info("🚀 VIPER TRADING BOT STARTING...")
+    logger.info("# Rocket VIPER TRADING BOT STARTING...")
 
     trader = VIPERFixedTrader()
 
     if not trader.connect_bitget():
-        logger.error("❌ Failed to connect to Bitget")
+        logger.error("# X Failed to connect to Bitget")
         return
 
     trader.show_system_info()
@@ -423,9 +423,9 @@ def main():
     except KeyboardInterrupt:
         logger.info("🛑 Trading cancelled by user")
     except Exception as e:
-        logger.error(f"❌ Unexpected error: {e}")
+        logger.error(f"# X Unexpected error: {e}")
 
-    logger.info("✅ VIPER Trading Bot shutdown complete")
+    logger.info("# Check VIPER Trading Bot shutdown complete")
 
 if __name__ == "__main__":
     main()

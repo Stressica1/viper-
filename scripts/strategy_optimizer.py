@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 STRATEGY OPTIMIZER - Dynamic Performance-Based Allocation
+# Target STRATEGY OPTIMIZER - Dynamic Performance-Based Allocation
 ===========================================================
 
 Advanced strategy optimization for $30 portfolio with performance-based weighting.
@@ -42,7 +42,7 @@ class StrategyOptimizer:
         }
 
     def optimize_strategy_weights(self) -> OptimizationResult:
-        print("🎯 VIPER STRATEGY OPTIMIZATION FOR $30 PORTFOLIO")
+        print("# Target VIPER STRATEGY OPTIMIZATION FOR $30 PORTFOLIO")
 
         strategies = self.dashboard.strategies
         original_weights = {name: s.weight for name, s in strategies.items()}
@@ -153,7 +153,7 @@ class StrategyOptimizer:
 
     def display_optimization_results(self, result: OptimizationResult):
         """Display optimization results"""
-        print(f"\n🎯 STRATEGY OPTIMIZATION RESULTS - $30 PORTFOLIO")
+        print(f"\n# Target STRATEGY OPTIMIZATION RESULTS - $30 PORTFOLIO")
         print(f"📈 Performance Improvement: {result.performance_improvement:.1f}%")
 
         print(f"{'Strategy':<25} {'Original':>10} {'Optimized':>10} {'Change':>8} {'$ Amount':>9}")
@@ -190,10 +190,10 @@ class StrategyOptimizer:
                 dollar_allocation = (new_weight / 100) * 30
 
                 self.dashboard.strategies[strategy_name].weight = new_weight
-                print(f"📊 {strategy_name}: {old_weight:.1f}% → {new_weight:.1f}% (${dollar_allocation:.2f})")
+                print(f"# Chart {strategy_name}: {old_weight:.1f}% → {new_weight:.1f}% (${dollar_allocation:.2f})")
 
         self.dashboard._calculate_portfolio_metrics()
-        print("✅ Optimized weights applied to $30 portfolio successfully!")
+        print("# Check Optimized weights applied to $30 portfolio successfully!")
 
 def main():
     import argparse
@@ -212,10 +212,10 @@ def main():
 
         if args.apply:
             optimizer.apply_optimized_weights(result)
-            print("\n✅ Optimization complete and weights applied to $30 portfolio!")
+            print("\n# Check Optimization complete and weights applied to $30 portfolio!")
 
     else:
-        print("🎯 VIPER Strategy Optimizer - $30 Portfolio")
+        print("# Target VIPER Strategy Optimizer - $30 Portfolio")
         print("Optimizes strategy weights based on performance metrics")
         print("for maximum returns on your $30 portfolio")
 

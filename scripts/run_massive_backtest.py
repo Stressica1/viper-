@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-🚀 RUN MASSIVE BACKTEST - 50 Pairs × 200 Configs
+# Rocket RUN MASSIVE BACKTEST - 50 Pairs × 200 Configs
 Launcher for comprehensive backtesting operation
 
 This launcher provides:
-✅ Easy execution of massive backtesting
-✅ Real-time progress monitoring
-✅ Resource management and optimization
-✅ GitHub MCP integration
-✅ Comprehensive results analysis
+# Check Easy execution of massive backtesting
+# Check Real-time progress monitoring
+# Check Resource management and optimization
+# Check GitHub MCP integration
+# Check Comprehensive results analysis
 """
 
 import os
@@ -64,7 +64,7 @@ class MassiveBacktestLauncher:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Could not get system info: {e}")
+            logger.warning(f"# Warning Could not get system info: {e}")
             return {}
 
     async def validate_system_requirements(self) -> bool:
@@ -77,7 +77,7 @@ class MassiveBacktestLauncher:
 
             print(f"💾 Memory: {available_memory:.1f}GB available")
             if available_memory < min_memory_gb:
-                print(f"❌ Insufficient memory: {min_memory_gb}GB required")
+                print(f"# X Insufficient memory: {min_memory_gb}GB required")
                 return False
 
             # Check CPU cores
@@ -85,7 +85,7 @@ class MassiveBacktestLauncher:
             min_cores = 4
 
             if cpu_cores < min_cores:
-                print(f"⚠️ Low CPU cores: {min_cores} recommended")
+                print(f"# Warning Low CPU cores: {min_cores} recommended")
             else:
 
             # Check disk space
@@ -93,13 +93,13 @@ class MassiveBacktestLauncher:
             free_gb = disk.free / (1024**3)
 
             if free_gb < 50:
-                print("⚠️ Low disk space: Consider freeing up space")
+                print("# Warning Low disk space: Consider freeing up space")
             else:
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ System validation failed: {e}")
+            logger.error(f"# X System validation failed: {e}")
             return False
 
     async def estimate_execution_time(self) -> Dict[str, Any]:
@@ -152,7 +152,7 @@ class MassiveBacktestLauncher:
             }
 
         except Exception as e:
-            logger.error(f"❌ Time estimation failed: {e}")
+            logger.error(f"# X Time estimation failed: {e}")
             return {}
 
     async def initialize_orchestrator(self) -> bool:
@@ -162,7 +162,7 @@ class MassiveBacktestLauncher:
             await self.orchestrator.initialize_optimizer()
             return True
         except Exception as e:
-            logger.error(f"❌ Orchestrator initialization failed: {e}")
+            logger.error(f"# X Orchestrator initialization failed: {e}")
             return False
 
     async def run_massive_backtest(self) -> int:
@@ -214,7 +214,7 @@ class MassiveBacktestLauncher:
             await self.handle_interrupt()
             return 0
         except Exception as e:
-            logger.error(f"❌ Massive backtest failed: {e}")
+            logger.error(f"# X Massive backtest failed: {e}")
             return 1
 
     async def display_results(self, results: Dict[str, Any]):
@@ -222,7 +222,7 @@ class MassiveBacktestLauncher:
         try:
 
             if results.get('status') == 'failed':
-                print(f"❌ Operation Failed: {results.get('error', 'Unknown error')}")
+                print(f"# X Operation Failed: {results.get('error', 'Unknown error')}")
                 return
 
             # Summary stats
@@ -256,7 +256,7 @@ class MassiveBacktestLauncher:
 
 
         except Exception as e:
-            logger.error(f"❌ Results display failed: {e}")
+            logger.error(f"# X Results display failed: {e}")
 
     async def display_best_performers(self, summary: Dict[str, Any]):
         """Display best performing configurations"""
@@ -290,7 +290,7 @@ class MassiveBacktestLauncher:
                 print(f"   Sharpe Ratio: {top.get('sharpe_ratio', 0):.2f}")
 
         except Exception as e:
-            logger.error(f"❌ Best performers display failed: {e}")
+            logger.error(f"# X Best performers display failed: {e}")
 
     async def display_pair_analysis(self, summary: Dict[str, Any]):
         """Display pair performance analysis"""
@@ -309,7 +309,7 @@ class MassiveBacktestLauncher:
                 print(f"     Best Sharpe: {stats['best_sharpe']:.2f}")
 
         except Exception as e:
-            logger.error(f"❌ Pair analysis display failed: {e}")
+            logger.error(f"# X Pair analysis display failed: {e}")
 
     async def display_recommendations(self, summary: Dict[str, Any]):
         """Display optimization recommendations"""
@@ -321,7 +321,7 @@ class MassiveBacktestLauncher:
             # Win rate recommendations
             avg_win_rate = overall_stats.get('avg_win_rate', 0)
             if avg_win_rate > 65:
-                print("✅ Excellent average win rate - maintain current strategy framework")
+                print("# Check Excellent average win rate - maintain current strategy framework")
             elif avg_win_rate > 50:
                 print("🟡 Good win rate - focus on parameter optimization")
             else:
@@ -330,7 +330,7 @@ class MassiveBacktestLauncher:
             # Profitability recommendations
             success_rate = success_analysis.get('success_rate_pct', 0)
             if success_rate > 60:
-                print("✅ High profitability rate - strategy is fundamentally sound")
+                print("# Check High profitability rate - strategy is fundamentally sound")
             elif success_rate > 40:
                 print("🟡 Moderate profitability - focus on risk management")
             else:
@@ -339,14 +339,14 @@ class MassiveBacktestLauncher:
             # Sharpe ratio recommendations
             avg_sharpe = overall_stats.get('avg_sharpe_ratio', 0)
             if avg_sharpe > 1.0:
-                print("✅ Strong risk-adjusted returns - excellent performance")
+                print("# Check Strong risk-adjusted returns - excellent performance")
             elif avg_sharpe > 0.5:
                 print("🟡 Moderate risk-adjusted returns - acceptable performance")
             else:
                 print("🔴 Poor risk-adjusted returns - improve return consistency")
 
         except Exception as e:
-            logger.error(f"❌ Recommendations display failed: {e}")
+            logger.error(f"# X Recommendations display failed: {e}")
 
     async def handle_interrupt(self):
         """Handle user interruption gracefully"""
@@ -365,7 +365,7 @@ class MassiveBacktestLauncher:
 
 
         except Exception as e:
-            logger.error(f"❌ Interrupt handling failed: {e}")
+            logger.error(f"# X Interrupt handling failed: {e}")
 
 def main():
     """Main launcher function"""

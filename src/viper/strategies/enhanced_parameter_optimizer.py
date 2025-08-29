@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 ENHANCED PARAMETER OPTIMIZER
+# Rocket ENHANCED PARAMETER OPTIMIZER
 Automated parameter tuning and optimization for trading system
 
 This optimizer provides:
@@ -31,14 +31,14 @@ try:
     SKOPT_AVAILABLE = True
 except ImportError:
     SKOPT_AVAILABLE = False
-    logging.warning("⚠️ scikit-optimize not available, using basic optimization")
+    logging.warning("# Warning scikit-optimize not available, using basic optimization")
 
 try:
     from enhanced_system_integrator import get_integrator
     ENHANCED_SYSTEM_AVAILABLE = True
 except ImportError:
     ENHANCED_SYSTEM_AVAILABLE = False
-    logging.warning("⚠️ Enhanced system not available")
+    logging.warning("# Warning Enhanced system not available")
 
 logging.basicConfig(
     level=logging.INFO,
@@ -77,7 +77,7 @@ class EnhancedParameterOptimizer:
         # Load configuration
         self.config = self._load_config()
 
-        logger.info("🎯 Enhanced Parameter Optimizer initialized")
+        logger.info("# Target Enhanced Parameter Optimizer initialized")
 
     def _load_config(self) -> Dict[str, Any]:
         """Load optimization configuration"""
@@ -88,7 +88,7 @@ class EnhancedParameterOptimizer:
             else:
                 return self._create_default_config()
         except Exception as e:
-            logger.error(f"❌ Error loading config: {e}")
+            logger.error(f"# X Error loading config: {e}")
             return self._create_default_config()
 
     def _create_default_config(self) -> Dict[str, Any]:
@@ -163,7 +163,7 @@ class EnhancedParameterOptimizer:
                           parameter_groups: List[str] = None) -> OptimizationResult:
         """Run parameter optimization"""
         try:
-            logger.info(f"🎯 Starting parameter optimization for target: {target}")
+            logger.info(f"# Target Starting parameter optimization for target: {target}")
 
             if max_iterations is None:
                 max_iterations = self.config["optimization"]["max_iterations"]
@@ -175,7 +175,7 @@ class EnhancedParameterOptimizer:
             search_space = self._create_search_space(parameter_groups)
 
             if not search_space:
-                logger.error("❌ No valid search space defined")
+                logger.error("# X No valid search space defined")
                 return None
 
             # Define objective function
@@ -219,14 +219,14 @@ class EnhancedParameterOptimizer:
             # Store result
             self.results_history.append(optimization_result)
 
-            logger.info(f"✅ Parameter optimization completed")
-            logger.info(f"   📊 Final Score: {final_score:.4f}")
-            logger.info(f"   🔧 Optimized Parameters: {len(optimized_params)} parameters")
+            logger.info(f"# Check Parameter optimization completed")
+            logger.info(f"   # Chart Final Score: {final_score:.4f}")
+            logger.info(f"   # Tool Optimized Parameters: {len(optimized_params)} parameters")
 
             return optimization_result
 
         except Exception as e:
-            logger.error(f"❌ Error in parameter optimization: {e}")
+            logger.error(f"# X Error in parameter optimization: {e}")
             return None
 
     def _create_search_space(self, parameter_groups: List[str]) -> List:
@@ -247,7 +247,7 @@ class EnhancedParameterOptimizer:
             return search_space
 
         except Exception as e:
-            logger.error(f"❌ Error creating search space: {e}")
+            logger.error(f"# X Error creating search space: {e}")
             return []
 
     def _evaluate_parameters(self, params: Dict[str, Any], target: str) -> float:
@@ -285,7 +285,7 @@ class EnhancedParameterOptimizer:
             return score
 
         except Exception as e:
-            logger.error(f"❌ Error evaluating parameters: {e}")
+            logger.error(f"# X Error evaluating parameters: {e}")
             return 1000  # High penalty
 
     def _run_backtest_with_params(self, params: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -323,7 +323,7 @@ class EnhancedParameterOptimizer:
             }
 
         except Exception as e:
-            logger.error(f"❌ Error running backtest: {e}")
+            logger.error(f"# X Error running backtest: {e}")
             return None
 
     def _evaluate_risk_parameters(self, params: Dict[str, Any]) -> float:
@@ -395,14 +395,14 @@ class EnhancedParameterOptimizer:
             return params
 
         except Exception as e:
-            logger.error(f"❌ Error converting result to params: {e}")
+            logger.error(f"# X Error converting result to params: {e}")
             return {}
 
     def _grid_search_optimization(self, parameter_groups: List[str],
                                 max_iterations: int, target: str) -> Tuple[Dict[str, Any], float]:
         """Fallback grid search optimization"""
         try:
-            logger.info("📊 Using grid search optimization (scikit-optimize not available)")
+            logger.info("# Chart Using grid search optimization (scikit-optimize not available)")
 
             # Create parameter grid (simplified)
             param_grid = {
@@ -437,7 +437,7 @@ class EnhancedParameterOptimizer:
             return best_params, -best_score  # Convert back to positive
 
         except Exception as e:
-            logger.error(f"❌ Error in grid search: {e}")
+            logger.error(f"# X Error in grid search: {e}")
             return {}, 0.0
 
     def _evaluate_parameters_detailed(self, params: Dict[str, Any]) -> Dict[str, float]:
@@ -456,7 +456,7 @@ class EnhancedParameterOptimizer:
                 }
 
         except Exception as e:
-            logger.error(f"❌ Error in detailed evaluation: {e}")
+            logger.error(f"# X Error in detailed evaluation: {e}")
             return {}
 
     def generate_optimization_report(self) -> Dict[str, Any]:
@@ -485,7 +485,7 @@ class EnhancedParameterOptimizer:
             return report
 
         except Exception as e:
-            logger.error(f"❌ Error generating optimization report: {e}")
+            logger.error(f"# X Error generating optimization report: {e}")
             return {"error": str(e)}
 
     def _analyze_parameter_sensitivity(self) -> Dict[str, Any]:
@@ -511,7 +511,7 @@ class EnhancedParameterOptimizer:
             }
 
         except Exception as e:
-            logger.warning(f"⚠️ Error analyzing sensitivity: {e}")
+            logger.warning(f"# Warning Error analyzing sensitivity: {e}")
             return {}
 
     def _generate_parameter_recommendations(self, result: OptimizationResult) -> List[str]:
@@ -531,26 +531,26 @@ class EnhancedParameterOptimizer:
                 if param_space and param_space.bounds:
                     lower, upper = param_space.bounds
                     if abs(param_value - lower) / (upper - lower) < 0.1:
-                        recommendations.append(f"⚠️ {param_name} is near lower bound ({param_value:.4f})")
+                        recommendations.append(f"# Warning {param_name} is near lower bound ({param_value:.4f})")
                     elif abs(param_value - upper) / (upper - lower) < 0.1:
-                        recommendations.append(f"⚠️ {param_name} is near upper bound ({param_value:.4f})")
+                        recommendations.append(f"# Warning {param_name} is near upper bound ({param_value:.4f})")
 
             # Performance-based recommendations
             if result.metrics.get("sharpe_ratio", 0) < 1.0:
-                recommendations.append("📊 Consider increasing risk management conservatism")
+                recommendations.append("# Chart Consider increasing risk management conservatism")
             if result.metrics.get("max_drawdown", 0) > 0.15:
-                recommendations.append("⚠️ High drawdown - consider tighter stop losses")
+                recommendations.append("# Warning High drawdown - consider tighter stop losses")
             if result.metrics.get("win_rate", 0) < 0.55:
-                recommendations.append("🎯 Win rate below target - review entry criteria")
+                recommendations.append("# Target Win rate below target - review entry criteria")
 
             if not recommendations:
-                recommendations.append("✅ Parameter optimization successful")
+                recommendations.append("# Check Parameter optimization successful")
 
             return recommendations
 
         except Exception as e:
-            logger.warning(f"⚠️ Error generating recommendations: {e}")
-            return ["🔧 Parameter analysis completed"]
+            logger.warning(f"# Warning Error generating recommendations: {e}")
+            return ["# Tool Parameter analysis completed"]
 
 def main():
     """Main optimization function"""
@@ -565,7 +565,7 @@ def main():
     )
 
     if result:
-        print(f"🔧 Optimized {len(result.parameters)} parameters")
+        print(f"# Tool Optimized {len(result.parameters)} parameters")
         for key, value in result.metrics.items():
 
         # Generate report

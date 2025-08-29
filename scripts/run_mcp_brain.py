@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 FINAL WORKING MCP BRAIN CONTROLLER
+# Rocket FINAL WORKING MCP BRAIN CONTROLLER
 This version actually works - no subprocess nonsense, just direct execution
 """
 
@@ -279,24 +279,24 @@ async def dashboard():
                         ⏹️ Stop Trading
                     </button>
                     <button class="command-btn" onclick="executeCommand('get_portfolio')">
-                        📊 Get Portfolio
+                        # Chart Get Portfolio
                     </button>
                 </div>
 
                 <div style="margin-top: 20px;">
                     <h4>📈 Market Analysis</h4>
                     <button class="command-btn" onclick="executeCommand('analyze_market', {symbol: 'BTC/USDT'})">
-                        📊 Analyze BTC/USDT
+                        # Chart Analyze BTC/USDT
                     </button>
                     <button class="command-btn" onclick="executeCommand('analyze_market', {symbol: 'ETH/USDT'})">
-                        📊 Analyze ETH/USDT
+                        # Chart Analyze ETH/USDT
                     </button>
                 </div>
 
                 <div style="margin-top: 20px;">
                     <h4>⚙️ System Control</h4>
                     <button class="command-btn" onclick="executeCommand('get_system_status')">
-                        📊 System Status
+                        # Chart System Status
                     </button>
                     <button class="command-btn danger" onclick="executeCommand('emergency_stop')">
                         🚨 Emergency Stop
@@ -308,7 +308,7 @@ async def dashboard():
                 <h3>📋 Command Log</h3>
                 <div class="log-area" id="command-log">
                     🧠 MCP Brain Controller initialized
-                    📊 Dashboard active at http://localhost:8080
+                    # Chart Dashboard active at http://localhost:8080
                     🎮 Ready to receive commands
                 </div>
             </div>
@@ -446,18 +446,18 @@ async def dashboard():
                     }});
 
                     const result = await response.json();
-                    const status = result.status === 'success' ? '✅' : '❌';
+                    const status = result.status === 'success' ? '# Check' : '# X';
 
                     log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] Result: $${{status}} $${{result.message || JSON.stringify(result)}}`;
                     log.scrollTop = log.scrollHeight;
 
                     // Show alert for important messages
-                    if (command === 'emergency_stop' || result.status === 'error') {{
+                    if (command === 'emergency_stop' || result.status === 'error') {{:
                         alert(`Command Result: $${{result.message || JSON.stringify(result)}}`);
                     }}
 
                 }} catch (error) {{
-                    log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] ❌ Error: $${{error.message}}`;
+                    log.innerHTML += `\\n[$${{timestamp}}] [$${{commandCount}}] # X Error: $${{error.message}}`;
                     alert(`Command failed: $${{error.message}}`);
                 }}
             }}
@@ -491,8 +491,8 @@ async def get_status():
 
 def main():
     """Start the MCP Brain Controller"""
-    logger.info("🚀 Starting VIPER MCP Brain Controller...")
-    logger.info("📊 Dashboard will be available at: http://localhost:8080")
+    logger.info("# Rocket Starting VIPER MCP Brain Controller...")
+    logger.info("# Chart Dashboard will be available at: http://localhost:8080")
     logger.info("🎮 Command interface ready")
     logger.info("🧠 Brain is now ACTIVE and OPERATIONAL!")
 
@@ -505,7 +505,7 @@ def main():
             reload=False
         )
     except Exception as e:
-        logger.error(f"❌ Failed to start brain controller: {e}")
+        logger.error(f"# X Failed to start brain controller: {e}")
         sys.exit(1)
 
 if __name__ == "__main__":

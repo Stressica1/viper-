@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER TRADING SYSTEM - COMPREHENSIVE ISSUE FIXER
+# Rocket VIPER TRADING SYSTEM - COMPREHENSIVE ISSUE FIXER
 Fix all critical issues identified in the debug report
 
 This fixer will:
@@ -29,7 +29,7 @@ class ComprehensiveFixer:
 
     def run_comprehensive_fix(self):
         """Run all fixes"""
-        print("🔧 COMPREHENSIVE VIPER TRADING SYSTEM FIXER")
+        print("# Tool COMPREHENSIVE VIPER TRADING SYSTEM FIXER")
 
         try:
             # Fix 1: Environment Variables
@@ -89,10 +89,10 @@ class ComprehensiveFixer:
                 credentials_missing.append(cred)
 
         if credentials_found:
-            print(f"✅ Found credentials: {', '.join(credentials_found)}")
+            print(f"# Check Found credentials: {', '.join(credentials_found)}")
 
         if credentials_missing:
-            print(f"❌ Missing credentials: {', '.join(credentials_missing)}")
+            print(f"# X Missing credentials: {', '.join(credentials_missing)}")
             self.issues_remaining.extend(credentials_missing)
 
         # Test environment loading
@@ -102,7 +102,7 @@ class ComprehensiveFixer:
 
             test_key = os.getenv('BITGET_API_KEY')
             if test_key:
-                print("✅ Environment variables load successfully")
+                print("# Check Environment variables load successfully")
                 self.fixes_applied.append("Environment variable loading")
             else:
                 self.issues_remaining.append("Environment loading failed")
@@ -124,7 +124,7 @@ BITGET_API_SECRET=your_bitget_api_secret_here
 BITGET_API_PASSWORD=your_bitget_api_password_here
 
 # =============================================================================
-# 🎯 TRADING PARAMETERS
+# # Target TRADING PARAMETERS
 # =============================================================================
 RISK_PER_TRADE=0.02
 MAX_POSITIONS=10
@@ -132,7 +132,7 @@ MIN_VIPER_SCORE=75.0
 SCAN_INTERVAL=30
 
 # =============================================================================
-# 📊 MONITORING
+# # Chart MONITORING
 # =============================================================================
 LOG_LEVEL=INFO
 ENABLE_DEBUG=true
@@ -184,10 +184,10 @@ ENABLE_DEBUG=true
                     async_issues.append("run_full_scan() should be awaited")
 
                 if async_issues:
-                    print(f"⚠️  {file_name}: {', '.join(async_issues)}")
+                    print(f"# Warning  {file_name}: {', '.join(async_issues)}")
                     self.issues_remaining.extend(async_issues)
                 else:
-                    print(f"✅ {file_name}: No obvious async issues")
+                    print(f"# Check {file_name}: No obvious async issues")
 
     def fix_api_credential_loading(self):
         """Fix API credential loading issues"""
@@ -229,11 +229,11 @@ ENABLE_DEBUG=true
                 if not api_secret: missing.append('BITGET_API_SECRET')
                 if not api_password: missing.append('BITGET_API_PASSWORD')
 
-                print(f"❌ Missing credentials: {', '.join(missing)}")
+                print(f"# X Missing credentials: {', '.join(missing)}")
                 self.issues_remaining.extend(missing)
 
         except ImportError:
-            print("❌ Cannot import dotenv - install with: pip install python-dotenv")
+            print("# X Cannot import dotenv - install with: pip install python-dotenv")
             self.issues_remaining.append("python-dotenv missing")
 
     def fix_component_integration(self):
@@ -264,10 +264,10 @@ ENABLE_DEBUG=true
             scanner = MasterDiagnosticScanner()
 
             if hasattr(scanner, 'run_full_scan_sync'):
-                print("✅ MasterDiagnosticScanner: Has run_full_scan_sync method")
+                print("# Check MasterDiagnosticScanner: Has run_full_scan_sync method")
                 self.fixes_applied.append("MasterDiagnosticScanner sync method")
             else:
-                print("❌ MasterDiagnosticScanner: Missing run_full_scan_sync method")
+                print("# X MasterDiagnosticScanner: Missing run_full_scan_sync method")
                 self.issues_remaining.append("Missing run_full_scan_sync method")
 
         except Exception as e:
@@ -295,12 +295,12 @@ ENABLE_DEBUG=true
                 syntax_errors.append(f"{file_path.name}: {e}")
 
         if syntax_errors:
-            print(f"❌ Found {len(syntax_errors)} syntax errors:")
+            print(f"# X Found {len(syntax_errors)} syntax errors:")
             for error in syntax_errors[:5]:  # Show first 5
                 print(f"   {error}")
             self.issues_remaining.extend(syntax_errors)
         else:
-            print("✅ All Python files have valid syntax")
+            print("# Check All Python files have valid syntax")
 
         # Test 2: Import test for main components
         print("📦 Testing component imports...")
@@ -316,7 +316,7 @@ ENABLE_DEBUG=true
             try:
                 __import__(module)
             except ImportError:
-                print(f"❌ {description}: Missing - install with pip install {module}")
+                print(f"# X {description}: Missing - install with pip install {module}")
                 self.issues_remaining.append(f"Missing {module}")
 
         # Test 3: Environment variable loading
@@ -332,7 +332,7 @@ ENABLE_DEBUG=true
                 env_loaded.append(var)
 
         if env_loaded:
-            print(f"✅ Environment variables loaded: {', '.join(env_loaded)}")
+            print(f"# Check Environment variables loaded: {', '.join(env_loaded)}")
         else:
             self.issues_remaining.append("Environment variables not loaded")
 
@@ -368,24 +368,24 @@ ENABLE_DEBUG=true
         print(f"   Report Saved: {report_path}")
 
         if self.fixes_applied:
-            print("\n✅ FIXES APPLIED:")
+            print("\n# Check FIXES APPLIED:")
             for fix in self.fixes_applied:
                 print(f"   ✓ {fix}")
 
         if self.issues_remaining:
-            print("\n⚠️  REMAINING ISSUES:")
+            print("\n# Warning  REMAINING ISSUES:")
             for issue in self.issues_remaining[:5]:  # Show first 5
                 print(f"   • {issue}")
 
         # Final assessment
         if report['system_readiness'] == 'READY':
-            print("\n🎉 SYSTEM STATUS: FULLY READY FOR LIVE TRADING!")
+            print("\n# Party SYSTEM STATUS: FULLY READY FOR LIVE TRADING!")
         elif report['system_readiness'] == 'READY_WITH_CREDENTIALS':
-            print("\n✅ SYSTEM STATUS: READY (Add API credentials to start trading)")
+            print("\n# Check SYSTEM STATUS: READY (Add API credentials to start trading)")
         else:
-            print("\n❌ SYSTEM STATUS: ISSUES REMAINING - Fix before trading")
+            print("\n# X SYSTEM STATUS: ISSUES REMAINING - Fix before trading")
 
-        print("\n🚀 Next Steps:")
+        print("\n# Rocket Next Steps:")
         if 'BITGET_API_KEY' in str(self.issues_remaining):
             print("   1. Add your Bitget API credentials to .env file")
         if 'OHLCV' in str(self.issues_remaining):

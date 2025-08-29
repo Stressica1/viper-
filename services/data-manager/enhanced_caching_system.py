@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER Enhanced Multi-Layer Caching System
+# Rocket VIPER Enhanced Multi-Layer Caching System
 Advanced caching infrastructure for faster loading and improved performance
 
 Features:
@@ -145,7 +145,7 @@ class LRUCache:
         now = time.time()
         expired_keys = [
             key for key, entry in self.cache.items()
-            if now - entry.timestamp > entry.ttl
+            if now - entry.timestamp > entry.ttl:
         ]
         for key in expired_keys:
             del self.cache[key]
@@ -192,7 +192,7 @@ class EnhancedCachingSystem:
             "viper_score:*"
         ]
         
-        logger.info("🚀 Enhanced Caching System initialized")
+        logger.info("# Rocket Enhanced Caching System initialized")
     
     async def initialize(self) -> bool:
         """Initialize all cache layers"""
@@ -209,11 +209,11 @@ class EnhancedCachingSystem:
             if self.cache_warming_enabled:
                 asyncio.create_task(self._warm_critical_caches())
             
-            logger.info("✅ Enhanced caching system initialized")
+            logger.info("# Check Enhanced caching system initialized")
             return True
             
         except Exception as e:
-            logger.error(f"❌ Failed to initialize caching system: {e}")
+            logger.error(f"# X Failed to initialize caching system: {e}")
             return False
     
     def _generate_key(self, namespace: str, key: str, **kwargs) -> str:
@@ -243,7 +243,7 @@ class EnhancedCachingSystem:
             return b'raw:' + data
             
         except Exception as e:
-            logger.error(f"❌ Serialization error: {e}")
+            logger.error(f"# X Serialization error: {e}")
             return b'raw:' + pickle.dumps(None)
     
     def _deserialize_and_decompress(self, data: bytes) -> Any:
@@ -261,7 +261,7 @@ class EnhancedCachingSystem:
                 return pickle.loads(data)
                 
         except Exception as e:
-            logger.error(f"❌ Deserialization error: {e}")
+            logger.error(f"# X Deserialization error: {e}")
             return None
     
     async def get(self, namespace: str, key: str, **kwargs) -> Optional[Any]:
@@ -291,7 +291,7 @@ class EnhancedCachingSystem:
                             self._record_cache_event(CacheEvent.HIT, CacheLayer.REDIS, time.time() - start_time)
                             return value
                 except Exception as e:
-                    logger.warning(f"⚠️ Redis cache error: {e}")
+                    logger.warning(f"# Warning Redis cache error: {e}")
             
             # Layer 3: Persistent storage
             try:
@@ -313,14 +313,14 @@ class EnhancedCachingSystem:
                             self._record_cache_event(CacheEvent.HIT, CacheLayer.PERSISTENT, time.time() - start_time)
                             return value
             except Exception as e:
-                logger.warning(f"⚠️ Persistent cache error: {e}")
+                logger.warning(f"# Warning Persistent cache error: {e}")
             
             # Cache miss
             self._record_cache_event(CacheEvent.MISS, None, time.time() - start_time)
             return None
             
         except Exception as e:
-            logger.error(f"❌ Cache get error: {e}")
+            logger.error(f"# X Cache get error: {e}")
             self._record_cache_event(CacheEvent.MISS, None, time.time() - start_time)
             return None
     
@@ -340,7 +340,7 @@ class EnhancedCachingSystem:
                     serialized_data = self._serialize_and_compress(value)
                     await asyncio.to_thread(self.redis_client.setex, cache_key, ttl, serialized_data)
                 except Exception as e:
-                    logger.warning(f"⚠️ Redis set error: {e}")
+                    logger.warning(f"# Warning Redis set error: {e}")
             
             # Layer 3: Persistent storage (for critical data)
             if self._is_critical_data(namespace):
@@ -349,7 +349,7 @@ class EnhancedCachingSystem:
                     with open(persistent_file, 'wb') as f:
                         f.write(self._serialize_and_compress(value))
                 except Exception as e:
-                    logger.warning(f"⚠️ Persistent set error: {e}")
+                    logger.warning(f"# Warning Persistent set error: {e}")
             
             self._record_cache_event(CacheEvent.SET, CacheLayer.MEMORY, time.time() - start_time)
             
@@ -359,7 +359,7 @@ class EnhancedCachingSystem:
             return True
             
         except Exception as e:
-            logger.error(f"❌ Cache set error: {e}")
+            logger.error(f"# X Cache set error: {e}")
             return False
     
     def _is_critical_data(self, namespace: str) -> bool:
@@ -386,7 +386,7 @@ class EnhancedCachingSystem:
                     if redis_deleted:
                         deleted = True
                 except Exception as e:
-                    logger.warning(f"⚠️ Redis delete error: {e}")
+                    logger.warning(f"# Warning Redis delete error: {e}")
             
             # Persistent
             try:
@@ -395,7 +395,7 @@ class EnhancedCachingSystem:
                     persistent_file.unlink()
                     deleted = True
             except Exception as e:
-                logger.warning(f"⚠️ Persistent delete error: {e}")
+                logger.warning(f"# Warning Persistent delete error: {e}")
             
             if deleted:
                 with self.lock:
@@ -404,7 +404,7 @@ class EnhancedCachingSystem:
             return deleted
             
         except Exception as e:
-            logger.error(f"❌ Cache delete error: {e}")
+            logger.error(f"# X Cache delete error: {e}")
             return False
     
     async def invalidate_pattern(self, pattern: str) -> int:
@@ -420,13 +420,13 @@ class EnhancedCachingSystem:
                         deleted = await asyncio.to_thread(self.redis_client.delete, *keys)
                         invalidated += deleted
                 except Exception as e:
-                    logger.warning(f"⚠️ Redis pattern invalidation error: {e}")
+                    logger.warning(f"# Warning Redis pattern invalidation error: {e}")
             
             # Memory cache pattern matching (simplified)
             with self.memory_cache.lock:
                 matching_keys = [
                     key for key in self.memory_cache.cache.keys()
-                    if self._pattern_matches(key, pattern)
+                    if self._pattern_matches(key, pattern):
                 ]
                 for key in matching_keys:
                     if self.memory_cache.delete(key):
@@ -436,7 +436,7 @@ class EnhancedCachingSystem:
             return invalidated
             
         except Exception as e:
-            logger.error(f"❌ Pattern invalidation error: {e}")
+            logger.error(f"# X Pattern invalidation error: {e}")
             return 0
     
     def _pattern_matches(self, key: str, pattern: str) -> bool:
@@ -492,7 +492,7 @@ class EnhancedCachingSystem:
                 await asyncio.sleep(60)  # Run every minute
                 
             except Exception as e:
-                logger.error(f"❌ Cache maintenance error: {e}")
+                logger.error(f"# X Cache maintenance error: {e}")
                 await asyncio.sleep(60)
     
     async def _performance_monitor_loop(self):
@@ -506,18 +506,18 @@ class EnhancedCachingSystem:
                     recent_events = self.performance_log[-1000:]
                     avg_hit_time = np.mean([
                         event['duration'] for event in recent_events 
-                        if event['event'] == 'hit'
+                        if event['event'] == 'hit':
                     ]) if recent_events else 0
                     
                     avg_miss_time = np.mean([
                         event['duration'] for event in recent_events 
-                        if event['event'] == 'miss'
+                        if event['event'] == 'miss':
                     ]) if recent_events else 0
                     
-                    logger.info(f"📊 Cache Performance: Hit={avg_hit_time:.4f}s, Miss={avg_miss_time:.4f}s")
+                    logger.info(f"# Chart Cache Performance: Hit={avg_hit_time:.4f}s, Miss={avg_miss_time:.4f}s")
                 
             except Exception as e:
-                logger.error(f"❌ Performance monitoring error: {e}")
+                logger.error(f"# X Performance monitoring error: {e}")
                 await asyncio.sleep(300)
     
     async def _warm_critical_caches(self):
@@ -533,10 +533,10 @@ class EnhancedCachingSystem:
                 # Implementation would fetch and cache critical data here
                 await asyncio.sleep(0.1)  # Prevent overwhelming
             
-            logger.info("✅ Cache warming completed")
+            logger.info("# Check Cache warming completed")
             
         except Exception as e:
-            logger.error(f"❌ Cache warming error: {e}")
+            logger.error(f"# X Cache warming error: {e}")
     
     async def _log_cache_statistics(self):
         """Log detailed cache statistics"""
@@ -558,7 +558,7 @@ class EnhancedCachingSystem:
                        f"Size={stats['memory_bytes']:,} bytes")
             
         except Exception as e:
-            logger.error(f"❌ Statistics logging error: {e}")
+            logger.error(f"# X Statistics logging error: {e}")
     
     async def get_statistics(self) -> Dict[str, Any]:
         """Get comprehensive cache statistics"""
@@ -589,7 +589,7 @@ class EnhancedCachingSystem:
             return stats
             
         except Exception as e:
-            logger.error(f"❌ Statistics error: {e}")
+            logger.error(f"# X Statistics error: {e}")
             return {}
     
     async def clear_all_caches(self) -> Dict[str, bool]:
@@ -607,7 +607,7 @@ class EnhancedCachingSystem:
                     await asyncio.to_thread(self.redis_client.flushdb)
                     results['redis'] = True
                 except Exception as e:
-                    logger.error(f"❌ Redis clear error: {e}")
+                    logger.error(f"# X Redis clear error: {e}")
                     results['redis'] = False
             
             # Persistent cache
@@ -616,7 +616,7 @@ class EnhancedCachingSystem:
                     cache_file.unlink()
                 results['persistent'] = True
             except Exception as e:
-                logger.error(f"❌ Persistent clear error: {e}")
+                logger.error(f"# X Persistent clear error: {e}")
                 results['persistent'] = False
             
             # Reset stats
@@ -628,7 +628,7 @@ class EnhancedCachingSystem:
             logger.info("🗑️ All caches cleared")
             
         except Exception as e:
-            logger.error(f"❌ Cache clear error: {e}")
+            logger.error(f"# X Cache clear error: {e}")
         
         return results
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🎯 VIPER V2 RISK-OPTIMIZED TRADING JOB
+# Target VIPER V2 RISK-OPTIMIZED TRADING JOB
 Implements strict 2% risk per trade with max leverage (50x) and one position per symbol
 
 Key Features:
@@ -34,9 +34,9 @@ try:
     from enhanced_system_integrator import get_integrator
     ENHANCED_RISK_AVAILABLE = True
     PERFORMANCE_MONITORING_AVAILABLE = True
-    logger.info("✅ Enhanced components available for integration")
+    logger.info("# Check Enhanced components available for integration")
 except ImportError as e:
-    logger.warning(f"⚠️ Enhanced components not available: {e}")
+    logger.warning(f"# Warning Enhanced components not available: {e}")
     ENHANCED_RISK_AVAILABLE = False
     PERFORMANCE_MONITORING_AVAILABLE = False
 
@@ -67,9 +67,9 @@ class V2RiskOptimizedTradingJob:
         self.last_balance_check = None
         self.last_diagnostic_run = None
 
-        logger.info("🚀 INITIALIZING V2 RISK-OPTIMIZED TRADING JOB")
+        logger.info("# Rocket INITIALIZING V2 RISK-OPTIMIZED TRADING JOB")
         logger.info("=" * 80)
-        logger.info(f"🎯 RISK PARAMETERS:")
+        logger.info(f"# Target RISK PARAMETERS:")
         logger.info(f"   • Risk per Trade: {self.risk_per_trade*100}%")
         logger.info(f"   • Max Leverage: {self.max_leverage}x")
         logger.info(f"   • Stop Loss: {self.stop_loss_pct*100}%")
@@ -78,28 +78,28 @@ class V2RiskOptimizedTradingJob:
 
     async def initialize_system_components(self) -> bool:
         """Initialize all system components"""
-        logger.info("🔧 Initializing System Components...")
+        logger.info("# Tool Initializing System Components...")
 
         try:
             # 1. Mathematical Validator
             from utils.mathematical_validator import MathematicalValidator
             self.system_components['math_validator'] = MathematicalValidator()
-            logger.info("✅ Mathematical Validator: INITIALIZED")
+            logger.info("# Check Mathematical Validator: INITIALIZED")
 
             # 2. Optimal MCP Configuration
             from config.optimal_mcp_config import get_optimal_mcp_config
             self.system_components['mcp_config'] = get_optimal_mcp_config()
-            logger.info("✅ Optimal MCP Config: LOADED")
+            logger.info("# Check Optimal MCP Config: LOADED")
 
             # 3. Entry Point Optimizer
             from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             self.system_components['entry_optimizer'] = OptimalEntryPointManager()
-            logger.info("✅ Entry Point Optimizer: INITIALIZED")
+            logger.info("# Check Entry Point Optimizer: INITIALIZED")
 
             # 4. Master Diagnostic Scanner
             from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
             self.system_components['diagnostic_scanner'] = MasterDiagnosticScanner()
-            logger.info("✅ Master Diagnostic Scanner: INITIALIZED")
+            logger.info("# Check Master Diagnostic Scanner: INITIALIZED")
 
             # 5. Enhanced Risk Manager (Advanced Risk Control)
             if ENHANCED_RISK_AVAILABLE:
@@ -109,24 +109,24 @@ class V2RiskOptimizedTradingJob:
                     if hasattr(integrator, 'modules') and 'enhanced_risk_manager' in integrator.modules:
                         self.system_components['risk_manager'] = integrator.get_module('enhanced_risk_manager')
                         if self.system_components['risk_manager']:
-                            logger.info("✅ Enhanced Risk Manager: INTEGRATED")
+                            logger.info("# Check Enhanced Risk Manager: INTEGRATED")
                         else:
-                            logger.warning("⚠️ Enhanced Risk Manager not available from integrator")
+                            logger.warning("# Warning Enhanced Risk Manager not available from integrator")
                             self.system_components['risk_manager'] = None
                     else:
-                        logger.warning("⚠️ Enhanced system not initialized, risk manager unavailable")
+                        logger.warning("# Warning Enhanced system not initialized, risk manager unavailable")
                         self.system_components['risk_manager'] = None
                 except Exception as e:
-                    logger.error(f"❌ Error getting enhanced risk manager: {e}")
+                    logger.error(f"# X Error getting enhanced risk manager: {e}")
                     self.system_components['risk_manager'] = None
             else:
-                logger.info("📊 Enhanced Risk Manager: NOT AVAILABLE (using basic risk management)")
+                logger.info("# Chart Enhanced Risk Manager: NOT AVAILABLE (using basic risk management)")
                 self.system_components['risk_manager'] = None
 
             # 6. Enhanced ViperAsyncTrader (Main Trading Engine)
             from viper_async_trader import ViperAsyncTrader
             self.system_components['trader'] = ViperAsyncTrader()
-            logger.info("✅ Enhanced ViperAsyncTrader: INITIALIZED")
+            logger.info("# Check Enhanced ViperAsyncTrader: INITIALIZED")
 
             # 7. Performance Monitoring System
             if PERFORMANCE_MONITORING_AVAILABLE:
@@ -136,20 +136,20 @@ class V2RiskOptimizedTradingJob:
                     if hasattr(integrator, 'modules') and 'performance_monitoring_system' in integrator.modules:
                         self.system_components['performance_monitor'] = integrator.get_module('performance_monitoring_system')
                         if self.system_components['performance_monitor']:
-                            logger.info("✅ Performance Monitoring System: INTEGRATED")
+                            logger.info("# Check Performance Monitoring System: INTEGRATED")
                             # Start monitoring
                             self.system_components['performance_monitor'].start_monitoring()
                         else:
-                            logger.warning("⚠️ Performance Monitoring not available from integrator")
+                            logger.warning("# Warning Performance Monitoring not available from integrator")
                             self.system_components['performance_monitor'] = None
                     else:
-                        logger.warning("⚠️ Enhanced system not initialized, performance monitoring disabled")
+                        logger.warning("# Warning Enhanced system not initialized, performance monitoring disabled")
                         self.system_components['performance_monitor'] = None
                 except Exception as e:
-                    logger.error(f"❌ Error getting performance monitor: {e}")
+                    logger.error(f"# X Error getting performance monitor: {e}")
                     self.system_components['performance_monitor'] = None
             else:
-                logger.info("📊 Performance Monitoring: NOT AVAILABLE")
+                logger.info("# Chart Performance Monitoring: NOT AVAILABLE")
                 self.system_components['performance_monitor'] = None
 
             # 8. Advanced Trend Detector
@@ -164,12 +164,12 @@ class V2RiskOptimizedTradingJob:
                 trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
             )
             self.system_components['trend_detector'] = AdvancedTrendDetector(trend_config)
-            logger.info("✅ Advanced Trend Detector: INITIALIZED")
+            logger.info("# Check Advanced Trend Detector: INITIALIZED")
 
             return True
 
         except Exception as e:
-            logger.error(f"❌ Component initialization failed: {e}")
+            logger.error(f"# X Component initialization failed: {e}")
             return False
 
     async def connect_to_exchange(self) -> bool:
@@ -179,12 +179,12 @@ class V2RiskOptimizedTradingJob:
         try:
             trader = self.system_components.get('trader')
             if not trader:
-                logger.error("❌ Trader component not available")
+                logger.error("# X Trader component not available")
                 return False
 
             connected = await trader.connect_exchange()
             if connected:
-                logger.info("✅ Successfully connected to Bitget exchange")
+                logger.info("# Check Successfully connected to Bitget exchange")
 
                 # Get initial balance
                 try:
@@ -192,22 +192,22 @@ class V2RiskOptimizedTradingJob:
                     logger.info(f"💰 Initial Swap Wallet Balance: ${balance:.2f} USDT")
                     self.last_balance_check = datetime.now()
                 except Exception as e:
-                    logger.warning(f"⚠️ Could not get initial balance: {e}")
+                    logger.warning(f"# Warning Could not get initial balance: {e}")
 
                 return True
             else:
-                logger.error("❌ Failed to connect to exchange")
+                logger.error("# X Failed to connect to exchange")
                 return False
 
         except Exception as e:
-            logger.error(f"❌ Exchange connection failed: {e}")
+            logger.error(f"# X Exchange connection failed: {e}")
             return False
 
     def calculate_v2_position_size(self, price: float, balance: float, leverage: int = 50, symbol: str = None) -> float:
         """Calculate position size with enhanced risk management or STRICT 2% risk fallback"""
         try:
             # Use enhanced risk manager if available
-            if (self.system_components.get('risk_manager') and
+            if (self.system_components.get('risk_manager') and:
                 ENHANCED_RISK_AVAILABLE and symbol):
 
                 try:
@@ -220,12 +220,12 @@ class V2RiskOptimizedTradingJob:
                         portfolio_value=balance
                     )
 
-                    if (enhanced_sizing and
+                    if (enhanced_sizing and:
                         'position_size_contracts' in enhanced_sizing and
                         enhanced_sizing['position_size_contracts'] > 0):
 
                         position_size = enhanced_sizing['position_size_contracts']
-                        logger.info(f"🎯 Enhanced position sizing for {symbol}: {position_size:.4f} "
+                        logger.info(f"# Target Enhanced position sizing for {symbol}: {position_size:.4f} "
                                   f"(Risk: {enhanced_sizing.get('effective_risk_percent', 0):.2%})")
 
                         # Apply leverage limit
@@ -235,11 +235,11 @@ class V2RiskOptimizedTradingJob:
                         return position_size
 
                 except Exception as e:
-                    logger.warning(f"⚠️ Enhanced position sizing failed for {symbol}: {e}")
+                    logger.warning(f"# Warning Enhanced position sizing failed for {symbol}: {e}")
                     # Fall back to basic calculation
 
             # FALLBACK: STRICT 2% RISK CALCULATION
-            logger.info(f"📊 Using basic position sizing for {symbol or 'unknown'}")
+            logger.info(f"# Chart Using basic position sizing for {symbol or 'unknown'}")
             risk_amount = balance * self.risk_per_trade  # 2% of balance
 
             # Stop loss distance (2% of price)
@@ -273,15 +273,15 @@ class V2RiskOptimizedTradingJob:
                 balance_validation = self.system_components['math_validator'].validate_array(balance_array, "balance_data")
                 
                 if not price_validation['is_valid'] or not balance_validation['is_valid']:
-                    logger.warning("⚠️ Mathematical validation issues detected in position sizing")
+                    logger.warning("# Warning Mathematical validation issues detected in position sizing")
                 
                 # Check for unreasonable position sizes
                 max_reasonable_size = (balance * leverage) / price
                 if position_size > max_reasonable_size * 1.05:  # 5% tolerance
-                    logger.warning(f"⚠️ Position size ({position_size:.6f}) seems unusually large")
+                    logger.warning(f"# Warning Position size ({position_size:.6f}) seems unusually large")
                     position_size = max_reasonable_size * 0.95
             
-            logger.info(f"🎯 V2 Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), "
+            logger.info(f"# Target V2 Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), "
                        f"Stop Loss=2% (${stop_loss_distance:.4f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
                        f"({leverage}x leverage) → Final Size={position_size:.6f}")
@@ -289,12 +289,12 @@ class V2RiskOptimizedTradingJob:
             return position_size
             
         except Exception as e:
-            logger.error(f"❌ Error calculating V2 position size: {e}")
+            logger.error(f"# X Error calculating V2 position size: {e}")
             return 0.001
 
     async def scan_markets_and_score(self) -> Dict[str, Any]:
         """Scan markets and calculate VIPER scores with V2 risk optimization"""
-        logger.info("🔍 Scanning markets and calculating V2 VIPER scores...")
+        logger.info("# Search Scanning markets and calculating V2 VIPER scores...")
 
         try:
             trader = self.system_components.get('trader')
@@ -342,12 +342,12 @@ class V2RiskOptimizedTradingJob:
 
                     if opportunity:
                         opportunities.append(opportunity)
-                        logger.debug(f"🎯 {symbol}: Score {opportunity.score:.3f} ({opportunity.recommended_side})")
+                        logger.debug(f"# Target {symbol}: Score {opportunity.score:.3f} ({opportunity.recommended_side})")
 
                 except Exception as e:
-                    logger.debug(f"⚠️ Could not scan {symbol}: {e}")
+                    logger.debug(f"# Warning Could not scan {symbol}: {e}")
 
-            logger.info(f"🔍 V2 Scan complete: Found {len(opportunities)} opportunities")
+            logger.info(f"# Search V2 Scan complete: Found {len(opportunities)} opportunities")
 
             return {
                 "opportunities": opportunities,
@@ -356,12 +356,12 @@ class V2RiskOptimizedTradingJob:
             }
 
         except Exception as e:
-            logger.error(f"❌ V2 Market scanning failed: {e}")
+            logger.error(f"# X V2 Market scanning failed: {e}")
             return {"error": str(e)}
 
     async def execute_v2_trading_opportunities(self, opportunities: List) -> Dict[str, Any]:
         """Execute trading opportunities with STRICT V2 risk management"""
-        logger.info("🚀 Executing V2 trading opportunities with 2% risk...")
+        logger.info("# Rocket Executing V2 trading opportunities with 2% risk...")
 
         try:
             trader = self.system_components.get('trader')
@@ -433,7 +433,7 @@ class V2RiskOptimizedTradingJob:
                             "stop_loss_pct": self.stop_loss_pct
                         }
 
-                        logger.info(f"✅ V2 Trade executed: {opportunity.symbol} {opportunity.recommended_side}")
+                        logger.info(f"# Check V2 Trade executed: {opportunity.symbol} {opportunity.recommended_side}")
                         logger.info(f"   • Position Size: {position_size:.6f}")
                         logger.info(f"   • Risk Amount: ${balance * self.risk_per_trade:.2f}")
                         logger.info(f"   • Leverage: {self.max_leverage}x")
@@ -444,13 +444,13 @@ class V2RiskOptimizedTradingJob:
                         })
 
                 except Exception as e:
-                    logger.error(f"❌ Error executing V2 trade for {opportunity.symbol}: {e}")
+                    logger.error(f"# X Error executing V2 trade for {opportunity.symbol}: {e}")
                     skipped_trades.append({
                         "symbol": opportunity.symbol,
                         "reason": f"Execution error: {e}"
                     })
 
-            logger.info(f"🚀 V2 Execution complete: {len(executed_trades)} executed, {len(skipped_trades)} skipped")
+            logger.info(f"# Rocket V2 Execution complete: {len(executed_trades)} executed, {len(skipped_trades)} skipped")
 
             return {
                 "executed_trades": executed_trades,
@@ -459,12 +459,12 @@ class V2RiskOptimizedTradingJob:
             }
 
         except Exception as e:
-            logger.error(f"❌ V2 Trade execution failed: {e}")
+            logger.error(f"# X V2 Trade execution failed: {e}")
             return {"error": str(e)}
 
     async def monitor_v2_positions_and_risk(self) -> Dict[str, Any]:
         """Monitor active positions with V2 risk management"""
-        logger.info("📊 Monitoring V2 positions and risk management...")
+        logger.info("# Chart Monitoring V2 positions and risk management...")
 
         try:
             trader = self.system_components.get('trader')
@@ -479,7 +479,7 @@ class V2RiskOptimizedTradingJob:
 
             # Log position status with V2 details
             if current_positions > 0:
-                logger.info(f"📊 V2 Active Positions: {current_positions}")
+                logger.info(f"# Chart V2 Active Positions: {current_positions}")
                 total_risk_exposure = 0.0
                 
                 for symbol, position in self.active_positions.items():
@@ -497,9 +497,9 @@ class V2RiskOptimizedTradingJob:
                 # Calculate total risk exposure
                 balance = await trader.get_account_balance()
                 total_risk_pct = (total_risk_exposure / balance) * 100 if balance > 0 else 0
-                logger.info(f"📊 Total Risk Exposure: ${total_risk_exposure:.2f} ({total_risk_pct:.1f}% of balance)")
+                logger.info(f"# Chart Total Risk Exposure: ${total_risk_exposure:.2f} ({total_risk_pct:.1f}% of balance)")
             else:
-                logger.debug("📊 No active V2 positions")
+                logger.debug("# Chart No active V2 positions")
 
             return {
                 "monitoring_result": monitoring_result,
@@ -508,7 +508,7 @@ class V2RiskOptimizedTradingJob:
             }
 
         except Exception as e:
-            logger.error(f"❌ V2 Position monitoring failed: {e}")
+            logger.error(f"# X V2 Position monitoring failed: {e}")
             return {"error": str(e)}
 
     async def run_system_diagnostics(self) -> Dict[str, Any]:
@@ -520,16 +520,16 @@ class V2RiskOptimizedTradingJob:
 
                 self.last_diagnostic_run = datetime.now()
 
-                logger.info("🔍 V2 System diagnostics completed")
+                logger.info("# Search V2 System diagnostics completed")
                 logger.info(f"   Health Score: {diagnostic_result.get('overall_score', 'N/A')}")
 
                 return diagnostic_result
             else:
-                logger.warning("⚠️ Diagnostic scanner not available")
+                logger.warning("# Warning Diagnostic scanner not available")
                 return {"error": "Diagnostic scanner not available"}
 
         except Exception as e:
-            logger.error(f"❌ V2 Diagnostics failed: {e}")
+            logger.error(f"# X V2 Diagnostics failed: {e}")
             return {"error": str(e)}
 
     async def get_v2_system_status(self) -> Dict[str, Any]:
@@ -571,12 +571,12 @@ class V2RiskOptimizedTradingJob:
             return status
 
         except Exception as e:
-            logger.error(f"❌ V2 Status check failed: {e}")
+            logger.error(f"# X V2 Status check failed: {e}")
             return {"error": str(e)}
 
     async def continuous_v2_trading_loop(self):
         """Main continuous V2 trading loop"""
-        logger.info("🎯 STARTING CONTINUOUS V2 RISK-OPTIMIZED TRADING LOOP")
+        logger.info("# Target STARTING CONTINUOUS V2 RISK-OPTIMIZED TRADING LOOP")
         logger.info("=" * 80)
 
         cycle_count = 0
@@ -608,21 +608,21 @@ class V2RiskOptimizedTradingJob:
 
                 # 2. Position Monitoring (every monitor_interval seconds)
                 if (datetime.now() - last_monitor_time).seconds >= self.monitor_interval:
-                    logger.info("📊 Phase 2: V2 Position Monitoring & Risk Management")
+                    logger.info("# Chart Phase 2: V2 Position Monitoring & Risk Management")
 
                     monitor_result = await self.monitor_v2_positions_and_risk()
                     last_monitor_time = datetime.now()
 
                 # 3. System Diagnostics (every diagnostic_interval seconds)
                 if (datetime.now() - last_diagnostic_time).seconds >= self.diagnostic_interval:
-                    logger.info("🔍 Phase 3: V2 System Diagnostics")
+                    logger.info("# Search Phase 3: V2 System Diagnostics")
 
                     diagnostic_result = await self.run_system_diagnostics()
                     last_diagnostic_time = datetime.now()
 
                 # 4. Status Update
                 status = await self.get_v2_system_status()
-                logger.info(f"📊 V2 Status: {status['active_positions']} positions, ${status['current_balance']:.2f} balance")
+                logger.info(f"# Chart V2 Status: {status['active_positions']} positions, ${status['current_balance']:.2f} balance")
                 logger.info(f"   Risk Exposure: ${status['total_risk_exposure']:.2f} ({status['total_risk_percentage']:.1f}%)")
 
                 # Calculate cycle duration
@@ -633,38 +633,38 @@ class V2RiskOptimizedTradingJob:
                 await asyncio.sleep(sleep_time)
 
             except Exception as e:
-                logger.error(f"❌ Error in V2 trading loop cycle {cycle_count}: {e}")
+                logger.error(f"# X Error in V2 trading loop cycle {cycle_count}: {e}")
                 await asyncio.sleep(10)  # Wait before retry
 
     async def start_v2_continuous_trading(self) -> bool:
         """Start the complete V2 continuous trading system"""
-        logger.info("🚀 STARTING V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM")
+        logger.info("# Rocket STARTING V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM")
         logger.info("=" * 80)
 
         try:
             # 1. Initialize all components
-            logger.info("🔧 Step 1: Initializing V2 Components...")
+            logger.info("# Tool Step 1: Initializing V2 Components...")
             if not await self.initialize_system_components():
-                logger.error("❌ V2 Component initialization failed")
+                logger.error("# X V2 Component initialization failed")
                 return False
 
             # 2. Connect to exchange
             logger.info("🔌 Step 2: Connecting to Exchange...")
             if not await self.connect_to_exchange():
-                logger.error("❌ Exchange connection failed")
+                logger.error("# X Exchange connection failed")
                 return False
 
             # 3. Run initial diagnostics
-            logger.info("🔍 Step 3: Running Initial V2 Diagnostics...")
+            logger.info("# Search Step 3: Running Initial V2 Diagnostics...")
             diagnostic_result = await self.run_system_diagnostics()
 
             # 4. Start continuous V2 trading loop
-            logger.info("🎯 Step 4: Starting V2 Continuous Trading Loop...")
+            logger.info("# Target Step 4: Starting V2 Continuous Trading Loop...")
             self.is_running = True
             self.start_time = datetime.now()
 
             # Display V2 system configuration
-            print("\n📊 V2 RISK-OPTIMIZED SYSTEM CONFIGURATION:")
+            print("\n# Chart V2 RISK-OPTIMIZED SYSTEM CONFIGURATION:")
             print(f"   • Risk per Trade: {self.risk_per_trade*100}% (STRICT)")
             print(f"   • Max Leverage: {self.max_leverage}x (MAXIMUM)")
             print(f"   • Stop Loss: {self.stop_loss_pct*100}% (MATCHES RISK)")
@@ -672,14 +672,14 @@ class V2RiskOptimizedTradingJob:
             print(f"   • Scan Interval: {self.scan_interval}s")
             print(f"   • Monitor Interval: {self.monitor_interval}s")
 
-            logger.info("🎉 V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM STARTED!")
-            logger.info("📊 All components connected and operational with 2% risk management")
+            logger.info("# Party V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING SYSTEM STARTED!")
+            logger.info("# Chart All components connected and operational with 2% risk management")
 
             # Start the main V2 trading loop
             await self.continuous_v2_trading_loop()
 
         except Exception as e:
-            logger.error(f"❌ Failed to start V2 continuous trading: {e}")
+            logger.error(f"# X Failed to start V2 continuous trading: {e}")
             self.is_running = False
             return False
 
@@ -691,7 +691,7 @@ class V2RiskOptimizedTradingJob:
         # Generate final V2 report
         uptime = datetime.now() - self.start_time
         logger.info("=" * 60)
-        logger.info("📊 FINAL V2 TRADING REPORT")
+        logger.info("# Chart FINAL V2 TRADING REPORT")
         logger.info("=" * 60)
         logger.info(f"   • Cycles Completed: {self.cycles_completed}")
         logger.info(f"   • Trades Executed: {self.trades_executed}")
@@ -700,12 +700,12 @@ class V2RiskOptimizedTradingJob:
         logger.info(f"   • Risk Management: {self.risk_per_trade*100}% per trade")
         logger.info(f"   • Leverage Used: {self.max_leverage}x maximum")
         logger.info("=" * 60)
-        logger.info("✅ V2 System shutdown complete")
+        logger.info("# Check V2 System shutdown complete")
 
 async def main():
     """Main execution function for V2 Risk-Optimized Trading"""
-    print("🎯 VIPER V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING JOB")
-    print("🎯 STRICT 2% RISK PER TRADE • MAX 50X LEVERAGE • ONE POSITION PER SYMBOL")
+    print("# Target VIPER V2 RISK-OPTIMIZED CONTINUOUS LIVE TRADING JOB")
+    print("# Target STRICT 2% RISK PER TRADE • MAX 50X LEVERAGE • ONE POSITION PER SYMBOL")
 
     job = V2RiskOptimizedTradingJob()
 
@@ -721,15 +721,15 @@ async def main():
         success = await job.start_v2_continuous_trading()
 
         if success:
-            print("🎉 V2 Risk-optimized continuous trading completed successfully!")
+            print("# Party V2 Risk-optimized continuous trading completed successfully!")
         else:
-            print("❌ V2 Risk-optimized continuous trading failed to start")
+            print("# X V2 Risk-optimized continuous trading failed to start")
             return 1
 
     except KeyboardInterrupt:
         job.stop_v2_trading()
     except Exception as e:
-        logger.error(f"❌ V2 Fatal error: {e}")
+        logger.error(f"# X V2 Fatal error: {e}")
         return 1
 
     return 0

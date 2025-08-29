@@ -117,11 +117,11 @@ class CredentialVault:
                 redis_key = f"credential:{service}:{key}"
                 self.redis_client.set(redis_key, json.dumps(credential_data))
 
-                logger.info(f"✅ Stored credential for {service}:{key}")
+                logger.info(f"# Check Stored credential for {service}:{key}")
                 return {"status": "stored", "service": service, "key": key}
 
             except Exception as e:
-                logger.error(f"❌ Failed to store credential: {e}")
+                logger.error(f"# X Failed to store credential: {e}")
                 raise HTTPException(status_code=500, detail="Failed to store credential")
 
         @self.app.get("/credentials/retrieve/{service}/{key}")
@@ -151,7 +151,7 @@ class CredentialVault:
                     credential_data['encrypted_value'].encode()
                 ).decode()
 
-                logger.info(f"✅ Retrieved credential for {service}:{key}")
+                logger.info(f"# Check Retrieved credential for {service}:{key}")
                 return {
                     "service": service,
                     "key": key,
@@ -160,7 +160,7 @@ class CredentialVault:
                 }
 
             except Exception as e:
-                logger.error(f"❌ Failed to retrieve credential: {e}")
+                logger.error(f"# X Failed to retrieve credential: {e}")
                 raise HTTPException(status_code=500, detail="Failed to retrieve credential")
 
         @self.app.get("/credentials/list/{service}")
@@ -192,7 +192,7 @@ class CredentialVault:
                 return {"service": service, "credentials": credentials_list}
 
             except Exception as e:
-                logger.error(f"❌ Failed to list credentials: {e}")
+                logger.error(f"# X Failed to list credentials: {e}")
                 raise HTTPException(status_code=500, detail="Failed to list credentials")
 
         @self.app.delete("/credentials/delete/{service}/{key}")
@@ -215,11 +215,11 @@ class CredentialVault:
                 if result == 0:
                     raise HTTPException(status_code=404, detail="Credential not found")
 
-                logger.info(f"✅ Deleted credential for {service}:{key}")
+                logger.info(f"# Check Deleted credential for {service}:{key}")
                 return {"status": "deleted", "service": service, "key": key}
 
             except Exception as e:
-                logger.error(f"❌ Failed to delete credential: {e}")
+                logger.error(f"# X Failed to delete credential: {e}")
                 raise HTTPException(status_code=500, detail="Failed to delete credential")
 
     def _verify_token(self, token: str) -> bool:
@@ -231,10 +231,10 @@ class CredentialVault:
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def initialize_redis_sync(self) -> bool:
@@ -242,20 +242,20 @@ class CredentialVault:
         try:
             self.redis_client = redis.Redis.from_url(self.redis_url, decode_responses=True)
             self.redis_client.ping()
-            logger.info("✅ Redis connection established")
+            logger.info("# Check Redis connection established")
             return True
         except Exception as e:
-            logger.error(f"❌ Failed to connect to Redis: {e}")
+            logger.error(f"# X Failed to connect to Redis: {e}")
             return False
 
     def start_server(self, host: str = "0.0.0.0", port: int = 8008):
         """Start the credential vault server"""
         # Initialize Redis synchronously first
         if not self.initialize_redis_sync():
-            logger.error("❌ Cannot start server without Redis")
+            logger.error("# X Cannot start server without Redis")
             return
 
-        logger.info(f"🚀 Starting {self.service_name} on {host}:{port}")
+        logger.info(f"# Rocket Starting {self.service_name} on {host}:{port}")
         import uvicorn
         uvicorn.run(self.app, host=host, port=port)
 

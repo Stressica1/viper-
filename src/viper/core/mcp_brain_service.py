@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-🚀 VIPER MCP BRAIN SERVICE MANAGER
+# Rocket VIPER MCP BRAIN SERVICE MANAGER
 Continuous Operation & Auto-Restart System
 
 This service ensures the MCP Brain Controller runs 24/7 with:
@@ -95,7 +95,7 @@ class MCPBrainService:
 
     def start_service(self):
         """Start the MCP Brain service"""
-        self.logger.info("🚀 Starting VIPER MCP Brain Service...")
+        self.logger.info("# Rocket Starting VIPER MCP Brain Service...")
         self.status["service_state"] = "starting"
 
         # Setup signal handlers
@@ -119,7 +119,7 @@ class MCPBrainService:
             # Start the brain controller
             self.start_brain_controller()
 
-            self.logger.info("✅ MCP Brain Service started successfully")
+            self.logger.info("# Check MCP Brain Service started successfully")
             self.status["service_state"] = "running"
 
             # Keep service alive
@@ -128,7 +128,7 @@ class MCPBrainService:
                 self.status["uptime_seconds"] += 1
 
         except Exception as e:
-            self.logger.error(f"❌ Service failed to start: {e}")
+            self.logger.error(f"# X Service failed to start: {e}")
             self.status["service_state"] = "failed"
             sys.exit(1)
 
@@ -150,12 +150,12 @@ class MCPBrainService:
 
             if self.brain_process.poll() is None:
                 self.status["brain_state"] = "online"
-                self.logger.info("✅ MCP Brain Controller started successfully")
+                self.logger.info("# Check MCP Brain Controller started successfully")
             else:
                 raise Exception("Brain controller failed to start")
 
         except Exception as e:
-            self.logger.error(f"❌ Failed to start brain controller: {e}")
+            self.logger.error(f"# X Failed to start brain controller: {e}")
             self.status["brain_state"] = "failed"
             raise
 
@@ -170,12 +170,12 @@ class MCPBrainService:
                 self.brain_process.wait(timeout=30)
             except subprocess.TimeoutExpired:
                 # Force kill if graceful shutdown fails
-                self.logger.warning("⚠️  Graceful shutdown timeout, force killing...")
+                self.logger.warning("# Warning  Graceful shutdown timeout, force killing...")
                 self.brain_process.kill()
                 self.brain_process.wait()
 
             self.status["brain_state"] = "offline"
-            self.logger.info("✅ MCP Brain Controller stopped")
+            self.logger.info("# Check MCP Brain Controller stopped")
 
     def restart_brain_controller(self, reason: str = "manual"):
         """Restart the MCP Brain Controller"""
@@ -203,11 +203,11 @@ class MCPBrainService:
             self.last_restart = current_time
             self.status["next_restart_allowed"] = current_time + timedelta(hours=1)
 
-            self.logger.info(f"✅ Brain controller restarted successfully (#{self.restart_count})")
+            self.logger.info(f"# Check Brain controller restarted successfully (#{self.restart_count})")
             return True
 
         except Exception as e:
-            self.logger.error(f"❌ Restart failed: {e}")
+            self.logger.error(f"# X Restart failed: {e}")
             return False
 
     def monitoring_loop(self):
@@ -244,13 +244,13 @@ class MCPBrainService:
 
             # Check resource limits
             if memory_mb > self.config["max_memory_mb"]:
-                self.logger.warning(f"⚠️  High memory usage: {memory_mb:.1f}MB")
+                self.logger.warning(f"# Warning  High memory usage: {memory_mb:.1f}MB")
                 if memory_mb > self.config["max_memory_mb"] * 1.2:  # 20% over limit
                     self.logger.critical("🚨 Memory limit exceeded, triggering emergency restart")
                     self.restart_brain_controller("memory_limit")
 
             if cpu_percent > self.config["max_cpu_percent"]:
-                self.logger.warning(f"⚠️  High CPU usage: {cpu_percent:.1f}%")
+                self.logger.warning(f"# Warning  High CPU usage: {cpu_percent:.1f}%")
 
             # Check brain controller health via HTTP
             try:
@@ -259,9 +259,9 @@ class MCPBrainService:
                 if response.status_code == 200:
                     health_data = response.json()
                     if health_data.get("status") != "healthy":
-                        self.logger.warning(f"⚠️  Brain health check failed: {health_data}")
+                        self.logger.warning(f"# Warning  Brain health check failed: {health_data}")
                 else:
-                    self.logger.warning(f"⚠️  Brain health check returned status {response.status_code}")
+                    self.logger.warning(f"# Warning  Brain health check returned status {response.status_code}")
             except Exception as e:
                 self.logger.debug(f"Health check connection failed: {e}")
 
@@ -395,19 +395,19 @@ class MCPBrainService:
             start_time = time.time()
             while self.brain_process and self.brain_process.poll() is None:
                 if time.time() - start_time > timeout:
-                    self.logger.warning("⚠️  Emergency shutdown timeout reached")
+                    self.logger.warning("# Warning  Emergency shutdown timeout reached")
                     break
                 time.sleep(0.1)
 
             # Force kill if still running
             if self.brain_process and self.brain_process.poll() is None:
-                self.logger.warning("⚠️  Force killing brain controller")
+                self.logger.warning("# Warning  Force killing brain controller")
                 self.brain_process.kill()
 
             # Cleanup resources
             self.cleanup_resources()
 
-            self.logger.critical("✅ Emergency shutdown completed")
+            self.logger.critical("# Check Emergency shutdown completed")
 
         except Exception as e:
             self.logger.error(f"Emergency shutdown failed: {e}")
@@ -421,11 +421,11 @@ class MCPBrainService:
                 with open(config_file, 'r') as f:
                     new_config = json.load(f)
                     self.config.update(new_config)
-                    self.logger.info("✅ Configuration reloaded")
+                    self.logger.info("# Check Configuration reloaded")
 
             # Reload rules engine
             self.rules_engine = MCPRulesEngine()
-            self.logger.info("✅ Rules engine reloaded")
+            self.logger.info("# Check Rules engine reloaded")
 
         except Exception as e:
             self.logger.error(f"Configuration reload failed: {e}")
