@@ -19,7 +19,7 @@ import secrets
 import time
 from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 # Configure logging first
 import logging
@@ -626,6 +626,40 @@ class ViperAsyncTrader:
             confidence = min(trend_confidence, confidence)
             
             logger.info(f"# Check Trend validation passed for {symbol}: {trend_reason}")
+            
+            # ✨ ENHANCED ENTRY SIGNALS - Advanced entry point optimization
+            try:
+                from src.viper.core.enhanced_entry_signals import enhanced_entry_generator
+                
+                # Prepare market data for enhanced analysis
+                market_data = {
+                    'price': price,
+                    'volume': volume,
+                    'change_24h': change_24h,
+                    'symbol': symbol
+                }
+                
+                # Generate enhanced entry signal
+                enhanced_signal = await enhanced_entry_generator.analyze_enhanced_entry_opportunity(
+                    symbol, recommended_side, enhanced_viper_score, market_data
+                )
+                
+                if enhanced_signal:
+                    logger.info(f"   # 🎯 Enhanced entry signal found for {symbol}!")
+                    logger.info(f"      Quality: {enhanced_signal.quality.name} | Confidence: {enhanced_signal.confidence:.3f}")
+                    logger.info(f"      Entry: {enhanced_signal.entry_price:.6f} | R/R: {enhanced_signal.risk_reward_ratio:.2f}")
+                    
+                    # Use enhanced signal confidence and score
+                    enhanced_viper_score = enhanced_signal.score
+                    confidence = enhanced_signal.confidence
+                    
+                    # Store enhanced signal data for potential use
+                    enhanced_data = asdict(enhanced_signal)
+                else:
+                    logger.info(f"   # ⚠ Enhanced entry signal not generated for {symbol} - using base signal")
+                    
+            except Exception as e:
+                logger.warning(f"   # ⚠ Enhanced entry analysis failed for {symbol}: {e} - proceeding with base signal")
             
             # Enhanced threshold with trend consideration
             min_score = 0.6 if trend_score >= 70 else 0.65
