@@ -23,6 +23,14 @@ from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
 from dataclasses import dataclass
 from concurrent.futures import ThreadPoolExecutor
+
+# Setup basic logging first
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - VIPER_TRADER - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
 # Import enhanced components with fallbacks
 try:
     from enhanced_system_integrator import get_integrator
@@ -40,15 +48,21 @@ except ImportError as e:
         # Define fallback enums if not available
         from enum import Enum
 
+        # Define basic enums as fallbacks
         class TrendDirection(Enum):
             UP = "up"
             DOWN = "down"
             SIDEWAYS = "sideways"
+            NEUTRAL = "neutral"
 
         class TrendStrength(Enum):
             WEAK = "weak"
             MODERATE = "moderate"
             STRONG = "strong"
+
+        # Define enhanced enums as aliases to basic ones
+        EnhancedTrendDirection = TrendDirection
+        EnhancedTrendStrength = TrendStrength
 
         ENHANCED_TECHNICAL_AVAILABLE = False
         OPTIMIZED_DATA_AVAILABLE = False
@@ -66,18 +80,24 @@ class TrendDirection(Enum):
     UP = "up"
     DOWN = "down"
     SIDEWAYS = "sideways"
+    NEUTRAL = "neutral"
 
 class TrendStrength(Enum):
     WEAK = "weak"
     MODERATE = "moderate"
     STRONG = "strong"
 
+# Ensure enhanced enums are always available (alias to basic if not enhanced)
+try:
+    # Try to import enhanced enums
+    pass  # Enhanced enums would be imported above if available
+except:
+    # Define as aliases to basic enums
+    EnhancedTrendDirection = TrendDirection
+    EnhancedTrendStrength = TrendStrength
+
 # Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+# Logger already configured above
 
 @dataclass
 class TradingJob:
@@ -495,19 +515,100 @@ class ViperAsyncTrader:
                 except Exception as e:
                     logger.debug(f"⚠️ Optimized data fetch failed for {symbol}: {e}, falling back to exchange")
 
+            # Try to use enhanced scanner if available
+            if hasattr(self, 'enhanced_scanner') and self.enhanced_scanner:
+                try:
+                    enhanced_data = await self.enhanced_scanner._fetch_enhanced_market_data(symbol)
+                    if enhanced_data and enhanced_data.get('ticker'):
+                        ticker = enhanced_data['ticker']
+                        return {
+                            'symbol': symbol,
+                            'price': ticker.get('last', 0),
+                            'volume': ticker.get('quoteVolume', 0) or ticker.get('volume', 0),
+                            'change': ticker.get('percentage', 0),
+                            'change_24h': ticker.get('percentage', 0),
+                            'high': ticker.get('high', 0),
+                            'low': ticker.get('low', 0),
+                            'bid': ticker.get('bid', 0),
+                            'ask': ticker.get('ask', 0),
+                            'timestamp': ticker.get('timestamp', 0),
+                            'enhanced_data': enhanced_data  # Include additional data
+                        }
+                except Exception as e:
+                    logger.debug(f"Enhanced scanner failed for {symbol}: {e}")
+
             # Fallback to direct exchange call
-            ticker = self.exchange.fetch_ticker(symbol)  # Synchronous call
+            ticker = await self.exchange.fetch_ticker(symbol)  # Async call
             return {
                 'symbol': symbol,
-                'price': ticker['last'],
-                'volume': ticker.get('quoteVolume', 0),
+                'price': ticker.get('last', 0),
+                'volume': ticker.get('quoteVolume', 0) or ticker.get('volume', 0),
                 'change': ticker.get('percentage', 0),
+                'change_24h': ticker.get('percentage', 0),
                 'high': ticker.get('high', 0),
-                'low': ticker.get('low', 0)
+                'low': ticker.get('low', 0),
+                'bid': ticker.get('bid', 0),
+                'ask': ticker.get('ask', 0),
+                'timestamp': ticker.get('timestamp', 0)
             }
         except Exception as e:
             logger.debug(f"Failed to fetch ticker for {symbol}: {e}")
             return None
+
+    async def fetch_market_data(self, symbol: str, timeframe: str = '1h', limit: int = 100) -> Optional[Dict]:
+        """Fetch comprehensive market data for a symbol"""
+        try:
+            if not self.exchange:
+                return None
+
+            # Get ticker data
+            ticker_data = await self.fetch_ticker_data(symbol)
+            if not ticker_data:
+                return None
+
+            # Get OHLCV data with specified timeframe and limit
+            try:
+                ohlcv = await self.exchange.fetch_ohlcv(symbol, timeframe=timeframe, limit=limit)
+                if ohlcv:
+                    ticker_data['ohlcv'] = ohlcv
+            except Exception:
+                logger.warning(f"Could not fetch OHLCV data for {symbol}")
+
+            # Get order book
+            try:
+                orderbook = await self.exchange.fetch_order_book(symbol, limit=20)
+                if orderbook:
+                    ticker_data['orderbook'] = orderbook
+            except Exception:
+                logger.warning(f"Could not fetch orderbook for {symbol}")
+
+            return ticker_data
+
+        except Exception as e:
+            logger.error(f"❌ Error fetching market data {symbol}: {e}")
+            return None
+
+    async def check_account_balance(self) -> Dict:
+        """Check account balance"""
+        try:
+            if not self.exchange:
+                return {'error': 'Exchange not connected'}
+
+            balance = await self.exchange.fetch_balance()
+            if balance:
+                # Extract USDT balance
+                usdt_balance = balance.get('USDT', {})
+                return {
+                    'total': usdt_balance.get('total', 0),
+                    'free': usdt_balance.get('free', 0),
+                    'used': usdt_balance.get('used', 0),
+                    'timestamp': balance.get('timestamp', 0)
+                }
+            return {'error': 'Could not fetch balance'}
+
+        except Exception as e:
+            logger.error(f"❌ Error checking account balance: {e}")
+            return {'error': str(e)}
 
     async def score_opportunity(self, symbol: str) -> float:
         """Score a trading opportunity"""

@@ -1,0 +1,42 @@
+# Enhanced Market Scanner Requirements
+# Core dependencies
+ccxt>=4.2.0
+ccxt-pro>=4.2.0
+numpy>=1.24.0
+pandas>=2.0.0
+asyncio-mqtt>=0.13.0
+
+# MCP Integration (placeholder for future implementation)
+requests>=2.31.0
+websockets>=12.0
+
+# Data processing and analysis
+scipy>=1.11.0
+scikit-learn>=1.3.0
+ta-lib>=0.4.25
+
+# Docker and container management
+docker>=6.1.0
+
+# Logging and monitoring
+structlog>=23.1.0
+prometheus-client>=0.17.0
+
+# Configuration management
+python-dotenv>=1.0.0
+pyyaml>=6.0
+
+# Performance optimization
+concurrent.futures>=3.11.0
+multiprocessing>=3.11.0
+
+# Error handling and resilience
+tenacity>=8.2.0
+backoff>=2.2.1
+
+# Time and scheduling
+schedule>=1.2.0
+
+# Testing (for development)
+pytest>=7.4.0
+pytest-asyncio>=0.21.0

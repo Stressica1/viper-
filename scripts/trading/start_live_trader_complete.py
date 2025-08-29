@@ -18,12 +18,47 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-# Import existing trading components
+# Import existing trading components with fallbacks
 from viper_async_trader import ViperAsyncTrader
-from predictive_ranges_strategy import get_predictive_strategy
-from optimized_trade_entry_system import get_optimized_entry_system
-from emergency_stop_system import get_emergency_system
-from github_mcp_integration import GitHubMCPOrchestration
+
+# Import components with fallbacks
+try:
+    from predictive_ranges_strategy import get_predictive_strategy
+    PREDICTIVE_STRATEGY_AVAILABLE = True
+except ImportError:
+    PREDICTIVE_STRATEGY_AVAILABLE = False
+    def get_predictive_strategy():
+        return None
+
+try:
+    from optimized_trade_entry_system import get_optimized_entry_system
+    OPTIMIZED_ENTRY_AVAILABLE = True
+except ImportError:
+    OPTIMIZED_ENTRY_AVAILABLE = False
+    def get_optimized_entry_system():
+        return None
+
+try:
+    from emergency_stop_system import get_emergency_system
+    EMERGENCY_SYSTEM_AVAILABLE = True
+except ImportError:
+    EMERGENCY_SYSTEM_AVAILABLE = False
+    def get_emergency_system():
+        return None
+
+try:
+    from github_mcp_integration import GitHubMCPOrchestration
+    MCP_INTEGRATION_AVAILABLE = True
+except ImportError:
+    MCP_INTEGRATION_AVAILABLE = False
+    GitHubMCPOrchestration = None
+
+try:
+    from enhanced_market_scanner import EnhancedMarketScanner
+    ENHANCED_SCANNER_AVAILABLE = True
+except ImportError:
+    ENHANCED_SCANNER_AVAILABLE = False
+    EnhancedMarketScanner = None
 
 # Configure logging
 logging.basicConfig(
@@ -40,7 +75,28 @@ class CompleteLiveTrader:
         self.predictive_strategy = get_predictive_strategy()
         self.entry_system = get_optimized_entry_system()
         self.emergency_system = get_emergency_system()
-        self.github_mcp = GitHubMCPOrchestration()
+
+        # Initialize Enhanced Market Scanner if available
+        if ENHANCED_SCANNER_AVAILABLE and EnhancedMarketScanner is not None:
+            exchange_config = {
+                'api_key': os.getenv('BITGET_API_KEY'),
+                'api_secret': os.getenv('BITGET_API_SECRET'),
+                'api_password': os.getenv('BITGET_API_PASSWORD')
+            }
+            self.enhanced_scanner = EnhancedMarketScanner(exchange_config)
+            # Connect scanner to viper trader
+            self.viper_trader.enhanced_scanner = self.enhanced_scanner
+            logger.info("✅ Enhanced Market Scanner initialized and connected")
+        else:
+            self.enhanced_scanner = None
+            logger.warning("⚠️ Enhanced Market Scanner not available")
+
+        # Initialize GitHub MCP if available
+        if MCP_INTEGRATION_AVAILABLE and GitHubMCPOrchestration is not None:
+            self.github_mcp = GitHubMCPOrchestration()
+        else:
+            self.github_mcp = None
+            logger.warning("⚠️ GitHub MCP integration not available")
 
         # Bitget USDT Swaps Configuration
         self.symbol = "BTCUSDT"  # Target symbol for swaps
@@ -109,8 +165,11 @@ class CompleteLiveTrader:
 
         # Check emergency system
         try:
-            health = await self.emergency_system.check_system_health()
-            print(f"🛡️ Emergency System: {health['system_status']}")
+            if self.emergency_system:
+                health = await self.emergency_system.check_system_health()
+                print(f"🛡️ Emergency System: {health['system_status']}")
+            else:
+                print("⚠️ Emergency System: NOT AVAILABLE")
         except Exception as e:
             print(f"❌ Emergency system check failed: {e}")
 
@@ -123,26 +182,77 @@ class CompleteLiveTrader:
 
         # Initialize predictive strategy
         try:
-            self.predictive_strategy.initialize()
-            print("✅ Predictive Ranges Strategy: INITIALIZED")
+            if self.predictive_strategy:
+                self.predictive_strategy.initialize()
+                print("✅ Predictive Ranges Strategy: INITIALIZED")
+            else:
+                print("⚠️ Predictive Ranges Strategy: NOT AVAILABLE")
         except Exception as e:
             print(f"⚠️  Predictive strategy initialization failed: {e}")
 
         # Initialize entry system
         try:
-            await self.entry_system.initialize()
-            print("✅ Optimized Entry System: INITIALIZED")
+            if self.entry_system:
+                await self.entry_system.initialize()
+                print("✅ Optimized Entry System: INITIALIZED")
+            else:
+                print("⚠️ Optimized Entry System: NOT AVAILABLE")
         except Exception as e:
             print(f"⚠️  Entry system initialization failed: {e}")
 
+        # Initialize Enhanced Market Scanner
+        try:
+            if self.enhanced_scanner:
+                success = await self.enhanced_scanner.initialize()
+                if success:
+                    print("✅ Enhanced Market Scanner: INITIALIZED")
+                else:
+                    print("⚠️ Enhanced Market Scanner: INITIALIZATION FAILED")
+            else:
+                print("⚠️ Enhanced Market Scanner: NOT AVAILABLE")
+        except Exception as e:
+            print(f"⚠️  Enhanced Market Scanner initialization failed: {e}")
+
         # Initialize MCP GitHub tracking
         try:
-            await self.github_mcp.initialize_repository()
-            print("✅ GitHub MCP Integration: INITIALIZED")
+            if self.github_mcp:
+                await self.github_mcp.initialize_repository()
+                print("✅ GitHub MCP Integration: INITIALIZED")
+            else:
+                print("⚠️ GitHub MCP Integration: NOT AVAILABLE")
         except Exception as e:
             print(f"⚠️  GitHub MCP initialization failed: {e}")
 
         print("✅ All trading components initialized")
+
+    async def _convert_signal_to_opportunity(self, signal) -> Optional[Dict]:
+        """Convert enhanced market signal to trading opportunity"""
+        try:
+            opportunity = {
+                'symbol': signal.symbol,
+                'price': signal.price,
+                'volume': signal.volume,
+                'score': signal.score,
+                'confidence': signal.confidence,
+                'trend_direction': signal.trend_direction,
+                'trend_strength': signal.trend_strength,
+                'risk_level': signal.risk_level,
+                'opportunity_type': signal.opportunity_type,
+                'entry_price': signal.entry_price,
+                'stop_loss': signal.stop_loss,
+                'take_profit': signal.take_profit,
+                'position_size': signal.position_size,
+                'expected_return': signal.expected_return,
+                'win_probability': signal.win_probability,
+                'timestamp': signal.timestamp,
+                'enhanced_scoring': True,
+                'mcp_boost': signal.ai_enhanced_score
+            }
+            return opportunity
+
+        except Exception as e:
+            logger.debug(f"❌ Failed to convert signal to opportunity: {e}")
+            return None
 
     async def run_trading_loop(self):
         """Main trading loop with complete cycle"""
@@ -206,16 +316,32 @@ class CompleteLiveTrader:
         opportunities = []
 
         try:
-            # Get market data for target symbol
+            # Use enhanced scanner if available, otherwise fallback to basic scanning
+            if self.enhanced_scanner:
+                # Use enhanced parallel scanning with MCP
+                enhanced_signals = await self.enhanced_scanner.scan_markets_parallel()
+                if enhanced_signals:
+                    # Convert enhanced signals to opportunities
+                    for signal in enhanced_signals:
+                        opportunity = await self._convert_signal_to_opportunity(signal)
+                        if opportunity:
+                            opportunities.append(opportunity)
+
+                    logger.info(f"✅ Enhanced scanning found {len(opportunities)} opportunities")
+                    return opportunities
+
+            # Fallback to basic scanning
+            logger.info("🔄 Using basic market scanning")
             market_data = await self.viper_trader.fetch_market_data(self.symbol, '1h', 100)
 
             if not market_data:
                 return opportunities
 
-            # Use predictive ranges strategy to identify opportunities
-            predictive_ranges = self.predictive_strategy.calculate_predictive_ranges(
-                market_data, self.symbol, '1h'
-            )
+            # Use predictive ranges strategy to identify opportunities (if available)
+            if self.predictive_strategy:
+                predictive_ranges = self.predictive_strategy.calculate_predictive_ranges(
+                    market_data, self.symbol, '1h'
+                )
 
             if predictive_ranges:
                 # Check for entry opportunities
