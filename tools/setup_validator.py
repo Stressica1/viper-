@@ -18,10 +18,10 @@ sys.path.append(str(project_root / "src"))
 
 # Enhanced terminal display
 try:
-    from src.viper.utils.terminal_display import (
+    from src.viper.utils.terminal_display import ()
         terminal, display_error, display_success, display_warning, 
         print_banner, display_config, display_repo_structure
-    )
+(    )
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
@@ -33,7 +33,7 @@ except ImportError:
     def display_repo_structure(path): print(f"Repository at: {path}")
 
 class ViperSetupValidator:
-    """Comprehensive setup validation for VIPER trading system"""
+    """Comprehensive setup validation for VIPER trading system""""""
     
     def __init__(self):
         self.project_root = project_root
@@ -57,7 +57,7 @@ class ViperSetupValidator:
         
         all_valid = True
         for dir_path, description in required_dirs.items():
-            full_path = self.project_root / dir_path
+            full_path = self.project_root / dir_path"""
             if full_path.exists():
                 display_success(f"{dir_path} - {description}")
             else:
@@ -77,7 +77,7 @@ class ViperSetupValidator:
         ]
         
         all_valid = True
-        for import_name, description in test_imports:
+        for import_name, description in test_imports:"""
             try:
                 importlib.import_module(import_name)
                 display_success(f"{import_name} - {description}")
@@ -108,7 +108,7 @@ class ViperSetupValidator:
         """Check if required dependencies are installed"""
         
         # Check requirements.txt exists
-        req_file = self.project_root / 'requirements.txt'
+        req_file = self.project_root / 'requirements.txt'"""
         if not req_file.exists():
             display_error("requirements.txt not found")
             return False
@@ -153,7 +153,7 @@ class ViperSetupValidator:
         
         all_valid = True
         for file_path, description, required in config_files:
-            full_path = self.project_root / file_path
+            full_path = self.project_root / file_path"""
             if full_path.exists():
                 display_success(f"{file_path} - {description}")
             else:
@@ -184,7 +184,7 @@ class ViperSetupValidator:
         
         all_valid = True
         for script_path in key_scripts:
-            full_path = self.project_root / script_path
+            full_path = self.project_root / script_path"""
             if full_path.exists():
                 # Check if script is executable
                 if os.access(full_path, os.X_OK):
@@ -199,41 +199,41 @@ class ViperSetupValidator:
         return all_valid
     
     def validate_docker_setup(self) -> bool:
-        """Check Docker configuration"""
+        """Check Docker configuration""""""
         
         try:
             # Check if Docker is available
-            result = subprocess.run(['docker', '--version'], 
-                                  capture_output=True, text=True, timeout=10)
+            result = subprocess.run(['docker', '--version'], )
+(                                  capture_output=True, text=True, timeout=10)
             if result.returncode == 0:
                 display_success(f"Docker available - {result.stdout.strip()}")
             else:
                 display_error("Docker not available")
                 return False
-        except (subprocess.TimeoutExpired, FileNotFoundError):
+        except (subprocess.TimeoutExpired, FileNotFoundError)
             display_error("Docker not installed or not in PATH")
             return False
         
         # Check docker-compose
         try:
-            result = subprocess.run(['docker', 'compose', 'version'], 
-                                  capture_output=True, text=True, timeout=10)
+            result = subprocess.run(['docker', 'compose', 'version'], )
+(                                  capture_output=True, text=True, timeout=10)
             if result.returncode == 0:
                 display_success(f"Docker Compose available - {result.stdout.strip()}")
             else:
                 display_warning("Docker Compose not available", "May need to install docker-compose plugin")
-        except (subprocess.TimeoutExpired, FileNotFoundError):
+        except (subprocess.TimeoutExpired, FileNotFoundError)
             display_warning("Docker Compose not available", "Install docker-compose")
         
         self.validation_results['docker'] = True
         return True
     
-    def generate_setup_report(self) -> Dict[str, Any]:
+    def generate_setup_report(self) -> Dict[str, Any]
         """Generate comprehensive setup report"""
         total_checks = len(self.validation_results)
         passed_checks = sum(1 for result in self.validation_results.values() if result)
         
-        report = {
+        report = {:
             'overall_status': 'PASS' if passed_checks == total_checks else 'PARTIAL',
             'total_checks': total_checks,
             'passed_checks': passed_checks,
@@ -242,7 +242,7 @@ class ViperSetupValidator:
             'recommendations': []
         }
         
-        # Add recommendations based on failures
+        # Add recommendations based on failures"""
         if not self.validation_results.get('dependencies', True):
             report['recommendations'].append("Install Python dependencies: pip install -r requirements.txt")
         
@@ -255,11 +255,12 @@ class ViperSetupValidator:
         return report
     
     def run_full_validation(self):
-        """Run complete system validation"""
+        """Run complete system validation""""""
         if ENHANCED_DISPLAY:
             print_banner()
             terminal.console.rule("[bold blue]# Tool System Validation Starting[/]")
         else:
+            pass
         
         # Run all validation checks
         validation_steps = [
@@ -285,7 +286,7 @@ class ViperSetupValidator:
         return report['overall_status'] == 'PASS'
     
     def display_final_report(self, report: Dict[str, Any]):
-        """Display final validation report"""
+        """Display final validation report""""""
         
         if ENHANCED_DISPLAY:
             status_color = "green" if report['overall_status'] == 'PASS' else "yellow"
@@ -302,19 +303,18 @@ class ViperSetupValidator:
             
             if report['recommendations']:
                 for rec in report['recommendations']:
-        
         if report['overall_status'] == 'PASS':
             display_success("System validation completed successfully!")
             display_success("You can now run the trading system with confidence.")
         else:
-            display_warning("System validation completed with issues", 
-                          "Address the recommendations above before running the system")
+            display_warning("System validation completed with issues", )
+(                          "Address the recommendations above before running the system")
 
 def main():
     """Main validation function"""
     validator = ViperSetupValidator()
     
-    # Show repository structure if enhanced display is available
+    # Show repository structure if enhanced display is available"""
     if ENHANCED_DISPLAY:
         display_repo_structure(str(validator.project_root))
     

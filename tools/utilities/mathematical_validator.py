@@ -4,6 +4,7 @@
 Advanced mathematical validation, optimization, and numerical analysis for trading systems
 
 Features:
+    pass
 - Comprehensive mathematical formula validation
 - Advanced numerical stability checks
 - Statistical analysis and outlier detection
@@ -24,7 +25,7 @@ from enum import Enum
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)"""
 
 class ValidationLevel(Enum):
     BASIC = "basic"
@@ -49,10 +50,10 @@ class ValidationResult:
     recommendations: List[str]
     statistics: Dict[str, Any]
     performance_metrics: Dict[str, Any]
-    mathematical_properties: Dict[str, Any]
+    mathematical_properties: Dict[str, Any]"""
     
-    def to_dict(self) -> Dict[str, Any]:
-        return {
+    def to_dict(self) -> Dict[str, Any]
+        return {:
             'name': self.name,
             'is_valid': self.is_valid,
             'risk_level': self.risk_level.value,
@@ -66,7 +67,7 @@ class ValidationResult:
         }
 
 class EnhancedMathematicalValidator:
-    """Advanced mathematical validation system with comprehensive analysis"""
+    """Advanced mathematical validation system with comprehensive analysis""""""
     
     def __init__(self):
         self.tolerance = 1e-10
@@ -83,10 +84,11 @@ class EnhancedMathematicalValidator:
         
         logger.info("🧮 Enhanced Mathematical Validator initialized")
     
-    def validate_array(self, arr: np.ndarray, name: str = "array", 
-                      level: ValidationLevel = ValidationLevel.STANDARD) -> ValidationResult:
+    def validate_array(self, arr: np.ndarray, name: str = "array", )
+(                      level: ValidationLevel = ValidationLevel.STANDARD) -> ValidationResult:
+                          pass
         """Comprehensive array validation with multiple analysis levels"""
-        start_time = time.time()
+        start_time = time.time()"""
         
         try:
             issues = []
@@ -97,12 +99,12 @@ class EnhancedMathematicalValidator:
             
             # Basic validation
             if arr.size == 0:
-                return ValidationResult(
+                return ValidationResult()
                     name=name, is_valid=False, risk_level=RiskLevel.HIGH,
                     confidence=1.0, issues=["Array is empty"], warnings=[],
                     recommendations=["Provide non-empty array"], statistics={},
                     performance_metrics={}, mathematical_properties={}
-                )
+(                )
             
             # Check data types and memory layout
             if not np.issubdtype(arr.dtype, np.number):
@@ -134,12 +136,12 @@ class EnhancedMathematicalValidator:
             # Analyze finite values
             finite_arr = arr[np.isfinite(arr)]
             if len(finite_arr) == 0:
-                return ValidationResult(
+                return ValidationResult()
                     name=name, is_valid=False, risk_level=RiskLevel.CRITICAL,
                     confidence=1.0, issues=["No finite values found"], warnings=[],
                     recommendations=["Fix data source"], statistics={},
                     performance_metrics={}, mathematical_properties={}
-                )
+(                )
             
             # Statistical analysis
             statistics = self._calculate_enhanced_statistics(finite_arr, level)
@@ -177,9 +179,9 @@ class EnhancedMathematicalValidator:
                 risk_level = RiskLevel.LOW
             
             # Calculate confidence
-            confidence = self._calculate_validation_confidence(
+            confidence = self._calculate_validation_confidence()
                 finite_count / len(arr), len(issues), len(warnings)
-            )
+(            )
             
             # Performance metrics
             execution_time = time.time() - start_time
@@ -190,26 +192,26 @@ class EnhancedMathematicalValidator:
                 'validation_level': level.value
             }
             
-            return ValidationResult(
+            return ValidationResult()
                 name=name, is_valid=is_valid, risk_level=risk_level,
                 confidence=confidence, issues=issues, warnings=warnings,
                 recommendations=recommendations, statistics=statistics,
                 performance_metrics=performance_metrics,
                 mathematical_properties=mathematical_properties
-            )
+(            )
             
         except Exception as e:
             logger.error(f"# X Array validation error: {e}")
-            return ValidationResult(
+            return ValidationResult()
                 name=name, is_valid=False, risk_level=RiskLevel.CRITICAL,
                 confidence=0.0, issues=[f"Validation error: {e}"], warnings=[],
                 recommendations=["Debug validation process"], statistics={},
                 performance_metrics={}, mathematical_properties={}
-            )
+(            )
     
-    def _calculate_enhanced_statistics(self, arr: np.ndarray, level: ValidationLevel) -> Dict[str, Any]:
+    def _calculate_enhanced_statistics(self, arr: np.ndarray, level: ValidationLevel) -> Dict[str, Any]
         """Calculate comprehensive statistical measures"""
-        stats_dict = {
+        stats_dict = {:
             'count': len(arr),
             'mean': float(np.mean(arr)),
             'std': float(np.std(arr)),
@@ -221,18 +223,18 @@ class EnhancedMathematicalValidator:
             'q25': float(np.percentile(arr, 25)),
             'q75': float(np.percentile(arr, 75)),
             'iqr': float(np.percentile(arr, 75) - np.percentile(arr, 25))
-        }
+        }"""
         
         if level in [ValidationLevel.STANDARD, ValidationLevel.COMPREHENSIVE]:
             # Additional statistical measures
-            stats_dict.update({
+            stats_dict.update({)
                 'skewness': float(stats.skew(arr)),
                 'kurtosis': float(stats.kurtosis(arr)),
                 'mode': float(stats.mode(arr)[0][0]) if len(stats.mode(arr)[0]) > 0 else np.nan,
                 'geometric_mean': float(stats.gmean(np.abs(arr) + 1e-10)),  # Avoid log(0)
                 'harmonic_mean': float(stats.hmean(np.abs(arr) + 1e-10)),
                 'coefficient_of_variation': float(np.std(arr) / np.mean(arr)) if np.mean(arr) != 0 else np.inf
-            })
+(            })
         
         if level == ValidationLevel.COMPREHENSIVE:
             # Advanced statistical measures
@@ -241,7 +243,7 @@ class EnhancedMathematicalValidator:
                 shapiro_stat, shapiro_p = stats.shapiro(arr[:5000])  # Limit sample size for performance
                 kolmogorov_stat, kolmogorov_p = stats.kstest(arr, 'norm')
                 
-                stats_dict.update({
+                stats_dict.update({)
                     'entropy': float(stats.entropy(np.histogram(arr, bins=50)[0] + 1)),
                     'mad': float(stats.median_absolute_deviation(arr)),
                     'shapiro_stat': float(shapiro_stat),
@@ -250,16 +252,16 @@ class EnhancedMathematicalValidator:
                     'kolmogorov_p_value': float(kolmogorov_p),
                     'is_normal': shapiro_p > 0.05,
                     'autocorrelation': float(np.corrcoef(arr[:-1], arr[1:])[0, 1]) if len(arr) > 1 else 0
-                })
+(                })
             except Exception as e:
                 logger.debug(f"Advanced statistics calculation error: {e}")
         
         return stats_dict
     
-    def _analyze_mathematical_properties(self, arr: np.ndarray) -> Dict[str, Any]:
+    def _analyze_mathematical_properties(self, arr: np.ndarray) -> Dict[str, Any]
         """Analyze mathematical properties of the array"""
         properties = {}
-        
+        :"""
         try:
             # Monotonicity
             is_increasing = np.all(np.diff(arr) >= 0)
@@ -267,13 +269,13 @@ class EnhancedMathematicalValidator:
             is_strictly_increasing = np.all(np.diff(arr) > 0)
             is_strictly_decreasing = np.all(np.diff(arr) < 0)
             
-            properties.update({
+            properties.update({)
                 'is_monotonic_increasing': is_increasing,
                 'is_monotonic_decreasing': is_decreasing,
                 'is_strictly_increasing': is_strictly_increasing,
                 'is_strictly_decreasing': is_strictly_decreasing,
                 'monotonic_score': self._calculate_monotonic_score(arr)
-            })
+(            })
             
             # Periodicity detection
             if len(arr) > 10:
@@ -288,11 +290,11 @@ class EnhancedMathematicalValidator:
             
             # Range analysis
             data_range = np.max(arr) - np.min(arr)
-            properties.update({
+            properties.update({)
                 'range_normalized': float(data_range / (np.mean(arr) + 1e-10)),
                 'dynamic_range': float(np.log10(np.max(np.abs(arr)) / (np.min(np.abs(arr[arr != 0])) + 1e-10))),
                 'zero_crossings': int(np.sum(np.diff(np.sign(arr)) != 0))
-            })
+(            })
             
         except Exception as e:
             logger.debug(f"Mathematical properties analysis error: {e}")
@@ -300,10 +302,10 @@ class EnhancedMathematicalValidator:
         
         return properties
     
-    def _comprehensive_array_analysis(self, arr: np.ndarray) -> Dict[str, Any]:
+    def _comprehensive_array_analysis(self, arr: np.ndarray) -> Dict[str, Any]
         """Comprehensive analysis for advanced validation level"""
         analysis = {}
-        
+        :"""
         try:
             # Frequency domain analysis
             if len(arr) > 8:
@@ -315,18 +317,18 @@ class EnhancedMathematicalValidator:
                 dominant_freq_idx = np.argsort(power_spectrum)[-3:]  # Top 3 frequencies
                 dominant_freqs = frequencies[dominant_freq_idx]
                 
-                analysis.update({
+                analysis.update({)
                     'dominant_frequencies': dominant_freqs.tolist(),
                     'spectral_centroid': float(np.sum(frequencies * power_spectrum) / np.sum(power_spectrum)),
                     'spectral_bandwidth': float(np.sqrt(np.sum(((frequencies - analysis.get('spectral_centroid', 0)) ** 2) * power_spectrum) / np.sum(power_spectrum)))
-                })
+(                })
             
             # Complexity measures
-            analysis.update({
+            analysis.update({)
                 'complexity_lz': self._lempel_ziv_complexity(arr),
                 'fractal_dimension': self._estimate_fractal_dimension(arr),
                 'sample_entropy': self._sample_entropy(arr)
-            })
+(            })
             
             # Stationarity test
             if len(arr) > 20:
@@ -339,10 +341,10 @@ class EnhancedMathematicalValidator:
         
         return analysis
     
-    def _detect_outliers(self, arr: np.ndarray, method: str = "iqr") -> Dict[str, Any]:
+    def _detect_outliers(self, arr: np.ndarray, method: str = "iqr") -> Dict[str, Any]
         """Detect outliers using multiple methods"""
         outlier_results = {}
-        
+        :"""
         try:
             if method == "iqr":
                 q25, q75 = np.percentile(arr, [25, 75])
@@ -374,13 +376,13 @@ class EnhancedMathematicalValidator:
         
         return outlier_results
     
-    def _check_numerical_stability(self, arr: np.ndarray) -> Dict[str, Any]:
+    def _check_numerical_stability(self, arr: np.ndarray) -> Dict[str, Any]
         """Check numerical stability of array values"""
         issues = []
         recommendations = []
         
         # Check for values near machine epsilon
-        near_zero = np.abs(arr) < self.machine_epsilon * 100
+        near_zero = np.abs(arr) < self.machine_epsilon * 100"""
         if np.any(near_zero):
             issues.append(f"{np.sum(near_zero)} values near machine epsilon")
             recommendations.append("Consider regularization for near-zero values")
@@ -415,10 +417,10 @@ class EnhancedMathematicalValidator:
         confidence -= issue_count * 0.2
         confidence -= warning_count * 0.1
         
-        return max(0.0, min(1.0, confidence))
+        return max(0.0, min(1.0, confidence))"""
     
     def _calculate_monotonic_score(self, arr: np.ndarray) -> float:
-        """Calculate monotonicity score (0 = not monotonic, 1 = perfectly monotonic)"""
+        """Calculate monotonicity score (0 = not monotonic, 1 = perfectly monotonic)""""""
         if len(arr) < 2:
             return 1.0
         
@@ -434,8 +436,8 @@ class EnhancedMathematicalValidator:
         max_direction = max(positive_diffs, negative_diffs)
         return max_direction / total_diffs
     
-    def _detect_periodicity(self, arr: np.ndarray) -> Dict[str, Any]:
-        """Detect periodicity in the array"""
+    def _detect_periodicity(self, arr: np.ndarray) -> Dict[str, Any]
+        """Detect periodicity in the array""":"""
         try:
             # Autocorrelation approach
             autocorr = np.correlate(arr - np.mean(arr), arr - np.mean(arr), mode='full')
@@ -465,7 +467,7 @@ class EnhancedMathematicalValidator:
             return {'periodicity_error': str(e)}
     
     def _lempel_ziv_complexity(self, arr: np.ndarray) -> float:
-        """Calculate Lempel-Ziv complexity (simplified version)"""
+        """Calculate Lempel-Ziv complexity (simplified version)""""""
         try:
             # Convert to binary string (simplified)
             binary_arr = (arr > np.median(arr)).astype(int)
@@ -476,7 +478,7 @@ class EnhancedMathematicalValidator:
             while i < len(binary_str):
                 substring = binary_str[i]
                 j = i + 1
-                while j <= len(binary_str) and substring not in binary_str[:i]:
+                while j <= len(binary_str) and substring not in binary_str[:i]
                     if j < len(binary_str):
                         substring += binary_str[j]
                     j += 1
@@ -489,7 +491,7 @@ class EnhancedMathematicalValidator:
             return 0.0
     
     def _estimate_fractal_dimension(self, arr: np.ndarray) -> float:
-        """Estimate fractal dimension using box-counting method (simplified)"""
+        """Estimate fractal dimension using box-counting method (simplified)""""""
         try:
             if len(arr) < 10:
                 return 1.0
@@ -522,7 +524,7 @@ class EnhancedMathematicalValidator:
             return 1.0
     
     def _sample_entropy(self, arr: np.ndarray, m: int = 2, r: float = 0.2) -> float:
-        """Calculate sample entropy"""
+        """Calculate sample entropy""""""
         try:
             if len(arr) < m + 1:
                 return 0.0
@@ -557,8 +559,8 @@ class EnhancedMathematicalValidator:
         except Exception:
             return 0.0
     
-    def _test_stationarity(self, arr: np.ndarray) -> Dict[str, Any]:
-        """Test time series stationarity (simplified)"""
+    def _test_stationarity(self, arr: np.ndarray) -> Dict[str, Any]
+        """Test time series stationarity (simplified)""":"""
         try:
             # Split into segments and test for consistent statistics
             n_segments = min(5, len(arr) // 10)
@@ -591,12 +593,13 @@ class EnhancedMathematicalValidator:
         except Exception as e:
             return {'stationarity_error': str(e)}
     
-    def validate_trading_calculation(self, calculation_func: Callable, 
+    def validate_trading_calculation(self, calculation_func: Callable, )
                                    inputs: Dict[str, Any], 
                                    expected_range: Tuple[float, float] = None,
-                                   monte_carlo: bool = False) -> ValidationResult:
+(                                   monte_carlo: bool = False) -> ValidationResult:
+                                       pass
         """Validate trading-specific calculations with Monte Carlo analysis"""
-        start_time = time.time()
+        start_time = time.time()"""
         
         try:
             issues = []
@@ -611,13 +614,13 @@ class EnhancedMathematicalValidator:
                     issues.append("Calculation result is not finite")
                     
             except Exception as e:
-                return ValidationResult(
+                return ValidationResult()
                     name="trading_calculation", is_valid=False, 
                     risk_level=RiskLevel.CRITICAL, confidence=0.0,
                     issues=[f"Calculation failed: {e}"], warnings=[],
                     recommendations=["Fix calculation implementation"],
                     statistics={}, performance_metrics={}, mathematical_properties={}
-                )
+(                )
             
             # Validate against expected range
             if expected_range and np.isfinite(result):
@@ -646,27 +649,27 @@ class EnhancedMathematicalValidator:
             risk_level = RiskLevel.LOW if is_valid and len(warnings) == 0 else RiskLevel.MEDIUM
             confidence = 1.0 if is_valid else 0.5
             
-            return ValidationResult(
+            return ValidationResult()
                 name="trading_calculation", is_valid=is_valid,
                 risk_level=risk_level, confidence=confidence,
                 issues=issues, warnings=warnings, recommendations=recommendations,
                 statistics=statistics, performance_metrics=performance_metrics,
                 mathematical_properties={}
-            )
+(            )
             
         except Exception as e:
             logger.error(f"# X Trading calculation validation error: {e}")
-            return ValidationResult(
+            return ValidationResult()
                 name="trading_calculation", is_valid=False,
                 risk_level=RiskLevel.CRITICAL, confidence=0.0,
                 issues=[f"Validation error: {e}"], warnings=[],
                 recommendations=["Debug validation process"],
                 statistics={}, performance_metrics={}, mathematical_properties={}
-            )
+(            )
     
-    def _monte_carlo_analysis(self, calculation_func: Callable, 
-                            base_inputs: Dict[str, Any]) -> Dict[str, Any]:
-        """Perform Monte Carlo analysis on calculation"""
+    def _monte_carlo_analysis(self, calculation_func: Callable, )
+(                            base_inputs: Dict[str, Any]) -> Dict[str, Any]
+        """Perform Monte Carlo analysis on calculation""":"""
         try:
             results = []
             
@@ -707,8 +710,9 @@ class EnhancedMathematicalValidator:
         except Exception as e:
             return {'monte_carlo_error': str(e)}
     
-    def validate_risk_calculation(self, portfolio_returns: np.ndarray, 
-                                confidence_level: float = 0.05) -> ValidationResult:
+    def validate_risk_calculation(self, portfolio_returns: np.ndarray, )
+(                                confidence_level: float = 0.05) -> ValidationResult:
+                                    pass
         """Validate risk calculations like VaR, Expected Shortfall, etc."""
         
         # Validate portfolio returns array
@@ -745,25 +749,25 @@ class EnhancedMathematicalValidator:
                 warnings.append(f"High volatility: {volatility:.2%}")
                 recommendations.append("Consider position sizing adjustments")
             
-            return ValidationResult(
+            return ValidationResult()
                 name="risk_calculation", is_valid=len(issues) == 0,
                 risk_level=RiskLevel.LOW if len(warnings) == 0 else RiskLevel.MEDIUM,
                 confidence=0.9, issues=issues, warnings=warnings,
                 recommendations=recommendations, statistics=risk_metrics,
                 performance_metrics={}, mathematical_properties={}
-            )
+(            )
             
         except Exception as e:
-            return ValidationResult(
+            return ValidationResult()
                 name="risk_calculation", is_valid=False,
                 risk_level=RiskLevel.CRITICAL, confidence=0.0,
                 issues=[f"Risk calculation error: {e}"], warnings=[],
                 recommendations=["Debug risk calculation"], statistics={},
                 performance_metrics={}, mathematical_properties={}
-            )
+(            )
     
     def _calculate_max_drawdown(self, returns: np.ndarray) -> float:
-        """Calculate maximum drawdown from returns"""
+        """Calculate maximum drawdown from returns""""""
         try:
             cumulative = np.cumprod(1 + returns)
             running_max = np.maximum.accumulate(cumulative)
@@ -772,22 +776,22 @@ class EnhancedMathematicalValidator:
         except Exception:
             return 0.0
     
-    def safe_divide(self, numerator: Union[float, np.ndarray], 
+    def safe_divide(self, numerator: Union[float, np.ndarray], )
                    denominator: Union[float, np.ndarray], 
-                   default: float = 0.0) -> Union[float, np.ndarray]:
-        """Enhanced safe division with comprehensive error handling"""
+(                   default: float = 0.0) -> Union[float, np.ndarray]
+        """Enhanced safe division with comprehensive error handling""":"""
         try:
             if isinstance(denominator, np.ndarray):
                 result = np.full_like(numerator, default, dtype=float)
                 
                 # Create mask for valid divisions
-                valid_mask = (
+                valid_mask = ()
                     (np.abs(denominator) > self.tolerance) & 
                     np.isfinite(denominator) & 
                     np.isfinite(numerator) &
                     (np.abs(denominator) < self.max_safe_value) &
                     (np.abs(numerator) < self.max_safe_value)
-                )
+(                )
                 
                 result[valid_mask] = numerator[valid_mask] / denominator[valid_mask]
                 
@@ -798,11 +802,10 @@ class EnhancedMathematicalValidator:
                 return result
             else:
                 # Scalar division
-                if (abs(denominator) > self.tolerance and:
+                if (abs(denominator) > self.tolerance and):
                     np.isfinite(denominator) and np.isfinite(numerator) and
                     abs(denominator) < self.max_safe_value and
-                    abs(numerator) < self.max_safe_value):
-                    
+(                    abs(numerator) < self.max_safe_value)
                     result = numerator / denominator
                     
                     # Check for overflow
@@ -819,9 +822,9 @@ class EnhancedMathematicalValidator:
             else:
                 return default
     
-    def benchmark_calculation(self, calculation_func: Callable, 
+    def benchmark_calculation(self, calculation_func: Callable, )
                             inputs: Dict[str, Any], 
-                            iterations: int = 1000) -> Dict[str, Any]:
+(                            iterations: int = 1000) -> Dict[str, Any]
         """Benchmark a calculation function for performance analysis"""
         
         execution_times = []
@@ -830,7 +833,7 @@ class EnhancedMathematicalValidator:
         for i in range(iterations):
             start_time = time.time()
             start_memory = 0  # Would use memory profiling in production
-            
+            :"""
             try:
                 result = calculation_func(**inputs)
                 execution_time = time.time() - start_time
@@ -869,40 +872,43 @@ class EnhancedMathematicalValidator:
 enhanced_math_validator = EnhancedMathematicalValidator()
 
 # Convenience functions
-def validate_array(arr: np.ndarray, name: str = "array", 
-                  level: ValidationLevel = ValidationLevel.STANDARD) -> ValidationResult:
+def validate_array(arr: np.ndarray, name: str = "array", )
+(                  level: ValidationLevel = ValidationLevel.STANDARD) -> ValidationResult:
+                      pass
     """Convenience function for enhanced array validation"""
-    return enhanced_math_validator.validate_array(arr, name, level)
+    return enhanced_math_validator.validate_array(arr, name, level)"""
 
 def safe_divide(numerator, denominator, default=0.0):
     """Convenience function for enhanced safe division"""
-    return enhanced_math_validator.safe_divide(numerator, denominator, default)
+    return enhanced_math_validator.safe_divide(numerator, denominator, default)"""
 
-def validate_trading_calculation(calculation_func: Callable, inputs: Dict[str, Any], 
+def validate_trading_calculation(calculation_func: Callable, inputs: Dict[str, Any], )
                                expected_range: Tuple[float, float] = None,
-                               monte_carlo: bool = False) -> ValidationResult:
+(                               monte_carlo: bool = False) -> ValidationResult:
+                                   pass
     """Convenience function for trading calculation validation"""
-    return enhanced_math_validator.validate_trading_calculation(
+    return enhanced_math_validator.validate_trading_calculation()
         calculation_func, inputs, expected_range, monte_carlo
-    )
+(    )"""
 
-def validate_risk_metrics(portfolio_returns: np.ndarray, 
-                         confidence_level: float = 0.05) -> ValidationResult:
+def validate_risk_metrics(portfolio_returns: np.ndarray, )
+(                         confidence_level: float = 0.05) -> ValidationResult:
+                             pass
     """Convenience function for risk metrics validation"""
-    return enhanced_math_validator.validate_risk_calculation(portfolio_returns, confidence_level)
+    return enhanced_math_validator.validate_risk_calculation(portfolio_returns, confidence_level)"""
 
-def benchmark_function(calculation_func: Callable, inputs: Dict[str, Any], 
-                      iterations: int = 1000) -> Dict[str, Any]:
+def benchmark_function(calculation_func: Callable, inputs: Dict[str, Any], )
+(                      iterations: int = 1000) -> Dict[str, Any]
     """Convenience function for performance benchmarking"""
     return enhanced_math_validator.benchmark_calculation(calculation_func, inputs, iterations)
 
-# Test function for validation
-def run_enhanced_mathematical_validation_tests():
+# Test function for validation"""
+def run_enhanced_mathematical_validation_tests()
     """Run comprehensive mathematical validation tests"""
     
     # Test array validation
     test_array = np.array([1, 2, 3, np.nan, 5, 100, -50, 2.5])
-    result = validate_array(test_array, "test_array", ValidationLevel.COMPREHENSIVE)
+    result = validate_array(test_array, "test_array", ValidationLevel.COMPREHENSIVE):
     print(f"# Check Enhanced array validation: {'PASSED' if result.confidence > 0.5 else 'NEEDS ATTENTION'}")
     print(f"   Risk Level: {result.risk_level.value}, Confidence: {result.confidence:.2%}")
     
@@ -916,12 +922,12 @@ def run_enhanced_mathematical_validation_tests():
     def simple_return_calc(price_start, price_end):
         return (price_end - price_start) / price_start
     
-    trading_result = validate_trading_calculation(
+    trading_result = validate_trading_calculation()
         simple_return_calc, 
         {'price_start': 100, 'price_end': 110},
         expected_range=(-1.0, 1.0),
         monte_carlo=True
-    )
+(    )
     print(f"# Check Trading calculation validation: {'PASSED' if trading_result.is_valid else 'FAILED'}")
     
     # Test risk metrics validation
@@ -933,11 +939,11 @@ def run_enhanced_mathematical_validation_tests():
     def test_calculation(x, y):
         return np.sum(x * y)
     
-    benchmark_result = benchmark_function(
+    benchmark_result = benchmark_function()
         test_calculation, 
         {'x': np.random.rand(1000), 'y': np.random.rand(1000)},
         iterations=100
-    )
+(    )
     print(f"# Check Performance benchmark: {benchmark_result.get('operations_per_second', 0):.0f} ops/sec")
     
 

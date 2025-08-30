@@ -11,10 +11,10 @@ import logging
 from datetime import datetime
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - FINAL_SYSTEM - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
 async def run_complete_live_system():
@@ -23,7 +23,8 @@ async def run_complete_live_system():
     
     # Enforce Docker and MCP requirements
     try:
-        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+from docker_mcp_enforcer import enforce_docker_mcp_requirements
+
         
         if not enforce_docker_mcp_requirements():
             sys.exit(1)
@@ -32,7 +33,8 @@ async def run_complete_live_system():
         sys.exit(1)
     
     # Validate live trading environment
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
+
     load_dotenv()
     
     if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
@@ -41,7 +43,8 @@ async def run_complete_live_system():
 
     try:
         # Import the enhanced trader
-        from viper_async_trader import ViperAsyncTrader
+from viper_async_trader import ViperAsyncTrader
+
 
         print("# Tool Initializing Complete Trading System...")
         trader = ViperAsyncTrader()
@@ -64,6 +67,7 @@ async def run_complete_live_system():
             balance = await trader.get_account_balance()
             print(f"💰 Swap Wallet Balance: ${balance:.2f} USDT")
         except Exception as e:
+            pass
 
 
         print("# Chart Monitoring market for trading opportunities...")
@@ -79,12 +83,14 @@ async def run_complete_live_system():
                 try:
                     balance = await trader.get_account_balance()
                 except Exception as e:
+                    pass
 
                 # Monitor positions
                 try:
                     position_status = await trader.monitor_positions()
                     active_positions = position_status.get('active_positions', 0)
                 except Exception as e:
+                    pass
 
                 # Run system diagnostics occasionally
                 if cycle_count % 10 == 0:  # Every 10 cycles
@@ -93,6 +99,7 @@ async def run_complete_live_system():
                         if diagnostic_results:
                             score = diagnostic_results.get('overall_score', 'N/A')
                     except Exception as e:
+                        pass
 
                 # Wait before next cycle (30 seconds)
                 await asyncio.sleep(30)
@@ -113,6 +120,7 @@ async def run_complete_live_system():
 
 if __name__ == "__main__":
     try:
+        pass
 
         success = asyncio.run(run_complete_live_system())
 

@@ -4,6 +4,7 @@
 ===============================================================
 
 Generates detailed, actionable reports from bug scan results with:
+    pass
 - Executive summary and key metrics
 - Prioritized issue breakdown
 - File-by-file analysis
@@ -28,7 +29,7 @@ from dataclasses import dataclass
 import base64
 from io import BytesIO
 
-@dataclass
+@dataclass"""
 class ReportMetrics:
     """Container for report metrics and statistics"""
     total_files: int
@@ -43,10 +44,10 @@ class ReportMetrics:
     issues_per_file: float
     issues_per_thousand_lines: float
     most_problematic_file: str
-    most_common_issue_type: str
+    most_common_issue_type: str"""
 
 class ComprehensiveBugReportGenerator:
-    """Generates comprehensive bug reports with detailed analysis"""
+    """Generates comprehensive bug reports with detailed analysis""""""
 
     def __init__(self, scan_results_path: str = None):
         self.scan_results_path = scan_results_path or "reports/comprehensive_bug_scan.json"
@@ -107,6 +108,7 @@ class ComprehensiveBugReportGenerator:
         try:
             pdf_path = self._generate_pdf_report(html_content)
         except Exception as e:
+            pass
 
         return str(html_path)
 
@@ -135,7 +137,7 @@ class ComprehensiveBugReportGenerator:
         rule_counts = Counter(f['rule_id'] for f in findings)
         most_common_issue = rule_counts.most_common(1)[0] if rule_counts else ("None", 0)
 
-        return ReportMetrics(
+        return ReportMetrics()
             total_files=metadata['total_files_scanned'],
             total_lines=metadata['total_lines_scanned'],
             total_issues=len(findings),
@@ -149,7 +151,7 @@ class ComprehensiveBugReportGenerator:
             issues_per_thousand_lines=(len(findings) / max(metadata['total_lines_scanned'], 1)) * 1000,
             most_problematic_file=f"{most_problematic_file[0]} ({most_problematic_file[1]} issues)",
             most_common_issue_type=f"{most_common_issue[0]} ({most_common_issue[1]} occurrences)"
-        )
+(        )
 
     def _generate_header_section(self, metrics: ReportMetrics) -> str:
         """Generate report header with key metrics"""
@@ -191,18 +193,18 @@ class ComprehensiveBugReportGenerator:
                 </div>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_executive_summary(self, metrics: ReportMetrics, data: Dict) -> str:
         """Generate executive summary section"""
         # Calculate code quality score
-        total_weighted_score = (
+        total_weighted_score = ()
             metrics.critical_count * self.severity_weights['CRITICAL'] +
             metrics.high_count * self.severity_weights['HIGH'] +
             metrics.medium_count * self.severity_weights['MEDIUM'] +
             metrics.low_count * self.severity_weights['LOW'] +
             metrics.info_count * self.severity_weights['INFO']
-        )
+(        )
 
         # Quality score (lower is better, max 100)
         quality_score = min(100, max(0, 100 - (total_weighted_score / metrics.total_files)))
@@ -259,7 +261,7 @@ class ComprehensiveBugReportGenerator:
                 </ul>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_severity_breakdown(self, data: Dict) -> str:
         """Generate severity breakdown section"""
@@ -272,12 +274,12 @@ class ComprehensiveBugReportGenerator:
         for severity in ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'INFO']:
             count = severity_counts[severity]
             percentage = (count / len(data['findings'])) * 100 if data['findings'] else 0
-            chart_data.append({
+            chart_data.append({)
                 'severity': severity,
                 'count': count,
                 'percentage': percentage,
                 'color': self.colors[severity]
-            })
+(            })
 
         chart_html = ""
         for item in chart_data:
@@ -307,7 +309,7 @@ class ComprehensiveBugReportGenerator:
                 </div>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_severity_detail_cards(self, data: Dict) -> str:
         """Generate detailed severity cards"""
@@ -340,7 +342,7 @@ class ComprehensiveBugReportGenerator:
                 </div>
                 """
 
-        return cards_html
+        return cards_html"""
 
     def _generate_category_analysis(self, data: Dict) -> str:
         """Generate category analysis section"""
@@ -352,18 +354,18 @@ class ComprehensiveBugReportGenerator:
         for category in ['SYNTAX', 'SECURITY', 'QUALITY', 'SPELLING']:
             count = categories[category]
             percentage = (count / len(data['findings'])) * 100 if data['findings'] else 0
-            category_data.append({
+            category_data.append({)
                 'category': category,
                 'count': count,
                 'percentage': percentage,
                 'icon': self._get_category_icon(category)
-            })
+(            })
 
         return f"""
         <div class="category-analysis">
             <h2># Chart Category Analysis</h2>
             <div class="category-grid">
-                {''.join([f'''
+                {''.join([f''')
                 <div class="category-card">
                     <div class="category-icon">{item['icon']}</div>
                     <div class="category-info">
@@ -372,10 +374,10 @@ class ComprehensiveBugReportGenerator:
                         <div class="category-percentage">{item['percentage']:.1f}%</div>
                     </div>
                 </div>
-                ''' for item in category_data])}
+(                ''' for item in category_data])}
             </div>
         </div>
-        """
+        """"""
 
     def _generate_file_analysis(self, data: Dict) -> str:
         """Generate file-by-file analysis"""
@@ -433,7 +435,7 @@ class ComprehensiveBugReportGenerator:
                 </table>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_issue_patterns(self, data: Dict) -> str:
         """Generate issue pattern analysis"""
@@ -473,7 +475,7 @@ class ComprehensiveBugReportGenerator:
                 </tbody>
             </table>
         </div>
-        """
+        """"""
 
     def _generate_recommendations_section(self, data: Dict) -> str:
         """Generate recommendations section"""
@@ -483,7 +485,7 @@ class ComprehensiveBugReportGenerator:
         standard_recommendations = []
 
         # Separate high-priority from standard recommendations
-        for rec in recommendations:
+        for rec in recommendations:"""
             if any(keyword in rec.upper() for keyword in ['CRITICAL', 'HIGH PRIORITY', 'SECURITY']):
                 priority_recommendations.append(rec)
             else:
@@ -546,7 +548,7 @@ class ComprehensiveBugReportGenerator:
                 </div>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_trends_section(self) -> str:
         """Generate trends and improvement tracking section"""
@@ -580,7 +582,7 @@ class ComprehensiveBugReportGenerator:
                 </div>
             </div>
         </div>
-        """
+        """"""
 
     def _generate_footer_section(self) -> str:
         """Generate report footer"""
@@ -593,7 +595,7 @@ class ComprehensiveBugReportGenerator:
                 <p>For questions or support, contact the VIPER development team</p>
             </div>
         </div>
-        """
+        """"""
 
     def _combine_html_sections(self, sections: Dict[str, str]) -> str:
         """Combine all HTML sections into complete report"""
@@ -625,7 +627,7 @@ class ComprehensiveBugReportGenerator:
         </body>
         </html>
         """
-        return html_template
+        return html_template"""
 
     def _get_css_styles(self) -> str:
         """Get CSS styles for the report"""
@@ -947,7 +949,7 @@ class ComprehensiveBugReportGenerator:
                 font-size: 2em;
             }
         }
-        """
+        """"""
 
     def _get_javascript(self) -> str:
         """Get JavaScript for interactive features"""
@@ -958,34 +960,34 @@ class ComprehensiveBugReportGenerator:
         }
 
         // Add some interactive enhancements
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {)
             // Add hover effects to metric cards
             const metricCards = document.querySelectorAll('.metric-card');
-            metricCards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
+            metricCards.forEach(card => {)
+                card.addEventListener('mouseenter', function() {)
                     this.style.transform = 'translateY(-5px)';
                     this.style.transition = 'transform 0.2s ease';
-                });
-                card.addEventListener('mouseleave', function() {
+(                });
+                card.addEventListener('mouseleave', function() {)
                     this.style.transform = 'translateY(0)';
-                });
-            });
+(                });
+(            });
 
             // Add click effects to severity items
             const severityItems = document.querySelectorAll('.severity-item');
-            severityItems.forEach(item => {
-                item.addEventListener('click', function() {
+            severityItems.forEach(item => {)
+                item.addEventListener('click', function() {)
                     this.style.background = '#f8f9fa';
-                    setTimeout(() => {
+                    setTimeout(() => {)
                         this.style.background = 'transparent';
-                    }, 150);
-                });
-            });
-        });
-        """
+(                    }, 150);
+(                });
+(            });
+(        });
+        """"""
 
     def _get_quality_class(self, score: float) -> str:
-        """Get CSS class for quality score"""
+        """Get CSS class for quality score""""""
         if score >= 90:
             return "excellent"
         elif score >= 80:
@@ -998,7 +1000,7 @@ class ComprehensiveBugReportGenerator:
             return "critical"
 
     def _get_quality_description(self, score: float) -> str:
-        """Get description for quality score"""
+        """Get description for quality score""""""
         if score >= 90:
             return "Excellent code quality with minimal issues"
         elif score >= 80:
@@ -1014,7 +1016,7 @@ class ComprehensiveBugReportGenerator:
         """Assess overall security risk level"""
         security_issues = [f for f in data['findings'] if f['category'] == 'SECURITY']
         critical_security = len([f for f in security_issues if f['severity'] == 'CRITICAL'])
-        high_security = len([f for f in security_issues if f['severity'] == 'HIGH'])
+        high_security = len([f for f in security_issues if f['severity'] == 'HIGH'])"""
 
         if critical_security > 0:
             return "HIGH - Critical security vulnerabilities detected"
@@ -1033,7 +1035,7 @@ class ComprehensiveBugReportGenerator:
             'QUALITY': '✨',
             'SPELLING': '📝'
         }
-        return icons.get(category, '❓')
+        return icons.get(category, '❓')"""
 
     def _get_pattern_description(self, rule_id: str) -> str:
         """Get description for issue pattern"""
@@ -1048,7 +1050,7 @@ class ComprehensiveBugReportGenerator:
             'ANTI_PATTERN_EVAL_USAGE': 'Dangerous use of eval()',
             'ANTI_PATTERN_EXEC_USAGE': 'Dangerous use of exec()'
         }
-        return descriptions.get(rule_id, 'Code quality issue')
+        return descriptions.get(rule_id, 'Code quality issue')"""
 
     def _generate_pdf_report(self, html_content: str) -> str:
         """Generate PDF version of the report (placeholder)"""
@@ -1073,7 +1075,7 @@ def main():
 
     args = parser.parse_args()
 
-    generator = ComprehensiveBugReportGenerator(args.input)
+    generator = ComprehensiveBugReportGenerator(args.input)"""
     if args.output:
         generator.output_dir = Path(args.output)
 

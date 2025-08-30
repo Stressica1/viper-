@@ -16,10 +16,10 @@ sys.path.append(str(project_root / "src"))
 
 # Enhanced terminal display
 try:
-    from src.viper.utils.terminal_display import (
+    from src.viper.utils.terminal_display import ()
         terminal, display_error, display_success, display_warning, 
         print_banner, show_progress
-    )
+(    )
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
@@ -30,7 +30,7 @@ except ImportError:
     def show_progress(tasks, title): print(f"{title}: {', '.join(tasks)}")
 
 def run_command(cmd, description, check=True):
-    """Run a command with enhanced display"""
+    """Run a command with enhanced display""""""
     try:
         if ENHANCED_DISPLAY:
             terminal.console.print(f"[blue]Running:[/] {description}")
@@ -56,9 +56,11 @@ def setup_python_environment():
     # Check Python version
     success, output = run_command("python --version", "Checking Python version", check=False)
     if success:
+        pass
     
     # Create virtual environment if it doesn't exist
     if not Path("viper_env").exists():
+        pass
         display_warning("Creating virtual environment...")
         success, _ = run_command("python -m venv viper_env", "Creating virtual environment")
         if not success:
@@ -82,8 +84,8 @@ def setup_python_environment():
             display_success("Dependencies installed successfully")
             break
     else:
-        display_warning("Could not install dependencies automatically", 
-                       "Please run: pip install -r requirements.txt manually")
+        display_warning("Could not install dependencies automatically", )
+(                       "Please run: pip install -r requirements.txt manually")
     
     return True
 
@@ -96,8 +98,8 @@ def setup_configuration():
         if Path(".env.example").exists():
             shutil.copy(".env.example", ".env")
             display_success("Created .env from template")
-            display_warning("IMPORTANT: Edit .env with your API credentials!", 
-                          "Add your real Bitget API keys and other configuration")
+            display_warning("IMPORTANT: Edit .env with your API credentials!", )
+(                          "Add your real Bitget API keys and other configuration")
         else:
             display_error("No .env.example found")
             return False
@@ -121,8 +123,8 @@ def setup_docker():
     # Check if Docker is available
     success, output = run_command("docker --version", "Checking Docker installation", check=False)
     if not success:
-        display_warning("Docker not found", 
-                       "Please install Docker Desktop from https://docker.com/products/docker-desktop")
+        display_warning("Docker not found", )
+(                       "Please install Docker Desktop from https://docker.com/products/docker-desktop")
         return False
     
     display_success(f"Docker found: {output.strip()}")
@@ -130,8 +132,8 @@ def setup_docker():
     # Check Docker Compose
     success, output = run_command("docker compose version", "Checking Docker Compose", check=False)
     if not success:
-        display_warning("Docker Compose not available", 
-                       "Install docker-compose plugin or use docker-compose command")
+        display_warning("Docker Compose not available", )
+(                       "Install docker-compose plugin or use docker-compose command")
         return False
     
     display_success(f"Docker Compose found: {output.strip()}")
@@ -142,8 +144,8 @@ def setup_docker():
     if success:
         display_success("Redis service started")
     else:
-        display_warning("Could not start Redis automatically", 
-                       "You can start services later with: docker compose up -d")
+        display_warning("Could not start Redis automatically", )
+(                       "You can start services later with: docker compose up -d")
     
     return True
 
@@ -162,11 +164,12 @@ def validate_setup():
         return True  # Don't fail completely, just warn
 
 def main():
-    """Main setup function"""
+    """Main setup function""""""
     if ENHANCED_DISPLAY:
         print_banner()
         terminal.console.rule("[bold blue]# Rocket Automated VIPER Setup Starting[/]")
     else:
+        pass
     
     setup_steps = [
         ("Python Environment", setup_python_environment),
@@ -184,6 +187,7 @@ def main():
         if ENHANCED_DISPLAY:
             terminal.console.rule(f"[bold cyan]{step_name}[/]")
         else:
+            pass
         
         try:
             if step_func():
@@ -208,8 +212,8 @@ def main():
             print("3. Start system: python scripts/start_live_trading_mandatory.py")
             
     else:
-        display_warning(f"Setup completed with {len(setup_steps) - success_count} issues", 
-                       "Review the messages above and fix any problems")
+        display_warning(f"Setup completed with {len(setup_steps) - success_count} issues", )
+(                       "Review the messages above and fix any problems")
         
         if ENHANCED_DISPLAY:
             terminal.console.print("\n[bold yellow]# Tool Troubleshooting:[/]")

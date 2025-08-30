@@ -268,7 +268,7 @@ class EventSystemService:
             return 'unknown'
 
         unhealthy_count = sum(1 for service in self.service_health.values()
-                            if service.get('health') == 'unhealthy'):
+                            if service.get('health') == 'unhealthy')
 
         if unhealthy_count == 0:
             return 'healthy'

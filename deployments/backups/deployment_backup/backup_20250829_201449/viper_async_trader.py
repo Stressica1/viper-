@@ -3,6 +3,7 @@
 # Rocket VIPER ASYNC TRADING SYSTEM WITH JOBS & TASKS
 Advanced concurrent trading with asyncio job management
 Features:
+    pass
 - Concurrent scan/score/trade operations
 - Background task management
 - Real-time position monitoring
@@ -20,7 +21,7 @@ import time
 from datetime import datetime
 from typing import List, Dict, Optional, Set, Tuple
 from dataclasses import dataclass
-# Import enhanced components with fallbacks
+# Import enhanced components with fallbacks"""
 try:
     from enhanced_system_integrator import get_integrator
     ENHANCED_TECHNICAL_AVAILABLE = True
@@ -41,10 +42,10 @@ except ImportError as e:
         PERFORMANCE_MONITORING_AVAILABLE = False
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -60,7 +61,7 @@ class TradingJob:
     result: Dict = None
     error: str = None
 
-@dataclass
+@dataclass"""
 class TradingOpportunity:
     """Trading opportunity from scanner"""
     symbol: str
@@ -69,10 +70,10 @@ class TradingOpportunity:
     change_24h: float
     price: float
     recommended_side: str
-    confidence: float
+    confidence: float"""
 
 class ViperAsyncTrader:
-    """Advanced async trading system with job management"""
+    """Advanced async trading system with job management""""""
     
     def __init__(self):
         self.exchange = None
@@ -194,9 +195,9 @@ class ViperAsyncTrader:
 
     def _initialize_basic_trend_detector(self):
         """Initialize basic trend detector as fallback"""
-        from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
+    from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
 
-        self.trend_config = TrendConfig(
+        self.trend_config = TrendConfig()
             fast_ma_length=int(os.getenv('FAST_MA_LENGTH', '21')),
             slow_ma_length=int(os.getenv('SLOW_MA_LENGTH', '50')),
             trend_ma_length=int(os.getenv('TREND_MA_LENGTH', '200')),
@@ -204,18 +205,18 @@ class ViperAsyncTrader:
             atr_multiplier=float(os.getenv('ATR_MULTIPLIER', '2.0')),
             min_trend_bars=int(os.getenv('MIN_TREND_BARS', '5')),
             trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
-        )
+(        )
         self.trend_detector = AdvancedTrendDetector(self.trend_config)
         logger.info("# Chart Using basic trend detector (enhanced not available)")
         
         logger.info("# Rocket VIPER ASYNC TRADER INITIALIZED")
         logger.info(f"💼 Max Concurrent Jobs: {self.max_concurrent_jobs}")
         logger.info(f"# Chart Max Positions: {self.max_positions}")
-        logger.info(f"# Target Trend Config: MA({self.trend_config.fast_ma_length},{self.trend_config.slow_ma_length},{self.trend_config.trend_ma_length}) "
-                   f"ATR({self.trend_config.atr_length}x{self.trend_config.atr_multiplier})")
+        logger.info(f"# Target Trend Config: MA({self.trend_config.fast_ma_length},{self.trend_config.slow_ma_length},{self.trend_config.trend_ma_length}) ")
+(                   f"ATR({self.trend_config.atr_length}x{self.trend_config.atr_multiplier})")
 
     async def get_account_balance(self) -> float:
-        """Get USDT balance from swap wallet"""
+        """Get USDT balance from swap wallet""""""
         try:
             # Fetch balance specifically for swap account
             balance = await self.exchange.fetch_balance({'type': 'swap'})
@@ -241,7 +242,7 @@ class ViperAsyncTrader:
             return 0.0
 
     def calculate_position_size(self, price: float, balance: float, leverage: int = 50):
-        """Calculate position size with 3% risk and leverage"""
+        """Calculate position size with 3% risk and leverage""""""
         try:
             # 3% risk per trade
             risk_per_trade = 0.03
@@ -261,10 +262,10 @@ class ViperAsyncTrader:
             min_contract_size = 0.001  # 0.001 BTC minimum
             position_size = max(leveraged_position_size, min_contract_size)
 
-            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), "
+            logger.info(f"# Target Position Sizing: Balance=${balance:.2f}, Risk=3% (${risk_amount:.2f}), ")
                        f"Stop Loss={stop_loss_pct*100}% (${stop_loss_distance:.2f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
-                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
+(                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
 
             return position_size
 
@@ -274,11 +275,11 @@ class ViperAsyncTrader:
             return 0.001
 
     async def connect_exchange(self) -> bool:
-        """Connect to Bitget Pro (WebSocket)"""
+        """Connect to Bitget Pro (WebSocket)""""""
         try:
             logger.info("🔌 Connecting to Bitget Pro (WebSocket)...")
             
-            self.exchange = ccxt.bitget({
+            self.exchange = ccxt.bitget({)
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
                 'password': self.api_password,
@@ -288,7 +289,7 @@ class ViperAsyncTrader:
                     'hedgeMode': True,
                 },
                 'sandbox': False,
-            })
+(            })
             
             # Create HTTP session for API calls
             self.session = aiohttp.ClientSession()
@@ -315,13 +316,13 @@ class ViperAsyncTrader:
         """Create a new trading job"""
         job_id = f"{job_type}_{int(time.time() * 1000)}_{secrets.randbelow(max_val - min_val + 1) + min_val  # Was: random.randint(1000, 9999)}"
         
-        job = TradingJob(
+        job = TradingJob()
             job_id=job_id,
             job_type=job_type,
             symbol=kwargs.get('symbol'),
             side=kwargs.get('side'),
             created_at=datetime.now()
-        )
+(        )
         
         self.jobs[job_id] = job
         self.total_jobs += 1
@@ -331,7 +332,7 @@ class ViperAsyncTrader:
 
     async def execute_job(self, job: TradingJob) -> Dict:
         """Execute a trading job"""
-        job.status = 'running'
+        job.status = 'running'"""
         
         try:
             if job.job_type == 'scan':
@@ -362,10 +363,10 @@ class ViperAsyncTrader:
             logger.error(f"# X Job {job.job_id} failed: {e}")
             return {}
 
-    async def scan_opportunities(self) -> List[TradingOpportunity]:
+    async def scan_opportunities(self) -> List[TradingOpportunity]
         """Async market scanning for opportunities"""
-        opportunities = []
-        
+        opportunities = []"""
+        :
         try:
             # Get random sample of markets for scanning
             all_symbols = [s for s in self.exchange.symbols if 'USDT:USDT' in s]
@@ -402,17 +403,17 @@ class ViperAsyncTrader:
         
         return opportunities
 
-    async def fetch_ticker_data(self, symbol: str) -> Optional[Dict]:
-        """Fetch ticker data for a single symbol with optimized streaming support"""
+    async def fetch_ticker_data(self, symbol: str) -> Optional[Dict]
+        """Fetch ticker data for a single symbol with optimized streaming support"""""":
         try:
             # Use optimized data streamer if available
             if self.use_optimized_data and self.optimized_data_streamer:
                 try:
                     # Fetch current price data using optimized streamer
                     # For ticker data, we'll use the optimized streamer's market data capabilities
-                    market_data = await self.optimized_data_streamer.fetch_market_data(
+                    market_data = await self.optimized_data_streamer.fetch_market_data()
                         symbol, '1m', limit=1, use_cache=True
-                    )
+(                    )
 
                     if market_data is not None and not market_data.empty:
                         latest = market_data.iloc[-1]
@@ -445,7 +446,7 @@ class ViperAsyncTrader:
             return None
 
     async def score_opportunity(self, symbol: str) -> float:
-        """Score a trading opportunity"""
+        """Score a trading opportunity""""""
         try:
             ticker_data = await self.fetch_ticker_data(symbol)
             if not ticker_data:
@@ -458,8 +459,8 @@ class ViperAsyncTrader:
             logger.error(f"# X Error scoring {symbol}: {e}")
             return 0.0
 
-    async def score_opportunity_data(self, ticker_data: Dict) -> Optional[TradingOpportunity]:
-        """Score opportunity using ENHANCED VIPER algorithm with Advanced Trend Detection"""
+    async def score_opportunity_data(self, ticker_data: Dict) -> Optional[TradingOpportunity]
+        """Score opportunity using ENHANCED VIPER algorithm with Advanced Trend Detection"""""":
         try:
             symbol = ticker_data['symbol']
             price = ticker_data['price']
@@ -491,13 +492,13 @@ class ViperAsyncTrader:
             trend_score, trend_direction = await self.calculate_advanced_trend_score(symbol)
             
             # Calculate weighted ENHANCED VIPER score
-            enhanced_viper_score = (
+            enhanced_viper_score = ()
                 volume_score * volume_weight +
                 price_score * price_weight +
                 external_score * external_weight +
                 range_score * range_weight +
                 trend_score * trend_weight
-            ) / 100.0  # Normalize to 0-1
+(            ) / 100.0  # Normalize to 0-1
             
             # Determine signal strength with trend consideration
             if enhanced_viper_score >= 0.9 and trend_score >= 80:
@@ -535,11 +536,11 @@ class ViperAsyncTrader:
             min_score = 0.6 if trend_score >= 70 else 0.65
             
             if enhanced_viper_score > min_score:
-                logger.info(f"# Target Enhanced VIPER Score for {symbol}: {enhanced_viper_score:.3f} ({strength}) - "
+                logger.info(f"# Target Enhanced VIPER Score for {symbol}: {enhanced_viper_score:.3f} ({strength}) - ")
                            f"V:{volume_score:.1f} P:{price_score:.1f} E:{external_score:.1f} "
-                           f"R:{range_score:.1f} T:{trend_score:.1f} ({trend_direction.value if trend_direction else 'N/A'})")
+(                           f"R:{range_score:.1f} T:{trend_score:.1f} ({trend_direction.value if trend_direction else 'N/A'})")
                 
-                return TradingOpportunity(
+                return TradingOpportunity()
                     symbol=symbol,
                     score=enhanced_viper_score,
                     volume=volume,
@@ -547,7 +548,7 @@ class ViperAsyncTrader:
                     price=price,
                     recommended_side=recommended_side,
                     confidence=min(confidence, 1.0)  # Cap at 1.0
-                )
+(                )
             
             return None
             
@@ -556,7 +557,7 @@ class ViperAsyncTrader:
             return None
 
     async def calculate_volume_score(self, symbol: str, current_volume: float) -> float:
-        """Calculate VIPER Volume Score - Historical volume analysis"""
+        """Calculate VIPER Volume Score - Historical volume analysis""""""
         try:
             # Get recent volume data (simulated - in production would use OHLCV history)
             base_score = 50.0
@@ -585,7 +586,7 @@ class ViperAsyncTrader:
             return 50.0
 
     async def calculate_price_score(self, symbol: str, price: float, change_24h: float) -> float:
-        """Calculate VIPER Price Score - Multi-timeframe momentum analysis"""
+        """Calculate VIPER Price Score - Multi-timeframe momentum analysis""""""
         try:
             base_score = 50.0  # Neutral
             
@@ -621,10 +622,11 @@ class ViperAsyncTrader:
             return 50.0
 
     async def calculate_external_score(self, symbol: str, price: float) -> float:
-        """Calculate VIPER External Score - Market microstructure analysis"""
+        """Calculate VIPER External Score - Market microstructure analysis""""""
         try:
             # Simulated market microstructure analysis
             # In production, this would analyze:
+                pass
             # - Bid/ask spreads
             # - Order book depth
             # - Market maker activity
@@ -656,7 +658,7 @@ import secrets
             return 50.0
 
     async def calculate_range_score(self, symbol: str, price: float, high: float, low: float) -> float:
-        """Calculate VIPER Range Score - Volatility and ATR analysis"""
+        """Calculate VIPER Range Score - Volatility and ATR analysis""""""
         try:
             if high <= 0 or low <= 0 or price <= 0:
                 return 50.0
@@ -691,8 +693,8 @@ import secrets
             logger.error(f"# X Error calculating range score for {symbol}: {e}")
             return 50.0
 
-    async def calculate_advanced_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
-        """Calculate advanced trend score using enhanced technical optimizer or basic trend detector"""
+    async def calculate_advanced_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]
+        """Calculate advanced trend score using enhanced technical optimizer or basic trend detector"""""":
         try:
             if self.use_enhanced_technical and self.enhanced_technical:
                 # Use enhanced technical optimizer
@@ -705,8 +707,8 @@ import secrets
             logger.error(f"# X Error in advanced trend score calculation: {e}")
             return 50.0, TrendDirection.NEUTRAL if not ENHANCED_TECHNICAL_AVAILABLE else EnhancedTrendDirection.NEUTRAL
 
-    async def _calculate_enhanced_trend_score(self, symbol: str) -> Tuple[float, Optional[EnhancedTrendDirection]]:
-        """Calculate trend score using enhanced technical optimizer"""
+    async def _calculate_enhanced_trend_score(self, symbol: str) -> Tuple[float, Optional[EnhancedTrendDirection]]
+        """Calculate trend score using enhanced technical optimizer"""""":
         try:
             # Get enhanced trend analysis
             trend_analysis = await self.enhanced_technical.analyze_enhanced_trend(symbol)
@@ -732,10 +734,10 @@ import secrets
 
             final_score = min(100.0, base_score * confidence_multiplier + confluence_bonus)
 
-            logger.info(f"# Target Enhanced trend score for {symbol}: {final_score:.1f} "
-                       f"(Direction: {trend_analysis.direction.value}, "
+            logger.info(f"# Target Enhanced trend score for {symbol}: {final_score:.1f} ")
+                       f"(Direction: {trend_analysis.direction.value}, ")
                        f"Confidence: {trend_analysis.confidence:.2f}, "
-                       f"Confluence: {trend_analysis.confluence_score:.2f})")
+((                       f"Confluence: {trend_analysis.confluence_score:.2f})")
 
             return final_score, trend_analysis.direction
 
@@ -743,8 +745,8 @@ import secrets
             logger.error(f"# X Error in enhanced trend score calculation: {e}")
             return 50.0, EnhancedTrendDirection.NEUTRAL
 
-    async def _calculate_basic_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]:
-        """Calculate trend score using basic trend detector (fallback)"""
+    async def _calculate_basic_trend_score(self, symbol: str) -> Tuple[float, Optional[TrendDirection]]
+        """Calculate trend score using basic trend detector (fallback)"""""":
         try:
             # Get multi-timeframe trend analysis
             mtf_signals = await self.trend_detector.multi_timeframe_analysis(symbol)
@@ -790,10 +792,10 @@ import secrets
             final_score = (base_score * multiplier) + confidence_boost + ma_boost
             final_score = min(100.0, max(0.0, final_score))
 
-            logger.debug(f"# Chart Basic trend score for {symbol}: {final_score:.1f} "
-                        f"(Direction: {consensus_signal.direction.value}, "
+            logger.debug(f"# Chart Basic trend score for {symbol}: {final_score:.1f} ")
+                        f"(Direction: {consensus_signal.direction.value}, ")
                         f"Strength: {consensus_signal.strength.value}, "
-                        f"Confidence: {consensus_signal.confidence:.2f})")
+((                        f"Confidence: {consensus_signal.confidence:.2f})")
 
             return final_score, consensus_signal.direction
 
@@ -802,7 +804,7 @@ import secrets
             return 50.0, TrendDirection.NEUTRAL
 
     async def execute_trade_job(self, symbol: str, side: str) -> Dict:
-        """Execute a trade asynchronously with proper balance and position sizing"""
+        """Execute a trade asynchronously with proper balance and position sizing""""""
         try:
             # Get current balance
             balance = await self.get_account_balance()
@@ -819,8 +821,8 @@ import secrets
 
             # Enhanced margin validation with exchange-specific checks
             required_margin = (position_size * price) / self.max_leverage
-            logger.info(f"   Margin Analysis: Size={position_size:.6f}, Price=${price:.6f}, "
-                       f"Leverage={self.max_leverage}x, Required=${required_margin:.2f}, Available=${balance:.2f}")
+            logger.info(f"   Margin Analysis: Size={position_size:.6f}, Price=${price:.6f}, ")
+(                       f"Leverage={self.max_leverage}x, Required=${required_margin:.2f}, Available=${balance:.2f}")
 
             # Conservative adjustment: use 90% of available balance to account for exchange fees
             max_safe_margin = balance * 0.9
@@ -863,11 +865,11 @@ import secrets
                 stop_loss_price = price * (1 + self.stop_loss_pct / 100)
                 trailing_stop_price = price * (1 + self.trailing_stop_pct / 100)
 
-            logger.info(f"   TP/SL Setup: TP=${take_profit_price:.6f}, SL=${stop_loss_price:.6f}, "
-                       f"TSL=${trailing_stop_price:.6f}")
+            logger.info(f"   TP/SL Setup: TP=${take_profit_price:.6f}, SL=${stop_loss_price:.6f}, ")
+(                       f"TSL=${trailing_stop_price:.6f}")
 
             # Create main market order
-            order = await self.exchange.create_order(
+            order = await self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side=side,
@@ -878,7 +880,7 @@ import secrets
                     'holdSide': 'long' if side == 'buy' else 'short',
                     'tradeSide': 'open'
                 }
-            )
+(            )
 
             # Track position with TP/SL/TSL information
             self.active_positions[symbol] = {
@@ -914,7 +916,7 @@ import secrets
             return {}
 
     async def monitor_positions(self) -> Dict:
-        """Monitor all active positions with enhanced TP/SL/TSL"""
+        """Monitor all active positions with enhanced TP/SL/TSL""""""
         if not self.active_positions:
             return {'active_positions': 0}
 
@@ -1016,13 +1018,13 @@ import secrets
             return {}
 
     async def close_position(self, symbol: str, reason: str):
-        """Close a position"""
+        """Close a position""""""
         try:
             if symbol in self.active_positions:
                 position_info = self.active_positions[symbol]
                 opposite_side = 'sell' if position_info['side'] == 'buy' else 'buy'
                 
-                await self.exchange.create_order(
+                await self.exchange.create_order()
                     symbol=symbol,
                     type='market',
                     side=opposite_side,
@@ -1031,7 +1033,7 @@ import secrets
                         'holdSide': 'long' if position_info['side'] == 'buy' else 'short',
                         'tradeSide': 'close'
                     }
-                )
+(                )
                 
                 del self.active_positions[symbol]
                 logger.info(f"🔄 Closed position {symbol} - {reason}")
@@ -1051,13 +1053,13 @@ import secrets
                 try:
                     # Priority: monitor > trade > scan
                     job = await asyncio.wait_for(self.monitor_queue.get(), timeout=0.1)
-                except asyncio.TimeoutError:
+                except asyncio.TimeoutError
                     try:
                         job = await asyncio.wait_for(self.trade_queue.get(), timeout=0.1)
-                    except asyncio.TimeoutError:
+                    except asyncio.TimeoutError
                         try:
                             job = await asyncio.wait_for(self.scan_queue.get(), timeout=0.1)
-                        except asyncio.TimeoutError:
+                        except asyncio.TimeoutError
                             await asyncio.sleep(1)
                             continue
                 
@@ -1105,7 +1107,7 @@ import secrets
 
     async def status_reporter(self):
         """Report system status periodically"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 pending_jobs = sum(1 for job in self.jobs.values() if job.status == 'pending')
                 running_jobs = sum(1 for job in self.jobs.values() if job.status == 'running')

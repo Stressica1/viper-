@@ -4,6 +4,7 @@
 Complete Scan → Score → Trade → TP/SL Flow in One Script
 
 Features:
+    pass
 - Market scanning for multiple trading pairs
 - VIPER score calculation (Volume, Price, External, Range)  
 - Automated trade execution with risk management
@@ -36,7 +37,7 @@ import signal
 # Load environment variables
 load_dotenv()
 
-@dataclass
+@dataclass"""
 class TradingPosition:
     """Data class for tracking active positions"""
     symbol: str
@@ -49,7 +50,7 @@ class TradingPosition:
     order_id: str = None
     unrealized_pnl: float = 0.0
 
-@dataclass 
+@dataclass """
 class VIPERSignal:
     """Data class for VIPER trading signals with execution cost awareness"""
     symbol: str
@@ -66,7 +67,7 @@ class VIPERSignal:
     order_type: str = "MARKET"   # Recommended order type
 
 class StandaloneVIPERTrader:
-    """Complete standalone VIPER trading system"""
+    """Complete standalone VIPER trading system""""""
     
     def __init__(self):
         """Initialize the trading system"""
@@ -102,15 +103,15 @@ class StandaloneVIPERTrader:
     def setup_logging(self):
         """Setup comprehensive logging"""
         log_format = '%(asctime)s | %(levelname)-8s | %(message)s'
-        logging.basicConfig(
+        logging.basicConfig()
             level=logging.INFO,
             format=log_format,
             handlers=[
                 logging.FileHandler('viper_trader.log'),
                 logging.StreamHandler(sys.stdout)
             ]
-        )
-        self.logger = logging.getLogger(__name__)
+(        )
+        self.logger = logging.getLogger(__name__)"""
         
     def load_configuration(self) -> Dict:
         """Load trading configuration from environment"""
@@ -122,10 +123,10 @@ class StandaloneVIPERTrader:
             'stop_loss_percent': float(os.getenv('STOP_LOSS_PERCENT', '0.02')),  # 2%
             'take_profit_percent': float(os.getenv('TAKE_PROFIT_PERCENT', '0.04')),  # 4%
             'daily_loss_limit': float(os.getenv('DAILY_LOSS_LIMIT', '0.05')),  # 5%
-        }
+        }"""
     
     def initialize_exchange(self):
-        """Initialize Bitget exchange connection"""
+        """Initialize Bitget exchange connection""""""
         try:
             self.logger.info("🔗 Connecting to Bitget exchange...")
             
@@ -136,7 +137,7 @@ class StandaloneVIPERTrader:
             if not all([api_key, api_secret, api_password]):
                 raise ValueError("Missing Bitget API credentials in environment")
                 
-            self.exchange = ccxt.bitget({
+            self.exchange = ccxt.bitget(})
                 'apiKey': api_key,
                 'secret': api_secret,
                 'password': api_password,
@@ -145,7 +146,7 @@ class StandaloneVIPERTrader:
                     'defaultType': 'swap',  # Use perpetual futures
                     'adjustForTimeDifference': True,
                 }
-            })
+(            })
             
             # Test connection
             self.exchange.load_markets()
@@ -156,11 +157,11 @@ class StandaloneVIPERTrader:
             self.logger.error(f"# X Failed to initialize exchange: {e}")
             raise
     
-    def fetch_market_data(self, symbol: str) -> Optional[Dict]:
+    def fetch_market_data(self, symbol: str) -> Optional[Dict]
         """
         Fetch comprehensive market data with advanced metrics for optimization
         Includes volatility, liquidity metrics, and microstructure data
-        """
+        """:"""
         try:
             # Get ticker data
             ticker = self.exchange.fetch_ticker(symbol)
@@ -175,7 +176,7 @@ class StandaloneVIPERTrader:
             recent_prices = [candle[4] for candle in ohlcv[-24:]]  # Closing prices
             if len(recent_prices) > 1:
                 price_changes = [(recent_prices[i] - recent_prices[i-1]) / recent_prices[i-1] 
-                               for i in range(1, len(recent_prices))]
+                               for i in range(1, len(recent_prices))]:
                 volatility = (sum(x**2 for x in price_changes) / len(price_changes)) ** 0.5
             else:
                 volatility = 0.02  # Default 2% volatility
@@ -242,7 +243,7 @@ class StandaloneVIPERTrader:
         """
         Enhanced execution cost calculation with advanced market microstructure modeling
         Includes spread cost, market impact, volatility adjustment, and liquidity premiums
-        """
+        """"""
         try:
             spread = market_data.get('spread', 0)
             volume = market_data.get('volume', 0)
@@ -280,11 +281,11 @@ class StandaloneVIPERTrader:
             self.logger.error(f"# X Error calculating execution cost: {e}")
             return 999.0  # High cost to avoid trading
 
-    def optimize_position_size(self, market_data: Dict, base_position_size: float) -> Tuple[float, str]:
+    def optimize_position_size(self, market_data: Dict, base_position_size: float) -> Tuple[float, str]
         """
-        Dynamic position sizing optimization based on market conditions
+        Dynamic position sizing optimization based on market conditions:
         Returns: (optimized_position_size, reasoning)
-        """
+        """"""
         try:
             spread = market_data.get('spread', 0)
             volume = market_data.get('volume', 0)
@@ -357,7 +358,7 @@ class StandaloneVIPERTrader:
         """
         Advanced entry timing optimization with smart order placement
         Returns: {order_type, price, size, timing_score, reasoning}
-        """
+        """"""
         try:
             current_price = market_data.get('price', 0)
             spread = market_data.get('spread', 0)
@@ -381,14 +382,14 @@ class StandaloneVIPERTrader:
             # Strategy 1: Aggressive Market Order (immediate execution)
             market_cost = self.calculate_execution_cost(market_data, optimized_size)
             market_score = max(0, 100 - market_cost * 20)  # Penalize high costs
-            order_strategies.append({
+            order_strategies.append(})
                 'type': 'MARKET',
                 'price': current_price,
                 'size': optimized_size,
                 'expected_cost': market_cost,
                 'score': market_score,
                 'reasoning': f"Immediate execution, cost ${market_cost:.2f}"
-            })
+(            })
             
             # Strategy 2: Patient Limit Order (better price, risk of missing)
             if signal.signal == "LONG":
@@ -408,14 +409,14 @@ class StandaloneVIPERTrader:
             limit_cost = market_cost - limit_cost_reduction
             limit_score = (max(0, 100 - limit_cost * 20)) * fill_probability  # Adjust for fill risk
             
-            order_strategies.append({
+            order_strategies.append(})
                 'type': 'LIMIT',
                 'price': limit_price,
                 'size': optimized_size,
                 'expected_cost': limit_cost,
                 'score': limit_score,
                 'reasoning': f"Better price (${price_improvement:.4f} improvement), {fill_probability*100:.0f}% fill chance"
-            })
+(            })
             
             # Strategy 3: Iceberg Order for large positions (reduce market impact)
             if optimized_size > volume * current_price * 0.02:  # Position > 2% of volume
@@ -423,11 +424,11 @@ class StandaloneVIPERTrader:
                 chunk_size = optimized_size / iceberg_chunks
                 
                 # Estimate reduced market impact from smaller chunks
-                iceberg_cost = sum([self.calculate_execution_cost(market_data, chunk_size) 
-                                  for _ in range(iceberg_chunks)])
+                iceberg_cost = sum([self.calculate_execution_cost(market_data, chunk_size) )
+(                                  for _ in range(iceberg_chunks)])
                 iceberg_score = max(0, 100 - iceberg_cost * 20)
                 
-                order_strategies.append({
+                order_strategies.append(})
                     'type': 'ICEBERG',
                     'price': current_price,
                     'size': optimized_size,
@@ -436,7 +437,7 @@ class StandaloneVIPERTrader:
                     'expected_cost': iceberg_cost,
                     'score': iceberg_score,
                     'reasoning': f"Reduced impact via {iceberg_chunks} chunks of ${chunk_size:,.0f}"
-                })
+(                })
             
             # Select best strategy
             best_strategy = max(order_strategies, key=lambda x: x['score'])
@@ -501,7 +502,7 @@ class StandaloneVIPERTrader:
         Calculate VIPER score using Volume, Price, External, Range factors
         Enhanced with execution cost awareness to prevent $3+ losses on entry
         Returns score from 0-100 (higher = better opportunity)
-        """
+        """"""
         try:
             volume = market_data.get('volume', 0)
             price_change = abs(market_data.get('price_change', 0))
@@ -540,12 +541,12 @@ class StandaloneVIPERTrader:
                 range_score = 0
             
             # Weighted VIPER score with increased emphasis on execution cost
-            viper_score = (
+            viper_score = ()
                 volume_score * 0.25 +     # 25% volume weight (reduced)
                 price_score * 0.30 +      # 30% momentum weight (reduced) 
                 external_score * 0.30 +   # 30% execution cost weight (increased)
                 range_score * 0.15        # 15% volatility weight (same)
-            )
+(            )
             
             return min(max(viper_score, 0), 100)  # Clamp to 0-100 range
             
@@ -553,11 +554,11 @@ class StandaloneVIPERTrader:
             self.logger.error(f"# X Error calculating VIPER score: {e}")
             return 0.0
     
-    def generate_signal(self, symbol: str, market_data: Dict) -> Optional[VIPERSignal]:
+    def generate_signal(self, symbol: str, market_data: Dict) -> Optional[VIPERSignal]
         """
         Generate advanced trading signal with comprehensive entry optimization
         Uses dynamic position sizing, timing optimization, and smart order routing
-        """
+        """:"""
         try:
             # Calculate base VIPER score
             viper_score = self.calculate_viper_score(market_data)
@@ -600,11 +601,11 @@ class StandaloneVIPERTrader:
                 return None  # Insufficient momentum
             
             # Create preliminary signal for optimization
-            preliminary_signal = type('PreliminarySignal', (), {
+            preliminary_signal = type('PreliminarySignal', (), })
                 'signal': signal,
                 'viper_score': viper_score,
                 'price': current_price
-            })()
+(            })()
             
             # Apply advanced entry timing optimization
             entry_optimization = self.optimize_entry_timing(symbol, preliminary_signal, market_data)
@@ -626,11 +627,11 @@ class StandaloneVIPERTrader:
             strategy_confidence = entry_optimization['strategy_score'] / 100
             
             # Weighted confidence score
-            enhanced_confidence = (
+            enhanced_confidence = ()
                 base_confidence * 0.4 +      # 40% VIPER score
                 timing_confidence * 0.3 +    # 30% timing
                 strategy_confidence * 0.3    # 30% strategy
-            ) + (confidence_boost / 100)     # Add momentum bonus
+(            ) + (confidence_boost / 100)     # Add momentum bonus
             
             enhanced_confidence = min(1.0, enhanced_confidence)  # Cap at 100%
             
@@ -644,18 +645,18 @@ class StandaloneVIPERTrader:
             
             # Dynamic stop loss - accounts for execution costs and volatility
             volatility_adjustment = max(1.0, volatility / 0.02)  # Scale from 2% base volatility
-            adjusted_stop_loss_pct = max(
+            adjusted_stop_loss_pct = max()
                 stop_loss_pct * volatility_adjustment,           # Volatility adjustment
                 execution_cost_pct + 0.008                      # Execution cost + 0.8% buffer
-            )
+(            )
             
             # Dynamic take profit - ensures good risk/reward after costs
             min_rr_ratio = 2.5  # Minimum 2.5:1 risk/reward after costs
-            adjusted_take_profit_pct = max(
+            adjusted_take_profit_pct = max()
                 take_profit_pct,
                 adjusted_stop_loss_pct * min_rr_ratio,          # Maintain risk/reward
                 execution_cost_pct * 4 + 0.015                  # 4x execution cost + 1.5%
-            )
+(            )
             
             # Calculate final price levels
             if signal == "LONG":
@@ -666,7 +667,7 @@ class StandaloneVIPERTrader:
                 take_profit = optimized_price * (1 - adjusted_take_profit_pct)
             
             # Enhanced VIPER signal with optimization data
-            optimized_signal = VIPERSignal(
+            optimized_signal = VIPERSignal()
                 symbol=symbol,
                 signal=signal,
                 viper_score=viper_score,
@@ -679,7 +680,7 @@ class StandaloneVIPERTrader:
                 timestamp=datetime.now().isoformat(),
                 execution_cost=optimized_execution_cost,
                 order_type=optimized_order_type
-            )
+(            )
             
             # Add optimization metadata
             optimized_signal.optimization_data = {
@@ -694,12 +695,12 @@ class StandaloneVIPERTrader:
             }
             
             # Log optimization results
-            self.logger.info(f"# Chart {symbol} Signal Optimized: "
+            self.logger.info(f"# Chart {symbol} Signal Optimized: ")
                            f"Size ${base_position_size:,.0f} → ${optimized_size:,.0f} "
                            f"({optimized_signal.optimization_data['size_change_pct']:+.1f}%), "
                            f"Cost ${initial_execution_cost:.2f} → ${optimized_execution_cost:.2f} "
                            f"(${optimized_signal.optimization_data['cost_savings']:+.2f} savings), "
-                           f"Confidence {base_confidence:.1%} → {enhanced_confidence:.1%}")
+(                           f"Confidence {base_confidence:.1%} → {enhanced_confidence:.1%}")
             
             return optimized_signal
             
@@ -707,11 +708,11 @@ class StandaloneVIPERTrader:
             self.logger.error(f"# X Error generating optimized signal for {symbol}: {e}")
             return None
     
-    def scan_markets(self) -> List[VIPERSignal]:
+    def scan_markets(self) -> List[VIPERSignal]
         """Scan all trading pairs for opportunities"""
         self.logger.info(f"# Search Scanning {len(self.trading_pairs)} trading pairs...")
         
-        signals = []
+        signals = []:
         for symbol in self.trading_pairs:
             try:
                 market_data = self.fetch_market_data(symbol)
@@ -728,7 +729,7 @@ class StandaloneVIPERTrader:
         return signals
     
     def calculate_position_size(self, signal: VIPERSignal) -> float:
-        """Calculate position size based on risk management"""
+        """Calculate position size based on risk management""""""
         try:
             # Get account balance
             balance = self.exchange.fetch_balance()
@@ -761,7 +762,7 @@ class StandaloneVIPERTrader:
             return 0
     
     def execute_trade(self, signal: VIPERSignal) -> bool:
-        """Execute trade based on VIPER signal"""
+        """Execute trade based on VIPER signal""""""
         try:
             # Check position limits
             if len(self.active_positions) >= self.max_positions:
@@ -787,17 +788,17 @@ class StandaloneVIPERTrader:
             self.logger.info(f"   Stop Loss: ${signal.stop_loss:.2f}, Take Profit: ${signal.take_profit:.2f}")
             
             # Execute market order
-            order = self.exchange.create_order(
+            order = self.exchange.create_order()
                 symbol=signal.symbol,
                 type='market',
                 side=side,
                 amount=position_size,
                 price=None  # Market order
-            )
+(            )
             
             if order and order.get('id'):
                 # Create position tracking
-                position = TradingPosition(
+                position = TradingPosition()
                     symbol=signal.symbol,
                     side=side,
                     size=position_size,
@@ -806,7 +807,7 @@ class StandaloneVIPERTrader:
                     take_profit=signal.take_profit,
                     timestamp=datetime.now().isoformat(),
                     order_id=order['id']
-                )
+(                )
                 
                 self.active_positions[signal.symbol] = position
                 
@@ -823,7 +824,7 @@ class StandaloneVIPERTrader:
             return False
     
     def monitor_positions(self):
-        """Monitor active positions for TP/SL conditions"""
+        """Monitor active positions for TP/SL conditions""""""
         if not self.active_positions:
             return
         
@@ -845,8 +846,8 @@ class StandaloneVIPERTrader:
                 
                 position.unrealized_pnl = pnl
                 
-                self.logger.info(f"📈 {symbol} ({position.side.upper()}): "
-                               f"${current_price:.2f} | P&L: {pnl*100:.2f}%")
+                self.logger.info(f"📈 {symbol} ({position.side.upper()}): ")
+(                               f"${current_price:.2f} | P&L: {pnl*100:.2f}%")
                 
                 # Check stop loss condition
                 stop_loss_triggered = False
@@ -878,7 +879,7 @@ class StandaloneVIPERTrader:
             self.close_position(symbol, reason)
     
     def close_position(self, symbol: str, reason: str = 'manual'):
-        """Close an active position"""
+        """Close an active position""""""
         try:
             if symbol not in self.active_positions:
                 self.logger.warning(f"# Warning No active position found for {symbol}")
@@ -892,13 +893,13 @@ class StandaloneVIPERTrader:
             self.logger.info(f"🔄 Closing {symbol} position ({reason})")
             
             # Execute closing order
-            order = self.exchange.create_order(
+            order = self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side=close_side,
                 amount=position.size,
                 price=None
-            )
+(            )
             
             if order and order.get('id'):
                 # Calculate final P&L
@@ -935,9 +936,10 @@ class StandaloneVIPERTrader:
             for symbol, position in self.active_positions.items():
                 pnl_pct = position.unrealized_pnl * 100 if position.unrealized_pnl else 0
                 pnl_icon = "🟢" if pnl_pct > 0 else "🔴" if pnl_pct < 0 else "⚪"
-                print(f"  {pnl_icon} {symbol} | {position.side.upper()} | "
-                      f"P&L: {pnl_pct:.2f}% | Entry: ${position.entry_price:.2f}")
+                print(f"  {pnl_icon} {symbol} | {position.side.upper()} | ")
+(                      f"P&L: {pnl_pct:.2f}% | Entry: ${position.entry_price:.2f}")
         else:
+            pass
         
     
     def signal_handler(self, signum, frame):
@@ -1002,7 +1004,7 @@ class StandaloneVIPERTrader:
         
         # Close all positions if desired (optional safety measure)
         # Uncomment the following lines to close all positions on shutdown
-        # for symbol in list(self.active_positions.keys()):
+        # for symbol in list(self.active_positions.keys())
         #     self.close_position(symbol, 'shutdown')
         
         self.logger.info("# Check Shutdown complete")
@@ -1014,7 +1016,7 @@ def main():
 #                # Rocket VIPER STANDALONE TRADING COMPONENT                         #
 #                Complete Scan → Score → Trade → TP/SL Flow                    #
 #==============================================================================#
-    """)
+(    """)"""
     
     try:
         # Check for required environment variables

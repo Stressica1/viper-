@@ -905,7 +905,7 @@ class AdvancedMarketScanner:
             # Filter and sort
             opportunities = [
                 result for result in all_results
-                if result.overall_score >= min_score and:
+                if result.overall_score >= min_score and
                 result.execution_cost < 3.0 and
                 result.confidence > 0.6
             ]

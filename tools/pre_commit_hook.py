@@ -6,7 +6,7 @@ Prevents commits that violate repository organization rules
 
 import sys
 import subprocess
-from pathlib import Path
+from pathlib import Path"""
 
 def check_root_directory():
     """Check for files that shouldn't be in root directory"""
@@ -14,7 +14,7 @@ def check_root_directory():
     
     # Get staged files
     result = subprocess.run(['git', 'diff', '--cached', '--name-only'], 
-                          capture_output=True, text=True)
+                          capture_output=True, text=True)"""
     
     if result.returncode != 0:
         return []
@@ -52,7 +52,7 @@ def check_naming_conventions():
     
     # Get staged files
     result = subprocess.run(['git', 'diff', '--cached', '--name-only'], 
-                          capture_output=True, text=True)
+                          capture_output=True, text=True)"""
     
     if result.returncode != 0:
         return []
@@ -92,6 +92,7 @@ def main():
     
     if violations:
         for violation in violations:
+            pass
         print("   1. Run: python tools/repo_organizer.py --fix")
         sys.exit(1)
     

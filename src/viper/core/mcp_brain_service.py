@@ -4,6 +4,7 @@
 Continuous Operation & Auto-Restart System
 
 This service ensures the MCP Brain Controller runs 24/7 with:
+    pass
 - Automatic restart on failures
 - Health monitoring and recovery
 - System resource management
@@ -27,10 +28,10 @@ import json
 
 # Import VIPER components
 from mcp_brain_controller import MCPBrainController
-from mcp_brain_ruleset import MCPRulesEngine
+from mcp_brain_ruleset import MCPRulesEngine"""
 
 class MCPBrainService:
-    """The Service Manager for continuous MCP Brain operation"""
+    """The Service Manager for continuous MCP Brain operation""""""
 
     def __init__(self):
         self.logger = self.setup_logging()
@@ -69,9 +70,9 @@ class MCPBrainService:
         logger.setLevel(logging.INFO)
 
         # Create formatters
-        formatter = logging.Formatter(
+        formatter = logging.Formatter()
             '%(asctime)s - MCP_SERVICE - %(levelname)s - %(message)s'
-        )
+(        )
 
         # Console handler
         console_handler = logging.StreamHandler(sys.stdout)
@@ -79,15 +80,17 @@ class MCPBrainService:
         logger.addHandler(console_handler)
 
         # File handler with rotation - use local directory
-        from pathlib import Path
-        from logging.handlers import RotatingFileHandler
+from pathlib import Path
+
+from logging.handlers import RotatingFileHandler
+
         log_dir = Path(__file__).parent / "logs"
         log_dir.mkdir(exist_ok=True)
-        file_handler = RotatingFileHandler(
+        file_handler = RotatingFileHandler()
             log_dir / 'viper_mcp_brain_service.log',
             maxBytes=10*1024*1024,  # 10MB
             backupCount=5
-        )
+(        )
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
 
@@ -133,17 +136,17 @@ class MCPBrainService:
             sys.exit(1)
 
     def start_brain_controller(self):
-        """Start the MCP Brain Controller process"""
+        """Start the MCP Brain Controller process""""""
         try:
             self.logger.info("🧠 Starting MCP Brain Controller...")
 
             # Start brain controller in subprocess
-            self.brain_process = subprocess.Popen(
+            self.brain_process = subprocess.Popen()
                 [sys.executable, "mcp_brain_controller.py"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 cwd=os.getcwd()
-            )
+(            )
 
             # Wait for startup
             time.sleep(5)
@@ -160,7 +163,7 @@ class MCPBrainService:
             raise
 
     def stop_brain_controller(self):
-        """Stop the MCP Brain Controller process"""
+        """Stop the MCP Brain Controller process""""""
         if self.brain_process and self.brain_process.poll() is None:
             self.logger.info("🛑 Stopping MCP Brain Controller...")
 
@@ -181,7 +184,7 @@ class MCPBrainService:
         """Restart the MCP Brain Controller"""
         current_time = datetime.now()
 
-        # Check restart limits
+        # Check restart limits"""
         if self.restart_count >= self.config["max_restarts_per_hour"]:
             if current_time < self.status["next_restart_allowed"]:
                 self.logger.warning(f"🚫 Restart limit reached. Next restart allowed at {self.status['next_restart_allowed']}")
@@ -212,7 +215,7 @@ class MCPBrainService:
 
     def monitoring_loop(self):
         """Continuous monitoring loop"""
-        while self.service_active:
+        while self.service_active:"""
             try:
                 self.perform_health_check()
                 time.sleep(self.config["health_check_interval"])
@@ -221,7 +224,7 @@ class MCPBrainService:
                 time.sleep(5)
 
     def perform_health_check(self):
-        """Perform comprehensive health check"""
+        """Perform comprehensive health check""""""
         try:
             self.health_checks += 1
 
@@ -254,7 +257,8 @@ class MCPBrainService:
 
             # Check brain controller health via HTTP
             try:
-                import requests
+import requests
+
                 response = requests.get("http://localhost:8080/health", timeout=5)
                 if response.status_code == 200:
                     health_data = response.json()
@@ -273,7 +277,7 @@ class MCPBrainService:
 
     def auto_restart_loop(self):
         """Auto-restart monitoring loop"""
-        while self.service_active:
+        while self.service_active:"""
             try:
                 # Check if brain needs restart based on rules
                 if self.should_restart_brain():
@@ -286,7 +290,7 @@ class MCPBrainService:
                 time.sleep(5)
 
     def should_restart_brain(self) -> bool:
-        """Determine if brain controller should be restarted"""
+        """Determine if brain controller should be restarted""""""
         try:
             # Check if brain is offline
             if self.status["brain_state"] != "online":
@@ -307,7 +311,7 @@ class MCPBrainService:
             return False
 
     def get_restart_reason(self) -> str:
-        """Get the reason for restart"""
+        """Get the reason for restart""""""
         if self.status["brain_state"] != "online":
             return "brain_offline"
         elif self.status["memory_usage_mb"] > self.config["max_memory_mb"] * 1.1:
@@ -318,9 +322,10 @@ class MCPBrainService:
             return "maintenance"
 
     def is_brain_responsive(self) -> bool:
-        """Check if brain controller is responsive"""
+        """Check if brain controller is responsive""""""
         try:
-            import requests
+            pass
+    import requests
             response = requests.get("http://localhost:8080/health", timeout=3)
             return response.status_code == 200
         except Exception:
@@ -328,7 +333,7 @@ class MCPBrainService:
 
     def log_cleanup_loop(self):
         """Log cleanup and rotation loop"""
-        while self.service_active:
+        while self.service_active:"""
             try:
                 self.perform_log_cleanup()
                 time.sleep(3600)  # Clean logs every hour
@@ -337,10 +342,11 @@ class MCPBrainService:
                 time.sleep(60)
 
     def perform_log_cleanup(self):
-        """Clean up old log files"""
+        """Clean up old log files""""""
         try:
-            import glob
-            from pathlib import Path
+            pass
+    import glob
+    from pathlib import Path
 
             log_dir = Path("/var/log")
             if not log_dir.exists():
@@ -381,7 +387,7 @@ class MCPBrainService:
         self.reload_configuration()
 
     def emergency_shutdown(self, timeout: int = None):
-        """Perform emergency shutdown"""
+        """Perform emergency shutdown""""""
         if timeout is None:
             timeout = self.config["emergency_shutdown_timeout"]
 
@@ -413,7 +419,7 @@ class MCPBrainService:
             self.logger.error(f"Emergency shutdown failed: {e}")
 
     def reload_configuration(self):
-        """Reload service configuration"""
+        """Reload service configuration""""""
         try:
             # Reload config from file if it exists
             config_file = "/etc/viper/mcp_brain_service.json"
@@ -431,11 +437,11 @@ class MCPBrainService:
             self.logger.error(f"Configuration reload failed: {e}")
 
     def cleanup_resources(self):
-        """Clean up system resources"""
+        """Clean up system resources""""""
         try:
             # Clean up temporary files
-            import tempfile
-            import shutil
+    import tempfile
+    import shutil
 
             temp_dir = Path(tempfile.gettempdir()) / "viper_mcp"
             if temp_dir.exists():
@@ -453,9 +459,9 @@ class MCPBrainService:
         except Exception as e:
             self.logger.error(f"Resource cleanup failed: {e}")
 
-    def get_service_status(self) -> Dict[str, Any]:
+    def get_service_status(self) -> Dict[str, Any]
         """Get comprehensive service status"""
-        return {
+        return {:
             "service_info": {
                 "name": "VIPER MCP Brain Service",
                 "version": "2.0.0",
@@ -488,11 +494,12 @@ class MCPBrainService:
         }
 
 def main():
-    """Main service entry point"""
+    """Main service entry point""""""
     try:
         service = MCPBrainService()
         service.start_service()
     except KeyboardInterrupt:
+        pass
     except Exception as e:
         sys.exit(1)
 

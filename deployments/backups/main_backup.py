@@ -11,14 +11,14 @@ import ccxt
 from typing import List, Dict, Optional
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class VIPERFixedTrader:
-    """Fixed trader with proper Bitget implementation and signal generation"""
+    """Fixed trader with proper Bitget implementation and signal generation""""""
 
     def __init__(self):
         self.exchange = None
@@ -59,7 +59,7 @@ class VIPERFixedTrader:
         logger.info(f"# Target Max positions: {self.max_positions}")
 
     def connect_bitget(self):
-        """Connect to Bitget with proper configuration"""
+        """Connect to Bitget with proper configuration""""""
         try:
             if not all([self.api_key, self.api_secret, self.api_password]):
                 logger.error("# X Missing API credentials. Please set:")
@@ -70,7 +70,7 @@ class VIPERFixedTrader:
 
             logger.info("🔌 Connecting to Bitget...")
 
-            self.exchange = ccxt.bitget({
+            self.exchange = ccxt.bitget({)
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
                 'password': self.api_password,
@@ -81,7 +81,7 @@ class VIPERFixedTrader:
                 'sandbox': False,
                 'rateLimit': 100,
                 'enableRateLimit': True,
-            })
+(            })
 
             # Test connection
             markets = self.exchange.load_markets()
@@ -100,7 +100,7 @@ class VIPERFixedTrader:
             return False
 
     def set_position_mode(self, symbol: str):
-        """Set position mode to hedge mode"""
+        """Set position mode to hedge mode""""""
         try:
             self.exchange.set_position_mode(True, symbol)  # True = hedge mode
             logger.debug(f"# Check Position mode set for {symbol}")
@@ -114,12 +114,12 @@ class VIPERFixedTrader:
         history = self.price_history[symbol]
         history.append(price)
 
-        # Keep only last 20 prices
+        # Keep only last 20 prices"""
         if len(history) > 20:
             history.pop(0)
 
-    def calculate_signal(self, symbol: str) -> Optional[str]:
-        """Calculate trading signal using price action and momentum"""
+    def calculate_signal(self, symbol: str) -> Optional[str]
+        """Calculate trading signal using price action and momentum""":"""
         try:
             # Get current price
             ticker = self.exchange.fetch_ticker(symbol)
@@ -144,17 +144,17 @@ class VIPERFixedTrader:
             signal = None
 
             # Strong bullish signals
-            if (current_price > sma_short > sma_long and:
+            if (current_price > sma_short > sma_long and):
                 momentum > 0.5 and
                 change_24h > 0.5 and
-                len([p for p in history[-5:] if p > sma_short]) >= 3):
+(                len([p for p in history[-5:] if p > sma_short]) >= 3)
                 signal = 'buy'
 
             # Strong bearish signals
-            elif (current_price < sma_short < sma_long and:
+            elif (current_price < sma_short < sma_long and):
                   momentum < -0.5 and
                   change_24h < -0.5 and
-                  len([p for p in history[-5:] if p < sma_short]) >= 3):
+(                  len([p for p in history[-5:] if p < sma_short]) >= 3)
                 signal = 'sell'
 
             if signal:
@@ -169,8 +169,8 @@ class VIPERFixedTrader:
             logger.error(f"# X Error calculating signal for {symbol}: {e}")
             return None
 
-    def execute_trade(self, symbol: str, side: str) -> Optional[Dict]:
-        """Execute trade with proper parameters"""
+    def execute_trade(self, symbol: str, side: str) -> Optional[Dict]
+        """Execute trade with proper parameters""":"""
         try:
             # Set position mode
             self.set_position_mode(symbol)
@@ -193,7 +193,7 @@ class VIPERFixedTrader:
             logger.info(".2f")
 
             # Execute order
-            order = self.exchange.create_order(
+            order = self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side=side,
@@ -205,7 +205,7 @@ class VIPERFixedTrader:
                     'holdSide': 'long' if side == 'buy' else 'short',
                     'tradeSide': 'open'
                 }
-            )
+(            )
 
             logger.info(f"# Check ORDER EXECUTED: {order['id']}")
 
@@ -227,7 +227,7 @@ class VIPERFixedTrader:
             return None
 
     def close_position(self, symbol: str, reason: str):
-        """Close position"""
+        """Close position""""""
         try:
             if symbol not in self.active_positions:
                 return
@@ -236,7 +236,7 @@ class VIPERFixedTrader:
             opposite_side = 'sell' if position_info['side'] == 'buy' else 'buy'
 
             # Close position
-            close_order = self.exchange.create_order(
+            close_order = self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side=opposite_side,
@@ -246,7 +246,7 @@ class VIPERFixedTrader:
                     'holdSide': 'long' if position_info['side'] == 'buy' else 'short',
                     'tradeSide': 'close'
                 }
-            )
+(            )
 
             logger.info(f"# Check POSITION CLOSED: {symbol} ({reason})")
 
@@ -272,7 +272,7 @@ class VIPERFixedTrader:
             logger.error(f"# X Error closing position {symbol}: {e}")
 
     def monitor_positions(self):
-        """Monitor positions and manage risk"""
+        """Monitor positions and manage risk""""""
         try:
             if not self.active_positions:
                 return
@@ -310,10 +310,10 @@ class VIPERFixedTrader:
         except Exception as e:
             logger.error(f"# X Error in position monitoring: {e}")
 
-    def scan_opportunities(self) -> List[str]:
+    def scan_opportunities(self) -> List[str]
         """Scan for trading opportunities"""
         opportunities = []
-
+:"""
         try:
             for symbol in self.symbols:
                 if symbol in self.active_positions:

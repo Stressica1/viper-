@@ -4,6 +4,7 @@
 High-performance market data fetching with advanced caching and optimization
 
 This optimized version includes:
+    pass
 - Asynchronous batch data fetching
 - Intelligent caching with TTL and LRU eviction
 - Connection pooling and rate limiting
@@ -35,7 +36,7 @@ import hashlib
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-@dataclass
+@dataclass"""
 class CacheEntry:
     """Cache entry with TTL and metadata"""
     data: Any
@@ -64,10 +65,10 @@ class DataRequest:
     limit: int
     priority: int = 1  # 1=low, 5=high
     callback: Optional[callable] = None
-    metadata: Dict[str, Any] = None
+    metadata: Dict[str, Any] = None"""
 
 class OptimizedMarketDataStreamer:
-    """Optimized market data streamer with advanced caching and performance features"""
+    """Optimized market data streamer with advanced caching and performance features""""""
 
     def __init__(self, cache_size_mb: int = 500, max_connections: int = 20):
         self.cache_size_mb = cache_size_mb
@@ -108,7 +109,7 @@ class OptimizedMarketDataStreamer:
         logger.info(f"# Chart Optimized Market Data Streamer initialized (Cache: {cache_size_mb}MB, Connections: {max_connections})")
 
     async def initialize_exchanges(self) -> bool:
-        """Initialize multiple exchanges with failover support"""
+        """Initialize multiple exchanges with failover support""""""
         try:
             exchange_configs = [
                 {
@@ -154,7 +155,7 @@ class OptimizedMarketDataStreamer:
             return False
 
     async def start_streaming(self):
-        """Start the optimized data streaming system"""
+        """Start the optimized data streaming system""""""
         try:
             self.is_running = True
 
@@ -174,7 +175,7 @@ class OptimizedMarketDataStreamer:
             self.is_running = False
 
     async def stop_streaming(self):
-        """Stop the streaming system gracefully"""
+        """Stop the streaming system gracefully""""""
         try:
             self.is_running = False
 
@@ -199,9 +200,9 @@ class OptimizedMarketDataStreamer:
         except Exception as e:
             logger.error(f"# X Error stopping streaming: {e}")
 
-    async def fetch_market_data(self, symbol: str, timeframe: str = '1h',
-                              limit: int = 100, use_cache: bool = True) -> Optional[pd.DataFrame]:
-        """Fetch market data with intelligent caching and optimization"""
+    async def fetch_market_data(self, symbol: str, timeframe: str = '1h',):
+(                              limit: int = 100, use_cache: bool = True) -> Optional[pd.DataFrame]
+        """Fetch market data with intelligent caching and optimization""""""
         try:
             start_time = time.time()
 
@@ -217,22 +218,22 @@ class OptimizedMarketDataStreamer:
             self.metrics['cache_misses'] += 1
 
             # Create request
-            request = DataRequest(
+            request = DataRequest()
                 symbol=symbol,
                 timeframe=timeframe,
                 limit=limit,
                 priority=3 if timeframe in ['1m', '5m'] else 2
-            )
+(            )
 
             # Add to queue
             await self.request_queue.put(request)
 
             # Wait for result (with timeout)
             try:
-                result = await asyncio.wait_for(
+                result = await asyncio.wait_for()
                     self._wait_for_request_result(request),
                     timeout=30.0
-                )
+(                )
 
                 if result:
                     # Cache the result
@@ -244,7 +245,7 @@ class OptimizedMarketDataStreamer:
 
                     return result
 
-            except asyncio.TimeoutError:
+            except asyncio.TimeoutError
                 logger.warning(f"⏰ Timeout fetching {symbol} {timeframe}")
                 self.metrics['errors'] += 1
 
@@ -257,7 +258,7 @@ class OptimizedMarketDataStreamer:
 
     async def _process_requests(self):
         """Process data requests from the queue"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 # Get request from queue
                 request = await self.request_queue.get()
@@ -275,16 +276,16 @@ class OptimizedMarketDataStreamer:
                 logger.error(f"# X Error processing request: {e}")
                 continue
 
-    async def _execute_data_request(self, request: DataRequest) -> Optional[pd.DataFrame]:
-        """Execute a single data request with failover"""
+    async def _execute_data_request(self, request: DataRequest) -> Optional[pd.DataFrame]
+        """Execute a single data request with failover"""""":
         try:
             # Try primary exchange first
-            result = await self._fetch_from_exchange(
+            result = await self._fetch_from_exchange()
                 self.exchanges[self.primary_exchange],
                 request.symbol,
                 request.timeframe,
                 request.limit
-            )
+(            )
 
             if result is not None:
                 return result
@@ -293,9 +294,9 @@ class OptimizedMarketDataStreamer:
             for name, exchange in self.exchanges.items():
                 if name != self.primary_exchange:
                     try:
-                        result = await self._fetch_from_exchange(
+                        result = await self._fetch_from_exchange()
                             exchange, request.symbol, request.timeframe, request.limit
-                        )
+(                        )
                         if result is not None:
                             logger.info(f"🔄 Failover successful with {name}")
                             return result
@@ -310,9 +311,9 @@ class OptimizedMarketDataStreamer:
             logger.error(f"# X Error executing data request: {e}")
             return None
 
-    async def _fetch_from_exchange(self, exchange: ccxt_async.Exchange,
-                                 symbol: str, timeframe: str, limit: int) -> Optional[pd.DataFrame]:
-        """Fetch data from a specific exchange with optimization"""
+    async def _fetch_from_exchange(self, exchange: ccxt_async.Exchange,):
+(                                 symbol: str, timeframe: str, limit: int) -> Optional[pd.DataFrame]
+        """Fetch data from a specific exchange with optimization""""""
         try:
             # Convert timeframe to exchange format if needed
             exchange_timeframe = self._convert_timeframe(timeframe)
@@ -345,14 +346,15 @@ class OptimizedMarketDataStreamer:
             return None
 
     def _add_basic_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Add basic indicators for immediate use"""
+        """Add basic indicators for immediate use""""""
         try:
             # Simple moving averages
             df['sma_20'] = df['close'].rolling(window=20).mean()
             df['sma_50'] = df['close'].rolling(window=50).mean()
 
             # RSI
-            import ta
+import ta
+
             df['rsi'] = ta.momentum.rsi(df['close'], window=14)
 
             # Returns
@@ -364,8 +366,8 @@ class OptimizedMarketDataStreamer:
             logger.warning(f"# Warning Error adding basic indicators: {e}")
             return df
 
-    async def _get_cached_data(self, symbol: str, timeframe: str, limit: int) -> Optional[pd.DataFrame]:
-        """Get data from cache with TTL checking"""
+    async def _get_cached_data(self, symbol: str, timeframe: str, limit: int) -> Optional[pd.DataFrame]
+        """Get data from cache with TTL checking"""""":
         try:
             cache_key = self._generate_cache_key(symbol, timeframe, limit)
 
@@ -398,7 +400,7 @@ class OptimizedMarketDataStreamer:
             return None
 
     async def _cache_data(self, symbol: str, timeframe: str, limit: int, data: pd.DataFrame):
-        """Cache data with compression and size management"""
+        """Cache data with compression and size management""""""
         try:
             cache_key = self._generate_cache_key(symbol, timeframe, limit)
 
@@ -417,13 +419,13 @@ class OptimizedMarketDataStreamer:
                 use_compressed = False
 
             # Create cache entry
-            entry = CacheEntry(
+            entry = CacheEntry()
                 data=compressed_data if use_compressed else data,
                 timestamp=datetime.now(),
                 ttl=self._get_ttl_for_timeframe(timeframe),
                 compressed=use_compressed,
                 data_hash=self._calculate_data_hash(data)
-            )
+(            )
 
             async with self.cache_lock:
                 # Check cache size limit
@@ -459,23 +461,23 @@ class OptimizedMarketDataStreamer:
             '4h': 14400,   # 4 hours
             '1d': 86400,   # 1 day
         }
-        return ttl_map.get(timeframe, 3600)  # Default 1 hour
+        return ttl_map.get(timeframe, 3600)  # Default 1 hour"""
 
     def _convert_timeframe(self, timeframe: str) -> str:
         """Convert timeframe to exchange format if needed"""
         # Most exchanges use the same format
-        return timeframe
+        return timeframe"""
 
-    def _compress_data(self, data: pd.DataFrame) -> Optional[bytes]:
-        """Compress DataFrame for storage"""
+    def _compress_data(self, data: pd.DataFrame) -> Optional[bytes]
+        """Compress DataFrame for storage""":"""
         try:
             return gzip.compress(pickle.dumps(data))
         except Exception as e:
             logger.warning(f"# Warning Error compressing data: {e}")
             return None
 
-    def _decompress_data(self, compressed_data: bytes) -> Optional[pd.DataFrame]:
-        """Decompress DataFrame"""
+    def _decompress_data(self, compressed_data: bytes) -> Optional[pd.DataFrame]
+        """Decompress DataFrame""":"""
         try:
             return pickle.loads(gzip.decompress(compressed_data))
         except Exception as e:
@@ -483,7 +485,7 @@ class OptimizedMarketDataStreamer:
             return None
 
     def _calculate_data_hash(self, data: pd.DataFrame) -> str:
-        """Calculate hash of data for change detection"""
+        """Calculate hash of data for change detection""""""
         try:
             data_str = str(data.values.tobytes())
             return hashlib.md5(data_str.encode()).hexdigest()
@@ -491,7 +493,7 @@ class OptimizedMarketDataStreamer:
             return ""
 
     def _update_response_time(self, response_time: float):
-        """Update average response time metric"""
+        """Update average response time metric""""""
         try:
             current_avg = self.metrics['avg_response_time']
             total_requests = self.metrics['requests_processed']
@@ -506,7 +508,7 @@ class OptimizedMarketDataStreamer:
 
     async def _cache_maintenance(self):
         """Periodic cache maintenance"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 await asyncio.sleep(300)  # 5 minutes
 
@@ -531,7 +533,7 @@ class OptimizedMarketDataStreamer:
                 logger.warning(f"# Warning Error in cache maintenance: {e}")
 
     async def _update_prefetch_patterns(self, key: str, entry: CacheEntry):
-        """Update prefetch patterns based on access patterns"""
+        """Update prefetch patterns based on access patterns""""""
         try:
             symbol, timeframe, limit = key.split('_')
 
@@ -558,14 +560,14 @@ class OptimizedMarketDataStreamer:
         except Exception as e:
             logger.warning(f"# Warning Error updating prefetch patterns: {e}")
 
-    async def _wait_for_request_result(self, request: DataRequest) -> Optional[pd.DataFrame]:
+    async def _wait_for_request_result(self, request: DataRequest) -> Optional[pd.DataFrame]
         """Wait for request result (placeholder for actual implementation)"""
         # This would be implemented with actual result passing mechanism
         await asyncio.sleep(0.1)
         return None
 
-    async def get_streaming_metrics(self) -> Dict[str, Any]:
-        """Get comprehensive streaming metrics"""
+    async def get_streaming_metrics(self) -> Dict[str, Any]
+        """Get comprehensive streaming metrics"""""":
         try:
             cache_info = await self._get_cache_info()
 
@@ -578,7 +580,7 @@ class OptimizedMarketDataStreamer:
                         'status': 'active' if exchange in self.exchanges else 'inactive',
                         'markets_loaded': len(exchange.markets) if hasattr(exchange, 'markets') else 0
                     }
-                    for name, exchange in self.exchanges.items()
+                    for name, exchange in self.exchanges.items():
                 },
                 'queue': {
                     'size': self.request_queue.qsize(),
@@ -592,8 +594,8 @@ class OptimizedMarketDataStreamer:
             logger.error(f"# X Error getting metrics: {e}")
             return {'error': str(e)}
 
-    async def _get_cache_info(self) -> Dict[str, Any]:
-        """Get cache statistics"""
+    async def _get_cache_info(self) -> Dict[str, Any]
+        """Get cache statistics"""""":
         try:
             async with self.cache_lock:
                 total_entries = len(self.cache)
@@ -617,7 +619,7 @@ class OptimizedMarketDataStreamer:
 async def test_optimized_streamer():
     """Test the optimized market data streamer"""
 
-    streamer = OptimizedMarketDataStreamer(cache_size_mb=100, max_connections=5)
+    streamer = OptimizedMarketDataStreamer(cache_size_mb=100, max_connections=5)"""
 
     if not await streamer.initialize_exchanges():
         return
@@ -631,6 +633,7 @@ async def test_optimized_streamer():
 
     for symbol in symbols:
         for timeframe in timeframes:
+            pass
 
             # First fetch (cache miss)
             start_time = time.time()
@@ -647,6 +650,7 @@ async def test_optimized_streamer():
                 print(f"   # Check Second fetch: {second_fetch_time:.2f}s (cached)")
                 print(f"   📈 Price range: {data['close'].min():.2f} - {data['close'].max():.2f}")
             else:
+                pass
 
     # Get metrics
     metrics = await streamer.get_streaming_metrics()

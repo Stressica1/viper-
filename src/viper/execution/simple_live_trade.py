@@ -18,14 +18,14 @@ import ccxt.pro as ccxt
 import pandas as pd
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - SIMPLE_TRADE - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class SimpleLiveTrader:
-    """Simple live trader for executing a test trade"""
+    """Simple live trader for executing a test trade""""""
 
     def __init__(self):
         self.api_key = os.getenv('BITGET_API_KEY')
@@ -36,7 +36,7 @@ class SimpleLiveTrader:
             raise Exception("# X Missing API credentials")
 
         # Initialize exchange
-        self.exchange = ccxt.bitget({
+        self.exchange = ccxt.bitget(})
             'apiKey': self.api_key,
             'secret': self.api_secret,
             'password': self.api_password,
@@ -46,7 +46,7 @@ class SimpleLiveTrader:
                 'adjustForTimeDifference': True,
                 'recvWindow': 60000
             }
-        })
+(        })
 
         logger.info("# Rocket Simple Live Trader initialized")
 
@@ -106,7 +106,7 @@ class SimpleLiveTrader:
             return False
 
     async def get_account_balance(self):
-        """Get account balance"""
+        """Get account balance""""""
         try:
             balance = await self.exchange.fetch_balance()
             usdt_balance = balance.get('USDT', {}).get('free', 0)
@@ -116,7 +116,7 @@ class SimpleLiveTrader:
             return 0.0
 
     async def place_order(self, symbol, side, size, price):
-        """Place a market order"""
+        """Place a market order""""""
 
         try:
             # Calculate leverage (5x for conservative trading)
@@ -129,13 +129,13 @@ class SimpleLiveTrader:
 
             # Try market order with minimal parameters
             try:
-                order = await self.exchange.create_order(
+                order = await self.exchange.create_order()
                     symbol=symbol,
                     type='market',
                     side=side,
                     amount=size,
                     params=params
-                )
+(                )
             except Exception as e:
                 # If market order fails, try limit order
                 logger.warning(f"Market order failed, trying limit order: {e}")
@@ -145,14 +145,14 @@ class SimpleLiveTrader:
                 else:
                     limit_price = price * 0.9999
 
-                order = await self.exchange.create_order(
+                order = await self.exchange.create_order()
                     symbol=symbol,
                     type='limit',
                     side=side,
                     amount=size,
                     price=limit_price,
                     params=params
-                )
+(                )
 
             logger.info(f"Order placed: {order}")
             return order
@@ -199,6 +199,7 @@ async def main():
         print("   2. Monitor the trade manually if needed")
         print("   3. The system will continue monitoring")
     else:
+        pass
 
 if __name__ == "__main__":
     asyncio.run(main())

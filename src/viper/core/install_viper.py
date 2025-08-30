@@ -6,6 +6,7 @@ This script automates the complete installation and configuration of VIPER.
 Just run: python setup.py
 
 Features:
+    pass
 - # Check Automatic dependency installation
 - # Check Environment configuration
 - # Check Docker setup and validation
@@ -23,7 +24,7 @@ import urllib.request
 import shutil
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-import getpass
+import getpass"""
 
 class Colors:
     """ANSI color codes for terminal output"""
@@ -35,10 +36,10 @@ class Colors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+    UNDERLINE = '\033[4m'"""
 
 class VIPERSetup:
-    """VIPER Trading Bot automated setup manager"""
+    """VIPER Trading Bot automated setup manager""""""
     
     def __init__(self):
         self.root_dir = Path(__file__).parent
@@ -58,10 +59,11 @@ Ultra High-Performance Algorithmic Trading Platform
 The process typically takes 3-5 minutes.{Colors.ENDC}
 
 {Colors.WARNING}Prerequisites:
+    pass
 - Docker Desktop installed and running
 - Python 3.11+ installed
 - Stable internet connection{Colors.ENDC}
-""")
+""")"""
 
     def check_prerequisites(self) -> bool:
         """Check if all prerequisites are met"""
@@ -168,6 +170,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
             if not env_file.exists():
                 shutil.copy2(env_template, env_file)
             else:
+                pass
             
             return True
             
@@ -205,6 +208,7 @@ The process typically takes 3-5 minutes.{Colors.ENDC}
 You can skip this step and configure later if you want to test with demo data first.{Colors.ENDC}
 
 {Colors.WARNING}To get Bitget API keys:
+    pass
 1. Go to https://www.bitget.com/en/account/newapi
 2. Create a new API key
 3. Enable: Read Info, Spot Trading, Futures Trading
@@ -255,7 +259,8 @@ You can skip this step and configure later if you want to test with demo data fi
             
             # Test environment loading
             try:
-                from dotenv import load_dotenv
+from dotenv import load_dotenv
+
                 load_dotenv()
             except Exception as e:
                 return False
@@ -303,13 +308,14 @@ You can skip this step and configure later if you want to test with demo data fi
 - View Docker logs: docker-compose -f infrastructure/docker-compose.yml logs
 
 {Colors.WARNING}# Warning Safety Reminder:
+    pass
 - Start with paper trading
 - Test thoroughly before live trading  
 - Never risk more than you can afford to lose
 - Keep your API keys secure{Colors.ENDC}
 
 {Colors.HEADER}Happy Trading with VIPER! # Rocket{Colors.ENDC}
-""")
+""")"""
     
     def run_setup(self):
         """Run the complete setup process"""
@@ -327,7 +333,6 @@ You can skip this step and configure later if you want to test with demo data fi
         
         print(f"\n{Colors.BOLD}Setup Progress:{Colors.ENDC}")
         for i, (name, _) in enumerate(steps, 1):
-        
         # Execute setup steps
         for i, (step_name, step_func) in enumerate(steps, 1):
             print(f"\n{Colors.BOLD}Step {i}/{len(steps)}: {step_name}{Colors.ENDC}")
@@ -350,7 +355,7 @@ You can skip this step and configure later if you want to test with demo data fi
         return True
 
 def main():
-    """Main setup function"""
+    """Main setup function""""""
     try:
         setup = VIPERSetup()
         success = setup.run_setup()

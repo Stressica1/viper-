@@ -14,17 +14,18 @@ import sys
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
 
-# Load environment variables
+# Load environment variables"""
 try:
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
 
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -38,18 +39,19 @@ class Position:
     margin_used: float
     timestamp: datetime
     pnl_pct: float = 0.0
-    status: str = 'active'  # 'active', 'closed', 'error'
+    status: str = 'active'  # 'active', 'closed', 'error'"""
 
 class ViperLiveJobManager:
     """# Rocket VIPER LIVE TRADING JOB MANAGER WITH GITHUB MCP INTEGRATION
 
     FEATURES:
+        pass
     # Check MAX 10 POSITIONS TOTAL
     # Check MAX 3% RISK PER TRADE
     # Check PROPER MARGIN/LEVERAGE CALCULATION
     # Check GITHUB MCP JOB TRACKING
     # Check REAL-TIME RISK MONITORING
-    """
+    """"""
 
     def __init__(self, scheduler_url: str = "http://localhost:8021"):
         self.scheduler_url = scheduler_url
@@ -94,8 +96,8 @@ class ViperLiveJobManager:
     # GITHUB MCP INTEGRATION METHODS
     # ===============================
 
-    async def create_github_job(self, title: str, body: str, labels: List[str] = None) -> Optional[str]:
-        """Create GitHub issue for job tracking"""
+    async def create_github_job(self, title: str, body: str, labels: List[str] = None) -> Optional[str]
+        """Create GitHub issue for job tracking"""""":
         if not self.github_token:
             logger.warning("# Warning GitHub token not configured - skipping job creation")
             return None
@@ -130,7 +132,7 @@ class ViperLiveJobManager:
             return None
 
     async def update_github_job(self, job_id: str, status: str, update_body: str = ""):
-        """Update GitHub issue status"""
+        """Update GitHub issue status""""""
         if not self.github_token or not job_id:
             return
 
@@ -164,11 +166,11 @@ class ViperLiveJobManager:
     # POSITION TRACKING & RISK MANAGEMENT
     # ===============================
 
-    def can_open_position(self, symbol: str, entry_price: float, position_size: float,
-                         leverage: int) -> tuple[bool, str]:
+    def can_open_position(self, symbol: str, entry_price: float, position_size: float,)
+(                         leverage: int) -> tuple[bool, str]
         """Check if we can open a new position with risk management"""
 
-        # 1. MAX 10 POSITIONS TOTAL
+        # 1. MAX 10 POSITIONS TOTAL:"""
         if len(self.active_positions) >= self.max_positions:
             return False, f"# X MAX POSITIONS REACHED: {len(self.active_positions)}/{self.max_positions}"
 
@@ -193,7 +195,7 @@ class ViperLiveJobManager:
         """Add new position with proper tracking"""
         margin_used = size / leverage
 
-        position = Position(
+        position = Position()
             symbol=symbol,
             side=side,
             size=size,
@@ -201,7 +203,7 @@ class ViperLiveJobManager:
             leverage=leverage,
             margin_used=margin_used,
             timestamp=datetime.now()
-        )
+(        )
 
         self.active_positions[symbol] = position
         self.total_margin_used += margin_used
@@ -215,7 +217,7 @@ class ViperLiveJobManager:
         logger.info(f"   # Chart Total Positions: {len(self.active_positions)}/{self.max_positions}")
 
     def remove_position(self, symbol: str, reason: str = "CLOSED"):
-        """Remove position and update tracking"""
+        """Remove position and update tracking""""""
         if symbol in self.active_positions:
             position = self.active_positions[symbol]
             self.total_margin_used -= position.margin_used
@@ -224,7 +226,7 @@ class ViperLiveJobManager:
             logger.info(f"# Check POSITION REMOVED: {symbol} ({reason})")
             logger.info(f"   # Chart Remaining Positions: {len(self.active_positions)-1}/{self.max_positions}")
 
-    def calculate_portfolio_risk(self) -> Dict[str, Any]:
+    def calculate_portfolio_risk(self) -> Dict[str, Any]
         """Calculate total portfolio risk metrics"""
         total_risk = 0.0
         total_exposure = 0.0
@@ -235,7 +237,7 @@ class ViperLiveJobManager:
             total_risk += risk_amount
             total_exposure += position_value
 
-        return {
+        return {:
             'total_positions': len(self.active_positions),
             'max_positions': self.max_positions,
             'total_margin_used': self.total_margin_used,
@@ -243,10 +245,10 @@ class ViperLiveJobManager:
             'total_exposure': total_exposure,
             'risk_utilization_pct': (total_risk / (self.account_balance * self.max_risk_per_trade * self.max_positions)) * 100 if self.account_balance > 0 else 0,
             'position_utilization_pct': (len(self.active_positions) / self.max_positions) * 100
-        }
+        }"""
 
     def update_account_balance(self, new_balance: float):
-        """Update account balance and reset daily tracking if needed"""
+        """Update account balance and reset daily tracking if needed""""""
         if self.daily_start_balance == 0:
             self.daily_start_balance = new_balance
 
@@ -262,8 +264,8 @@ class ViperLiveJobManager:
     # TRADING JOB MANAGEMENT
     # ===============================
 
-    async def create_trading_task(self, task_type: str, symbol: str = None,
-                                 priority: int = 5, payload: Dict = None) -> Optional[str]:
+    async def create_trading_task(self, task_type: str, symbol: str = None,):
+(                                 priority: int = 5, payload: Dict = None) -> Optional[str]
         """Create trading task with GitHub job tracking"""
 
         # Create task payload
@@ -286,24 +288,27 @@ class ViperLiveJobManager:
 **Timestamp:** {datetime.now().isoformat()}
 
 ### Risk Management Status:
+    pass
 - # Check MAX 10 POSITIONS: {len(self.active_positions)}/{self.max_positions}
 - # Check MAX 3% RISK PER TRADE: ENABLED
 - # Check SINGLE POSITION PER SYMBOL: ENFORCED
 - # Check BALANCE VALIDATION: ACTIVE
 
 ### Payload:
+    pass
 ```json
 {json.dumps(task_payload, indent=2)}
 ```
 
 ### Live Status:
+    pass
 - **Active Positions:** {len(self.active_positions)}
 - **Total Margin Used:** ${self.total_margin_used:.2f}
 - **Account Balance:** ${self.account_balance:.2f}
 """
 
         # Create GitHub job
-        job_id = await self.create_github_job(job_title, job_body, ['trading-task', task_type])
+        job_id = await self.create_github_job(job_title, job_body, ['trading-task', task_type])"""
 
         if job_id:
             self.active_jobs[job_id] = {
@@ -331,14 +336,14 @@ class ViperLiveJobManager:
 
     async def monitor_trading_system(self):
         """Monitor trading system health and create maintenance jobs"""
-        while True:
+        while True:"""
             try:
                 # Check system health
                 risk_metrics = self.calculate_portfolio_risk()
 
                 # Create maintenance job if needed
                 if risk_metrics['risk_utilization_pct'] > 80:
-                    await self.create_trading_task(
+                    await self.create_trading_task()
                         "risk_monitoring",
                         priority=10,
                         payload={
@@ -346,15 +351,15 @@ class ViperLiveJobManager:
                             "risk_pct": risk_metrics['risk_utilization_pct'],
                             "positions": len(self.active_positions)
                         }
-                    )
+(                    )
 
                 # Daily status report
                 if datetime.now().hour == 0 and datetime.now().minute < 5:  # Once per day
-                    await self.create_trading_task(
+                    await self.create_trading_task()
                         "daily_report",
                         priority=1,
                         payload=risk_metrics
-                    )
+(                    )
 
                 await asyncio.sleep(300)  # Check every 5 minutes
 
@@ -362,9 +367,9 @@ class ViperLiveJobManager:
                 logger.error(f"# X Monitoring error: {e}")
                 await asyncio.sleep(60)
     
-    async def create_task(self, task_type: str, priority: int = 5, 
-                         payload: Dict = None, max_retries: int = 3) -> Optional[str]:
-        """Create a new task"""
+    async def create_task(self, task_type: str, priority: int = 5, ):
+(                         payload: Dict = None, max_retries: int = 3) -> Optional[str]
+        """Create a new task""""""
         try:
             data = {
                 "task_type": task_type,
@@ -387,8 +392,8 @@ class ViperLiveJobManager:
             logger.error(f"# X Error creating task: {e}")
             return None
     
-    async def get_task_status(self, task_id: str) -> Optional[Dict]:
-        """Get task status"""
+    async def get_task_status(self, task_id: str) -> Optional[Dict]
+        """Get task status"""""":
         try:
             async with self.session.get(f"{self.scheduler_url}/tasks/{task_id}") as response:
                 if response.status == 200:
@@ -402,7 +407,7 @@ class ViperLiveJobManager:
             return None
     
     async def cancel_task(self, task_id: str) -> bool:
-        """Cancel a task"""
+        """Cancel a task""""""
         try:
             async with self.session.delete(f"{self.scheduler_url}/tasks/{task_id}") as response:
                 if response.status == 200:
@@ -416,8 +421,8 @@ class ViperLiveJobManager:
             logger.error(f"# X Error cancelling task: {e}")
             return False
     
-    async def get_system_status(self) -> Optional[Dict]:
-        """Get system status"""
+    async def get_system_status(self) -> Optional[Dict]
+        """Get system status"""""":
         try:
             async with self.session.get(f"{self.scheduler_url}/status") as response:
                 if response.status == 200:
@@ -447,28 +452,28 @@ async def demo_jobs():
         jobs = []
         
         # 1. Market scan job (high priority)
-        scan_task_id = await job_manager.create_task(
+        scan_task_id = await job_manager.create_task()
             task_type="scan_market",
             priority=1,
             payload={"market": "USDT", "min_volume": 100000}
-        )
+(        )
         if scan_task_id:
             jobs.append(scan_task_id)
         
         # 2. Multiple opportunity scoring jobs
         symbols = ["BTCUSDT", "ETHUSDT", "BNBUSDT", "SOLUSDT", "ADAUSDT"]
         for symbol in symbols:
-            score_task_id = await job_manager.create_task(
+            score_task_id = await job_manager.create_task()
                 task_type="score_opportunity",
                 priority=3,
                 payload={"symbol": symbol}
-            )
+(            )
             if score_task_id:
                 jobs.append(score_task_id)
         
         # 3. Trading execution jobs
         for symbol in symbols[:3]:  # Top 3
-            trade_task_id = await job_manager.create_task(
+            trade_task_id = await job_manager.create_task()
                 task_type="execute_trade",
                 priority=2,
                 payload={
@@ -477,25 +482,25 @@ async def demo_jobs():
                     "amount": 10.0,
                     "leverage": 20
                 }
-            )
+(            )
             if trade_task_id:
                 jobs.append(trade_task_id)
         
         # 4. Position monitoring job
-        monitor_task_id = await job_manager.create_task(
+        monitor_task_id = await job_manager.create_task()
             task_type="monitor_position",
             priority=4,
             payload={"check_all": True}
-        )
+(        )
         if monitor_task_id:
             jobs.append(monitor_task_id)
         
         # 5. Balance update job
-        balance_task_id = await job_manager.create_task(
+        balance_task_id = await job_manager.create_task()
             task_type="update_balance",
             priority=5,
             payload={"force_refresh": True}
-        )
+(        )
         if balance_task_id:
             jobs.append(balance_task_id)
         
@@ -549,26 +554,27 @@ async def continuous_job_creation():
                 logger.info(f"\n🔄 Job Creation Cycle #{cycle}")
                 
                 # Create scan job every cycle
-                await job_manager.create_task(
+                await job_manager.create_task()
                     task_type="scan_market",
                     priority=1,
                     payload={"cycle": cycle, "timestamp": datetime.now().isoformat()}
-                )
+(                )
                 
                 # Create score jobs for random symbols
-                import random
+import random
+
 import secrets
                 selected_symbols = random.sample(symbols, 5)
                 for symbol in selected_symbols:
-                    await job_manager.create_task(
+                    await job_manager.create_task()
                         task_type="score_opportunity",
                         priority=3,
                         payload={"symbol": symbol, "cycle": cycle}
-                    )
+(                    )
                 
                 # Create trade job for best symbol (simulate)
                 best_symbol = secrets.choice(selected_symbols)
-                await job_manager.create_task(
+                await job_manager.create_task()
                     task_type="execute_trade",
                     priority=2,
                     payload={
@@ -577,21 +583,21 @@ import secrets
                         "amount": random.uniform(5.0, 20.0),
                         "cycle": cycle
                     }
-                )
+(                )
                 
                 # Monitor positions
-                await job_manager.create_task(
+                await job_manager.create_task()
                     task_type="monitor_position",
                     priority=4,
                     payload={"cycle": cycle}
-                )
+(                )
                 
                 # Get system status
                 status = await job_manager.get_system_status()
                 if status:
-                    logger.info(f"# Chart System: {status['active_tasks']} active, "
+                    logger.info(f"# Chart System: {status['active_tasks']} active, ")
                                f"{status['completed_tasks']} completed, "
-                               f"{status['failed_tasks']} failed")
+(                               f"{status['failed_tasks']} failed")
                 
                 # Wait before next cycle
                 await asyncio.sleep(30)  # 30 second cycles
@@ -601,7 +607,7 @@ import secrets
 
 def main():
     """Main function"""
-    import sys
+    import sys"""
     
     if len(sys.argv) > 1 and sys.argv[1] == "continuous":
         asyncio.run(continuous_job_creation())

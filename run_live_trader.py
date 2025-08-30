@@ -68,6 +68,7 @@ class MultiPairVIPERTrader:
         self.position_adoption_system.on_position_adopted = self._on_position_adopted
         self.position_adoption_system.on_position_closed = self._on_position_closed
         self.position_adoption_system.on_position_updated = self._on_position_updated
+        
     def connect(self):
         """Connect to Bitget and load ALL available pairs"""
         try:
@@ -228,7 +229,7 @@ class MultiPairVIPERTrader:
                 recent_low = min(closes_5m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
-                if current_price > recent_low * 1.005:  # Much more flexible
+                if current_price > recent_low * 1.005:  # Much more flexible:
                     logger.info(f"📈 {symbol}: BULLISH SIGNAL - Primary:{primary_trend}, Secondary:{secondary_trend} - Entry at ${current_price}")
                     return 'BUY'
 
@@ -238,7 +239,7 @@ class MultiPairVIPERTrader:
                 recent_low = min(closes_5m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
-                if current_price < recent_high * 0.995:  # Much more flexible
+                if current_price < recent_high * 0.995:  # Much more flexible:
                     logger.info(f"📉 {symbol}: BEARISH SIGNAL - Primary:{primary_trend}, Secondary:{secondary_trend} - Entry at ${current_price}")
                     return 'SELL'
 
@@ -321,13 +322,13 @@ class MultiPairVIPERTrader:
         ma_diff = (short_ma - long_ma) / long_ma * 100  # Percentage difference
 
         # Trend strength based on MA separation (more sensitive)
-        if ma_diff > 0.2:  # Lower threshold for bullish
-            if current_price > short_ma * 1.002:  # More flexible
+        if ma_diff > 0.2:  # Lower threshold for bullish:
+            if current_price > short_ma * 1.002:  # More flexible:
                 return 'BULLISH'
             else:
                 return 'WEAK_BULLISH'
-        elif ma_diff < -0.2:  # Lower threshold for bearish
-            if current_price < short_ma * 0.998:  # More flexible
+        elif ma_diff < -0.2:  # Lower threshold for bearish:
+            if current_price < short_ma * 0.998:  # More flexible:
                 return 'BEARISH'
             else:
                 return 'WEAK_BEARISH'
@@ -402,7 +403,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"💰 FIXED: $1 Margin × {coin_max_leverage}x Leverage = ${notional_value_usdt:.2f} Notional | Account: ${usdt_balance:.2f}")
 
                 # Final safety check: ensure notional value doesn't exceed account balance
-                if notional_value_usdt > usdt_balance * 0.5:  # Max 50% of account as notional
+                if notional_value_usdt > usdt_balance * 0.5:  # Max 50% of account as notional:
                     # Recalculate with safer margin but keep $1 minimum
                     if usdt_balance >= 1.0:
                         margin_value_usdt = max(1.0, usdt_balance * 0.02)  # Minimum $1 or 2% of balance
@@ -443,55 +444,56 @@ class MultiPairVIPERTrader:
 
             # Execute order with proper Bitget unilateral position parameters
             try:
-            if signal == 'BUY':
-                order = self.exchange.create_market_buy_order(
-                    symbol,
-                    position_size,
-                    params={
-                        'leverage': coin_max_leverage,  # Use coin's max leverage
-                        'marginMode': 'isolated',
-                        'tradeSide': 'open'  # Open position for unilateral mode
-                    }
-                )
-            elif signal == 'SELL':
-                order = self.exchange.create_market_sell_order(
-                    symbol,
-                    position_size,
-                    params={
-                        'leverage': coin_max_leverage,  # Use coin's max leverage
-                        'marginMode': 'isolated',
-                        'tradeSide': 'open'  # Open position for unilateral mode
-                    }
-                )
+                if signal == 'BUY':
+                    order = self.exchange.create_market_buy_order(
+                        symbol,
+                        position_size,
+                        params={
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
+                            'marginMode': 'isolated',
+                            'tradeSide': 'open'  # Open position for unilateral mode
+                        }
+                    )
+                elif signal == 'SELL':
+                    order = self.exchange.create_market_sell_order(
+                        symbol,
+                        position_size,
+                        params={
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
+                            'marginMode': 'isolated',
+                            'tradeSide': 'open'  # Open position for unilateral mode
+                        }
+                    )
 
             except Exception as e:
                 logger.error(f"❌ Trade execution error for {symbol}: {e}")
                 return None
-            else:
+
+            # Log successful execution
             logger.info(f"✅ Trade executed: {order['id']}")
 
-                # SET TAKE-PROFIT AND STOP-LOSS ORDERS
-                try:
-                    entry_price = order.get('price', current_price)
-                    logger.info(f"📊 Entry price for {symbol}: ${entry_price}")
+            # SET TAKE-PROFIT AND STOP-LOSS ORDERS
+            try:
+                entry_price = order.get('price', current_price)
+                logger.info(f"📊 Entry price for {symbol}: ${entry_price}")
 
-                    # Calculate TP/SL prices
-                    if signal == 'BUY':
-                        tp_price = entry_price * (1 + self.take_profit_pct / 100)
-                        sl_price = entry_price * (1 - self.stop_loss_pct / 100)
-                        tp_side = 'sell'  # Close long position at profit
-                        sl_side = 'sell'  # Close long position at loss
-                    else:  # SELL signal
-                        tp_price = entry_price * (1 - self.take_profit_pct / 100)
-                        sl_price = entry_price * (1 + self.stop_loss_pct / 100)
-                        tp_side = 'buy'   # Close short position at profit
-                        sl_side = 'buy'   # Close short position at loss
+                # Calculate TP/SL prices
+                if signal == 'BUY':
+                    tp_price = entry_price * (1 + self.take_profit_pct / 100)
+                    sl_price = entry_price * (1 - self.stop_loss_pct / 100)
+                    tp_side = 'sell'  # Close long position at profit
+                    sl_side = 'sell'  # Close long position at loss
+                else:  # SELL signal
+                    tp_price = entry_price * (1 - self.take_profit_pct / 100)
+                    sl_price = entry_price * (1 + self.stop_loss_pct / 100)
+                    tp_side = 'buy'   # Close short position at profit
+                    sl_side = 'buy'   # Close short position at loss
 
-                    logger.info(f"🎯 TP/SL for {symbol}:")
-                    logger.info(f"   Take Profit: ${tp_price:.6f} ({self.take_profit_pct}%)")
-                    logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
+                logger.info(f"🎯 TP/SL for {symbol}:")
+                logger.info(f"   Take Profit: ${tp_price:.6f} ({self.take_profit_pct}%)")
+                logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
 
-                    # Create Take-Profit order
+                # Create Take-Profit order
                     tp_order = self.exchange.create_limit_order(
                         symbol,
                         tp_side,
@@ -502,8 +504,7 @@ class MultiPairVIPERTrader:
                             'marginMode': 'isolated',
                             'tradeSide': 'close',
                             'reduceOnly': True
-                        }
-                    )
+                        })
                     logger.info(f"✅ Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
                     # VERIFY TP ORDER WAS PLACED
@@ -528,8 +529,7 @@ class MultiPairVIPERTrader:
                             'marginMode': 'isolated',
                             'tradeSide': 'close',
                             'reduceOnly': True
-                        }
-                    )
+                        })
                     logger.info(f"🛡️ Stop-Loss order placed: {sl_order.get('id', 'N/A')}")
 
                     # VERIFY SL ORDER WAS PLACED
@@ -600,7 +600,7 @@ class MultiPairVIPERTrader:
 
                         # Create Take-Profit order
                         tp_order = self.exchange.create_limit_order(
-                            symbol,
+                        symbol,
                             tp_side,
                             position_size,
                             tp_price,
@@ -609,13 +609,12 @@ class MultiPairVIPERTrader:
                                 'marginMode': 'isolated',
                                 'tradeSide': 'close',
                                 'reduceOnly': True
-                            }
-                        )
+                            })
                         logger.info(f"✅ Alternative Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
                         # Create Stop-Loss order
                         sl_order = self.exchange.create_limit_order(
-                            symbol,
+                        symbol,
                             sl_side,
                             position_size,
                             sl_price,
@@ -624,8 +623,7 @@ class MultiPairVIPERTrader:
                                 'marginMode': 'isolated',
                                 'tradeSide': 'close',
                                 'reduceOnly': True
-                            }
-                        )
+                            })
                         logger.info(f"🛡️ Alternative Stop-Loss order placed: {sl_order.get('id', 'N/A')}")
 
                     except Exception as alt_tp_sl_error:
@@ -667,12 +665,12 @@ class MultiPairVIPERTrader:
                 # Calculate confidence based on signal strength
                 confidence = self.calculate_signal_confidence(symbol, signal)
 
-                opportunities.append({
+                opportunities.append())
                     'symbol': symbol,
                     'signal': signal,
                     'confidence': confidence,
                     'timestamp': time.time()
-                })
+(                })
                 logger.info(f"📊 Found opportunity: {symbol} -> {signal} (confidence: {confidence:.2f})")
 
         logger.info(f"✅ Scan complete - {len(opportunities)} opportunities found")
@@ -714,8 +712,8 @@ class MultiPairVIPERTrader:
             # Check for momentum confirmation
             if self.detect_momentum_signal([candle[4] for candle in ohlcv_5m]):
                 momentum_signal = self.detect_momentum_signal([candle[4] for candle in ohlcv_5m])
-                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \
-                   (signal == 'SELL' and momentum_signal == 'STRONG_BEAR'):
+                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \:
+                    (signal == 'SELL' and momentum_signal == 'STRONG_BEAR')
                     confidence += 0.1  # Boost for momentum confirmation
 
             return min(confidence, 1.0)  # Cap at 100%
@@ -952,7 +950,7 @@ class MultiPairVIPERTrader:
         symbol = position_record['symbol']
         pnl = position_record.get('unrealized_pnl', 0)
 
-        # Update our tracking if we have this position
+        # Update our tracking if we have this position"""
         if symbol in self.active_positions:
             self.active_positions[symbol]['pnl'] = pnl
             self.active_positions[symbol]['last_updated'] = time.time()
@@ -1006,8 +1004,8 @@ class MultiPairVIPERTrader:
 
             # Get positions sorted by age (oldest first) to close oldest ones
             positions_to_close = []
-            for symbol, position_data in sorted(self.active_positions.items(),
-                                              key=lambda x: x[1].get('timestamp', 0)):
+            for symbol, position_data in sorted(self.active_positions.items(),:
+(                                              key=lambda x: x[1].get('timestamp', 0))
                 if len(positions_to_close) < excess_positions:
                     positions_to_close.append(symbol)
 
@@ -1019,7 +1017,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"🔄 Closing excess position: {symbol}")
                 try:
                     result = self.close_position(symbol, "position_limit_enforcement")
-                    if result:  # close_position now returns boolean directly
+                    if result:  # close_position now returns boolean directly:
                         closed_count += 1
                         logger.info(f"✅ Successfully closed {symbol}")
                     else:

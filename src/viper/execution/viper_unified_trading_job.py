@@ -4,6 +4,7 @@
 Fixed async OHLCV fetching with comprehensive risk management
 
 This job provides:
+    pass
 - Fixed async OHLCV data fetching (no coroutine errors)
 - Multi-pair scanning across all qualified symbols
 - 2% risk management per trade (distributed across pairs)
@@ -32,20 +33,26 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - VIPER_UNIFIED - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
-# Import enhanced system components
+# Import enhanced system components"""
 try:
-    from enhanced_system_integrator import get_integrator, initialize_enhanced_system
-    from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
-    from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
-    from enhanced_risk_manager import EnhancedRiskManager
-    from optimized_market_data_streamer import OptimizedMarketDataStreamer
-    from performance_monitoring_system import PerformanceMonitoringSystem
+from enhanced_system_integrator import get_integrator, initialize_enhanced_system
+
+from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
+
+from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
+
+from enhanced_risk_manager import EnhancedRiskManager
+
+from optimized_market_data_streamer import OptimizedMarketDataStreamer
+
+from performance_monitoring_system import PerformanceMonitoringSystem
+
     ENHANCED_MODULES_AVAILABLE = True
     logger.info("# Check Enhanced modules imported successfully")
 except ImportError as e:
@@ -55,7 +62,7 @@ except ImportError as e:
 class VIPERUnifiedTradingJob:
     """
     Complete multi-pair trading job with fixed async OHLCV handling
-    """
+    """"""
 
     def __init__(self, config_path: Optional[str] = None):
         self.config_path = config_path or Path(__file__).parent / ".env"
@@ -86,7 +93,7 @@ class VIPERUnifiedTradingJob:
         logger.info("# Check VIPER Unified Trading Job initialized successfully")
 
     def _initialize_components(self):
-        """Initialize all trading components with enhanced modules support"""
+        """Initialize all trading components with enhanced modules support""""""
         try:
             # Initialize enhanced system integrator if available
             if ENHANCED_MODULES_AVAILABLE:
@@ -122,12 +129,13 @@ class VIPERUnifiedTradingJob:
             self._initialize_basic_components()
 
     def _initialize_basic_components(self):
-        """Initialize basic trading components (fallback)"""
+        """Initialize basic trading components (fallback)""""""
         try:
             # Import and initialize core components
-            from utils.mathematical_validator import MathematicalValidator
-            from config.optimal_mcp_config import get_optimal_mcp_config
-            from scripts.optimal_entry_point_manager import OptimalEntryPointManager
+    from utils.mathematical_validator import MathematicalValidator
+    from config.optimal_mcp_config import get_optimal_mcp_config
+from scripts.optimal_entry_point_manager import OptimalEntryPointManager
+
 
             self.math_validator = MathematicalValidator()
             self.mcp_config = get_optimal_mcp_config()
@@ -140,7 +148,7 @@ class VIPERUnifiedTradingJob:
             raise
 
     def _load_configuration(self):
-        """Load comprehensive trading configuration with enhanced system support"""
+        """Load comprehensive trading configuration with enhanced system support""""""
         try:
             # Load enhanced system configuration if available
             enhanced_config = {}
@@ -201,7 +209,7 @@ class VIPERUnifiedTradingJob:
             raise
 
     def _setup_exchange(self):
-        """Setup exchange connection for live trading"""
+        """Setup exchange connection for live trading""""""
         try:
             api_key = os.getenv('BITGET_API_KEY')
             api_secret = os.getenv('BITGET_API_SECRET')
@@ -234,7 +242,7 @@ class VIPERUnifiedTradingJob:
             raise
 
     def _discover_all_pairs(self):
-        """Discover ALL available swap pairs"""
+        """Discover ALL available swap pairs""""""
         try:
             logger.info("# Search Discovering ALL Bitget swap pairs...")
 
@@ -244,10 +252,9 @@ class VIPERUnifiedTradingJob:
             # Filter for active swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
-                if (market.get('active', False) and:
+                if (market.get('active', False) and):
                     market.get('type') == 'swap' and
-                    market.get('quote') == 'USDT'):
-
+(                    market.get('quote') == 'USDT')
                     pair_info = {
                         'symbol': symbol,
                         'base': market.get('base'),
@@ -270,7 +277,7 @@ class VIPERUnifiedTradingJob:
             raise
 
     def _filter_pairs_by_criteria(self):
-        """Filter pairs based on volume, leverage, and other criteria"""
+        """Filter pairs based on volume, leverage, and other criteria""""""
         try:
             logger.info("# Search Filtering pairs by trading criteria...")
             logger.info(f"# Target Total pairs to filter: {len(self.all_pairs)}")
@@ -364,7 +371,7 @@ class VIPERUnifiedTradingJob:
                 self.active_pairs = []
 
     def _setup_signal_handlers(self):
-        """Setup signal handlers for graceful shutdown"""
+        """Setup signal handlers for graceful shutdown""""""
         def signal_handler(signum, frame):
             logger.info("🛑 Received shutdown signal")
             self.stop()
@@ -373,7 +380,7 @@ class VIPERUnifiedTradingJob:
         signal.signal(signal.SIGTERM, signal_handler)
 
     def start(self):
-        """Start the unified trading job"""
+        """Start the unified trading job""""""
         if self.is_running:
             logger.warning("Unified trading job already running")
             return
@@ -451,7 +458,7 @@ class VIPERUnifiedTradingJob:
                 logger.error(f"Scanning loop error: {e}")
                 await asyncio.sleep(60)  # Wait 1 minute on error
 
-    async def _scan_all_pairs_batch_fixed(self, batch_size: int) -> List[Dict[str, Any]]:
+    async def _scan_all_pairs_batch_fixed(self, batch_size: int) -> List[Dict[str, Any]]
         """Scan all active pairs in batches with fixed async handling"""
         opportunities = []
         total_pairs = len(self.active_pairs)
@@ -472,17 +479,17 @@ class VIPERUnifiedTradingJob:
 
         return opportunities
 
-    async def _scan_pairs_batch_fixed(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    async def _scan_pairs_batch_fixed(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]
         """Scan a batch of pairs concurrently with fixed async handling"""
-        opportunities = []
-
+        opportunities = []"""
+:
         try:
             # Use ThreadPoolExecutor for concurrent scanning
             with ThreadPoolExecutor(max_workers=min(len(pairs_batch), 10)) as executor:
                 # Submit all pair scans
                 future_to_pair = {
                     executor.submit(self._scan_single_pair_fixed, pair): pair
-                    for pair in pairs_batch
+                    for pair in pairs_batch:
                 }
 
                 # Collect results
@@ -500,8 +507,8 @@ class VIPERUnifiedTradingJob:
 
         return opportunities
 
-    def _scan_single_pair_fixed(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-        """Scan a single pair with FIXED async OHLCV handling"""
+    def _scan_single_pair_fixed(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]
+        """Scan a single pair with FIXED async OHLCV handling""":"""
         try:
             symbol = pair['symbol']
 
@@ -532,8 +539,8 @@ class VIPERUnifiedTradingJob:
 
         return None
 
-    def _get_market_data_fixed(self, symbol: str) -> Optional[Dict[str, Any]]:
-        """Get market data with FIXED async OHLCV handling"""
+    def _get_market_data_fixed(self, symbol: str) -> Optional[Dict[str, Any]]
+        """Get market data with FIXED async OHLCV handling""":"""
         try:
             # Get ticker data
             ticker = self.exchange.fetch_ticker(symbol)
@@ -629,7 +636,7 @@ class VIPERUnifiedTradingJob:
             return None
 
     def _calculate_rsi_fixed(self, prices: List[float], period: int = 14) -> float:
-        """Calculate RSI indicator (fixed version)"""
+        """Calculate RSI indicator (fixed version)""""""
         try:
             if len(prices) < period + 1:
                 return 50.0
@@ -662,7 +669,7 @@ class VIPERUnifiedTradingJob:
             return 50.0
 
     def _calculate_macd_fixed(self, prices: List[float], fast_period: int = 12, slow_period: int = 26, signal_period: int = 9):
-        """Calculate MACD indicator (fixed version)"""
+        """Calculate MACD indicator (fixed version)""""""
         try:
             if len(prices) < slow_period:
                 return 0.0, 0.0
@@ -680,7 +687,7 @@ class VIPERUnifiedTradingJob:
             return 0.0, 0.0
 
     def _calculate_ema_fixed(self, prices: List[float], period: int) -> float:
-        """Calculate EMA (fixed version)"""
+        """Calculate EMA (fixed version)""""""
         try:
             if len(prices) < period:
                 return np.mean(prices)
@@ -688,7 +695,7 @@ class VIPERUnifiedTradingJob:
             multiplier = 2 / (period + 1)
             ema = prices[0]
 
-            for price in prices[1:]:
+            for price in prices[1:]
                 ema = (price * multiplier) + (ema * (1 - multiplier))
 
             return ema
@@ -697,10 +704,10 @@ class VIPERUnifiedTradingJob:
             logger.error(f"EMA calculation error: {e}")
             return np.mean(prices)
 
-    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
         """Score trading opportunities using VIPER system"""
         scored_opportunities = []
-
+:"""
         try:
             for opp in opportunities:
                 try:
@@ -729,8 +736,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Opportunity scoring failed: {e}")
             return []
 
-    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
-        """Calculate VIPER scores for opportunity with enhanced AI/ML support"""
+    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
+        """Calculate VIPER scores for opportunity with enhanced AI/ML support""":"""
         try:
             market_data = opportunity.get('market_data', {})
             symbol = opportunity.get('symbol', '')
@@ -746,8 +753,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"VIPER scoring error: {e}")
             return {'volume': 0, 'price': 0, 'leverage': 0, 'technical': 0, 'risk': 0, 'ai_ml': 0}
 
-    def _calculate_enhanced_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
-        """Calculate VIPER scores using enhanced AI/ML modules"""
+    def _calculate_enhanced_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
+        """Calculate VIPER scores using enhanced AI/ML modules""":"""
         try:
             market_data = opportunity.get('market_data', {})
             symbol = opportunity.get('symbol', '')
@@ -813,8 +820,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Enhanced VIPER scoring error: {e}")
             return self._calculate_basic_viper_scores(opportunity)
 
-    def _calculate_basic_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
-        """Calculate basic VIPER scores (fallback)"""
+    def _calculate_basic_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
+        """Calculate basic VIPER scores (fallback)""":"""
         try:
             market_data = opportunity.get('market_data', {})
 
@@ -849,14 +856,14 @@ class VIPERUnifiedTradingJob:
             return {'volume': 0, 'price': 0, 'leverage': 0, 'technical': 0, 'risk': 0, 'ai_ml': 0}
 
     def _prepare_market_data_for_ai_ml(self, symbol: str, market_data: Dict[str, Any]) -> pd.DataFrame:
-        """Prepare market data for AI/ML analysis"""
+        """Prepare market data for AI/ML analysis""""""
         try:
             # Get historical data for AI/ML analysis
             if self.market_data_streamer:
                 # Use optimized data streamer for historical data
-                historical_data = asyncio.run(
+                historical_data = asyncio.run()
                     self.market_data_streamer.fetch_market_data(symbol, '1h', limit=200)
-                )
+(                )
                 if historical_data is not None:
                     return historical_data
 
@@ -881,7 +888,7 @@ class VIPERUnifiedTradingJob:
             return pd.DataFrame()
 
     def _calculate_enhanced_volume_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced volume score with volume profile analysis"""
+        """Calculate enhanced volume score with volume profile analysis""""""
         try:
             volume = opportunity.get('volume', 0)
             avg_volume = opportunity.get('avg_volume', volume)
@@ -901,7 +908,7 @@ class VIPERUnifiedTradingJob:
             return min(opportunity.get('volume', 0) / 5000000, 1.0)
 
     def _calculate_enhanced_risk_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced risk score using risk manager"""
+        """Calculate enhanced risk score using risk manager""""""
         try:
             if self.risk_manager:
                 # Get risk assessment from enhanced risk manager
@@ -911,12 +918,12 @@ class VIPERUnifiedTradingJob:
                 symbol = opportunity.get('symbol', '')
                 market_data = opportunity.get('market_data', {})
 
-                position_risk = self.risk_manager.calculate_dynamic_position_size(
+                position_risk = self.risk_manager.calculate_dynamic_position_size()
                     symbol=symbol,
                     entry_price=market_data.get('close', 0),
                     stop_loss=market_data.get('close', 0) * 0.98,  # 2% stop
                     portfolio_value=self.portfolio_value if hasattr(self, 'portfolio_value') else 10000
-                )
+(                )
 
                 if 'effective_risk_percent' in position_risk:
                     risk_score = max(0, 1 - position_risk['effective_risk_percent'] / 0.05)  # Invert: lower risk = higher score
@@ -930,7 +937,7 @@ class VIPERUnifiedTradingJob:
             return 0.5
 
     def _calculate_enhanced_leverage_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced leverage score with dynamic optimization"""
+        """Calculate enhanced leverage score with dynamic optimization""""""
         try:
             leverage = opportunity.get('pair_info', {}).get('leverage', 1)
             max_leverage = self.trading_config.get('max_leverage', 25)
@@ -955,8 +962,8 @@ class VIPERUnifiedTradingJob:
             leverage = opportunity.get('pair_info', {}).get('leverage', 1)
             return min(leverage / 100, 1.0)
 
-    def _get_enhanced_metrics(self, opportunity: Dict[str, Any]) -> Dict[str, Any]:
-        """Get additional enhanced metrics"""
+    def _get_enhanced_metrics(self, opportunity: Dict[str, Any]) -> Dict[str, Any]
+        """Get additional enhanced metrics""":"""
         try:
             metrics = {}
 
@@ -968,9 +975,9 @@ class VIPERUnifiedTradingJob:
             if self.risk_manager and hasattr(self.risk_manager, 'correlation_matrix'):
                 symbol = opportunity.get('symbol', '')
                 if symbol in self.risk_manager.correlation_matrix:
-                    avg_correlation = np.mean([
+                    avg_correlation = np.mean([)
                         abs(corr) for corr in self.risk_manager.correlation_matrix[symbol].values()
-                    ])
+(                    ])
                     metrics['correlation_risk'] = avg_correlation
 
             # Liquidity score
@@ -984,7 +991,7 @@ class VIPERUnifiedTradingJob:
             return {}
 
     def _calculate_technical_score(self, market_data: Dict[str, Any]) -> float:
-        """Calculate technical analysis score"""
+        """Calculate technical analysis score""""""
         try:
             score = 0.0
 
@@ -1026,16 +1033,16 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Technical score calculation error: {e}")
             return 0.5
 
-    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
         """Execute trades with position limits across all pairs"""
         executed_trades = []
-        current_positions = len(self.positions)
-
+        current_positions = len(self.positions)"""
+:
         try:
             # Check total position limit
             available_slots = self.trading_config['max_positions_total'] - current_positions
 
-            for opp in opportunities[:available_slots]:
+            for opp in opportunities[:available_slots]
                 try:
                     symbol = opp['symbol']
 
@@ -1073,7 +1080,7 @@ class VIPERUnifiedTradingJob:
             return []
 
     def _calculate_position_size(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate position size with multi-pair risk management"""
+        """Calculate position size with multi-pair risk management""""""
         try:
             # Get account balance
             balance = self.exchange.fetch_balance()
@@ -1111,19 +1118,19 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Position size calculation failed: {e}")
             return 0
 
-    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]:
-        """Execute a single trade"""
+    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]
+        """Execute a single trade"""""":
         try:
             symbol = opportunity['symbol']
 
             # Execute live trade
-            order = self.exchange.create_order(
+            order = self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side='buy',
                 amount=position_size,
                 params={'leverage': min(self.trading_config['max_leverage'], 50)}
-            )
+(            )
 
             trade_result = {
                 'symbol': symbol,
@@ -1155,7 +1162,7 @@ class VIPERUnifiedTradingJob:
             return None
 
     async def _setup_tp_sl(self, symbol: str, entry_price: float, order_id: str):
-        """Setup Take Profit and Stop Loss orders"""
+        """Setup Take Profit and Stop Loss orders""""""
         try:
             position = self.positions.get(symbol)
             if not position:
@@ -1172,24 +1179,24 @@ class VIPERUnifiedTradingJob:
             # Try to place actual TP/SL orders
             try:
                 # Place stop loss order
-                sl_order = self.exchange.create_order(
+                sl_order = self.exchange.create_order()
                     symbol=symbol,
                     type='stop',
                     side='sell',
                     amount=position['amount'],
                     price=sl_price,
                     params={'stopPrice': sl_price}
-                )
+(                )
                 position['sl_order_id'] = sl_order['id']
 
                 # Place take profit order
-                tp_order = self.exchange.create_order(
+                tp_order = self.exchange.create_order()
                     symbol=symbol,
                     type='limit',
                     side='sell',
                     amount=position['amount'],
                     price=tp_price
-                )
+(                )
                 position['tp_order_id'] = tp_order['id']
 
                 logger.info(f"🛡️ TP/SL orders placed for {symbol}")
@@ -1201,7 +1208,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"TP/SL setup failed for {symbol}: {e}")
 
     async def _manage_positions(self):
-        """Manage existing positions across all pairs"""
+        """Manage existing positions across all pairs""""""
         try:
             for symbol, position in list(self.positions.items()):
                 try:
@@ -1237,8 +1244,8 @@ class VIPERUnifiedTradingJob:
         except Exception as e:
             logger.error(f"Position management system failed: {e}")
 
-    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]:
-        """Determine if position should be closed"""
+    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]
+        """Determine if position should be closed""":"""
         try:
             entry_price = position['entry_price']
 
@@ -1270,19 +1277,19 @@ class VIPERUnifiedTradingJob:
             return False, ""
 
     async def _close_position(self, symbol: str, reason: str):
-        """Close a position"""
+        """Close a position""""""
         try:
             position = self.positions.get(symbol)
             if not position:
                 return
 
             # Close position
-            order = self.exchange.create_order(
+            order = self.exchange.create_order()
                 symbol=symbol,
                 type='market',
                 side='sell',
                 amount=position['amount']
-            )
+(            )
 
             current_price = order['price']
             pnl = (current_price - position['entry_price']) * position['amount']
@@ -1307,7 +1314,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Position close failed for {symbol}: {e}")
 
     def _should_emergency_stop(self) -> bool:
-        """Check if emergency stop should be triggered"""
+        """Check if emergency stop should be triggered""""""
         try:
             # Check daily loss limit
             if self.trading_stats['total_pnl'] <= -self.emergency_config['max_daily_loss']:
@@ -1318,8 +1325,8 @@ class VIPERUnifiedTradingJob:
                 return True
 
             # Check hourly trade limit
-            trades_this_hour = sum(1 for pos in self.positions.values()
-                                 if (datetime.now() - pos['entry_time']).seconds < 3600):
+            trades_this_hour = sum(1 for pos in self.positions.values())
+(                                 if (datetime.now() - pos['entry_time']).seconds < 3600)
             if trades_this_hour >= self.emergency_config['max_trades_per_hour']:
                 return True
 
@@ -1338,12 +1345,12 @@ class VIPERUnifiedTradingJob:
                 position = self.positions[symbol]
 
                 # Close position synchronously
-                order = self.exchange.create_order(
+                order = self.exchange.create_order()
                     symbol=symbol,
                     type='market',
                     side='sell',
                     amount=position['amount']
-                )
+(                )
 
                 pnl = (order['price'] - position['entry_price']) * position['amount']
                 self.trading_stats['total_pnl'] += pnl
@@ -1354,7 +1361,7 @@ class VIPERUnifiedTradingJob:
                 logger.error(f"Emergency close failed for {symbol}: {e}")
 
     def _update_performance_stats(self):
-        """Update performance statistics"""
+        """Update performance statistics""""""
         try:
             total_trades = self.trading_stats['trades_executed']
             closed_trades = self.trading_stats['trades_closed']
@@ -1367,7 +1374,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Performance stats update failed: {e}")
 
     def _generate_final_report(self):
-        """Generate comprehensive final report"""
+        """Generate comprehensive final report""""""
         try:
             report = {
                 'unified_trading_session': {
@@ -1417,7 +1424,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Final report generation failed: {e}")
 
     def _calculate_total_risk_exposure(self) -> float:
-        """Calculate total risk exposure across all positions"""
+        """Calculate total risk exposure across all positions""""""
         try:
             total_exposure = 0.0
             for position in self.positions.values():
@@ -1430,7 +1437,7 @@ class VIPERUnifiedTradingJob:
             return 0.0
 
     def _calculate_average_scan_time(self) -> float:
-        """Calculate average time per scan cycle"""
+        """Calculate average time per scan cycle""""""
         try:
             if not self.trading_stats['start_time'] or not self.trading_stats['end_time']:
                 return 0.0
@@ -1474,6 +1481,7 @@ def main():
     try:
         unified_job.start()
     except KeyboardInterrupt:
+        pass
     except Exception as e:
         pass
 if __name__ == "__main__":

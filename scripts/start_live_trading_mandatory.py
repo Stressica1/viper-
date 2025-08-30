@@ -4,6 +4,7 @@
 ENFORCES Docker and MCP requirements - NO BYPASSING ALLOWED
 
 This launcher:
+    pass
 # Check FORCES Docker services to be running
 # Check FORCES MCP server to be operational  
 # Check ENFORCES live trading mode only
@@ -39,12 +40,11 @@ except ImportError:
     def display_warning(msg, details=None):
         if details: print(f"   {details}")
     def print_banner():
-
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - MANDATORY_LAUNCHER - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
 def validate_environment():
@@ -99,8 +99,8 @@ def check_docker_services():
             return False
         
         # Check if services are running
-        result = subprocess.run(['docker', 'compose', 'ps', '--services', '--filter', 'status=running'], 
-                               capture_output=True, text=True)
+        result = subprocess.run(['docker', 'compose', 'ps', '--services', '--filter', 'status=running'], )
+(                               capture_output=True, text=True)
         
         running_services = result.stdout.strip().split('\n') if result.stdout.strip() else []
         
@@ -124,7 +124,8 @@ def check_mcp_server():
     logger.info("🤖 Checking MCP server...")
     
     try:
-        import requests
+        pass
+    import requests
         
         mcp_url = os.getenv('MCP_SERVER_URL', 'http://localhost:8015')
         response = requests.get(f"{mcp_url}/health", timeout=10)
@@ -146,8 +147,8 @@ def start_docker_services():
     logger.info("# Rocket Starting Docker services...")
     
     try:
-        result = subprocess.run(['docker', 'compose', 'up', '-d'], 
-                               capture_output=True, text=True)
+        result = subprocess.run(['docker', 'compose', 'up', '-d'], )
+(                               capture_output=True, text=True)
         
         if result.returncode != 0:
             logger.error(f"# X Failed to start Docker services: {result.stderr}")
@@ -168,7 +169,7 @@ def start_docker_services():
 def main():
     """Main launcher with mandatory enforcement"""
     
-    # Enhanced banner display
+    # Enhanced banner display"""
     if ENHANCED_DISPLAY:
         print_banner()
         terminal.console.rule("[bold red]# Warning LIVE TRADING MODE ONLY - NO MOCK DATA OR DEMO # Warning[/]")
@@ -214,11 +215,11 @@ def main():
         terminal.console.rule("[bold green]# Check ALL MANDATORY REQUIREMENTS MET[/]")
         
         # Display final warning with countdown
-        warning_panel = terminal.console.print(
+        warning_panel = terminal.console.print()
             "[bold red]# Warning WARNING: This will execute real trades with real money![/]\n"
             "[yellow]Press Ctrl+C within 10 seconds to cancel[/]",
             style="bold"
-        )
+(        )
         
         # Enhanced countdown
         for i in range(10, 0, -1):

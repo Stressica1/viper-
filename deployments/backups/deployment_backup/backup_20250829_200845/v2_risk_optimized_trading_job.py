@@ -4,6 +4,7 @@
 Implements strict 2% risk per trade with max leverage (50x) and one position per symbol
 
 Key Features:
+    pass
 - 2% risk per trade maximum
 - 50x leverage utilization
 - One position per symbol enforcement
@@ -19,17 +20,17 @@ import logging
 import signal
 
 # Configure comprehensive logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - V2_RISK_JOB - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('v2_risk_trading.log'),
         logging.StreamHandler()
     ]
-)
+()
 logger = logging.getLogger(__name__)
 
-# Import enhanced components with fallback
+# Import enhanced components with fallback"""
 try:
     from enhanced_system_integrator import get_integrator
     ENHANCED_RISK_AVAILABLE = True
@@ -41,7 +42,7 @@ except ImportError as e:
     PERFORMANCE_MONITORING_AVAILABLE = False
 
 class V2RiskOptimizedTradingJob:
-    """V2 Risk-Optimized Trading Job with 2% risk and max leverage"""
+    """V2 Risk-Optimized Trading Job with 2% risk and max leverage""""""
 
     def __init__(self):
         self.is_running = False
@@ -154,7 +155,7 @@ class V2RiskOptimizedTradingJob:
 
             # 8. Advanced Trend Detector
             from advanced_trend_detector import AdvancedTrendDetector, TrendConfig
-            trend_config = TrendConfig(
+            trend_config = TrendConfig()
                 fast_ma_length=int(os.getenv('FAST_MA_LENGTH', '21')),
                 slow_ma_length=int(os.getenv('SLOW_MA_LENGTH', '50')),
                 trend_ma_length=int(os.getenv('TREND_MA_LENGTH', '200')),
@@ -162,7 +163,7 @@ class V2RiskOptimizedTradingJob:
                 atr_multiplier=float(os.getenv('ATR_MULTIPLIER', '2.0')),
                 min_trend_bars=int(os.getenv('MIN_TREND_BARS', '5')),
                 trend_change_threshold=float(os.getenv('TREND_CHANGE_THRESHOLD', '0.02'))
-            )
+(            )
             self.system_components['trend_detector'] = AdvancedTrendDetector(trend_config)
             logger.info("# Check Advanced Trend Detector: INITIALIZED")
 
@@ -204,29 +205,27 @@ class V2RiskOptimizedTradingJob:
             return False
 
     def calculate_v2_position_size(self, price: float, balance: float, leverage: int = 50, symbol: str = None) -> float:
-        """Calculate position size with enhanced risk management or STRICT 2% risk fallback"""
+        """Calculate position size with enhanced risk management or STRICT 2% risk fallback""""""
         try:
             # Use enhanced risk manager if available
-            if (self.system_components.get('risk_manager') and:
-                ENHANCED_RISK_AVAILABLE and symbol):
-
+            if (self.system_components.get('risk_manager') and):
+(                ENHANCED_RISK_AVAILABLE and symbol)
                 try:
                     # Use enhanced risk manager for advanced position sizing
                     stop_loss_price = price * (1 - self.stop_loss_pct)  # 2% stop loss
-                    enhanced_sizing = self.system_components['risk_manager'].calculate_dynamic_position_size(
+                    enhanced_sizing = self.system_components['risk_manager'].calculate_dynamic_position_size()
                         symbol=symbol,
                         entry_price=price,
                         stop_loss=stop_loss_price,
                         portfolio_value=balance
-                    )
+(                    )
 
-                    if (enhanced_sizing and:
+                    if (enhanced_sizing and):
                         'position_size_contracts' in enhanced_sizing and
-                        enhanced_sizing['position_size_contracts'] > 0):
-
+(                        enhanced_sizing['position_size_contracts'] > 0)
                         position_size = enhanced_sizing['position_size_contracts']
-                        logger.info(f"# Target Enhanced position sizing for {symbol}: {position_size:.4f} "
-                                  f"(Risk: {enhanced_sizing.get('effective_risk_percent', 0):.2%})")
+                        logger.info(f"# Target Enhanced position sizing for {symbol}: {position_size:.4f} ")
+(                                  f"(Risk: {enhanced_sizing.get('effective_risk_percent', 0):.2%})")
 
                         # Apply leverage limit
                         max_position = (balance * self.max_leverage) / price
@@ -281,10 +280,10 @@ class V2RiskOptimizedTradingJob:
                     logger.warning(f"# Warning Position size ({position_size:.6f}) seems unusually large")
                     position_size = max_reasonable_size * 0.95
             
-            logger.info(f"# Target V2 Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), "
+            logger.info(f"# Target V2 Position Sizing: Balance=${balance:.2f}, Risk=2% (${risk_amount:.2f}), ")
                        f"Stop Loss=2% (${stop_loss_distance:.4f}), "
                        f"Base Size={base_position_size:.6f}, Leveraged Size={leveraged_position_size:.6f} "
-                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
+(                       f"({leverage}x leverage) → Final Size={position_size:.6f}")
             
             return position_size
             
@@ -292,10 +291,10 @@ class V2RiskOptimizedTradingJob:
             logger.error(f"# X Error calculating V2 position size: {e}")
             return 0.001
 
-    async def scan_markets_and_score(self) -> Dict[str, Any]:
+    async def scan_markets_and_score(self) -> Dict[str, Any]
         """Scan markets and calculate VIPER scores with V2 risk optimization"""
         logger.info("# Search Scanning markets and calculating V2 VIPER scores...")
-
+:
         try:
             trader = self.system_components.get('trader')
             trend_detector = self.system_components.get('trend_detector')
@@ -359,10 +358,10 @@ class V2RiskOptimizedTradingJob:
             logger.error(f"# X V2 Market scanning failed: {e}")
             return {"error": str(e)}
 
-    async def execute_v2_trading_opportunities(self, opportunities: List) -> Dict[str, Any]:
+    async def execute_v2_trading_opportunities(self, opportunities: List) -> Dict[str, Any]
         """Execute trading opportunities with STRICT V2 risk management"""
         logger.info("# Rocket Executing V2 trading opportunities with 2% risk...")
-
+:
         try:
             trader = self.system_components.get('trader')
             if not trader:
@@ -378,26 +377,26 @@ class V2RiskOptimizedTradingJob:
                 try:
                     # STRICT ENFORCEMENT: One position per symbol
                     if opportunity.symbol in self.active_positions:
-                        skipped_trades.append({
+                        skipped_trades.append({)
                             "symbol": opportunity.symbol,
                             "reason": "Position already exists (one per symbol rule)"
-                        })
+(                        })
                         continue
 
                     # Check position limits
                     if len(self.active_positions) >= self.max_positions:
-                        skipped_trades.append({
+                        skipped_trades.append({)
                             "symbol": opportunity.symbol,
                             "reason": f"Maximum positions reached ({self.max_positions})"
-                        })
+(                        })
                         continue
 
                     # Check if we should execute this trade
                     if opportunity.score < 0.65:  # Lower threshold to execute more trades
-                        skipped_trades.append({
+                        skipped_trades.append({)
                             "symbol": opportunity.symbol,
                             "reason": f"Score too low: {opportunity.score:.3f} (minimum: 0.65)"
-                        })
+(                        })
                         continue
 
                     # Calculate V2 position size with 2% risk
@@ -413,10 +412,10 @@ class V2RiskOptimizedTradingJob:
                     position_size = self.calculate_v2_position_size(price, balance, self.max_leverage, opportunity.symbol)
 
                     # Execute the trade with V2 risk parameters
-                    trade_result = await trader.execute_trade_job(
+                    trade_result = await trader.execute_trade_job()
                         opportunity.symbol,
                         opportunity.recommended_side
-                    )
+(                    )
 
                     if trade_result and 'symbol' in trade_result:
                         executed_trades.append(trade_result)
@@ -438,17 +437,17 @@ class V2RiskOptimizedTradingJob:
                         logger.info(f"   • Risk Amount: ${balance * self.risk_per_trade:.2f}")
                         logger.info(f"   • Leverage: {self.max_leverage}x")
                     else:
-                        skipped_trades.append({
+                        skipped_trades.append({)
                             "symbol": opportunity.symbol,
                             "reason": "Trade execution failed"
-                        })
+(                        })
 
                 except Exception as e:
                     logger.error(f"# X Error executing V2 trade for {opportunity.symbol}: {e}")
-                    skipped_trades.append({
+                    skipped_trades.append({)
                         "symbol": opportunity.symbol,
                         "reason": f"Execution error: {e}"
-                    })
+(                    })
 
             logger.info(f"# Rocket V2 Execution complete: {len(executed_trades)} executed, {len(skipped_trades)} skipped")
 
@@ -462,10 +461,10 @@ class V2RiskOptimizedTradingJob:
             logger.error(f"# X V2 Trade execution failed: {e}")
             return {"error": str(e)}
 
-    async def monitor_v2_positions_and_risk(self) -> Dict[str, Any]:
+    async def monitor_v2_positions_and_risk(self) -> Dict[str, Any]
         """Monitor active positions with V2 risk management"""
         logger.info("# Chart Monitoring V2 positions and risk management...")
-
+:
         try:
             trader = self.system_components.get('trader')
             if not trader:
@@ -511,8 +510,8 @@ class V2RiskOptimizedTradingJob:
             logger.error(f"# X V2 Position monitoring failed: {e}")
             return {"error": str(e)}
 
-    async def run_system_diagnostics(self) -> Dict[str, Any]:
-        """Run system diagnostics"""
+    async def run_system_diagnostics(self) -> Dict[str, Any]
+        """Run system diagnostics"""""":
         try:
             if 'diagnostic_scanner' in self.system_components:
                 # Use synchronous version to avoid async/sync conflicts
@@ -532,8 +531,8 @@ class V2RiskOptimizedTradingJob:
             logger.error(f"# X V2 Diagnostics failed: {e}")
             return {"error": str(e)}
 
-    async def get_v2_system_status(self) -> Dict[str, Any]:
-        """Get comprehensive V2 system status"""
+    async def get_v2_system_status(self) -> Dict[str, Any]
+        """Get comprehensive V2 system status"""""":
         try:
             trader = self.system_components.get('trader')
 
@@ -715,7 +714,7 @@ async def main():
 
     # Register signal handlers
     signal.signal(signal.SIGINT, signal_handler)
-    signal.signal(signal.SIGTERM, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)"""
 
     try:
         success = await job.start_v2_continuous_trading()

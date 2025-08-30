@@ -12,7 +12,7 @@ import requests
 import subprocess
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from enum import Enum
+from enum import Enum"""
 
 class ServiceStatus(Enum):
     HEALTHY = "HEALTHY"
@@ -24,7 +24,7 @@ class ServiceStatus(Enum):
 class SystemHealthChecker:
     """
     Comprehensive system health checker for VIPER trading system
-    """
+    """"""
 
     def __init__(self):
         """Initialize health checker"""
@@ -42,9 +42,9 @@ class SystemHealthChecker:
         print("# Search VIPER System Health Checker Initialized")
         print(f"# Chart Services to check: {len(self.services)}")
 
-    def check_service_health(self, service_name: str, port: int, name: str) -> Dict[str, Any]:
+    def check_service_health(self, service_name: str, port: int, name: str) -> Dict[str, Any]
         """Check individual service health"""
-        result = {
+        result = {:
             'service': service_name,
             'name': name,
             'port': port,
@@ -52,7 +52,7 @@ class SystemHealthChecker:
             'response_time': None,
             'error': None,
             'details': {}
-        }
+        }"""
 
         try:
             start_time = time.time()
@@ -61,10 +61,10 @@ class SystemHealthChecker:
             if service_name == 'redis':
                 # Use redis-cli to check Redis health
                 try:
-                    result_redis = subprocess.run(
+                    result_redis = subprocess.run()
                         ['docker', 'exec', f'viper-trading-{service_name}-1', 'redis-cli', 'ping'],
                         capture_output=True, text=True, timeout=5
-                    )
+(                    )
                     response_time = time.time() - start_time
 
                     if result_redis.returncode == 0 and 'PONG' in result_redis.stdout:
@@ -103,7 +103,7 @@ class SystemHealthChecker:
         except requests.exceptions.Timeout:
             result['status'] = ServiceStatus.DEGRADED.value
             result['error'] = "Connection timeout"
-        except requests.exceptions.ConnectionError:
+        except requests.exceptions.ConnectionError
             result['status'] = ServiceStatus.DOWN.value
             result['error'] = "Connection refused"
         except Exception as e:
@@ -112,12 +112,12 @@ class SystemHealthChecker:
 
         return result
 
-    def perform_comprehensive_health_check(self) -> Dict[str, Any]:
+    def perform_comprehensive_health_check(self) -> Dict[str, Any]
         """Perform comprehensive health check of all services"""
         print("\n# Rocket STARTING COMPREHENSIVE HEALTH CHECK...")
         print("# Search Checking all services and their connectivity")
 
-        health_report = {
+        health_report = {:
             'timestamp': datetime.now().isoformat(),
             'check_duration': None,
             'services_checked': len(self.services),
@@ -135,9 +135,9 @@ class SystemHealthChecker:
 
         # Check each service
         for service_name, config in self.services.items():
-            service_result = self.check_service_health(
+            service_result = self.check_service_health()
                 service_name, config['port'], config['name']
-            )
+(            )
             health_report['service_details'][service_name] = service_result
 
             # Count results
@@ -169,11 +169,11 @@ class SystemHealthChecker:
 
         return health_report
 
-    def generate_recommendations(self, health_report: Dict[str, Any]) -> List[str]:
+    def generate_recommendations(self, health_report: Dict[str, Any]) -> List[str]
         """Generate recommendations based on health check results"""
         recommendations = []
 
-        # Check for critical service issues
+        # Check for critical service issues:"""
         if health_report['critical_services_down'] > 0:
             down_critical = [
                 config['name'] for service, config in self.services.items()
@@ -223,10 +223,10 @@ class SystemHealthChecker:
 
         return recommendations
 
-    def test_system_connectivity(self) -> Dict[str, Any]:
+    def test_system_connectivity(self) -> Dict[str, Any]
         """Test connectivity between services"""
 
-        connectivity_report = {
+        connectivity_report = {:
             'timestamp': datetime.now().isoformat(),
             'connectivity_tests': {},
             'pipeline_status': {},
@@ -234,8 +234,9 @@ class SystemHealthChecker:
         }
 
         # Test API Server connectivity to other services
-        api_server_status = self.services['api-server']
+        api_server_status = self.services['api-server']"""
         if api_server_status:
+            pass
 
             # Test connection to data-manager
             try:
@@ -258,8 +259,8 @@ class SystemHealthChecker:
                 connectivity_report['connectivity_tests']['api_to_risk'] = {'status': 'FAILED'}
 
         # Determine overall connectivity
-        connected_count = sum(1 for test in connectivity_report['connectivity_tests'].values()
-                            if test['status'] == 'CONNECTED'):
+        connected_count = sum(1 for test in connectivity_report['connectivity_tests'].values())
+(                            if test['status'] == 'CONNECTED')
         total_tests = len(connectivity_report['connectivity_tests'])
 
         if connected_count == total_tests:
@@ -271,16 +272,16 @@ class SystemHealthChecker:
 
         return connectivity_report
 
-    def run_full_diagnostic(self) -> Dict[str, Any]:
+    def run_full_diagnostic(self) -> Dict[str, Any]
         """Run complete system diagnostic"""
 #==============================================================================#
 # # Rocket VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       #
 # # Search Comprehensive Service Health | 🔗 Connectivity Testing | # Chart Performance   #
 # ⚡ Real-time Monitoring | 🧠 System Analysis | 📈 Health Reporting           #
 #==============================================================================#
-        """)
+(        """)
 
-        diagnostic_report = {
+        diagnostic_report = {:
             'diagnostic_start': datetime.now().isoformat(),
             'health_check': {},
             'connectivity_test': {},
@@ -289,7 +290,7 @@ class SystemHealthChecker:
             'execution_time': None
         }
 
-        start_time = time.time()
+        start_time = time.time()"""
 
         try:
             # Phase 1: Health Check
@@ -323,9 +324,9 @@ class SystemHealthChecker:
 
         return diagnostic_report
 
-    def perform_system_analysis(self, diagnostic_report: Dict[str, Any]) -> Dict[str, Any]:
+    def perform_system_analysis(self, diagnostic_report: Dict[str, Any]) -> Dict[str, Any]
         """Perform system-wide analysis"""
-        analysis = {
+        analysis = {:
             'trading_readiness': 'UNKNOWN',
             'infrastructure_status': 'UNKNOWN',
             'monitoring_coverage': 'UNKNOWN',
@@ -334,9 +335,8 @@ class SystemHealthChecker:
 
         # Analyze trading readiness
         critical_services = ['api-server', 'data-manager', 'exchange-connector', 'risk-manager', 'redis']
-        critical_healthy = sum(1 for service in critical_services
-                             if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
-
+        critical_healthy = sum(1 for service in critical_services""")
+(                             if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
         if critical_healthy == len(critical_services):
             analysis['trading_readiness'] = 'READY_FOR_TRADING'
         elif critical_healthy >= len(critical_services) - 1:
@@ -346,9 +346,8 @@ class SystemHealthChecker:
 
         # Analyze infrastructure status
         infrastructure_services = ['redis', 'monitoring-service']
-        infra_healthy = sum(1 for service in infrastructure_services
-                          if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
-
+        infra_healthy = sum(1 for service in infrastructure_services)
+(                          if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
         if infra_healthy == len(infrastructure_services):
             analysis['infrastructure_status'] = 'INFRASTRUCTURE_SOLID'
         else:
@@ -356,9 +355,8 @@ class SystemHealthChecker:
 
         # Analyze monitoring coverage
         monitoring_services = ['monitoring-service']
-        monitoring_healthy = sum(1 for service in monitoring_services
-                               if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
-
+        monitoring_healthy = sum(1 for service in monitoring_services)
+(                               if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
         if monitoring_healthy == len(monitoring_services):
             analysis['monitoring_coverage'] = 'FULL_MONITORING'
         else:
@@ -366,9 +364,8 @@ class SystemHealthChecker:
 
         # Analyze risk management
         risk_services = ['risk-manager', 'exchange-connector']
-        risk_healthy = sum(1 for service in risk_services
-                         if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY'):
-
+        risk_healthy = sum(1 for service in risk_services)
+(                         if diagnostic_report['health_check']['service_details'].get(service, {}).get('status') == 'HEALTHY')
         if risk_healthy == len(risk_services):
             analysis['risk_management'] = 'RISK_MANAGEMENT_ACTIVE'
         else:
@@ -418,8 +415,6 @@ class SystemHealthChecker:
         recommendations = health_check.get('recommendations', [])
         if recommendations:
             for i, rec in enumerate(recommendations, 1):
-
-
         # Action items based on health
         if health == 'SYSTEM_OPERATIONAL':
             print("# Party SYSTEM STATUS: FULLY OPERATIONAL - Ready for trading!")
@@ -430,7 +425,7 @@ class SystemHealthChecker:
 
 def main():
     """Main entry point"""
-    checker = SystemHealthChecker()
+    checker = SystemHealthChecker()"""
 
     try:
         report = checker.run_full_diagnostic()
