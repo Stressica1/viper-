@@ -47,35 +47,66 @@ class ViperTerminal:
     def __init__(self):
         self.console = console
         self.theme = {
-            'success': 'green',
-            'error': 'red', 
-            'warning': 'yellow',
-            'info': 'blue',
-            'profit': 'bright_green',
-            'loss': 'bright_red',
-            'neutral': 'white'
+            'success': 'bright_green',
+            'error': 'bright_red', 
+            'warning': 'bright_yellow',
+            'info': 'bright_blue',
+            'profit': 'bold green',
+            'loss': 'bold red',
+            'neutral': 'white',
+            'accent': 'bright_cyan',
+            'subtle': 'dim white',
+            'header': 'bold bright_blue'
+        }
+        # Enhanced icon set
+        self.icons = {
+            'success': '✅',
+            'error': '❌', 
+            'warning': '⚠️',
+            'info': 'ℹ️',
+            'rocket': '🚀',
+            'chart': '📈',
+            'money': '💰',
+            'shield': '🛡️',
+            'gear': '⚙️',
+            'lightning': '⚡',
+            'target': '🎯',
+            'fire': '🔥',
+            'diamond': '💎',
+            'brain': '🧠',
+            'robot': '🤖',
+            'eye': '👁️',
+            'lock': '🔒',
+            'key': '🗝️',
+            'database': '🗄️',
+            'network': '🌐',
+            'signal': '📡',
+            'trend_up': '↗️',
+            'trend_down': '↘️'
         }
     
     def print_banner(self):
         """Display VIPER system banner"""
         banner_text = """
-    ██#   ██#██#██████# ███████#██████# 
-    ██#   ██#██#██#==██#██#====#██#==██#
-    ██#   ██#██#██████##█████#  ██████##
-    #██# ██##██#██#===# ██#==#  ██#==██#
-     #████## ██#██#     ███████#██#  ██#
-      #===#  #=##=#     #======##=#  #=#
+    [bold bright_blue]██╗   ██╗██╗██████╗ ███████╗██████╗[/] 
+    [bold bright_blue]██║   ██║██║██╔══██╗██╔════╝██╔══██╗[/]
+    [bold bright_blue]██║   ██║██║██████╔╝█████╗  ██████╔╝[/]
+    [bold bright_blue]╚██╗ ██╔╝██║██╔═══╝ ██╔══╝  ██╔══██╗[/]
+    [bold bright_blue] ╚████╔╝ ██║██║     ███████╗██║  ██║[/]
+    [bold bright_blue]  ╚═══╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝[/]
                                         
-    # Rocket AI-Powered Trading System v2.5.4
+    [bold bright_cyan]🚀 AI-Powered Trading System v2.5.4[/]
+    [dim]Intelligent • Adaptive • Profitable[/]
         """
         
         if RICH_AVAILABLE:
             panel = Panel(
                 banner_text,
-                title="🤖 VIPER Trading Bot",
-                subtitle="Automated Trading System",
+                title=f"{self.icons['robot']} [bold bright_cyan]VIPER Trading Bot[/]",
+                subtitle=f"[dim]{self.icons['lightning']} High-Performance Automated Trading[/]",
                 border_style="bright_blue",
-                padding=(1, 2)
+                padding=(1, 2),
+                expand=False
             )
             self.console.print(panel)
         else:
@@ -88,20 +119,55 @@ class ViperTerminal:
                 print(f"{key}: {value}")
             return
             
-        # Create status table
-        table = Table(title="# Tool System Status", box=box.ROUNDED)
-        table.add_column("Component", style="cyan", no_wrap=True)
-        table.add_column("Status", justify="center")
-        table.add_column("Details", style="white")
+        # Create status table with enhanced design
+        table = Table(
+            title=f"{self.icons['gear']} [bold bright_cyan]System Health Monitor[/]", 
+            box=box.ROUNDED,
+            show_header=True,
+            header_style="bold bright_blue",
+            border_style="bright_blue"
+        )
+        table.add_column("🔧 Component", style="bright_cyan", no_wrap=True, width=20)
+        table.add_column("📊 Status", justify="center", width=15)
+        table.add_column("📝 Details", style="dim white", width=40)
+        table.add_column("⏱️ Uptime", justify="center", width=10)
+        
+        # Enhanced status mapping
+        status_icons = {
+            'Connected': f"{self.icons['success']} Online",
+            'Active': f"{self.icons['lightning']} Active", 
+            'Scanning': f"{self.icons['eye']} Scanning",
+            'Warning': f"{self.icons['warning']} Warning",
+            'Error': f"{self.icons['error']} Error",
+            'Offline': "🔌 Offline",
+            'Starting': "⏳ Starting"
+        }
         
         for component, info in status_data.items():
-            status_color = "green" if info.get('healthy', False) else "red"
-            status_icon = "# Check" if info.get('healthy', False) else "# X"
+            healthy = info.get('healthy', False)
+            status = info.get('status', 'Unknown')
+            details = info.get('details', 'No details available')
+            uptime = info.get('uptime', 'N/A')
+            
+            # Color coding based on health
+            if healthy:
+                status_color = "bright_green"
+                row_style = None
+            elif status == 'Warning':
+                status_color = "bright_yellow" 
+                row_style = "dim"
+            else:
+                status_color = "bright_red"
+                row_style = "dim"
+            
+            status_display = status_icons.get(status, f"❓ {status}")
             
             table.add_row(
-                component,
-                f"[{status_color}]{status_icon} {info.get('status', 'Unknown')}[/]",
-                info.get('details', '')
+                f"{self.icons.get('gear', '⚙️')} {component}",
+                f"[{status_color}]{status_display}[/]",
+                f"[dim]{details}[/]",
+                f"[dim]{uptime}[/]",
+                style=row_style
             )
         
         self.console.print(table)
@@ -113,56 +179,86 @@ class ViperTerminal:
                 print(f"{key}: {value}")
             return
             
-        # Create trading summary layout
+        # Create enhanced trading summary layout
         layout = Layout()
         layout.split_row(
-            Layout(name="metrics", ratio=2),
-            Layout(name="positions", ratio=1)
+            Layout(name="metrics", ratio=3),
+            Layout(name="positions", ratio=2)
         )
         
-        # Metrics table
-        metrics_table = Table(title="# Chart Performance Metrics", box=box.SIMPLE_HEAD)
-        metrics_table.add_column("Metric", style="cyan")
-        metrics_table.add_column("Value", justify="right")
-        metrics_table.add_column("Change", justify="right")
+        # Enhanced metrics table
+        metrics_table = Table(
+            title=f"{self.icons['chart']} [bold bright_green]Performance Dashboard[/]", 
+            box=box.ROUNDED,
+            header_style="bold bright_blue",
+            border_style="bright_green"
+        )
+        metrics_table.add_column("📊 Metric", style="bright_cyan", width=16)
+        metrics_table.add_column("💰 Value", justify="right", width=12)
+        metrics_table.add_column("📈 Change", justify="right", width=10)
+        metrics_table.add_column("🎯 Status", justify="center", width=8)
         
-        # Add metrics with color coding
+        # Add metrics with enhanced color coding and status indicators
         for metric, data in summary.get('metrics', {}).items():
             value = data.get('value', '0')
             change = data.get('change', '0%')
             
-            # Color based on performance
-            if 'profit' in metric.lower() or 'pnl' in metric.lower():
-                color = 'green' if float(value.replace('$', '').replace('%', '')) > 0 else 'red'
+            # Determine colors and status based on metric type and value
+            if 'P&L' in metric or 'profit' in metric.lower():
+                value_color = 'bright_green' if value.startswith('+') else 'bright_red'
+                status_icon = self.icons['money'] if value.startswith('+') else '💸'
+            elif 'Win Rate' in metric:
+                rate = float(value.replace('%', ''))
+                value_color = 'bright_green' if rate > 60 else 'yellow' if rate > 40 else 'bright_red'
+                status_icon = self.icons['target'] if rate > 60 else '🎯'
+            elif 'Sharpe' in metric:
+                ratio = float(value)
+                value_color = 'bright_green' if ratio > 1.5 else 'yellow' if ratio > 1.0 else 'bright_red'
+                status_icon = self.icons['diamond'] if ratio > 1.5 else '💎'
             else:
-                color = 'white'
+                value_color = 'white'
+                status_icon = self.icons['info']
                 
-            change_color = 'green' if change.startswith('+') else 'red' if change.startswith('-') else 'white'
+            change_color = 'bright_green' if change.startswith('+') else 'bright_red' if change.startswith('-') else 'white'
             
             metrics_table.add_row(
-                metric,
-                f"[{color}]{value}[/]",
-                f"[{change_color}]{change}[/]"
+                f"{self.icons.get('chart', '📈')} {metric}",
+                f"[{value_color}][bold]{value}[/bold][/]",
+                f"[{change_color}]{change}[/]",
+                status_icon
             )
         
         layout["metrics"].update(metrics_table)
         
-        # Positions table
-        positions_table = Table(title="💼 Active Positions", box=box.SIMPLE_HEAD)
-        positions_table.add_column("Symbol", style="cyan")
-        positions_table.add_column("Side", justify="center")
-        positions_table.add_column("Size", justify="right")
-        positions_table.add_column("P&L", justify="right")
+        # Enhanced positions table
+        positions_table = Table(
+            title=f"{self.icons['shield']} [bold bright_blue]Active Positions[/]", 
+            box=box.ROUNDED,
+            header_style="bold bright_blue",
+            border_style="bright_blue"
+        )
+        positions_table.add_column("🪙 Symbol", style="bright_cyan", width=12)
+        positions_table.add_column("📈 Side", justify="center", width=8)
+        positions_table.add_column("📊 Size", justify="right", width=8)
+        positions_table.add_column("💰 P&L", justify="right", width=10)
+        positions_table.add_column("🎯", justify="center", width=3)
         
         for position in summary.get('positions', []):
-            pnl_color = 'green' if position['pnl'] > 0 else 'red'
-            side_color = 'green' if position['side'] == 'LONG' else 'red'
+            pnl = position['pnl']
+            pnl_color = 'bright_green' if pnl > 0 else 'bright_red'
+            side = position['side']
+            side_color = 'bright_green' if side == 'LONG' else 'bright_red'
+            side_icon = '📈' if side == 'LONG' else '📉'
+            
+            # Status icon based on P&L
+            status_icon = self.icons['fire'] if abs(pnl) > 5 else self.icons['target'] if pnl > 0 else '❄️'
             
             positions_table.add_row(
-                position['symbol'],
-                f"[{side_color}]{position['side']}[/]",
-                str(position['size']),
-                f"[{pnl_color}]{position['pnl']:+.2f}%[/]"
+                f"[bright_cyan]{position['symbol']}[/]",
+                f"[{side_color}]{side_icon} {side}[/]",
+                f"[dim]{position['size']}[/]",
+                f"[{pnl_color}][bold]{pnl:+.2f}%[/bold][/]",
+                status_icon
             )
         
         layout["positions"].update(positions_table)
@@ -206,9 +302,9 @@ class ViperTerminal:
             return
             
         panel = Panel(
-            f"[red]{error_msg}[/]\n\n{details or ''}", 
-            title="# X Error",
-            border_style="red",
+            f"[bold bright_red]{error_msg}[/bold bright_red]\n\n[dim]{details or ''}[/dim]", 
+            title=f"{self.icons['error']} [bold bright_red]System Error[/]",
+            border_style="bright_red",
             padding=(1, 2)
         )
         self.console.print(panel)
@@ -222,9 +318,9 @@ class ViperTerminal:
             return
             
         panel = Panel(
-            f"[yellow]{warning_msg}[/]\n\n{details or ''}", 
-            title="# Warning Warning",
-            border_style="yellow",
+            f"[bold bright_yellow]{warning_msg}[/bold bright_yellow]\n\n[dim]{details or ''}[/dim]", 
+            title=f"{self.icons['warning']} [bold bright_yellow]System Warning[/]",
+            border_style="bright_yellow",
             padding=(1, 2)
         )
         self.console.print(panel)
@@ -238,9 +334,9 @@ class ViperTerminal:
             return
             
         panel = Panel(
-            f"[green]{success_msg}[/]\n\n{details or ''}", 
-            title="# Check Success",
-            border_style="green",
+            f"[bold bright_green]{success_msg}[/bold bright_green]\n\n[dim]{details or ''}[/dim]", 
+            title=f"{self.icons['success']} [bold bright_green]Operation Successful[/]",
+            border_style="bright_green",
             padding=(1, 2)
         )
         self.console.print(panel)
@@ -259,19 +355,41 @@ class ViperTerminal:
                     print(f"  {key}: {display_value}")
             return
             
-        tree = Tree("# Tool Configuration Summary")
+        tree = Tree(f"{self.icons['gear']} [bold bright_cyan]System Configuration[/]")
         
         for section, values in config.items():
-            section_branch = tree.add(f"[bold cyan]{section.title()}[/]")
+            # Use appropriate icons for sections
+            section_icon = {
+                'trading': self.icons['chart'],
+                'api': self.icons['key'], 
+                'risk': self.icons['shield'],
+                'database': self.icons['database'],
+                'network': self.icons['network']
+            }.get(section.lower(), self.icons['gear'])
+            
+            section_branch = tree.add(f"[bold bright_blue]{section_icon} {section.title()}[/]")
             
             for key, value in values.items():
                 # Mask sensitive information
                 if any(sensitive in key.lower() for sensitive in ['password', 'secret', 'key', 'token']):
-                    display_value = '***masked***'
+                    display_value = f"[dim]{self.icons['lock']} ***masked***[/dim]"
                 else:
-                    display_value = str(value)
+                    display_value = f"[white]{str(value)}[/white]"
                     
-                section_branch.add(f"{key}: [white]{display_value}[/]")
+                # Add appropriate icons for common config keys
+                key_icon = ''
+                if 'risk' in key.lower():
+                    key_icon = self.icons['shield']
+                elif 'limit' in key.lower() or 'max' in key.lower():
+                    key_icon = self.icons['warning']
+                elif 'profit' in key.lower():
+                    key_icon = self.icons['money']
+                elif 'key' in key.lower() or 'secret' in key.lower():
+                    key_icon = self.icons['lock']
+                else:
+                    key_icon = self.icons['gear']
+                    
+                section_branch.add(f"[dim]{key_icon}[/dim] [cyan]{key}[/]: {display_value}")
         
         self.console.print(tree)
     
@@ -325,6 +443,149 @@ class ViperTerminal:
         
         add_to_tree(Path(root_path), tree)
         self.console.print(tree)
+
+    def display_live_metrics(self, metrics: Dict[str, Any]):
+        """Display live trading metrics in a compact format"""
+        if not RICH_AVAILABLE:
+            for key, value in metrics.items():
+                print(f"{key}: {value}")
+            return
+            
+        # Create a compact metrics panel
+        metrics_grid = Table.grid(padding=1)
+        metrics_grid.add_column(style="cyan", justify="right")
+        metrics_grid.add_column(style="white", justify="left")
+        
+        for key, value in metrics.items():
+            # Format value based on type
+            if isinstance(value, float):
+                if 'pnl' in key.lower() or 'profit' in key.lower():
+                    color = 'bright_green' if value > 0 else 'bright_red'
+                    formatted_value = f"[{color}]{value:+.2f}%[/]"
+                else:
+                    formatted_value = f"{value:.4f}"
+            else:
+                formatted_value = str(value)
+                
+            metrics_grid.add_row(f"[dim]{key}:[/]", formatted_value)
+        
+        panel = Panel(
+            metrics_grid,
+            title=f"{self.icons['lightning']} [bold]Live Metrics[/]",
+            border_style="bright_cyan",
+            padding=(0, 1)
+        )
+        self.console.print(panel)
+
+    def display_trade_execution_log(self, trades: List[Dict[str, Any]]):
+        """Display recent trade executions"""
+        if not RICH_AVAILABLE:
+            for trade in trades:
+                print(f"Trade: {trade}")
+            return
+            
+        table = Table(
+            title=f"{self.icons['target']} [bold bright_cyan]Recent Trade Executions[/]",
+            box=box.MINIMAL,
+            header_style="bold bright_blue"
+        )
+        table.add_column("⏰ Time", style="dim", width=8)
+        table.add_column("🪙 Symbol", style="bright_cyan", width=10)
+        table.add_column("📈 Action", justify="center", width=8)
+        table.add_column("💰 Amount", justify="right", width=10)
+        table.add_column("💹 Price", justify="right", width=12)
+        table.add_column("🎯 Status", justify="center", width=8)
+        
+        for trade in trades[-10:]:  # Show last 10 trades
+            action = trade.get('action', 'UNKNOWN')
+            status = trade.get('status', 'PENDING')
+            
+            action_color = 'bright_green' if action == 'BUY' else 'bright_red'
+            action_icon = '📈' if action == 'BUY' else '📉'
+            
+            status_color = 'bright_green' if status == 'FILLED' else 'yellow' if status == 'PENDING' else 'bright_red'
+            status_icon = self.icons['success'] if status == 'FILLED' else '⏳' if status == 'PENDING' else self.icons['error']
+            
+            table.add_row(
+                f"[dim]{trade.get('time', 'N/A')}[/]",
+                f"[bright_cyan]{trade.get('symbol', 'N/A')}[/]",
+                f"[{action_color}]{action_icon} {action}[/]",
+                f"[white]{trade.get('amount', 'N/A')}[/]",
+                f"[white]${trade.get('price', 'N/A')}[/]",
+                f"[{status_color}]{status_icon}[/]"
+            )
+        
+        self.console.print(table)
+
+    def display_risk_dashboard(self, risk_data: Dict[str, Any]):
+        """Display comprehensive risk management dashboard"""
+        if not RICH_AVAILABLE:
+            for key, value in risk_data.items():
+                print(f"{key}: {value}")
+            return
+            
+        # Create risk dashboard layout
+        layout = Layout()
+        layout.split_column(
+            Layout(name="risk_meters", size=8),
+            Layout(name="risk_limits", size=6)
+        )
+        
+        # Risk meters (top section)
+        risk_grid = Table.grid(padding=2)
+        risk_grid.add_column()
+        risk_grid.add_column()
+        risk_grid.add_column()
+        
+        # Create risk level indicators
+        portfolio_risk = risk_data.get('portfolio_risk', 0)
+        daily_loss = risk_data.get('daily_loss', 0)
+        exposure = risk_data.get('exposure', 0)
+        
+        def get_risk_bar(value, max_value, label):
+            percentage = min(value / max_value * 100, 100)
+            bar_color = 'bright_green' if percentage < 50 else 'yellow' if percentage < 80 else 'bright_red'
+            filled = int(percentage / 10)
+            bar = '█' * filled + '░' * (10 - filled)
+            return f"[{bar_color}]{bar}[/] [dim]{percentage:.1f}%[/]\n[bold]{label}[/]"
+        
+        risk_grid.add_row(
+            Panel(get_risk_bar(portfolio_risk, 100, "Portfolio Risk"), title="🛡️ Risk Level", border_style="blue"),
+            Panel(get_risk_bar(abs(daily_loss), 5, "Daily Loss"), title="📉 Daily Loss", border_style="yellow"),
+            Panel(get_risk_bar(exposure, 100, "Exposure"), title="💼 Exposure", border_style="cyan")
+        )
+        
+        layout["risk_meters"].update(risk_grid)
+        
+        # Risk limits table (bottom section)
+        limits_table = Table(
+            title=f"{self.icons['shield']} Risk Limits & Controls",
+            box=box.ROUNDED,
+            header_style="bold bright_blue"
+        )
+        limits_table.add_column("🛡️ Control", style="bright_cyan")
+        limits_table.add_column("⚙️ Limit", justify="center")
+        limits_table.add_column("📊 Current", justify="center")
+        limits_table.add_column("🚨 Status", justify="center")
+        
+        limits = risk_data.get('limits', {})
+        for control, data in limits.items():
+            limit = data.get('limit', 'N/A')
+            current = data.get('current', 'N/A')
+            status = data.get('status', 'OK')
+            
+            status_color = 'bright_green' if status == 'OK' else 'yellow' if status == 'WARNING' else 'bright_red'
+            status_icon = self.icons['success'] if status == 'OK' else self.icons['warning'] if status == 'WARNING' else self.icons['error']
+            
+            limits_table.add_row(
+                control,
+                str(limit),
+                str(current),
+                f"[{status_color}]{status_icon} {status}[/]"
+            )
+        
+        layout["risk_limits"].update(limits_table)
+        self.console.print(layout)
 
 # Global terminal instance
 terminal = ViperTerminal()
