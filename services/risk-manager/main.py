@@ -723,7 +723,7 @@ class RiskManager:
                 # Check stop-loss thresholds
                 stop_loss_percent = 0.05  # 5% stop loss
                 if loss_percent >= stop_loss_percent:
-                    alerts.append({)
+                    alerts.append(})
                         'type': 'auto_stop_triggered',
                         'symbol': symbol,
                         'reason': f'Loss exceeded {stop_loss_percent*100}%',
@@ -741,7 +741,7 @@ class RiskManager:
                     potential_loss_percent = total_daily_loss / self.starting_balance
 
                     if potential_loss_percent >= self.daily_loss_limit:
-                        alerts.append({)
+                        alerts.append(})
                             'type': 'daily_loss_limit_warning',
                             'symbol': symbol,
                             'reason': 'Position loss would breach daily limit',
@@ -753,7 +753,7 @@ class RiskManager:
 
         except Exception as e:
             logger.error(f"# X Error checking auto stops: {e}")
-            alerts.append({)
+            alerts.append(})
                 'type': 'error',
                 'message': f'Error checking auto stops: {e}',
                 'timestamp': datetime.now().isoformat()

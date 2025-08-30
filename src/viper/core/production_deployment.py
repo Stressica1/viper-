@@ -121,7 +121,7 @@ class ProductionDeployment:
                     rollback_result = self._execute_emergency_rollback()
                         f"Automated rollback during {phase['name']}: {phase_result.get('rollback_reason', 'Unknown')}"
 (                    )
-                    deployment_results["rollback_triggers"].append({)
+                    deployment_results["rollback_triggers"].append(})
                         "phase": phase['name'],
                         "reason": phase_result.get('rollback_reason'),
                         "rollback_result": rollback_result
@@ -181,7 +181,7 @@ class ProductionDeployment:
         try:
             # System health check
             system_health = self._check_system_health()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "System Health",
                 "result": system_health["healthy"],
                 "details": system_health
@@ -189,7 +189,7 @@ class ProductionDeployment:
 
             # Baseline performance capture
             baseline_perf = self._capture_baseline_performance()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "Baseline Performance",
                 "result": baseline_perf["success"],
                 "details": baseline_perf
@@ -197,7 +197,7 @@ class ProductionDeployment:
 
             # Configuration validation
             config_check = self._validate_deployment_configuration()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "Configuration Validation",
                 "result": config_check["valid"],
                 "details": config_check
@@ -205,7 +205,7 @@ class ProductionDeployment:
 
             # Resource availability
             resource_check = self._check_deployment_resources()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "Resource Availability",
                 "result": resource_check["sufficient"],
                 "details": resource_check
@@ -523,7 +523,8 @@ class ProductionDeployment:
 :
         try:
             # Import and execute rollback
-            from emergency_rollback import EmergencyRollback
+from emergency_rollback import EmergencyRollback
+
 
             rollback_system = EmergencyRollback()
             rollback_result = rollback_system.execute_emergency_rollback()
@@ -552,7 +553,7 @@ class ProductionDeployment:
         try:
             # System stability check
             stability_check = self._check_system_stability()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "System Stability",
                 "result": stability_check["stable"],
                 "details": stability_check
@@ -560,7 +561,7 @@ class ProductionDeployment:
 
             # Performance comparison
             performance_check = self._compare_performance_metrics()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "Performance Comparison",
                 "result": performance_check["improved"],
                 "details": performance_check
@@ -568,7 +569,7 @@ class ProductionDeployment:
 
             # Feature functionality check
             functionality_check = self._check_enhanced_features()
-            validation_results["checks"].append({)
+            validation_results["checks"].append(})
                 "name": "Enhanced Features",
                 "result": functionality_check["working"],
                 "details": functionality_check
@@ -827,7 +828,8 @@ def monitor_deployment_status():
         pass
 
 if __name__ == "__main__":
-    import argparse
+import argparse
+
 
     parser = argparse.ArgumentParser(description="Production Deployment System")
     parser.add_argument("action", choices=["deploy", "monitor"],)

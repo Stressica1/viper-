@@ -137,7 +137,7 @@ class StandaloneVIPERTrader:
             if not all([api_key, api_secret, api_password]):
                 raise ValueError("Missing Bitget API credentials in environment")
                 
-            self.exchange = ccxt.bitget({)
+            self.exchange = ccxt.bitget(})
                 'apiKey': api_key,
                 'secret': api_secret,
                 'password': api_password,
@@ -382,7 +382,7 @@ class StandaloneVIPERTrader:
             # Strategy 1: Aggressive Market Order (immediate execution)
             market_cost = self.calculate_execution_cost(market_data, optimized_size)
             market_score = max(0, 100 - market_cost * 20)  # Penalize high costs
-            order_strategies.append({)
+            order_strategies.append(})
                 'type': 'MARKET',
                 'price': current_price,
                 'size': optimized_size,
@@ -409,7 +409,7 @@ class StandaloneVIPERTrader:
             limit_cost = market_cost - limit_cost_reduction
             limit_score = (max(0, 100 - limit_cost * 20)) * fill_probability  # Adjust for fill risk
             
-            order_strategies.append({)
+            order_strategies.append(})
                 'type': 'LIMIT',
                 'price': limit_price,
                 'size': optimized_size,
@@ -428,7 +428,7 @@ class StandaloneVIPERTrader:
 (                                  for _ in range(iceberg_chunks)])
                 iceberg_score = max(0, 100 - iceberg_cost * 20)
                 
-                order_strategies.append({)
+                order_strategies.append(})
                     'type': 'ICEBERG',
                     'price': current_price,
                     'size': optimized_size,
@@ -601,7 +601,7 @@ class StandaloneVIPERTrader:
                 return None  # Insufficient momentum
             
             # Create preliminary signal for optimization
-            preliminary_signal = type('PreliminarySignal', (), {)
+            preliminary_signal = type('PreliminarySignal', (), })
                 'signal': signal,
                 'viper_score': viper_score,
                 'price': current_price

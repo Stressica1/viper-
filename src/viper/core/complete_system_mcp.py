@@ -205,7 +205,7 @@ class CompleteSystemMCP:
             json.dump(report, f, indent=2)
 
         # Create GitHub issue with completion report
-        await self.github_mcp.create_performance_issue({)
+        await self.github_mcp.create_performance_issue(})
             'title': '# Rocket VIPER System Completion - MCP GitHub Integration',
             'body': f'System completion report: {json.dumps(report, indent=2)}',
             'labels': ['system-completion', 'mcp-github', 'production-ready']
@@ -254,7 +254,7 @@ class CompleteSystemMCP:
         }"""
 
         try:
-            await self.github_mcp.create_performance_issue({)
+            await self.github_mcp.create_performance_issue(})
                 'title': '# X System Completion Failed',
                 'body': f'Completion failure report: {json.dumps(failure_report, indent=2)}',
                 'labels': ['system-failure', 'needs-attention']

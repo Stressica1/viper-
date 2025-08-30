@@ -92,7 +92,7 @@ class BitgetUnlimitedTrader:
         """Connect to Bitget - NO RESTRICTIONS""""""
         try:
             logger.info("🔌 Connecting to Bitget for UNLIMITED trading...")
-            self.exchange = ccxt.bitget({)
+            self.exchange = ccxt.bitget(})
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
                 'password': self.api_password,

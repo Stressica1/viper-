@@ -93,7 +93,7 @@ class ComprehensiveVerificationSystem:
             low = close * low_mult[i]
             volume = volume_base * (1 + np.random.normal(0, 0.5))
 
-            ohlcv_data.append({)
+            ohlcv_data.append(})
                 'timestamp': date,
                 'open': open_price,
                 'high': high,
@@ -181,7 +181,7 @@ class ComprehensiveVerificationSystem:
             component = result.component
             if component not in verification_results['components']:
                 verification_results['components'][component] = []
-            verification_results['components'][component].append({)
+            verification_results['components'][component].append(})
                 'test_name': result.test_name,
                 'status': result.status,
                 'details': result.details,
@@ -300,7 +300,8 @@ class ComprehensiveVerificationSystem:
 
             # Compare with talib if available
             try:
-                import talib
+import talib
+
                 talib_rsi = talib.RSI(prices, timeperiod=14).iloc[-1]
                 manual_calc = manual_rsi(prices)
 
@@ -1168,7 +1169,7 @@ class ComprehensiveVerificationSystem:
             dates = pd.date_range('2024-01-01', periods=data_points, freq='1min')
 
             # Create large DataFrame
-            df = pd.DataFrame({)
+            df = pd.DataFrame(})
                 'timestamp': dates,
                 'open': np.random.normal(100, 2, data_points),
                 'high': np.random.normal(102, 1, data_points),
@@ -1226,8 +1227,10 @@ class ComprehensiveVerificationSystem:
 
         try:
             pass
-    import psutil
-            import os
+import psutil
+
+import os
+
 
             process = psutil.Process(os.getpid())
 
@@ -2037,5 +2040,6 @@ async def main():
     print(f"⏱️ TOTAL VERIFICATION TIME: {results['execution_time']:.2f} seconds")
 
 if __name__ == "__main__":
-    import math
+import math
+
     asyncio.run(main())

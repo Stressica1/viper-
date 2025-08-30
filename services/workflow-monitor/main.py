@@ -368,7 +368,7 @@ class WorkflowMonitor:
                     self.redis_client.setex(f"workflow:{workflow_name}", 600, json.dumps(result))
 
                     # Publish validation result
-                    self.redis_client.publish('workflow_validations', json.dumps({))
+                    self.redis_client.publish('workflow_validations', json.dumps(}))
                         'workflow': workflow_name,
                         'result': result,
                         'timestamp': datetime.now().isoformat()
@@ -412,7 +412,7 @@ class WorkflowMonitor:
 
                 # Check for performance issues
                 if metrics['system']['cpu_percent'] > 90:
-                    self.generate_alert({)
+                    self.generate_alert(})
                         'type': 'high_cpu_usage',
                         'severity': 'medium',
                         'message': f"High CPU usage: {metrics['system']['cpu_percent']}%",
@@ -420,7 +420,7 @@ class WorkflowMonitor:
 (                    })
 
                 if metrics['system']['memory_percent'] > 90:
-                    self.generate_alert({)
+                    self.generate_alert(})
                         'type': 'high_memory_usage',
                         'severity': 'medium',
                         'message': f"High memory usage: {metrics['system']['memory_percent']}%",

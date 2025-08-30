@@ -138,7 +138,7 @@ class TradingMonitor:
             # Check trading job process
             job_status = await self._check_job_process()
             if not job_status['is_running']:
-                health_issues.append({)
+                health_issues.append(})
                     'type': 'job_status',
                     'severity': 'critical',
                     'message': 'Trading job is not running',
@@ -148,7 +148,7 @@ class TradingMonitor:
             # Check system resources
             resource_status = self._check_system_resources()
             if resource_status['cpu_usage'] > 90:
-                health_issues.append({)
+                health_issues.append(})
                     'type': 'resource',
                     'severity': 'warning',
                     'message': f'High CPU usage: {resource_status["cpu_usage"]}%',
@@ -158,7 +158,7 @@ class TradingMonitor:
             # Check exchange connectivity
             exchange_status = await self._check_exchange_connectivity()
             if not exchange_status['connected']:
-                health_issues.append({)
+                health_issues.append(})
                     'type': 'exchange',
                     'severity': 'critical',
                     'message': 'Exchange connectivity lost',
@@ -397,7 +397,7 @@ class TradingMonitor:
                 sl_diff = abs(actual_sl - expected_sl)
 
                 if tp_diff > 0.01:  # Allow for small floating point differences
-                    issues.append({)
+                    issues.append(})
                         'type': 'tp_calculation',
                         'entry_price': entry,
                         'expected_tp': expected_tp,
@@ -406,7 +406,7 @@ class TradingMonitor:
 (                    })
 
                 if sl_diff > 0.01:
-                    issues.append({)
+                    issues.append(})
                         'type': 'sl_calculation',
                         'entry_price': entry,
                         'expected_sl': expected_sl,
@@ -416,7 +416,7 @@ class TradingMonitor:
 
         except Exception as e:
             logger.error(f"TP/SL calculation validation failed: {e}")
-            issues.append({)
+            issues.append(})
                 'type': 'validation_error',
                 'error': str(e)
 (            })
@@ -580,7 +580,8 @@ Details:
                 logger.warning("Telegram configuration incomplete")
                 return
 
-            import requests
+import requests
+
 
             message = f"""
 🚨 *VIPER Alert*

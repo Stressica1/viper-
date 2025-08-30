@@ -172,7 +172,7 @@ class CompleteMCPTradingIntegration:
                 # Update GitHub with current metrics every hour
                 if current_minute == 0:
                     metrics = self.performance_tracker.get_cumulative_performance()
-                    await self.github_mcp.log_system_performance({)
+                    await self.github_mcp.log_system_performance(})
                         'hourly_update': True,
                         'cumulative_metrics': metrics.__dict__,
                         'portfolio_value': self.performance_tracker.portfolio_value
@@ -198,7 +198,7 @@ class CompleteMCPTradingIntegration:
                     await self.check_system_health(status)
 
                     # Log to GitHub
-                    await self.github_mcp.log_system_performance({)
+                    await self.github_mcp.log_system_performance(})
                         'system_monitoring': True,
                         'system_status': status,
                         'timestamp': datetime.now().isoformat()
@@ -217,7 +217,7 @@ class CompleteMCPTradingIntegration:
 
             # Check component readiness
             if not status.get('system_components', {}).get('components_ready', False):
-                issues.append({)
+                issues.append(})
                     'type': 'components_not_ready',
                     'severity': 'high',
                     'message': 'System components are not ready'
@@ -225,7 +225,7 @@ class CompleteMCPTradingIntegration:
 
             # Check trading status
             if status.get('emergency_stop', False):
-                issues.append({)
+                issues.append(})
                     'type': 'emergency_stop_active',
                     'severity': 'critical',
                     'message': 'Emergency stop is active'
@@ -233,7 +233,7 @@ class CompleteMCPTradingIntegration:
 
             # Check active tasks
             if status.get('active_tasks', 0) == 0 and status.get('trading_active', False):
-                issues.append({)
+                issues.append(})
                     'type': 'no_active_tasks',
                     'severity': 'medium',
                     'message': 'No active trading tasks'
@@ -277,7 +277,7 @@ class CompleteMCPTradingIntegration:
 """
 
             # Log the issue
-            await self.github_mcp.log_system_performance({)
+            await self.github_mcp.log_system_performance(})
                 'system_health_issue': True,
                 'issue_type': issue['type'],
                 'issue_severity': issue['severity'],
@@ -303,7 +303,7 @@ class CompleteMCPTradingIntegration:
                 await self.performance_tracker.export_performance_data('emergency_shutdown_export.json')
 
             # Create emergency shutdown issue
-            await self.github_mcp.log_system_performance({)
+            await self.github_mcp.log_system_performance(})
                 'emergency_shutdown': True,
                 'reason': 'manual_emergency_shutdown',
                 'timestamp': datetime.now().isoformat()

@@ -216,7 +216,8 @@ class MandatoryDockerMCPWrapper:
             return True
             
         try:
-            import github_mcp_integration
+import github_mcp_integration
+
             self.github_mcp = github_mcp_integration.GitHubMCPIntegration()
             logger.info("# Check GitHub MCP Integration: INITIALIZED")
             return True
@@ -262,7 +263,7 @@ class MandatoryDockerMCPWrapper:
             try:
                 # Log start to GitHub MCP
                 if self.github_mcp:
-                    asyncio.create_task(self.github_mcp.log_system_performance({))
+                    asyncio.create_task(self.github_mcp.log_system_performance(}))
                         'module': module_name,
                         'method': method_name,
                         'status': 'started',
@@ -277,7 +278,7 @@ class MandatoryDockerMCPWrapper:
                 duration = (end_time - start_time).total_seconds()
                 
                 if self.github_mcp:
-                    asyncio.create_task(self.github_mcp.log_system_performance({))
+                    asyncio.create_task(self.github_mcp.log_system_performance(}))
                         'module': module_name,
                         'method': method_name,
                         'status': 'completed',
@@ -293,7 +294,7 @@ class MandatoryDockerMCPWrapper:
                 duration = (end_time - start_time).total_seconds()
                 
                 if self.github_mcp:
-                    asyncio.create_task(self.github_mcp.log_system_performance({))
+                    asyncio.create_task(self.github_mcp.log_system_performance(}))
                         'module': module_name,
                         'method': method_name,
                         'status': 'failed',

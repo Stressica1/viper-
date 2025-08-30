@@ -353,7 +353,8 @@ class OptimizedMarketDataStreamer:
             df['sma_50'] = df['close'].rolling(window=50).mean()
 
             # RSI
-            import ta
+import ta
+
             df['rsi'] = ta.momentum.rsi(df['close'], window=14)
 
             # Returns

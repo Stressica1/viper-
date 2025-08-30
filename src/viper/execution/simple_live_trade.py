@@ -36,7 +36,7 @@ class SimpleLiveTrader:
             raise Exception("# X Missing API credentials")
 
         # Initialize exchange
-        self.exchange = ccxt.bitget({)
+        self.exchange = ccxt.bitget(})
             'apiKey': self.api_key,
             'secret': self.api_secret,
             'password': self.api_password,

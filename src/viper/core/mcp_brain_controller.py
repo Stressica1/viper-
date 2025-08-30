@@ -374,7 +374,7 @@ class MCPBrainController:
 
             <script>
                 // Real-time updates
-                setInterval(async () => {{)
+                setInterval(async () => {})
                     try {{
                         const response = await fetch('/health');
                         const health = await response.json();
@@ -410,7 +410,7 @@ class MCPBrainController:
 
                 async function executeCommand(command, params = {{}}) {{
                     try {{
-                        const response = await fetch('/command', {{)
+                        const response = await fetch('/command', {})
                             method: 'POST',
                             headers: {{ 'Content-Type': 'application/json' }},
                             body: JSON.stringify({{ command, params }})
@@ -878,12 +878,12 @@ class MCPBrainController:
             if confidence >= threshold:
                 action = recommendations.get("recommended_action")
                 if action == "BUY":
-                    await self.execute_unified_command({)
+                    await self.execute_unified_command(})
                         "command": "execute_trade",
                         "params": recommendations.get("trade_params", {})
 (                    })
                 elif action == "SELL":
-                    await self.execute_unified_command({)
+                    await self.execute_unified_command(})
                         "command": "execute_trade",
                         "params": recommendations.get("trade_params", {})
 (                    })

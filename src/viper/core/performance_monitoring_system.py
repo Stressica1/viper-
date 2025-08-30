@@ -231,7 +231,7 @@ class PerformanceMonitoringSystem:
 
             # Sharpe ratio alert
             if snapshot.sharpe_ratio < self.performance_targets['min_sharpe_ratio']:
-                alerts.append({)
+                alerts.append(})
                     'type': 'SHARPE_RATIO_LOW',
                     'message': f'Sharpe ratio {snapshot.sharpe_ratio:.2f} below target {self.performance_targets["min_sharpe_ratio"]:.2f}',
                     'severity': 'HIGH',
@@ -240,7 +240,7 @@ class PerformanceMonitoringSystem:
 
             # Drawdown alert
             if snapshot.max_drawdown > self.performance_targets['max_drawdown_limit']:
-                alerts.append({)
+                alerts.append(})
                     'type': 'DRAWDOWN_HIGH',
                     'message': f'Max drawdown {snapshot.max_drawdown:.2%} exceeds limit {self.performance_targets["max_drawdown_limit"]:.2%}',
                     'severity': 'CRITICAL',
@@ -249,7 +249,7 @@ class PerformanceMonitoringSystem:
 
             # Win rate alert
             if snapshot.win_rate < self.performance_targets['min_win_rate']:
-                alerts.append({)
+                alerts.append(})
                     'type': 'WIN_RATE_LOW',
                     'message': f'Win rate {snapshot.win_rate:.2%} below target {self.performance_targets["min_win_rate"]:.2%}',
                     'severity': 'MEDIUM',
@@ -259,7 +259,7 @@ class PerformanceMonitoringSystem:
             # System resource alerts
             system_metrics = snapshot.system_metrics
             if system_metrics.get('memory_percent', 0) > 90:
-                alerts.append({)
+                alerts.append(})
                     'type': 'HIGH_MEMORY_USAGE',
                     'message': f'Memory usage at {system_metrics["memory_percent"]:.1f}%',
                     'severity': 'HIGH',
@@ -391,7 +391,7 @@ class PerformanceMonitoringSystem:
             # Extract performance metrics
             performance_data = []
             for snapshot in list(self.performance_history)[-100:]:  # Last 100 snapshots
-                performance_data.append({)
+                performance_data.append(})
                     'sharpe_ratio': snapshot.sharpe_ratio,
                     'max_drawdown': snapshot.max_drawdown,
                     'win_rate': snapshot.win_rate,
@@ -622,7 +622,7 @@ class PerformanceMonitoringSystem:
             # Prepare data for prediction
             performance_data = []
             for snapshot in list(self.performance_history)[-50:]
-                performance_data.append({)
+                performance_data.append(})
                     'sharpe_ratio': snapshot.sharpe_ratio,
                     'max_drawdown': snapshot.max_drawdown,
                     'win_rate': snapshot.win_rate,

@@ -261,7 +261,7 @@ class UnifiedTradingEngine:
                     analysis = optimizer.analyze_entry_point(symbol.strip())
 
                     if analysis.get('should_enter', False):
-                        entry_points.append({)
+                        entry_points.append(})
                             'symbol': symbol.strip(),
                             'entry_price': analysis.get('optimal_entry_price'),
                             'confidence': analysis.get('confidence_score', 0),

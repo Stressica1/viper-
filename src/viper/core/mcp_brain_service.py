@@ -80,8 +80,10 @@ class MCPBrainService:
         logger.addHandler(console_handler)
 
         # File handler with rotation - use local directory
-        from pathlib import Path
-        from logging.handlers import RotatingFileHandler
+from pathlib import Path
+
+from logging.handlers import RotatingFileHandler
+
         log_dir = Path(__file__).parent / "logs"
         log_dir.mkdir(exist_ok=True)
         file_handler = RotatingFileHandler()
@@ -255,7 +257,8 @@ class MCPBrainService:
 
             # Check brain controller health via HTTP
             try:
-                import requests
+import requests
+
                 response = requests.get("http://localhost:8080/health", timeout=5)
                 if response.status_code == 200:
                     health_data = response.json()

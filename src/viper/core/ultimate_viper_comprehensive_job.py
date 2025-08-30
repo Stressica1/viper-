@@ -127,16 +127,20 @@ class UltimateViperComprehensiveJob:
 
         try:
             # Add project root to path for imports
-            import sys
-            from pathlib import Path
+import sys
+
+from pathlib import Path
+
             project_root = Path(__file__).parent.parent.parent.parent
             if str(project_root) not in sys.path:
                 sys.path.insert(0, str(project_root))
             
             # Import and initialize ViperAsyncTrader
             try:
-                from src.viper.execution.viper_async_trader import ViperAsyncTrader
-                from src.viper.execution.viper_async_trader import TrendDirection, TrendStrength
+from src.viper.execution.viper_async_trader import ViperAsyncTrader
+
+from src.viper.execution.viper_async_trader import TrendDirection, TrendStrength
+
                 self.active_components['viper_async_trader'] = ViperAsyncTrader()
             except ImportError as e:
                 # Create placeholder
@@ -148,7 +152,8 @@ class UltimateViperComprehensiveJob:
 
             # Import and initialize V2 Risk-Optimized Job
             try:
-                from src.viper.execution.v2_risk_optimized_trading_job import V2RiskOptimizedTradingJob
+from src.viper.execution.v2_risk_optimized_trading_job import V2RiskOptimizedTradingJob
+
                 self.active_components['v2_risk_job'] = V2RiskOptimizedTradingJob()
                 print("# Check V2 Risk-Optimized Trading Job initialized")
             except ImportError as e:
@@ -160,7 +165,8 @@ class UltimateViperComprehensiveJob:
 
             # Import and initialize Unified Trading Job
             try:
-                from src.viper.execution.viper_unified_trading_job import VIPERUnifiedTradingJob
+from src.viper.execution.viper_unified_trading_job import VIPERUnifiedTradingJob
+
                 self.active_components['unified_trading'] = VIPERUnifiedTradingJob()
             except ImportError as e:
                 print(f"# Warning Unified Trading Job import failed: {e}")
@@ -172,7 +178,8 @@ class UltimateViperComprehensiveJob:
 
             # Import and initialize Advanced Trend Detector
             try:
-                from src.viper.analysis.advanced_trend_detector import AdvancedTrendDetector
+from src.viper.analysis.advanced_trend_detector import AdvancedTrendDetector
+
                 self.active_components['trend_detector'] = AdvancedTrendDetector()
             except ImportError as e:
                 class AdvancedTrendDetector:
@@ -194,15 +201,18 @@ class UltimateViperComprehensiveJob:
             self.active_components['mcp_brain'] = MCPBrainController()
 
             # Import and initialize AI/ML Optimizer
-            from src.viper.ai.ai_ml_optimizer import AIMLOptimizer
+from src.viper.ai.ai_ml_optimizer import AIMLOptimizer
+
             self.active_components['ai_ml_optimizer'] = AIMLOptimizer()
 
             # Import and initialize MCP Brain Ruleset
-            from mcp_brain_ruleset import MCPRulesEngine
+from mcp_brain_ruleset import MCPRulesEngine
+
             self.active_components['mcp_ruleset'] = MCPRulesEngine()
 
             # Import and initialize MCP Brain Service
-            from mcp_brain_service import MCPBrainService
+from mcp_brain_service import MCPBrainService
+
             self.active_components['mcp_service'] = MCPBrainService()
 
         except Exception as e:
@@ -219,15 +229,18 @@ class UltimateViperComprehensiveJob:
             print("# Check Optimal Entry Point Manager initialized")
 
             # Import and initialize Master Diagnostic Scanner
-            from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
+from scripts.master_diagnostic_scanner import MasterDiagnosticScanner
+
             self.active_components['diagnostic_scanner'] = MasterDiagnosticScanner()
 
             # Import and initialize Live Trading Optimizer
-            from live_trading_optimizer import LiveTradingOptimizer
+from live_trading_optimizer import LiveTradingOptimizer
+
             self.active_components['live_optimizer'] = LiveTradingOptimizer()
 
             # Import and initialize Mathematical Validator
-            from utils.mathematical_validator import MathematicalValidator
+from utils.mathematical_validator import MathematicalValidator
+
             self.active_components['math_validator'] = MathematicalValidator()
 
         except Exception as e:
@@ -296,14 +309,16 @@ class UltimateViperComprehensiveJob:
 
             # Import and initialize System Diagnostic
             try:
-                from system_diagnostic import ViperDiagnostic
+from system_diagnostic import ViperDiagnostic
+
                 self.active_components['system_diagnostic'] = ViperDiagnostic()
             except ImportError as e:
                 print(f"# Warning  System Diagnostic not available: {e}")
                 self.active_components['system_diagnostic'] = None
 
             # Import and initialize Live Trading Monitor
-            from live_trading_monitor import LiveTradingMonitor
+from live_trading_monitor import LiveTradingMonitor
+
             self.active_components['live_monitor'] = LiveTradingMonitor()
 
         except Exception as e:
@@ -722,7 +737,7 @@ class UltimateViperComprehensiveJob:
     async def _update_performance_metrics(self):
         """Update comprehensive performance metrics""""""
         try:
-            self.performance_metrics.update({)
+            self.performance_metrics.update(})
                 'cpu_usage': psutil.cpu_percent(),
                 'memory_usage': psutil.virtual_memory().percent,
                 'disk_usage': psutil.disk_usage('/').percent,
@@ -732,7 +747,7 @@ class UltimateViperComprehensiveJob:
 (            })
 
             # Add trading-specific metrics
-            self.performance_metrics.update({)
+            self.performance_metrics.update(})
                 'total_trades_executed': 0,  # Would be populated from actual trade data
                 'win_rate': 0.0,
                 'average_profit': 0.0,
@@ -996,7 +1011,8 @@ async def main():
         pass
     except Exception as e:
         logger.error(f"# X Ultimate VIPER system failed: {e}")
-        import traceback
+import traceback
+
         traceback.print_exc()
 
 if __name__ == "__main__":

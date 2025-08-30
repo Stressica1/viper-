@@ -41,7 +41,8 @@ class TradingFlowDiagnostic:
         self.trade_simulations = []
 
         # Load environment variables
-        from dotenv import load_dotenv
+from dotenv import load_dotenv
+
         load_dotenv()
 
         # Initialize exchange
@@ -58,7 +59,7 @@ class TradingFlowDiagnostic:
                 logger.error("# X Missing API credentials")
                 return False
 
-            self.exchange = ccxt.bitget({)
+            self.exchange = ccxt.bitget(})
                 'apiKey': api_key,
                 'secret': api_secret,
                 'password': api_password,
@@ -102,7 +103,8 @@ class TradingFlowDiagnostic:
 
         except Exception as e:
             logger.error(f"# X Diagnostic failed: {e}")
-            import traceback
+import traceback
+
             traceback.print_exc()
 
     async def diagnose_pair_discovery(self):
@@ -188,7 +190,7 @@ class TradingFlowDiagnostic:
 
                     if not reasons:  # All criteria passed
                         qualified_count += 1
-                        self.qualified_pairs.append({)
+                        self.qualified_pairs.append(})
                             'symbol': symbol,
                             'volume_24h': volume_24h,
                             'spread': spread,
@@ -260,7 +262,8 @@ class TradingFlowDiagnostic:
                 return
 
             # Import VIPER scorer
-            from viper_async_trader import ViperAsyncTrader
+from viper_async_trader import ViperAsyncTrader
+
 
             # Create scorer instance with exchange
             scorer = ViperAsyncTrader()
@@ -303,7 +306,7 @@ class TradingFlowDiagnostic:
                             best_opp = max(opportunities, key=lambda x: x.score)
 
                         if best_opp:
-                            self.scoring_results.append({)
+                            self.scoring_results.append(})
                                 'symbol': symbol,
                                 'score': best_opp.score,
                                 'side': best_opp.recommended_side,
@@ -469,7 +472,7 @@ class TradingFlowDiagnostic:
 
         # Save detailed report
         with open('trading_flow_diagnostic_report.json', 'w') as f:
-            json.dump({)
+            json.dump(})
                 'summary': report,
                 'pairs_data': self.pairs_data[:10],  # First 10 pairs
                 'qualified_pairs': self.qualified_pairs,

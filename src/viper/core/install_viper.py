@@ -259,7 +259,8 @@ You can skip this step and configure later if you want to test with demo data fi
             
             # Test environment loading
             try:
-                from dotenv import load_dotenv
+from dotenv import load_dotenv
+
                 load_dotenv()
             except Exception as e:
                 return False

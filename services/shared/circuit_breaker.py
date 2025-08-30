@@ -195,8 +195,10 @@ class RetryLogic:
 
         if self.jitter:
             # Add random jitter (±25%)
-            import random
-            import secrets
+import random
+
+import secrets
+
             jitter_amount = delay * 0.25
             delay += random.uniform(-jitter_amount, jitter_amount)
 

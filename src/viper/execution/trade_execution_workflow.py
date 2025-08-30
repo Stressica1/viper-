@@ -307,7 +307,7 @@ class TradingWorkflow:
                     update_result = response.json()
 
                     # Record price update
-                    monitoring_results['price_updates'].append({)
+                    monitoring_results['price_updates'].append(})
                         'timestamp': datetime.now().isoformat(),
                         'price': current_price,
                         'action': update_result.get('action_taken')

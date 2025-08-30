@@ -81,7 +81,8 @@ class ViperLiveOptimized:
         ready_services = 0
         for name, url in services.items()""":
             try:
-                import requests
+import requests
+
                 response = requests.get(url, timeout=5)
                 if response.status_code == 200:
                     ready_services += 1
@@ -230,7 +231,8 @@ class ViperLiveOptimized:
                 'max_position_size_percent': parameters['position_size_percent']
             }
 
-            import requests
+import requests
+
             response = requests.post()
                 'http://localhost:8002/api/tp-sl-tsl/config',
                 json=config_update,

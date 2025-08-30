@@ -236,7 +236,7 @@ class MCPPerformanceTracker:
             }
 
             # Log to GitHub
-            success = await self.github_mcp.log_system_performance({)
+            success = await self.github_mcp.log_system_performance(})
                 'performance_report': True,
                 'date': date,
                 'metrics': report
@@ -263,7 +263,7 @@ class MCPPerformanceTracker:
             if daily_metrics.total_pnl < 0:
                 daily_loss_pct = (abs(daily_metrics.total_pnl) / self.portfolio_value) * 100
                 if daily_loss_pct > abs(self.settings['alert_thresholds']['daily_loss_pct']):
-                    alerts.append({)
+                    alerts.append(})
                         'type': 'daily_loss',
                         'severity': 'high',
                         'message': f"Daily loss exceeded threshold: {daily_loss_pct:.2f}%",
@@ -272,7 +272,7 @@ class MCPPerformanceTracker:
 
             # Drawdown alert
             if cumulative_metrics.max_drawdown > abs(self.settings['alert_thresholds']['max_drawdown_pct']):
-                alerts.append({)
+                alerts.append(})
                     'type': 'max_drawdown',
                     'severity': 'critical',
                     'message': f"Maximum drawdown exceeded threshold: {cumulative_metrics.max_drawdown:.2f}%",
@@ -281,7 +281,7 @@ class MCPPerformanceTracker:
 
             # Win rate alert
             if cumulative_metrics.win_rate < self.settings['alert_thresholds']['win_rate_min']:
-                alerts.append({)
+                alerts.append(})
                     'type': 'win_rate',
                     'severity': 'medium',
                     'message': f"Win rate below threshold: {cumulative_metrics.win_rate:.2f}%",
@@ -327,7 +327,7 @@ class MCPPerformanceTracker:
 """
 
             # Create issue via GitHub MCP
-            await self.github_mcp.create_performance_issue({)
+            await self.github_mcp.create_performance_issue(})
                 'system_status': 'ALERT_ACTIVE',
                 'alert_type': alert['type'],
                 'alert_severity': alert['severity'],

@@ -248,7 +248,8 @@ class DeploymentChecklist:
 
         # Check internet connectivity:"""
         try:
-            import requests
+import requests
+
             response = requests.get("https://api.binance.com/api/v3/ping", timeout=5)
             connectivity_checks["internet"] = "CONNECTED" if response.status_code == 200 else "FAILED"
         except Exception:
@@ -256,7 +257,8 @@ class DeploymentChecklist:
 
         # Check Bitget API connectivity
         try:
-            import ccxt
+import ccxt
+
             exchange = ccxt.bitget()
             exchange.load_markets()
             connectivity_checks["bitget_api"] = "CONNECTED"
@@ -267,7 +269,8 @@ class DeploymentChecklist:
         redis_url = os.getenv('REDIS_URL')
         if redis_url:
             try:
-                import redis
+import redis
+
                 r = redis.from_url(redis_url)
                 r.ping()
                 connectivity_checks["redis"] = "CONNECTED"
@@ -376,7 +379,8 @@ class DeploymentChecklist:
 :"""
         try:
             # Import and run integration test
-            from enhanced_system_integration_test import EnhancedSystemIntegrationTest
+from enhanced_system_integration_test import EnhancedSystemIntegrationTest
+
 
             integration_test = EnhancedSystemIntegrationTest()
             test_results = asyncio.run(integration_test.run_full_integration_test())
@@ -405,7 +409,8 @@ class DeploymentChecklist:
 :"""
         try:
             # Import and run performance validation
-            from enhanced_backtesting_validation import EnhancedBacktestingValidation
+from enhanced_backtesting_validation import EnhancedBacktestingValidation
+
 
             validator = EnhancedBacktestingValidation()
             validation_results = asyncio.run(validator.run_comprehensive_validation())
@@ -463,7 +468,8 @@ class DeploymentChecklist:
                 file_path = project_root / sensitive_file
                 if file_path.exists():
                     try:
-                        import stat
+import stat
+
                         file_stat = os.stat(file_path)
                         # Check if file is readable by others
                         if file_stat.st_mode & stat.S_IRGRP or file_stat.st_mode & stat.S_IROTH:

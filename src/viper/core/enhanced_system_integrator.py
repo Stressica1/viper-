@@ -778,11 +778,16 @@ async def initialize_enhanced_system(config_path: Optional[str] = None) -> bool:
         integrator = get_integrator(config_path)
 
         # Register all enhanced modules
-        from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
-        from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
-        from enhanced_risk_manager import EnhancedRiskManager
-        from optimized_market_data_streamer import OptimizedMarketDataStreamer
-        from performance_monitoring_system import PerformanceMonitoringSystem
+from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
+
+from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
+
+from enhanced_risk_manager import EnhancedRiskManager
+
+from optimized_market_data_streamer import OptimizedMarketDataStreamer
+
+from performance_monitoring_system import PerformanceMonitoringSystem
+
 
         # Register modules with dependencies
         integrator.register_module()

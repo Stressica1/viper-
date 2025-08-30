@@ -16,7 +16,8 @@ from dataclasses import dataclass
 
 # Load environment variables"""
 try:
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
+
     load_dotenv()
 except ImportError:
     pass
@@ -560,7 +561,8 @@ async def continuous_job_creation():
 (                )
                 
                 # Create score jobs for random symbols
-                import random
+import random
+
 import secrets
                 selected_symbols = random.sample(symbols, 5)
                 for symbol in selected_symbols:

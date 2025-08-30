@@ -23,7 +23,8 @@ async def run_complete_live_system():
     
     # Enforce Docker and MCP requirements
     try:
-        from docker_mcp_enforcer import enforce_docker_mcp_requirements
+from docker_mcp_enforcer import enforce_docker_mcp_requirements
+
         
         if not enforce_docker_mcp_requirements():
             sys.exit(1)
@@ -32,7 +33,8 @@ async def run_complete_live_system():
         sys.exit(1)
     
     # Validate live trading environment
-    from dotenv import load_dotenv
+from dotenv import load_dotenv
+
     load_dotenv()
     
     if os.getenv('USE_MOCK_DATA', '').lower() == 'true':
@@ -41,7 +43,8 @@ async def run_complete_live_system():
 
     try:
         # Import the enhanced trader
-        from viper_async_trader import ViperAsyncTrader
+from viper_async_trader import ViperAsyncTrader
+
 
         print("# Tool Initializing Complete Trading System...")
         trader = ViperAsyncTrader()

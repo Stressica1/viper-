@@ -921,7 +921,8 @@ def monitor_system_health():
         pass
 
 if __name__ == "__main__":
-    import argparse
+import argparse
+
 
     parser = argparse.ArgumentParser(description="Emergency Rollback System")
     parser.add_argument("action", choices=["rollback", "monitor"],)
