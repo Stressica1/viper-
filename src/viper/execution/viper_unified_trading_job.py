@@ -479,10 +479,9 @@ class VIPERUnifiedTradingJob:
             # Use ThreadPoolExecutor for concurrent scanning
             with ThreadPoolExecutor(max_workers=min(len(pairs_batch), 10)) as executor:
                 # Submit all pair scans
-                future_to_pair = {
-                    executor.submit(self._scan_single_pair_fixed, pair): pair
-                    for pair in pairs_batch:
-                }
+                future_to_pair = {}
+                for pair in pairs_batch:
+                    future_to_pair[executor.submit(self._scan_single_pair_fixed, pair)] = pair
 
                 # Collect results
                 for future in as_completed(future_to_pair):
@@ -499,8 +498,8 @@ class VIPERUnifiedTradingJob:
 
         return opportunities
 
-    def _scan_single_pair_fixed(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]
-        """Scan a single pair with FIXED async OHLCV handling""":"""
+    def _scan_single_pair_fixed(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Scan a single pair with FIXED async OHLCV handling"""
         try:
             symbol = pair['symbol']
 
@@ -531,8 +530,8 @@ class VIPERUnifiedTradingJob:
 
         return None
 
-    def _get_market_data_fixed(self, symbol: str) -> Optional[Dict[str, Any]]
-        """Get market data with FIXED async OHLCV handling""":"""
+    def _get_market_data_fixed(self, symbol: str) -> Optional[Dict[str, Any]]:
+        """Get market data with FIXED async OHLCV handling"""
         try:
             # Get ticker data
             ticker = self.exchange.fetch_ticker(symbol)
@@ -687,7 +686,7 @@ class VIPERUnifiedTradingJob:
             multiplier = 2 / (period + 1)
             ema = prices[0]
 
-            for price in prices[1:]
+            for price in prices[1:]:
                 ema = (price * multiplier) + (ema * (1 - multiplier))
 
             return ema
@@ -696,10 +695,10 @@ class VIPERUnifiedTradingJob:
             logger.error(f"EMA calculation error: {e}")
             return np.mean(prices)
 
-    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Score trading opportunities using VIPER system"""
         scored_opportunities = []
-:"""
+        
         try:
             for opp in opportunities:
                 try:
@@ -728,8 +727,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Opportunity scoring failed: {e}")
             return []
 
-    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
-        """Calculate VIPER scores for opportunity with enhanced AI/ML support""":"""
+    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
+        """Calculate VIPER scores for opportunity with enhanced AI/ML support"""
         try:
             market_data = opportunity.get('market_data', {})
             symbol = opportunity.get('symbol', '')
@@ -745,8 +744,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"VIPER scoring error: {e}")
             return {'volume': 0, 'price': 0, 'leverage': 0, 'technical': 0, 'risk': 0, 'ai_ml': 0}
 
-    def _calculate_enhanced_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
-        """Calculate VIPER scores using enhanced AI/ML modules""":"""
+    def _calculate_enhanced_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
+        """Calculate VIPER scores using enhanced AI/ML modules"""
         try:
             market_data = opportunity.get('market_data', {})
             symbol = opportunity.get('symbol', '')
@@ -812,8 +811,8 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Enhanced VIPER scoring error: {e}")
             return self._calculate_basic_viper_scores(opportunity)
 
-    def _calculate_basic_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
-        """Calculate basic VIPER scores (fallback)""":"""
+    def _calculate_basic_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
+        """Calculate basic VIPER scores (fallback)"""
         try:
             market_data = opportunity.get('market_data', {})
 
@@ -853,9 +852,9 @@ class VIPERUnifiedTradingJob:
             # Get historical data for AI/ML analysis
             if self.market_data_streamer:
                 # Use optimized data streamer for historical data
-                historical_data = asyncio.run()
+                historical_data = asyncio.run(
                     self.market_data_streamer.fetch_market_data(symbol, '1h', limit=200)
-(                )
+                )
                 if historical_data is not None:
                     return historical_data
 
@@ -954,8 +953,8 @@ class VIPERUnifiedTradingJob:
             leverage = opportunity.get('pair_info', {}).get('leverage', 1)
             return min(leverage / 100, 1.0)
 
-    def _get_enhanced_metrics(self, opportunity: Dict[str, Any]) -> Dict[str, Any]
-        """Get additional enhanced metrics""":"""
+    def _get_enhanced_metrics(self, opportunity: Dict[str, Any]) -> Dict[str, Any]:
+        """Get additional enhanced metrics"""
         try:
             metrics = {}
 
@@ -1025,7 +1024,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Technical score calculation error: {e}")
             return 0.5
 
-    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Execute trades with position limits across all pairs"""
         executed_trades = []
         current_positions = len(self.positions)"""
@@ -1110,7 +1109,7 @@ class VIPERUnifiedTradingJob:
             logger.error(f"Position size calculation failed: {e}")
             return 0
 
-    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]
+    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]:
         """Execute a single trade"":
         try:
             symbol = opportunity['symbol']
@@ -1236,8 +1235,8 @@ class VIPERUnifiedTradingJob:
         except Exception as e:
             logger.error(f"Position management system failed: {e}")
 
-    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]
-        """Determine if position should be closed""":"""
+    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]:
+        """Determine if position should be closed"""
         try:
             entry_price = position['entry_price']
 

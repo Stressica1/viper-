@@ -308,7 +308,7 @@ class BitgetUnlimitedTrader:
             # Close with opposite order
             opposite_side = 'sell' if position_info['side'] == 'buy' else 'buy'
             
-            close_order = self.exchange.create_order()
+            close_order = self.exchange.create_order(
                 symbol=symbol,
                 type='market',
                 side=opposite_side,
@@ -317,7 +317,7 @@ class BitgetUnlimitedTrader:
                     'holdSide': 'long' if position_info['side'] == 'buy' else 'short',
                     'tradeSide': 'close'  # Close position
                 }
-(            )
+            )
             
             logger.info(f"# Check POSITION CLOSED: {symbol} ({reason})")
             logger.info(f"   📋 Close Order: {close_order['id']}")
@@ -423,9 +423,9 @@ class BitgetUnlimitedTrader:
                             continue
                 
                 # Status update
-                logger.info(f"💥 Balance: ${self.real_balance:.2f} | ")
+                logger.info(f"💥 Balance: ${self.real_balance:.2f} | "
                           f"Active: {len(self.active_positions)} | "
-(                          f"Total Trades: {self.total_trades}")
+                          f"Total Trades: {self.total_trades}")
                 
                 # Aggressive cycle timing
                 logger.info("⏰ Next cycle in 30 seconds...")
