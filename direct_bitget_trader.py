@@ -148,14 +148,14 @@ class DirectBitgetTrader:
         try:
             # Try multiple endpoints to load pairs
             endpoints = [
-                '/api/v2/mix/market/contracts',
-                '/api/v2/mix/market/tickers',
-                '/api/v2/public/symbols'
+                ('/api/v2/mix/market/contracts', {'productType': 'USDT-FUTURES'}),
+                ('/api/v2/mix/market/tickers', {'productType': 'USDT-FUTURES'}),
+                ('/api/v2/public/symbols', {'productType': 'USDT-FUTURES'})
             ]
 
-            for endpoint in endpoints:
+            for endpoint, params in endpoints:
                 logger.info(f"🔍 Trying endpoint: {endpoint}")
-                result = self.send_request('GET', endpoint, {'productType': 'USDT-FUTURES'})
+                result = self.send_request('GET', endpoint, params)
 
                 if result and result.get('code') == '00000':
                     data = result.get('data', [])
@@ -216,7 +216,7 @@ class DirectBitgetTrader:
         try:
             # Try multiple ticker endpoints - Bitget has different formats
             endpoints = [
-                ('/api/v2/mix/market/ticker', {'symbol': symbol}),
+                ('/api/v2/mix/market/ticker', {'symbol': symbol, 'productType': 'USDT-FUTURES'}),
                 ('/api/v2/mix/market/tickers', {'productType': 'USDT-FUTURES'})
             ]
 
@@ -316,7 +316,7 @@ class DirectBitgetTrader:
                 if isinstance(result, dict) and 'error' in result:
                     logger.error(f"❌ Trade failed - HTTP {result['error']}: {result.get('text', '')}")
                 else:
-                    logger.error(f"❌ Trade failed: {result}")
+                    logger.error(f"❌ Trade failed: {str(result)}")
                 return False
 
         except Exception as e:

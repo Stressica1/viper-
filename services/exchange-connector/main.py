@@ -21,13 +21,21 @@ from fastapi.responses import JSONResponse
 import uvicorn
 import redis
 import threading
+from typing import Optional, Dict, List, Any
 
-# Add shared directory to path for credential client
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
+# Import from shared services module
 try:
+    from shared import get_credential_client
     CREDENTIAL_CLIENT_AVAILABLE = True
 except ImportError:
-    CREDENTIAL_CLIENT_AVAILABLE = False
+    # Fallback to direct import if shared module not available
+    try:
+        sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
+        from credential_client import get_credential_client
+        CREDENTIAL_CLIENT_AVAILABLE = True
+    except ImportError:
+        get_credential_client = None
+        CREDENTIAL_CLIENT_AVAILABLE = False
 
 # Load environment variables
 REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')

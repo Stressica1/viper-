@@ -20,6 +20,7 @@ import subprocess
 import requests
 from datetime import datetime
 from pathlib import Path
+from typing import Dict, List, Optional, Any
 
 # Configure logging
 logging.basicConfig(
@@ -170,18 +171,26 @@ class DockerMCPEnforcer:
     def _validate_github_mcp_integration(self) -> bool:
         """Validate GitHub MCP integration is active and functional"""
         logger.info("🔗 Validating GitHub MCP Integration...")
-        
+
         try:
             # Check if github_mcp_integration module exists
+            # Look in current directory first, then in src/viper/core/
             github_integration_file = Path('github_mcp_integration.py')
             if github_integration_file.exists():
                 logger.info("# Check GitHub MCP Integration Module: AVAILABLE")
                 self.github_mcp_validated = True
                 return True
             else:
-                logger.warning("# Warning GitHub MCP Integration module not found")
-                return False
-                
+                # Also check in src/viper/core/ subdirectory
+                github_integration_file = Path('src/viper/core/github_mcp_integration.py')
+                if github_integration_file.exists():
+                    logger.info("# Check GitHub MCP Integration Module: AVAILABLE")
+                    self.github_mcp_validated = True
+                    return True
+                else:
+                    logger.warning("# Warning GitHub MCP Integration module not found")
+                    return False
+
         except Exception as e:
             logger.warning(f"# Warning GitHub MCP integration validation warning: {e}")
             return False

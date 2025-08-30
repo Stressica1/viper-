@@ -35,11 +35,11 @@ sys.path.append(str(project_root))
 from docker_mcp_enforcer import enforce_docker_mcp_requirements, get_enforcer
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - MANDATORY_WRAPPER - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class MandatoryDockerMCPWrapper:
     """
@@ -141,13 +141,8 @@ class MandatoryDockerMCPWrapper:
             }
         }
     
-    def execute_with_enforcement(self, module_name: str, operation: str = 'main', )
-(                               *args, **kwargs) -> Any:
-                                   pass
-        """
-        Execute any module operation with mandatory Docker/MCP enforcement
-        THIS IS THE ONLY ALLOWED WAY TO EXECUTE SYSTEM OPERATIONS!
-        """
+    def execute_with_enforcement(self, module_name: str, operation: str = 'main', *args, **kwargs) -> Any:
+        """Execute any module operation with mandatory Docker/MCP enforcement"""
         logger.info(f"🔒 ENFORCING REQUIREMENTS FOR: {module_name}.{operation}")
         
         # STEP 1: MANDATORY ENFORCEMENT
@@ -388,23 +383,24 @@ def execute_module(module_name: str, operation: str = 'main', *args, **kwargs) -
     ALL MODULE EXECUTIONS MUST GO THROUGH THIS FUNCTION!
     """
     wrapper = get_wrapper()
-    return wrapper.execute_with_enforcement(module_name, operation, *args, **kwargs)"""
+    return wrapper.execute_with_enforcement(module_name, operation, *args, **kwargs)
+
 
 def start_system_with_enforcement() -> bool:
     """Start complete system with mandatory enforcement"""
     wrapper = get_wrapper()
-    
-    # Start Docker services"""
+
+    # Start Docker services
     if not wrapper.start_docker_services():
         logger.error("💀 CANNOT START DOCKER SERVICES - SYSTEM BLOCKED!")
         return False
-    
+
     # Enforce all requirements
     if not enforce_docker_mcp_requirements():
         logger.error("💀 ENFORCEMENT FAILED - SYSTEM BLOCKED!")
         return False
-    
-    logger.info("# Party SYSTEM STARTED WITH MANDATORY ENFORCEMENT ACTIVE!")
+
+    logger.info("🎉 SYSTEM STARTED WITH MANDATORY ENFORCEMENT ACTIVE!")
     return True
 
 if __name__ == "__main__":
@@ -414,6 +410,7 @@ if __name__ == "__main__":
         print("Usage: python mandatory_docker_mcp_wrapper.py <module_name> [operation] [args...]")
         wrapper = get_wrapper()
         for name, info in wrapper.get_available_modules().items():
+            print(f"  {name}: {info['description']}")
         sys.exit(1)
     
     module_name = sys.argv[1]
