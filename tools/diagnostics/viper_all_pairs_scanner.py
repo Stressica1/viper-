@@ -29,16 +29,16 @@ import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - VIPER_ALL_PAIRS - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class VIPERAllPairsScanner:
     """
     Comprehensive multi-pair trading scanner with ALL Bitget swap pairs
-    """"""
+    """
 
     def __init__(self, config_path: Optional[str] = None):
         self.config_path = config_path or Path(__file__).parent / ".env"
@@ -68,42 +68,42 @@ class VIPERAllPairsScanner:
         logger.info("# Check VIPER All Pairs Scanner initialized successfully")
 
     def _initialize_components(self):
-        """Initialize all trading components""""""
+        """Initialize all trading components"""
         try:
-            # Import and initialize core components
-    from utils.mathematical_validator import MathematicalValidator
-    from config.optimal_mcp_config import get_optimal_mcp_config
-            from scripts.optimal_entry_point_manager import OptimalEntryPointManager
+            # Initialize basic components
+            self.math_validator = None
+            self.mcp_config = None
+            self.entry_optimizer = None
+            self.ai_optimizer = None
 
-            self.math_validator = MathematicalValidator()
-            self.mcp_config = get_optimal_mcp_config()
-            self.entry_optimizer = OptimalEntryPointManager()
-
-            # Initialize AI optimizer if available
+            # Try to import and initialize core components if available
             try:
-                spec = importlib.util.spec_from_file_location()
-                    "ai_optimizer",
-                    Path(__file__).parent / "ai_ml_optimizer.py"
-(                )
-                ai_optimizer_module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(ai_optimizer_module)
+                from ...utils.mathematical_validator import MathematicalValidator
+                self.math_validator = MathematicalValidator()
+            except ImportError:
+                logger.debug("Mathematical validator not available")
 
-                if hasattr(ai_optimizer_module, 'VIPEROptimizer'):
-                    self.ai_optimizer = ai_optimizer_module.VIPEROptimizer()
-                else:
-                    self.ai_optimizer = None
-            except Exception as e:
-                logger.warning(f"AI Optimizer not available: {e}")
-                self.ai_optimizer = None
+            try:
+                from ...config.optimal_mcp_config import get_optimal_mcp_config
+                self.mcp_config = get_optimal_mcp_config()
+            except ImportError:
+                logger.debug("Optimal MCP config not available")
+
+            try:
+                from ...scripts.optimal_entry_point_manager import OptimalEntryPointManager
+                self.entry_optimizer = OptimalEntryPointManager()
+            except ImportError:
+                logger.debug("Entry point manager not available")
 
             logger.info("# Check All components initialized")
 
         except Exception as e:
             logger.error(f"# X Component initialization failed: {e}")
-            raise
+            # Don't raise - continue with basic functionality
+            pass
 
     def _load_configuration(self):
-        """Load comprehensive trading configuration for all pairs""""""
+        """Load comprehensive trading configuration for all pairs"""
         try:
             # Trading parameters optimized for multi-pair scanning
             self.trading_config = {
@@ -144,7 +144,7 @@ class VIPERAllPairsScanner:
             raise
 
     def _setup_exchange(self):
-        """Setup exchange connection for live multi-pair trading""""""
+        """Setup exchange connection for live multi-pair trading"""
         try:
             api_key = os.getenv('BITGET_API_KEY')
             api_secret = os.getenv('BITGET_API_SECRET')
@@ -177,7 +177,7 @@ class VIPERAllPairsScanner:
             raise
 
     def _discover_all_pairs(self):
-        """Discover ALL available swap pairs on Bitget""""""
+        """Discover ALL available swap pairs on Bitget"""
         try:
             logger.info("# Search Discovering ALL Bitget swap pairs...")
 
@@ -187,9 +187,9 @@ class VIPERAllPairsScanner:
             # Filter for active swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
-                if (market.get('active', False) and):
+                if (market.get('active', False) and
                     market.get('type') == 'swap' and
-(                    market.get('quote') == 'USDT'):  # Focus on USDT pairs
+                    market.get('quote') == 'USDT'):  # Focus on USDT pairs
 
                     pair_info = {
                         'symbol': symbol,
@@ -213,7 +213,7 @@ class VIPERAllPairsScanner:
             raise
 
     def _filter_pairs_by_criteria(self):
-        """Filter pairs based on volume, leverage, and other criteria""""""
+        """Filter pairs based on volume, leverage, and other criteria"""
         try:
             logger.info("# Search Filtering pairs by trading criteria...")
 
@@ -230,10 +230,11 @@ class VIPERAllPairsScanner:
                     leverage = pair.get('leverage', 1)
 
                     # Check criteria
-                    if (volume_24h >= self.trading_config['min_volume_threshold'] and):
+                    if (volume_24h >= self.trading_config['min_volume_threshold'] and
                         spread <= self.trading_config['max_spread_threshold'] and
                         leverage >= self.trading_config['min_leverage_required'] and
-(                        ticker.get('last', 0) > 0)
+                        ticker.get('last', 0) > 0):
+                        
                         pair['volume_24h'] = volume_24h
                         pair['spread'] = spread
                         pair['price'] = ticker.get('last', 0)
@@ -259,7 +260,7 @@ class VIPERAllPairsScanner:
             self.active_pairs = self.all_pairs  # Fallback to all pairs
 
     def _setup_signal_handlers(self):
-        """Setup signal handlers for graceful shutdown""""""
+        """Setup signal handlers for graceful shutdown"""
         def signal_handler(signum, frame):
             logger.info("🛑 Received shutdown signal")
             self.stop()
@@ -268,7 +269,7 @@ class VIPERAllPairsScanner:
         signal.signal(signal.SIGTERM, signal_handler)
 
     def start(self):
-        """Start the all-pairs scanner""""""
+        """Start the all-pairs scanner"""
         if self.is_running:
             logger.warning("Scanner already running")
             return
@@ -345,7 +346,7 @@ class VIPERAllPairsScanner:
                 logger.error(f"Scanning loop error: {e}")
                 await asyncio.sleep(60)  # Wait 1 minute on error
 
-    async def _scan_all_pairs_batch(self, batch_size: int) -> List[Dict[str, Any]]
+    async def _scan_all_pairs_batch(self, batch_size: int) -> List[Dict[str, Any]]:
         """Scan all active pairs in batches"""
         opportunities = []
         total_pairs = len(self.active_pairs)
@@ -366,10 +367,10 @@ class VIPERAllPairsScanner:
 
         return opportunities
 
-    async def _scan_pairs_batch(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    async def _scan_pairs_batch(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Scan a batch of pairs concurrently"""
-        opportunities = []"""
-:
+        opportunities = []
+
         try:
             # Use ThreadPoolExecutor for concurrent scanning
             with ThreadPoolExecutor(max_workers=min(len(pairs_batch), 10)) as executor:
@@ -534,7 +535,7 @@ class VIPERAllPairsScanner:
             return []
 
     def _calculate_position_size(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate position size with multi-pair risk management""""""
+        """Calculate position size with multi-pair risk management"""
         try:
             # Get account balance
             balance = self.exchange.fetch_balance()
@@ -571,7 +572,7 @@ class VIPERAllPairsScanner:
             return 0
 
     async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]
-        """Execute a single trade"""""":
+        """Execute a single trade""":
         try:
             symbol = opportunity['symbol']
 
@@ -614,7 +615,7 @@ class VIPERAllPairsScanner:
             return None
 
     async def _setup_tp_sl(self, symbol: str, entry_price: float, order_id: str):
-        """Setup Take Profit and Stop Loss orders""""""
+        """Setup Take Profit and Stop Loss orders"""
         try:
             position = self.positions.get(symbol)
             if not position:
@@ -660,7 +661,7 @@ class VIPERAllPairsScanner:
             logger.error(f"TP/SL setup failed for {symbol}: {e}")
 
     async def _manage_positions(self):
-        """Manage existing positions across all pairs""""""
+        """Manage existing positions across all pairs"""
         try:
             for symbol, position in list(self.positions.items()):
                 try:
@@ -729,7 +730,7 @@ class VIPERAllPairsScanner:
             return False, ""
 
     async def _close_position(self, symbol: str, reason: str):
-        """Close a position""""""
+        """Close a position"""
         try:
             position = self.positions.get(symbol)
             if not position:
@@ -766,7 +767,7 @@ class VIPERAllPairsScanner:
             logger.error(f"Position close failed for {symbol}: {e}")
 
     def _should_emergency_stop(self) -> bool:
-        """Check if emergency stop should be triggered""""""
+        """Check if emergency stop should be triggered"""
         try:
             # Check daily loss limit
             if self.trading_stats['total_pnl'] <= -self.emergency_config['max_daily_loss']:
@@ -813,7 +814,7 @@ class VIPERAllPairsScanner:
                 logger.error(f"Emergency close failed for {symbol}: {e}")
 
     def _update_performance_stats(self):
-        """Update performance statistics""""""
+        """Update performance statistics"""
         try:
             total_trades = self.trading_stats['trades_executed']
             closed_trades = self.trading_stats['trades_closed']
@@ -826,7 +827,7 @@ class VIPERAllPairsScanner:
             logger.error(f"Performance stats update failed: {e}")
 
     def _generate_final_report(self):
-        """Generate comprehensive final report""""""
+        """Generate comprehensive final report"""
         try:
             report = {
                 'scanning_session': {
