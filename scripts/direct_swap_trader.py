@@ -399,6 +399,7 @@ def main():
 # ⚡ Real-time Scanning | 🧠 VIPER Signals | 📈 Risk Management               #
 #==============================================================================#
     """)
+"""
 
     # Check API credentials
     if not all([BITGET_API_KEY, BITGET_API_SECRET, BITGET_API_PASSWORD]):

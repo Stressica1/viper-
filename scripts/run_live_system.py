@@ -87,7 +87,7 @@ class ViperLiveSystem:
 # 🔥 Real-Time Live Trading | # Chart Mandatory Risk Management                      #
 # # Target MCP-Powered Automation | 🛡️ Docker Infrastructure Required                 #
 # ⚡ Live Market Execution | 📈 Real-Time Performance Monitoring                #
-╠==============================================================================╣
+|==============================================================================|
 # 🚨 LIVE MONEY TRADING SYSTEM - NO SIMULATION MODE                            #
 # 🔒 DOCKER & MCP ENFORCEMENT ACTIVE                                           #
 # 🛑 EMERGENCY STOP: Ctrl+C or 'docker compose down'                          #

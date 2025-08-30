@@ -443,55 +443,56 @@ class MultiPairVIPERTrader:
 
             # Execute order with proper Bitget unilateral position parameters
             try:
-            if signal == 'BUY':
-                order = self.exchange.create_market_buy_order(
-                    symbol,
-                    position_size,
-                    params={
-                        'leverage': coin_max_leverage,  # Use coin's max leverage
-                        'marginMode': 'isolated',
-                        'tradeSide': 'open'  # Open position for unilateral mode
-                    }
-                )
-            elif signal == 'SELL':
-                order = self.exchange.create_market_sell_order(
-                    symbol,
-                    position_size,
-                    params={
-                        'leverage': coin_max_leverage,  # Use coin's max leverage
-                        'marginMode': 'isolated',
-                        'tradeSide': 'open'  # Open position for unilateral mode
-                    }
+                if signal == 'BUY':
+                    order = self.exchange.create_market_buy_order(
+                        symbol,
+                        position_size,
+                        params={
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
+                            'marginMode': 'isolated',
+                            'tradeSide': 'open'  # Open position for unilateral mode
+                        }
+                    )
+                elif signal == 'SELL':
+                    order = self.exchange.create_market_sell_order(
+                        symbol,
+                        position_size,
+                        params={
+                            'leverage': coin_max_leverage,  # Use coin's max leverage
+                            'marginMode': 'isolated',
+                            'tradeSide': 'open'  # Open position for unilateral mode
+                        }
                 )
 
             except Exception as e:
                 logger.error(f"❌ Trade execution error for {symbol}: {e}")
                 return None
-            else:
+
+            # Log successful execution
             logger.info(f"✅ Trade executed: {order['id']}")
 
-                # SET TAKE-PROFIT AND STOP-LOSS ORDERS
-                try:
-                    entry_price = order.get('price', current_price)
-                    logger.info(f"📊 Entry price for {symbol}: ${entry_price}")
+            # SET TAKE-PROFIT AND STOP-LOSS ORDERS
+            try:
+                entry_price = order.get('price', current_price)
+                logger.info(f"📊 Entry price for {symbol}: ${entry_price}")
 
-                    # Calculate TP/SL prices
-                    if signal == 'BUY':
-                        tp_price = entry_price * (1 + self.take_profit_pct / 100)
-                        sl_price = entry_price * (1 - self.stop_loss_pct / 100)
-                        tp_side = 'sell'  # Close long position at profit
-                        sl_side = 'sell'  # Close long position at loss
-                    else:  # SELL signal
-                        tp_price = entry_price * (1 - self.take_profit_pct / 100)
-                        sl_price = entry_price * (1 + self.stop_loss_pct / 100)
-                        tp_side = 'buy'   # Close short position at profit
-                        sl_side = 'buy'   # Close short position at loss
+                # Calculate TP/SL prices
+                if signal == 'BUY':
+                    tp_price = entry_price * (1 + self.take_profit_pct / 100)
+                    sl_price = entry_price * (1 - self.stop_loss_pct / 100)
+                    tp_side = 'sell'  # Close long position at profit
+                    sl_side = 'sell'  # Close long position at loss
+                else:  # SELL signal
+                    tp_price = entry_price * (1 - self.take_profit_pct / 100)
+                    sl_price = entry_price * (1 + self.stop_loss_pct / 100)
+                    tp_side = 'buy'   # Close short position at profit
+                    sl_side = 'buy'   # Close short position at loss
 
-                    logger.info(f"🎯 TP/SL for {symbol}:")
-                    logger.info(f"   Take Profit: ${tp_price:.6f} ({self.take_profit_pct}%)")
-                    logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
+                logger.info(f"🎯 TP/SL for {symbol}:")
+                logger.info(f"   Take Profit: ${tp_price:.6f} ({self.take_profit_pct}%)")
+                logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
 
-                    # Create Take-Profit order
+                # Create Take-Profit order
                     tp_order = self.exchange.create_limit_order(
                         symbol,
                         tp_side,

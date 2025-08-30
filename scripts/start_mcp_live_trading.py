@@ -123,6 +123,7 @@ class MCPLiveTradingLauncher:
                         status = await self.connector.get_trading_status()
                     else:
                 elif command == 'create':
+                    pass
                     config = self.tasks_config.get('default_config', {})
                     task_id = await create_live_trading_task(config)
                 elif command.startswith('start '):

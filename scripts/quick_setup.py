@@ -59,6 +59,7 @@ def setup_python_environment():
     
     # Create virtual environment if it doesn't exist
     if not Path("viper_env").exists():
+        pass
         display_warning("Creating virtual environment...")
         success, _ = run_command("python -m venv viper_env", "Creating virtual environment")
         if not success:

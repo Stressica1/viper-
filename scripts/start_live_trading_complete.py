@@ -193,6 +193,7 @@ class CompleteLiveTradingSystem:
         except Exception as e:
 
     def _create_shutdown_tasks(self):
+        pass
         """Create GitHub tasks for system shutdown"""
         try:
             # Get final trading status
