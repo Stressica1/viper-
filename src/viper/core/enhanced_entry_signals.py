@@ -15,6 +15,8 @@ This system adds sophisticated entry point optimization to maximize profit poten
 import asyncio
 import logging
 import time
+import pandas as pd
+import numpy as np
 from dataclasses import dataclass, asdict
 from enum import Enum
 from typing import Dict, List, Optional, Tuple, Any
@@ -98,6 +100,68 @@ class EnhancedEntrySignalGenerator:
         self.min_quality_threshold = EntrySignalQuality.GOOD
         self.min_confidence = 0.75
         self.min_risk_reward = 1.5
+        
+        logger.info("   ✅ Enhanced Entry Signal Generator initialized")
+    
+    async def generate_entry_signals(self, symbol: str, market_data: Dict[str, pd.DataFrame], 
+                                   current_price: float) -> List[Any]:
+        """Generate entry signals for a symbol"""
+        signals = []
+        
+        try:
+            # Generate signals for both directions
+            for side in ['buy', 'sell']:
+                signal = await self._generate_enhanced_signal(symbol, side, current_price, market_data)
+                if signal:
+                    signals.append(signal)
+                    
+        except Exception as e:
+            logger.warning(f"Error generating entry signals for {symbol}: {e}")
+            
+        return signals
+        
+    async def _generate_enhanced_signal(self, symbol: str, side: str, current_price: float, 
+                                      market_data: Dict[str, pd.DataFrame]) -> Optional[Any]:
+        """Generate enhanced signal for a specific side"""
+        try:
+            # Simple signal generation based on market data
+            df_1h = market_data.get('1h', pd.DataFrame())
+            if df_1h.empty or len(df_1h) < 10:
+                return None
+                
+            # Calculate momentum
+            close_prices = df_1h['close'].values
+            recent_change = (close_prices[-1] - close_prices[-5]) / close_prices[-5]
+            
+            # Simple directional signal
+            if side == 'buy' and recent_change > 0.01:  # 1% up move
+                confidence = min(recent_change * 20, 0.8)
+                
+                return type('Signal', (), {
+                    'symbol': symbol,
+                    'direction': side,
+                    'confidence_score': confidence,
+                    'entry_price': current_price,
+                    'stop_loss': current_price * 0.98,
+                    'take_profit': current_price * 1.04
+                })()
+                
+            elif side == 'sell' and recent_change < -0.01:  # 1% down move
+                confidence = min(abs(recent_change) * 20, 0.8)
+                
+                return type('Signal', (), {
+                    'symbol': symbol,
+                    'direction': side,
+                    'confidence_score': confidence,
+                    'entry_price': current_price,
+                    'stop_loss': current_price * 1.02,
+                    'take_profit': current_price * 0.96
+                })()
+                
+        except Exception as e:
+            logger.warning(f"Error in _generate_enhanced_signal: {e}")
+            
+        return None
         
     async def analyze_enhanced_entry_opportunity(self, symbol: str, side: str, 
                                                base_score: float, market_data: Dict[str, Any]) -> Optional[EnhancedEntrySignal]:

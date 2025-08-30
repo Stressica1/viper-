@@ -16,6 +16,7 @@ import pandas as pd
 import talib as ta
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Dict, List, Optional, Any
 import logging
 
 # Configure logging
