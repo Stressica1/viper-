@@ -163,6 +163,58 @@ class EnhancedTradeEntryOptimizer:
         except Exception as e:
             logger.error(f"# X Exchange initialization failed: {e}")
             self.exchange = None
+    
+    async def analyze_entry_signals(self, symbol: str, market_data: Dict[str, pd.DataFrame]) -> List[Any]:
+        """Analyze and generate entry signals for a symbol (async wrapper)"""
+        try:
+            return self.analyze_enhanced_entry_signals(symbol, market_data)
+        except Exception as e:
+            logger.warning(f"Error in analyze_entry_signals for {symbol}: {e}")
+            return []
+    
+    def analyze_enhanced_entry_signals(self, symbol: str, market_data: Dict[str, pd.DataFrame]) -> List[EnhancedEntrySignal]:
+        """Analyze enhanced entry signals for a single symbol"""
+        signals = []
+        
+        try:
+            # Use provided market data instead of fetching
+            df_1h = market_data.get('1h', pd.DataFrame())
+            if df_1h.empty:
+                return signals
+                
+            # Simplified analysis using available data
+            close_prices = df_1h['close'].values
+            if len(close_prices) < 10:
+                return signals
+            
+            # Calculate simple momentum signal
+            recent_change = (close_prices[-1] - close_prices[-10]) / close_prices[-10]
+            
+            if abs(recent_change) > 0.02:  # 2% change
+                direction = 'buy' if recent_change > 0 else 'sell'
+                confidence = min(abs(recent_change) * 10, 0.9)  # Scale to confidence
+                
+                signal = EnhancedEntrySignal(
+                    symbol=symbol,
+                    signal_type=EntrySignalType.MOMENTUM,
+                    quality=SignalQuality.GOOD,
+                    confidence=confidence,
+                    entry_price=close_prices[-1],
+                    stop_loss=close_prices[-1] * (0.98 if direction == 'buy' else 1.02),
+                    take_profit=close_prices[-1] * (1.06 if direction == 'buy' else 0.94),
+                    risk_reward_ratio=3.0,
+                    market_regime=MarketRegime.TRENDING_UP if direction == 'buy' else MarketRegime.TRENDING_DOWN,
+                    timeframe='1h',
+                    indicators={},
+                    timestamp=datetime.now(),
+                    expires_at=datetime.now() + timedelta(hours=2)
+                )
+                signals.append(signal)
+                
+        except Exception as e:
+            logger.warning(f"Error analyzing {symbol}: {e}")
+            
+        return signals
 
     async def generate_enhanced_entry_signals(self, symbols: List[str]) -> List[EnhancedEntrySignal]:
         """Generate enhanced entry signals with multi-timeframe analysis"""

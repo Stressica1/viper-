@@ -21,6 +21,7 @@ import asyncio
 import logging
 
 # Import predictive ranges strategy
+from ..strategies.predictive_ranges_strategy import get_predictive_strategy
 
 # Configure logging
 logging.basicConfig(
@@ -175,6 +176,7 @@ class OptimizedTradeEntrySystem:
 
             # Volume profile analysis
             volume = df_5m['volume'].values
+            current_volume = volume[-1] if len(volume) > 0 else 1000  # Add this line
             avg_volume = np.mean(volume[-20:]) if len(volume) >= 20 else np.mean(volume)
             volume_score = min(current_volume / avg_volume, 2.0) if len(volume) > 0 else 1.0
 
