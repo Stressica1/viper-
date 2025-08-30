@@ -4,6 +4,7 @@
 Comprehensive monitoring and alerting for trading jobs and TP/SL functions
 
 This monitor provides:
+    pass
 - Real-time trading job status monitoring
 - TP/SL function validation and alerts
 - Performance metrics tracking
@@ -26,16 +27,16 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - TRADING_MONITOR - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class TradingMonitor:
     """
     Comprehensive trading monitor and alert system
-    """
+    """"""
 
     def __init__(self):
         self.is_monitoring = False
@@ -61,7 +62,7 @@ class TradingMonitor:
             'enable_email_alerts': os.getenv('ENABLE_EMAIL_ALERTS', 'false').lower() == 'true',
             'enable_telegram_alerts': os.getenv('ENABLE_TELEGRAM_ALERTS', 'false').lower() == 'true',
             'health_check_enabled': os.getenv('HEALTH_CHECK_ENABLED', 'true').lower() == 'true'
-        }
+        }"""
 
     def _setup_alert_systems(self):
         """Setup alert notification systems"""
@@ -78,10 +79,10 @@ class TradingMonitor:
         self.telegram_config = {
             'bot_token': os.getenv('TELEGRAM_BOT_TOKEN'),
             'chat_ids': os.getenv('TELEGRAM_CHAT_IDS', '').split(',')
-        }
+        }"""
 
     def start_monitoring(self):
-        """Start the monitoring system"""
+        """Start the monitoring system""""""
         if self.is_monitoring:
             logger.warning("Monitor already running")
             return
@@ -131,38 +132,38 @@ class TradingMonitor:
 
     async def _perform_health_checks(self):
         """Perform comprehensive system health checks"""
-        health_issues = []
+        health_issues = []"""
 
         try:
             # Check trading job process
             job_status = await self._check_job_process()
             if not job_status['is_running']:
-                health_issues.append({
+                health_issues.append({)
                     'type': 'job_status',
                     'severity': 'critical',
                     'message': 'Trading job is not running',
                     'details': job_status
-                })
+(                })
 
             # Check system resources
             resource_status = self._check_system_resources()
             if resource_status['cpu_usage'] > 90:
-                health_issues.append({
+                health_issues.append({)
                     'type': 'resource',
                     'severity': 'warning',
                     'message': f'High CPU usage: {resource_status["cpu_usage"]}%',
                     'details': resource_status
-                })
+(                })
 
             # Check exchange connectivity
             exchange_status = await self._check_exchange_connectivity()
             if not exchange_status['connected']:
-                health_issues.append({
+                health_issues.append({)
                     'type': 'exchange',
                     'severity': 'critical',
                     'message': 'Exchange connectivity lost',
                     'details': exchange_status
-                })
+(                })
 
             # Process health issues
             for issue in health_issues:
@@ -172,7 +173,7 @@ class TradingMonitor:
             logger.error(f"Health check failed: {e}")
 
     async def _check_trading_job_status(self):
-        """Check trading job status and performance"""
+        """Check trading job status and performance""""""
         try:
             # Check if job is running
             job_status = await self._check_job_process()
@@ -183,19 +184,19 @@ class TradingMonitor:
 
                 # Check for performance issues
                 if performance.get('error_rate', 0) > 0.1:  # 10% error rate
-                    await self._send_alert(
+                    await self._send_alert()
                         'warning',
                         'High Error Rate',
                         f"Trading job error rate: {performance['error_rate']:.1%}"
-                    )
+(                    )
 
                 # Check execution time
                 if performance.get('avg_execution_time', 0) > self.monitor_config['job_timeout_threshold']:
-                    await self._send_alert(
+                    await self._send_alert()
                         'warning',
                         'Slow Job Execution',
                         f"Average job execution time: {performance['avg_execution_time']}s"
-                    )
+(                    )
 
             self.last_job_check = datetime.now()
 
@@ -203,41 +204,41 @@ class TradingMonitor:
             logger.error(f"Job status check failed: {e}")
 
     async def _validate_tp_sl_functions(self):
-        """Validate Take Profit and Stop Loss functions"""
+        """Validate Take Profit and Stop Loss functions""""""
         try:
             # Check if TP/SL orders are being placed
             tp_sl_status = await self._check_tp_sl_status()
 
             if not tp_sl_status['orders_placed']:
-                await self._send_alert(
+                await self._send_alert()
                     'critical',
                     'TP/SL Orders Missing',
                     'No TP/SL orders found for active positions'
-                )
+(                )
 
             # Check TP/SL execution
             if tp_sl_status['failed_executions'] > 0:
-                await self._send_alert(
+                await self._send_alert()
                     'warning',
                     'TP/SL Execution Issues',
                     f"Failed TP/SL executions: {tp_sl_status['failed_executions']}"
-                )
+(                )
 
             # Validate TP/SL calculations
             calculation_issues = await self._validate_tp_sl_calculations()
             if calculation_issues:
-                await self._send_alert(
+                await self._send_alert()
                     'warning',
                     'TP/SL Calculation Issues',
                     f"Found {len(calculation_issues)} calculation issues",
                     details=calculation_issues
-                )
+(                )
 
         except Exception as e:
             logger.error(f"TP/SL validation failed: {e}")
 
     async def _monitor_system_performance(self):
-        """Monitor overall system performance"""
+        """Monitor overall system performance""""""
         try:
             # Collect system metrics
             metrics = {
@@ -252,27 +253,27 @@ class TradingMonitor:
 
             # Check for performance degradation
             if metrics['cpu_usage'] > 90:
-                await self._send_alert(
+                await self._send_alert()
                     'warning',
                     'High CPU Usage',
                     f"System CPU usage: {metrics['cpu_usage']}%"
-                )
+(                )
 
             if metrics['memory_usage'] > 90:
-                await self._send_alert(
+                await self._send_alert()
                     'warning',
                     'High Memory Usage',
                     f"System memory usage: {metrics['memory_usage']}%"
-                )
+(                )
 
         except Exception as e:
             logger.error(f"Performance monitoring failed: {e}")
 
-    async def _check_job_process(self) -> Dict[str, Any]:
-        """Check if trading job process is running"""
+    async def _check_job_process(self) -> Dict[str, Any]
+        """Check if trading job process is running"""""":
         try:
             # Look for python processes running viper_trading_job.py
-            import psutil
+    import psutil
 
             job_running = False
             job_pid = None
@@ -283,7 +284,7 @@ class TradingMonitor:
                         job_running = True
                         job_pid = proc.info['pid']
                         break
-                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                except (psutil.NoSuchProcess, psutil.AccessDenied)
                     continue
 
             return {
@@ -308,8 +309,8 @@ class TradingMonitor:
                 'error': str(e)
             }
 
-    async def _get_job_performance(self) -> Dict[str, Any]:
-        """Get trading job performance metrics"""
+    async def _get_job_performance(self) -> Dict[str, Any]
+        """Get trading job performance metrics"""""":
         try:
             # Read from job logs or status files
             log_file = Path(__file__).parent / "logs" / "viper_trading_job.log"
@@ -345,8 +346,8 @@ class TradingMonitor:
                 'error': str(e)
             }
 
-    async def _check_tp_sl_status(self) -> Dict[str, Any]:
-        """Check TP/SL order status"""
+    async def _check_tp_sl_status(self) -> Dict[str, Any]
+        """Check TP/SL order status"""""":
         try:
             # This would integrate with your exchange API to check actual orders
             # For now, return mock data
@@ -367,10 +368,10 @@ class TradingMonitor:
                 'error': str(e)
             }
 
-    async def _validate_tp_sl_calculations(self) -> List[Dict[str, Any]]:
+    async def _validate_tp_sl_calculations(self) -> List[Dict[str, Any]]
         """Validate TP/SL calculation accuracy"""
-        issues = []
-
+        issues = []"""
+:
         try:
             # Test TP/SL calculations with known values
             test_cases = [
@@ -396,34 +397,34 @@ class TradingMonitor:
                 sl_diff = abs(actual_sl - expected_sl)
 
                 if tp_diff > 0.01:  # Allow for small floating point differences
-                    issues.append({
+                    issues.append({)
                         'type': 'tp_calculation',
                         'entry_price': entry,
                         'expected_tp': expected_tp,
                         'actual_tp': actual_tp,
                         'difference': tp_diff
-                    })
+(                    })
 
                 if sl_diff > 0.01:
-                    issues.append({
+                    issues.append({)
                         'type': 'sl_calculation',
                         'entry_price': entry,
                         'expected_sl': expected_sl,
                         'actual_sl': actual_sl,
                         'difference': sl_diff
-                    })
+(                    })
 
         except Exception as e:
             logger.error(f"TP/SL calculation validation failed: {e}")
-            issues.append({
+            issues.append({)
                 'type': 'validation_error',
                 'error': str(e)
-            })
+(            })
 
         return issues
 
-    async def _check_exchange_connectivity(self) -> Dict[str, Any]:
-        """Check exchange connectivity"""
+    async def _check_exchange_connectivity(self) -> Dict[str, Any]
+        """Check exchange connectivity"""""":
         try:
             # This would test actual exchange connectivity
             # For now, return mock status
@@ -441,10 +442,11 @@ class TradingMonitor:
                 'error': str(e)
             }
 
-    def _check_system_resources(self) -> Dict[str, float]:
-        """Check system resource usage"""
+    def _check_system_resources(self) -> Dict[str, float]
+        """Check system resource usage""":"""
         try:
-            import psutil
+            pass
+    import psutil
 
             return {
                 'cpu_usage': psutil.cpu_percent(interval=1),
@@ -470,21 +472,21 @@ class TradingMonitor:
 
     def _get_cpu_usage(self) -> float:
         """Get CPU usage percentage"""
-        return self._check_system_resources()['cpu_usage']
+        return self._check_system_resources()['cpu_usage']"""
 
     def _get_memory_usage(self) -> float:
         """Get memory usage percentage"""
-        return self._check_system_resources()['memory_usage']
+        return self._check_system_resources()['memory_usage']"""
 
     def _get_disk_usage(self) -> float:
         """Get disk usage percentage"""
         return self._check_system_resources()['disk_usage']
 
-    async def _check_network_status(self) -> Dict[str, Any]:
-        """Check network connectivity"""
+    async def _check_network_status(self) -> Dict[str, Any]
+        """Check network connectivity"""""":
         try:
             # Simple network check
-            import socket
+    import socket
             socket.create_connection(("8.8.8.8", 53), timeout=3)
             return {'status': 'connected', 'latency_ms': 50}
         except Exception:
@@ -500,7 +502,7 @@ class TradingMonitor:
             'details': details or {}
         }
 
-        # Check alert cooldown
+        # Check alert cooldown"""
         if self._should_skip_alert(severity):
             logger.info(f"Skipping {severity} alert due to cooldown: {title}")
             return
@@ -518,7 +520,7 @@ class TradingMonitor:
         logger.warning(f"🚨 ALERT [{severity.upper()}]: {title} - {message}")
 
     def _should_skip_alert(self, severity: str) -> bool:
-        """Check if alert should be skipped due to cooldown"""
+        """Check if alert should be skipped due to cooldown""""""
         try:
             # Get recent alerts of same severity
             recent_alerts = [
@@ -534,7 +536,7 @@ class TradingMonitor:
             return False
 
     async def _send_email_alert(self, alert_data: Dict[str, Any]):
-        """Send email alert"""
+        """Send email alert""""""
         try:
             if not self.email_config['sender_email'] or not self.email_config['recipient_emails']:
                 logger.warning("Email configuration incomplete")
@@ -554,6 +556,7 @@ Message: {alert_data['message']}
 Timestamp: {alert_data['timestamp']}
 
 Details:
+    pass
 {json.dumps(alert_data['details'], indent=2)}
             """
 
@@ -571,7 +574,7 @@ Details:
             logger.error(f"Email alert failed: {e}")
 
     async def _send_telegram_alert(self, alert_data: Dict[str, Any]):
-        """Send Telegram alert"""
+        """Send Telegram alert""""""
         try:
             if not self.telegram_config['bot_token'] or not self.telegram_config['chat_ids']:
                 logger.warning("Telegram configuration incomplete")
@@ -588,7 +591,7 @@ Details:
 *Time:* {alert_data['timestamp']}
             """.strip()
 
-            for chat_id in self.telegram_config['chat_ids']:
+            for chat_id in self.telegram_config['chat_ids']""":
                 if chat_id.strip():
                     url = f"https://api.telegram.org/bot{self.telegram_config['bot_token']}/sendMessage"
                     data = {
@@ -613,15 +616,15 @@ Details:
 
         severity = severity_map.get(issue['severity'], 'info')
 
-        await self._send_alert(
+        await self._send_alert()
             severity,
             f"Health Issue: {issue['type']}",
             issue['message'],
             issue.get('details', {})
-        )
+(        )
 
     async def _generate_status_report(self):
-        """Generate comprehensive status report"""
+        """Generate comprehensive status report""""""
         try:
             report = {
                 'timestamp': datetime.now().isoformat(),
@@ -644,16 +647,16 @@ Details:
         except Exception as e:
             logger.error(f"Status report generation failed: {e}")
 
-    def get_monitor_status(self) -> Dict[str, Any]:
+    def get_monitor_status(self) -> Dict[str, Any]
         """Get comprehensive monitor status"""
-        return {
+        return {:
             'is_monitoring': self.is_monitoring,
             'monitor_config': self.monitor_config,
             'system_metrics': self.system_metrics,
             'alert_history_count': len(self.alert_history),
             'last_job_check': self.last_job_check.isoformat() if self.last_job_check else None,
             'recent_alerts': self.alert_history[-3:] if self.alert_history else []
-        }
+        }"""
 
 def main():
     """Main entry point"""
@@ -663,7 +666,6 @@ def main():
 
     # Display configuration
     for key, value in monitor.monitor_config.items():
-
     print(f"\n📧 Email Alerts: {'# Check' if monitor.monitor_config['enable_email_alerts'] else '# X'}")
     print(f"📱 Telegram Alerts: {'# Check' if monitor.monitor_config['enable_telegram_alerts'] else '# X'}")
 
@@ -676,7 +678,9 @@ def main():
     try:
         monitor.start_monitoring()
     except KeyboardInterrupt:
+        pass
     except Exception as e:
+        pass
 
 if __name__ == "__main__":
     main()

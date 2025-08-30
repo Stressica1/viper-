@@ -19,14 +19,14 @@ import logging
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class LiveTradingMonitor:
-    """Real-time monitoring dashboard for live trading"""
+    """Real-time monitoring dashboard for live trading""""""
 
     def __init__(self):
         self.api_server_url = "http://localhost:8000"
@@ -43,8 +43,8 @@ class LiveTradingMonitor:
         self.initial_balance = 0.0
         self.peak_balance = 0.0
 
-    def get_system_status(self) -> Dict[str, Any]:
-        """Get comprehensive system status"""
+    def get_system_status(self) -> Dict[str, Any]
+        """Get comprehensive system status""":"""
         try:
             status = {
                 'timestamp': datetime.now().isoformat(),
@@ -202,7 +202,7 @@ class LiveTradingMonitor:
         """Main monitoring loop"""
         self.monitoring_active = True
 
-        while self.monitoring_active:
+        while self.monitoring_active:"""
             try:
                 # Get system status
                 status = self.get_system_status()
@@ -234,19 +234,20 @@ class LiveTradingMonitor:
                 time.sleep(1)
 
     def start_monitoring(self):
-        """Start the monitoring dashboard"""
+        """Start the monitoring dashboard""""""
 
         try:
             curses.wrapper(self.monitor_loop)
         except KeyboardInterrupt:
             pass
         finally:
+            pass
 
-    def get_system_summary(self) -> Dict[str, Any]:
+    def get_system_summary(self) -> Dict[str, Any]
         """Get a summary of system status for logging"""
         status = self.get_system_status()
 
-        summary = {
+        summary = {:
             'timestamp': datetime.now().isoformat(),
             'services_healthy': sum(1 for s in status.get('services', {}).values() if s == '# Check'),
             'total_services': len(status.get('services', {})),
@@ -256,7 +257,7 @@ class LiveTradingMonitor:
             'drawdown': status.get('performance', {}).get('drawdown', 0)
         }
 
-        return summary
+        return summary"""
 
 def print_system_summary():
     """Print a one-time system summary"""
@@ -268,7 +269,7 @@ def print_system_summary():
     print(f"Current Balance: ${summary['current_balance']:.2f}")
 
 def main():
-    """Main entry point"""
+    """Main entry point""""""
     if len(os.sys.argv) > 1 and os.sys.argv[1] == "--summary":
         print_system_summary()
     else:

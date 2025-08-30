@@ -11,13 +11,13 @@ import logging
 from datetime import datetime
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - LIVE_SYSTEM - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
-# Ensure logger is globally available
+# Ensure logger is globally available"""
 if 'logger' not in globals():
     logger = logging.getLogger(__name__)
 
@@ -56,7 +56,9 @@ async def start_complete_system():
 
         if trader.math_validator:
         if trader.entry_optimizer:
+            pass
         if trader.mcp_config:
+            pass
 
 
         # Connect to exchange

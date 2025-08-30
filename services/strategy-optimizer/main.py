@@ -290,7 +290,7 @@ class StrategyOptimizer:
 
         for param_name in parameter_ranges.keys():
             # Randomly select from either parent
-            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < 0.5:
+            if secrets.randbelow(1000000) / 1000000.0 < 0.5:  # Was: random.random() < 0.5:
                 child[param_name] = parent1[param_name]
             else:
                 child[param_name] = parent2[param_name]
@@ -302,7 +302,7 @@ class StrategyOptimizer:
         mutated = individual.copy()
 
         for param_name, param_range in parameter_ranges.items():
-            if secrets.randbelow(1000000) / 1000000.0  # Was: random.random() < mutation_rate:
+            if secrets.randbelow(1000000) / 1000000.0 < mutation_rate:  # Was: random.random() < mutation_rate:
                 if isinstance(param_range, list):
                     mutated[param_name] = secrets.choice(param_range)
                 elif isinstance(param_range, dict):

@@ -34,10 +34,11 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+()
 logger = logging.getLogger(__name__)
 
 class MultiPairVIPERTrader:
-    """VIPER Trader that scans and trades ALL available pairs"""
+    """VIPER Trader that scans and trades ALL available pairs""""""
 
     def __init__(self):
         # Load API credentials
@@ -96,7 +97,7 @@ class MultiPairVIPERTrader:
             markets = self.exchange.load_markets()
             self.all_pairs = [
                 symbol for symbol in markets.keys()
-                if symbol.endswith(':USDT') and markets[symbol]['active']:
+                if symbol.endswith(':USDT') and markets[symbol]['active']
             ]
 
             logger.info(f"✅ Connected to Bitget - {len(self.all_pairs)} swap pairs available")
@@ -108,7 +109,7 @@ class MultiPairVIPERTrader:
             return False
 
     def adjust_for_precision(self, symbol, position_size):
-        """Adjust position size to meet exchange precision requirements"""
+        """Adjust position size to meet exchange precision requirements""""""
         try:
             if self.exchange and symbol in self.exchange.markets:
                 market = self.exchange.markets[symbol]
@@ -133,7 +134,7 @@ class MultiPairVIPERTrader:
             return position_size
 
     def validate_trade(self, symbol, position_size, margin_value_usdt):
-        """Validate trade parameters before execution"""
+        """Validate trade parameters before execution""""""
         try:
             # Check minimum margin size ($5 for exchange requirements) with small tolerance for rounding
             min_margin_size = 4.95  # Minimum $4.95 margin for exchange requirements (with tolerance)
@@ -172,7 +173,7 @@ class MultiPairVIPERTrader:
             return False
 
     def verify_position_mode(self):
-        """Verify and configure position mode for Bitget"""
+        """Verify and configure position mode for Bitget""""""
         try:
             # Try to get account configuration
             account_info = self.exchange.private_get_account_accounts()
@@ -198,7 +199,7 @@ class MultiPairVIPERTrader:
             return False
 
     def generate_signal(self, symbol):
-        """Generate trading signal with MULTI-TIMEFRAME TREND CONFIRMATION - VIPER Style"""
+        """Generate trading signal with MULTI-TIMEFRAME TREND CONFIRMATION - VIPER Style""""""
         try:
             # Get price data from multiple timeframes for better signal quality
             ohlcv_5m = self.exchange.fetch_ohlcv(symbol, timeframe='5m', limit=20)
@@ -270,7 +271,7 @@ class MultiPairVIPERTrader:
             return 'HOLD'
 
     def analyze_trend(self, closes):
-        """Analyze trend direction using higher highs/higher lows methodology"""
+        """Analyze trend direction using higher highs/higher lows methodology""""""
         if len(closes) < 10:
             return 'SIDEWAYS'
 
@@ -308,7 +309,7 @@ class MultiPairVIPERTrader:
         return 'SIDEWAYS'
 
     def analyze_trend_relaxed(self, closes):
-        """Relaxed trend analysis for more flexible signal generation"""
+        """Relaxed trend analysis for more flexible signal generation""""""
         if len(closes) < 8:
             return 'SIDEWAYS'
 
@@ -342,7 +343,7 @@ class MultiPairVIPERTrader:
             return 'WEAK_BEARISH'
 
     def detect_momentum_signal(self, closes):
-        """Detect strong momentum signals for conservative entries"""
+        """Detect strong momentum signals for conservative entries""""""
         if len(closes) < 8:
             return None
 
@@ -354,15 +355,15 @@ class MultiPairVIPERTrader:
         momentum_strength = (avg_second_half - avg_first_half) / avg_first_half * 100
 
         # Strong momentum thresholds (more sensitive)
-        if momentum_strength > 0.8:  # Strong upward momentum (lowered):
+        if momentum_strength > 0.8:  # Strong upward momentum (lowered)
             return 'STRONG_BULL'
-        elif momentum_strength < -0.8:  # Strong downward momentum (lowered):
+        elif momentum_strength < -0.8:  # Strong downward momentum (lowered)
             return 'STRONG_BEAR'
 
         return None
 
     def execute_trade(self, symbol, signal):
-        """Execute trade for any pair with proper Bitget unilateral position parameters"""
+        """Execute trade for any pair with proper Bitget unilateral position parameters""""""
         try:
             # Get current price
             ticker = self.exchange.fetch_ticker(symbol)
@@ -444,7 +445,7 @@ class MultiPairVIPERTrader:
             # Execute order with proper Bitget unilateral position parameters
             try:
                 if signal == 'BUY':
-                    order = self.exchange.create_market_buy_order(
+                    order = self.exchange.create_market_buy_order()
                         symbol,
                         position_size,
                         params={
@@ -452,9 +453,9 @@ class MultiPairVIPERTrader:
                             'marginMode': 'isolated',
                             'tradeSide': 'open'  # Open position for unilateral mode
                         }
-                    )
+(                    )
                 elif signal == 'SELL':
-                    order = self.exchange.create_market_sell_order(
+                    order = self.exchange.create_market_sell_order()
                         symbol,
                         position_size,
                         params={
@@ -462,7 +463,7 @@ class MultiPairVIPERTrader:
                             'marginMode': 'isolated',
                             'tradeSide': 'open'  # Open position for unilateral mode
                         }
-                )
+(                )
 
             except Exception as e:
                 logger.error(f"❌ Trade execution error for {symbol}: {e}")
@@ -493,7 +494,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
 
                 # Create Take-Profit order
-                    tp_order = self.exchange.create_limit_order(
+                    tp_order = self.exchange.create_limit_order()
                         symbol,
                         tp_side,
                         position_size,
@@ -504,7 +505,7 @@ class MultiPairVIPERTrader:
                             'tradeSide': 'close',
                             'reduceOnly': True
                         }
-                    )
+(                    )
                     logger.info(f"✅ Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
                     # VERIFY TP ORDER WAS PLACED
@@ -519,7 +520,7 @@ class MultiPairVIPERTrader:
                         logger.error(f"❌ TP order placement failed for {symbol}")
 
                     # Create Stop-Loss order
-                    sl_order = self.exchange.create_limit_order(
+                    sl_order = self.exchange.create_limit_order()
                         symbol,
                         sl_side,
                         position_size,
@@ -530,7 +531,7 @@ class MultiPairVIPERTrader:
                             'tradeSide': 'close',
                             'reduceOnly': True
                         }
-                    )
+(                    )
                     logger.info(f"🛡️ Stop-Loss order placed: {sl_order.get('id', 'N/A')}")
 
                     # VERIFY SL ORDER WAS PLACED
@@ -559,23 +560,23 @@ class MultiPairVIPERTrader:
                 try:
                     # Try without tradeSide parameter for unilateral mode
                     if signal == 'BUY':
-                        order = self.exchange.create_market_buy_order(
+                        order = self.exchange.create_market_buy_order()
                             symbol,
                             position_size,
                             params={
                                 'leverage': self.max_leverage,
                                 'marginMode': 'isolated'
                             }
-                        )
+(                        )
                     elif signal == 'SELL':
-                        order = self.exchange.create_market_sell_order(
+                        order = self.exchange.create_market_sell_order()
                             symbol,
                             position_size,
                             params={
                                 'leverage': self.max_leverage,
                                 'marginMode': 'isolated'
                             }
-                        )
+(                        )
                     logger.info(f"✅ Alternative trade executed: {order['id']}")
 
                     # SET TAKE-PROFIT AND STOP-LOSS ORDERS FOR ALTERNATIVE EXECUTION
@@ -600,7 +601,7 @@ class MultiPairVIPERTrader:
                         logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
 
                         # Create Take-Profit order
-                        tp_order = self.exchange.create_limit_order(
+                        tp_order = self.exchange.create_limit_order()
                             symbol,
                             tp_side,
                             position_size,
@@ -611,11 +612,11 @@ class MultiPairVIPERTrader:
                                 'tradeSide': 'close',
                                 'reduceOnly': True
                             }
-                        )
+(                        )
                         logger.info(f"✅ Alternative Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
                         # Create Stop-Loss order
-                        sl_order = self.exchange.create_limit_order(
+                        sl_order = self.exchange.create_limit_order()
                             symbol,
                             sl_side,
                             position_size,
@@ -626,7 +627,7 @@ class MultiPairVIPERTrader:
                                 'tradeSide': 'close',
                                 'reduceOnly': True
                             }
-                        )
+(                        )
                         logger.info(f"🛡️ Alternative Stop-Loss order placed: {sl_order.get('id', 'N/A')}")
 
                     except Exception as alt_tp_sl_error:
@@ -668,19 +669,19 @@ class MultiPairVIPERTrader:
                 # Calculate confidence based on signal strength
                 confidence = self.calculate_signal_confidence(symbol, signal)
 
-                opportunities.append({
+                opportunities.append({)
                     'symbol': symbol,
                     'signal': signal,
                     'confidence': confidence,
                     'timestamp': time.time()
-                })
+(                })
                 logger.info(f"📊 Found opportunity: {symbol} -> {signal} (confidence: {confidence:.2f})")
 
         logger.info(f"✅ Scan complete - {len(opportunities)} opportunities found")
         return opportunities
 
     def calculate_signal_confidence(self, symbol: str, signal: str) -> float:
-        """Calculate confidence score for trading signal"""
+        """Calculate confidence score for trading signal""""""
         try:
             # Get recent price data
             ohlcv_5m = self.exchange.fetch_ohlcv(symbol, timeframe='5m', limit=20)
@@ -716,7 +717,7 @@ class MultiPairVIPERTrader:
             if self.detect_momentum_signal([candle[4] for candle in ohlcv_5m]):
                 momentum_signal = self.detect_momentum_signal([candle[4] for candle in ohlcv_5m])
                 if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \:
-                   (signal == 'SELL' and momentum_signal == 'STRONG_BEAR'):
+                   (signal == 'SELL' and momentum_signal == 'STRONG_BEAR')
                     confidence += 0.1  # Boost for momentum confirmation
 
             return min(confidence, 1.0)  # Cap at 100%
@@ -726,7 +727,7 @@ class MultiPairVIPERTrader:
             return 0.5  # Return neutral confidence on error
 
     def should_enter_position(self, symbol: str, signal: str, confidence: float) -> bool:
-        """Determine if a trade should be executed based on confidence and conditions"""
+        """Determine if a trade should be executed based on confidence and conditions""""""
         try:
             # Minimum confidence threshold
             min_confidence = 0.6  # Require at least 60% confidence
@@ -760,7 +761,7 @@ class MultiPairVIPERTrader:
             return False
 
     def calculate_position_size(self, symbol: str = None):
-        """Calculate position size based on risk management parameters and minimum amounts"""
+        """Calculate position size based on risk management parameters and minimum amounts""""""
         try:
             # FIXED: Use ONLY free balance - don't include unrealized P&L as capital/margin
             balance = self.exchange.fetch_balance()
@@ -870,7 +871,7 @@ class MultiPairVIPERTrader:
             time.sleep(30)
 
     def monitor_tp_sl_execution(self):
-        """CRITICAL: Monitor and execute TP/SL orders that may have been filled"""
+        """CRITICAL: Monitor and execute TP/SL orders that may have been filled""""""
         if not self.active_positions:
             return
 
@@ -953,7 +954,7 @@ class MultiPairVIPERTrader:
         symbol = position_record['symbol']
         pnl = position_record.get('unrealized_pnl', 0)
 
-        # Update our tracking if we have this position
+        # Update our tracking if we have this position"""
         if symbol in self.active_positions:
             self.active_positions[symbol]['pnl'] = pnl
             self.active_positions[symbol]['last_updated'] = time.time()
@@ -1008,7 +1009,7 @@ class MultiPairVIPERTrader:
             # Get positions sorted by age (oldest first) to close oldest ones
             positions_to_close = []
             for symbol, position_data in sorted(self.active_positions.items(),:
-                                              key=lambda x: x[1].get('timestamp', 0)):
+(                                              key=lambda x: x[1].get('timestamp', 0))
                 if len(positions_to_close) < excess_positions:
                     positions_to_close.append(symbol)
 

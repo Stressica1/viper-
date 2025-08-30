@@ -4,6 +4,7 @@
 Comprehensive diagnostic tool for scan/score/trade/TP/SL flow
 
 This diagnostic will:
+    pass
 # Check Test pair discovery and filtering
 # Check Test market data fetching (OHLCV)
 # Check Test VIPER scoring system
@@ -23,14 +24,14 @@ from typing import Dict, List, Any, Optional
 import ccxt
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - FLOW_DIAG - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class TradingFlowDiagnostic:
-    """Comprehensive diagnostic for the trading flow"""
+    """Comprehensive diagnostic for the trading flow""""""
 
     def __init__(self):
         self.exchange = None
@@ -47,7 +48,7 @@ class TradingFlowDiagnostic:
         self._setup_exchange()
 
     def _setup_exchange(self):
-        """Setup exchange connection"""
+        """Setup exchange connection""""""
         try:
             api_key = os.getenv('BITGET_API_KEY')
             api_secret = os.getenv('BITGET_API_SECRET')
@@ -57,13 +58,13 @@ class TradingFlowDiagnostic:
                 logger.error("# X Missing API credentials")
                 return False
 
-            self.exchange = ccxt.bitget({
+            self.exchange = ccxt.bitget({)
                 'apiKey': api_key,
                 'secret': api_secret,
                 'password': api_password,
                 'enableRateLimit': True,
                 'options': {'defaultType': 'swap'}
-            })
+(            })
 
             # Test connection
             self.exchange.load_markets()
@@ -75,7 +76,7 @@ class TradingFlowDiagnostic:
             return False
 
     async def run_complete_diagnostic(self):
-        """Run complete trading flow diagnostic"""
+        """Run complete trading flow diagnostic""""""
 
         try:
             # Step 1: Pair Discovery
@@ -105,7 +106,7 @@ class TradingFlowDiagnostic:
             traceback.print_exc()
 
     async def diagnose_pair_discovery(self):
-        """Diagnose pair discovery phase"""
+        """Diagnose pair discovery phase""""""
 
         try:
             # Discover all USDT swap pairs
@@ -141,7 +142,7 @@ class TradingFlowDiagnostic:
             logger.error(f"# X Pair discovery failed: {e}")
 
     async def diagnose_pair_filtering(self):
-        """Diagnose pair filtering phase"""
+        """Diagnose pair filtering phase""""""
 
         try:
             # Filtering criteria
@@ -187,13 +188,13 @@ class TradingFlowDiagnostic:
 
                     if not reasons:  # All criteria passed
                         qualified_count += 1
-                        self.qualified_pairs.append({
+                        self.qualified_pairs.append({)
                             'symbol': symbol,
                             'volume_24h': volume_24h,
                             'spread': spread,
                             'leverage': leverage,
                             'price': price
-                        })
+(                        })
                         logger.info(f"# Check QUALIFIED: {symbol} (Vol: ${volume_24h:,.0f}, Spread: {spread:.4f})")
                     else:
                         # Track rejection reasons
@@ -210,14 +211,14 @@ class TradingFlowDiagnostic:
             # Show top rejection reasons
             if rejected_reasons:
                 logger.info("# Chart Top Rejection Reasons:")
-                for reason, count in sorted(rejected_reasons.items(), key=lambda x: x[1], reverse=True)[:5]:
+                for reason, count in sorted(rejected_reasons.items(), key=lambda x: x[1], reverse=True)[:5]
                     logger.info(f"   • {reason}: {count} pairs")
 
         except Exception as e:
             logger.error(f"# X Pair filtering diagnostic failed: {e}")
 
     async def diagnose_market_data(self):
-        """Diagnose market data fetching (OHLCV)"""
+        """Diagnose market data fetching (OHLCV)""""""
 
         try:
             if not self.qualified_pairs:
@@ -251,7 +252,7 @@ class TradingFlowDiagnostic:
             logger.error(f"# X Market data diagnostic failed: {e}")
 
     async def diagnose_viper_scoring(self):
-        """Diagnose VIPER scoring system"""
+        """Diagnose VIPER scoring system""""""
 
         try:
             if not self.qualified_pairs:
@@ -302,12 +303,12 @@ class TradingFlowDiagnostic:
                             best_opp = max(opportunities, key=lambda x: x.score)
 
                         if best_opp:
-                            self.scoring_results.append({
+                            self.scoring_results.append({)
                                 'symbol': symbol,
                                 'score': best_opp.score,
                                 'side': best_opp.recommended_side,
                                 'confidence': best_opp.confidence
-                            })
+(                            })
                             logger.info(f"   # Check VIPER Score: {best_opp.score:.2f}/100 ({best_opp.recommended_side})")
                         else:
                             logger.info(f"   # Warning No opportunities available")
@@ -321,7 +322,7 @@ class TradingFlowDiagnostic:
             logger.error(f"# X VIPER scoring diagnostic failed: {e}")
 
     async def diagnose_trade_execution(self):
-        """Diagnose trade execution logic"""
+        """Diagnose trade execution logic""""""
 
         try:
             if not self.scoring_results:
@@ -384,7 +385,7 @@ class TradingFlowDiagnostic:
             logger.error(f"# X Trade execution diagnostic failed: {e}")
 
     async def diagnose_tp_sl_logic(self):
-        """Diagnose TP/SL logic"""
+        """Diagnose TP/SL logic""""""
 
         try:
             if not self.trade_simulations:
@@ -453,7 +454,7 @@ class TradingFlowDiagnostic:
             'recommendations': []
         }
 
-        # Analyze results
+        # Analyze results"""
         if len(self.qualified_pairs) == 0:
             report['issues_found'].append("No pairs qualified - filtering criteria too strict")
             report['recommendations'].append("Reduce volume threshold or leverage requirements")
@@ -468,13 +469,13 @@ class TradingFlowDiagnostic:
 
         # Save detailed report
         with open('trading_flow_diagnostic_report.json', 'w') as f:
-            json.dump({
+            json.dump({)
                 'summary': report,
                 'pairs_data': self.pairs_data[:10],  # First 10 pairs
                 'qualified_pairs': self.qualified_pairs,
                 'scoring_results': self.scoring_results,
                 'trade_simulations': self.trade_simulations
-            }, f, indent=2, default=str)
+(            }, f, indent=2, default=str)
 
         # Display summary
         print(f"   Pairs Discovered: {len(self.pairs_data)}")
@@ -484,20 +485,19 @@ class TradingFlowDiagnostic:
 
         if report['issues_found']:
             for issue in report['issues_found']:
-
         if report['recommendations']:
             for rec in report['recommendations']:
-
         print(f"\n📄 Detailed report saved: trading_flow_diagnostic_report.json")
 
         # Overall assessment
         if len(report['issues_found']) == 0:
+            pass
         else:
             print(f"\n# Warning STATUS: {len(report['issues_found'])} ISSUES NEED ATTENTION")
 
 async def main():
     """Main diagnostic function"""
-    diagnostic = TradingFlowDiagnostic()
+    diagnostic = TradingFlowDiagnostic()"""
 
     if diagnostic.exchange:
         await diagnostic.run_complete_diagnostic()

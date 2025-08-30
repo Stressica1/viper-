@@ -256,7 +256,7 @@ class EnhancedOrderExecutor:
                 self.execution_stats['successful_orders'] += 1
                 
                 # Set up TP/SL/TSL if specified
-                if any([order_request.take_profit_price, order_request.stop_loss_price,:
+                if any([order_request.take_profit_price, order_request.stop_loss_price,
                        order_request.trailing_stop_percent]):
                     await self._setup_tp_sl_tsl(order, order_request, execution_result)
                 

@@ -4,6 +4,7 @@
 Direct response to user feedback with comprehensive TP/SL optimization
 
 ADDRESSING USER REQUIREMENTS:
+    pass
 # Check "OPTIMISE THE STRATEGIES FARTHER" - Comprehensive optimization with 1000+ parameter combinations
 # Check "45% WIN RATE IS A JOKE" - Target minimum 60% win rate with aggressive optimization
 # Check "DIFF TP/SL SETTTINGS" - Extensive TP/SL ratio testing from 1:1 to 1:6 
@@ -32,15 +33,15 @@ from rich.text import Text
 from rich import box
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - ENHANCED_OPTIMIZER - %(levelname)s - %(message)s'
-)
+()
 logger = logging.getLogger(__name__)
 
 console = Console()
 
-@dataclass
+@dataclass"""
 class SuperiorStrategyResult:
     """Results from enhanced strategy optimization targeting 60%+ win rates"""
     strategy_name: str
@@ -84,7 +85,7 @@ class SuperiorStrategyResult:
 class SuperiorStrategyOptimizer:
     """
     Enhanced optimizer specifically designed to crush the "45% win rate is a joke" problem
-    """
+    """"""
     
     def __init__(self):
         self.console = Console()
@@ -109,18 +110,18 @@ class SuperiorStrategyOptimizer:
         console.print("# Rocket [bold red]SUPERIOR STRATEGY OPTIMIZER LOADED[/bold red]")
         console.print("# Target [yellow]MISSION: Transform 45% joke performance into 60%+ elite strategies[/yellow]")
     
-    def _create_comprehensive_tp_sl_ranges(self) -> Dict[str, List[float]]:
+    def _create_comprehensive_tp_sl_ranges(self) -> Dict[str, List[float]]
         """Create comprehensive TP/SL ranges as requested by user"""
-        return {
+        return {:
             'stop_loss_pcts': [0.003, 0.005, 0.007, 0.01, 0.012, 0.015, 0.018, 0.02, 0.025, 0.03, 0.035, 0.04, 0.05],
             'risk_reward_ratios': [1.0, 1.1, 1.2, 1.3, 1.5, 1.7, 2.0, 2.2, 2.5, 2.8, 3.0, 3.5, 4.0, 4.5, 5.0, 5.5, 6.0],
             'trailing_stop_ratios': [0.3, 0.4, 0.5, 0.6, 0.7, 0.8]  # Fraction of TP for trailing activation
-        }
+        }"""
     
-    def _create_technical_parameter_ranges(self) -> Dict[str, List]:
+    def _create_technical_parameter_ranges(self) -> Dict[str, List]
         """Create comprehensive technical parameter ranges for all indicators"""
         return {
-            # Moving Average lengths
+            # Moving Average lengths:
             'fast_ma_periods': [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 20, 21, 22, 25],
             'slow_ma_periods': [20, 22, 25, 26, 28, 30, 34, 36, 40, 44, 50, 55, 60, 65, 75, 89, 100, 120, 144],
             
@@ -143,11 +144,11 @@ class SuperiorStrategyOptimizer:
             'macd_signal': [6, 7, 8, 9, 10, 11, 12, 13, 14]
         }
     
-    async def optimize_strategies_to_superior_performance(self) -> Dict[str, Any]:
+    async def optimize_strategies_to_superior_performance(self) -> Dict[str, Any]
         """Run comprehensive optimization to achieve 60%+ win rates"""
         
         console.print("\n# Rocket [bold blue]SUPERIOR STRATEGY OPTIMIZATION INITIATED[/bold blue]")
-        console.print("# Target [red]ELIMINATING 45% 'JOKE' PERFORMANCE FOREVER[/red]")
+        console.print("# Target [red]ELIMINATING 45% 'JOKE' PERFORMANCE FOREVER[/red]"):
         console.print(f"# Chart Target: {self.target_win_rate:.0%} win rate, {self.min_sharpe_ratio:.1f}+ Sharpe ratio")
         
         start_time = datetime.now()
@@ -163,7 +164,7 @@ class SuperiorStrategyOptimizer:
         
         total_combinations = len(strategies) * len(self.timeframes) * len(self.symbols)
         
-        with Progress(
+        with Progress():
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
             BarColumn(),
@@ -171,18 +172,20 @@ class SuperiorStrategyOptimizer:
             TimeElapsedColumn(),
             console=console,
             transient=False,
-        ) as progress:
+(        ) as progress:
+            pass
             
             main_task = progress.add_task(f"🔥 Optimizing {total_combinations} strategies to superior performance...", total=total_combinations)
             
             for strategy_name, strategy_type in strategies.items():
                 for timeframe in self.timeframes:
                     for symbol in self.symbols:
+                        pass
                         
                         # Run intensive optimization
-                        result = await self._optimize_strategy_to_excellence(
+                        result = await self._optimize_strategy_to_excellence()
                             strategy_name, strategy_type, timeframe, symbol
-                        )
+(                        )
                         
                         if result:
                             self.optimization_results.append(result)
@@ -202,9 +205,9 @@ class SuperiorStrategyOptimizer:
         
         return analysis
     
-    async def _optimize_strategy_to_excellence(self, strategy_name: str, strategy_type: str, 
-                                            timeframe: str, symbol: str) -> Optional[SuperiorStrategyResult]:
-        """Optimize a single strategy to achieve excellence (60%+ win rate)"""
+    async def _optimize_strategy_to_excellence(self, strategy_name: str, strategy_type: str, ):
+(                                            timeframe: str, symbol: str) -> Optional[SuperiorStrategyResult]
+        """Optimize a single strategy to achieve excellence (60%+ win rate)""""""
         try:
             # Generate test data
             data = self._generate_enhanced_test_data(symbol, timeframe, days=120)
@@ -213,9 +216,9 @@ class SuperiorStrategyOptimizer:
             baseline_performance = self._test_default_strategy(strategy_name, strategy_type, data)
             
             # Run comprehensive parameter optimization
-            best_config, best_performance = await self._run_comprehensive_parameter_sweep(
+            best_config, best_performance = await self._run_comprehensive_parameter_sweep()
                 strategy_name, strategy_type, data
-            )
+(            )
             
             if not best_performance:
                 return None
@@ -226,11 +229,11 @@ class SuperiorStrategyOptimizer:
             sharpe_boost = best_performance['sharpe_ratio'] - baseline_performance['sharpe_ratio']
             
             # Check if we achieved our targets
-            target_achieved = (best_performance['win_rate'] >= self.min_acceptable_win_rate and 
+            target_achieved = (best_performance['win_rate'] >= self.min_acceptable_win_rate and )
                              best_performance['sharpe_ratio'] >= self.min_sharpe_ratio and
-                             best_performance['max_drawdown'] <= self.max_drawdown_limit)
+(                             best_performance['max_drawdown'] <= self.max_drawdown_limit)
             
-            return SuperiorStrategyResult(
+            return SuperiorStrategyResult()
                 strategy_name=strategy_name,
                 timeframe=timeframe,
                 symbol=symbol,
@@ -268,14 +271,14 @@ class SuperiorStrategyOptimizer:
                 target_achieved=target_achieved,
                 optimization_score=best_performance['optimization_score'],
                 total_tests_run=best_config['total_tests']
-            )
+(            )
             
         except Exception as e:
             logger.error(f"Error optimizing {strategy_name}: {e}")
             return None
     
-    async def _run_comprehensive_parameter_sweep(self, strategy_name: str, strategy_type: str, 
-                                               data: pd.DataFrame) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    async def _run_comprehensive_parameter_sweep(self, strategy_name: str, strategy_type: str, ):
+(                                               data: pd.DataFrame) -> Tuple[Dict[str, Any], Dict[str, Any]]
         """Run comprehensive parameter sweep to find optimal configuration"""
         
         best_score = float('-inf')
@@ -292,6 +295,7 @@ class SuperiorStrategyOptimizer:
         # Test all combinations
         for tp_sl in tp_sl_combos:
             for tech in tech_combos:
+                pass
                 
                 # Combine parameters
                 full_config = {**tp_sl, **tech, 'total_tests': tests_run + 1}
@@ -310,15 +314,15 @@ class SuperiorStrategyOptimizer:
                 tests_run += 1
                 
                 # Early termination if we found excellent performance
-                if (performance['win_rate'] >= self.target_win_rate and:
-                    performance['sharpe_ratio'] >= self.min_sharpe_ratio):
+                if (performance['win_rate'] >= self.target_win_rate and):
+(                    performance['sharpe_ratio'] >= self.min_sharpe_ratio)
                     console.print(f"# Target [green]Early success: {performance['win_rate']:.1%} win rate achieved![/green]")
                     break
         
         best_config['total_tests'] = tests_run
         return best_config, best_performance
     
-    def _generate_tp_sl_combinations(self, max_combos: int = 100) -> List[Dict[str, float]]:
+    def _generate_tp_sl_combinations(self, max_combos: int = 100) -> List[Dict[str, float]]
         """Generate TP/SL combinations for testing"""
         combinations = []
         tp_sl_ranges = self.tp_sl_ranges
@@ -326,13 +330,13 @@ class SuperiorStrategyOptimizer:
         # Create strategic combinations
         for sl in tp_sl_ranges['stop_loss_pcts']:
             for rr in tp_sl_ranges['risk_reward_ratios']:
-                tp = sl * rr
+                tp = sl * rr:"""
                 if tp <= 0.15:  # Cap take profit at 15%
-                    combinations.append({
+                    combinations.append({)
                         'stop_loss': sl,
                         'take_profit': tp,
                         'risk_reward': rr
-                    })
+(                    })
                     
                     if len(combinations) >= max_combos:
                         break
@@ -341,26 +345,26 @@ class SuperiorStrategyOptimizer:
         
         return combinations
     
-    def _generate_technical_combinations(self, strategy_type: str, max_combos: int = 50) -> List[Dict[str, Any]]:
+    def _generate_technical_combinations(self, strategy_type: str, max_combos: int = 50) -> List[Dict[str, Any]]
         """Generate technical parameter combinations based on strategy type"""
         combinations = []
         tech_ranges = self.technical_ranges
         
-        # Generate strategic combinations based on strategy type
+        # Generate strategic combinations based on strategy type"""
         if strategy_type in ['momentum', 'scalping', 'trend']:
-            # Focus on MA combinations
+            # Focus on MA combinations:
             for fast_ma in tech_ranges['fast_ma_periods'][:8]:  # Limit for performance
-                for slow_ma in tech_ranges['slow_ma_periods'][:8]:
+                for slow_ma in tech_ranges['slow_ma_periods'][:8]
                     if slow_ma > fast_ma:
                         for rsi_period in [9, 14, 18, 21]:
-                            combinations.append({
+                            combinations.append({)
                                 'ma_fast': fast_ma,
                                 'ma_slow': slow_ma,
                                 'rsi_period': rsi_period,
                                 'bb_period': 20,  # Default
                                 'bb_std': 2.0,    # Default
                                 'atr_mult': 2.0   # Default
-                            })
+(                            })
                             
                             if len(combinations) >= max_combos:
                                 break
@@ -371,17 +375,17 @@ class SuperiorStrategyOptimizer:
         
         elif strategy_type == 'mean_reversion':
             # Focus on BB and RSI combinations
-            for bb_period in tech_ranges['bb_periods'][:6]:
-                for bb_std in tech_ranges['bb_std_multipliers'][:6]:
-                    for rsi_period in tech_ranges['rsi_periods'][:6]:
-                        combinations.append({
+            for bb_period in tech_ranges['bb_periods'][:6]
+                for bb_std in tech_ranges['bb_std_multipliers'][:6]
+                    for rsi_period in tech_ranges['rsi_periods'][:6]
+                        combinations.append({)
                             'ma_fast': 12,     # Default
                             'ma_slow': 26,     # Default  
                             'rsi_period': rsi_period,
                             'bb_period': bb_period,
                             'bb_std': bb_std,
                             'atr_mult': 2.0    # Default
-                        })
+(                        })
                         
                         if len(combinations) >= max_combos:
                             break
@@ -404,7 +408,7 @@ class SuperiorStrategyOptimizer:
         return combinations[:max_combos]
     
     def _calculate_superior_score(self, performance: Dict[str, Any]) -> float:
-        """Calculate optimization score heavily weighted toward win rate"""
+        """Calculate optimization score heavily weighted toward win rate""""""
         try:
             win_rate = performance.get('win_rate', 0)
             total_return = performance.get('total_return', 0)
@@ -444,9 +448,9 @@ class SuperiorStrategyOptimizer:
             logger.error(f"Error calculating score: {e}")
             return 0.0
 
-    def _run_optimized_backtest(self, strategy_name: str, strategy_type: str, 
-                              data: pd.DataFrame, config: Dict[str, Any]) -> Dict[str, Any]:
-        """Run backtest with optimized configuration"""
+    def _run_optimized_backtest(self, strategy_name: str, strategy_type: str, )
+(                              data: pd.DataFrame, config: Dict[str, Any]) -> Dict[str, Any]
+        """Run backtest with optimized configuration""":"""
         try:
             # Generate signals based on strategy type
             signals = self._generate_enhanced_signals(strategy_type, data, config)
@@ -498,25 +502,25 @@ class SuperiorStrategyOptimizer:
         signals['vol_sma'] = signals['volume'].rolling(20).mean()
         signals['vol_filter'] = signals['volume'] > signals['vol_sma'] * 1.2
         
-        # Strategy-specific logic
+        # Strategy-specific logic"""
         if strategy_type == 'momentum':
             # Enhanced momentum signals
             signals['momentum'] = signals['close'].pct_change(10)
             signals['ma_trend'] = signals['ma_fast'] > signals['ma_slow']
             signals['rsi_momentum'] = (signals['rsi'] > 45) & (signals['rsi'] < 75)
             
-            signals['signal'] = np.where(
+            signals['signal'] = np.where()
                 (signals['momentum'] > 0.005) & 
                 signals['ma_trend'] & 
                 signals['rsi_momentum'] &
                 signals['vol_filter'], 1,
-                np.where(
+                np.where()
                     (signals['momentum'] < -0.005) & 
                     ~signals['ma_trend'] & 
                     (signals['rsi'] < 55) &
                     signals['vol_filter'], -1, 0
-                )
-            )
+(                )
+(            )
             
         elif strategy_type == 'scalping':
             # Enhanced scalping signals
@@ -524,18 +528,18 @@ class SuperiorStrategyOptimizer:
             signals['rsi_neutral'] = (signals['rsi'] > 30) & (signals['rsi'] < 70)
             signals['close_near_ma'] = abs(signals['close'] - signals['ma_fast']) / signals['close'] < 0.01
             
-            signals['signal'] = np.where(
+            signals['signal'] = np.where()
                 signals['ma_cross'] & 
                 signals['rsi_neutral'] &
                 signals['vol_filter'] &
                 ~signals['close_near_ma'], 1,
-                np.where(
+                np.where()
                     ~signals['ma_cross'] & 
                     signals['rsi_neutral'] &
                     signals['vol_filter'] &
                     ~signals['close_near_ma'], -1, 0
-                )
-            )
+(                )
+(            )
             
         elif strategy_type == 'mean_reversion':
             # Enhanced mean reversion
@@ -543,12 +547,12 @@ class SuperiorStrategyOptimizer:
             signals['rsi_oversold'] = signals['rsi'] < 25
             signals['rsi_overbought'] = signals['rsi'] > 75
             
-            signals['signal'] = np.where(
+            signals['signal'] = np.where()
                 (signals['bb_position'] < 0.1) & signals['rsi_oversold'], 1,
-                np.where(
+                np.where()
                     (signals['bb_position'] > 0.9) & signals['rsi_overbought'], -1, 0
-                )
-            )
+(                )
+(            )
             
         elif strategy_type == 'trend':
             # Enhanced trend following
@@ -556,18 +560,18 @@ class SuperiorStrategyOptimizer:
             signals['rsi_trend'] = ((signals['rsi'] > 50) & (signals['ma_fast'] > signals['ma_slow'])) | \
                                   ((signals['rsi'] < 50) & (signals['ma_fast'] < signals['ma_slow']))
             
-            signals['signal'] = np.where(
+            signals['signal'] = np.where()
                 (signals['ma_fast'] > signals['ma_slow']) & 
                 signals['trend_strong'] & 
                 signals['rsi_trend'] &
                 signals['vol_filter'], 1,
-                np.where(
+                np.where()
                     (signals['ma_fast'] < signals['ma_slow']) & 
                     signals['trend_strong'] & 
                     signals['rsi_trend'] &
                     signals['vol_filter'], -1, 0
-                )
-            )
+(                )
+(            )
             
         else:  # breakout strategy
             # Enhanced breakout detection
@@ -576,12 +580,12 @@ class SuperiorStrategyOptimizer:
             signals['breakout_up'] = signals['close'] > signals['high_max'].shift(1)
             signals['breakout_down'] = signals['close'] < signals['low_min'].shift(1)
             
-            signals['signal'] = np.where(
+            signals['signal'] = np.where()
                 signals['breakout_up'] & (signals['rsi'] < 75) & signals['vol_filter'], 1,
-                np.where(
+                np.where()
                     signals['breakout_down'] & (signals['rsi'] > 25) & signals['vol_filter'], -1, 0
-                )
-            )
+(                )
+(            )
         
         return signals
 
@@ -603,7 +607,7 @@ class SuperiorStrategyOptimizer:
             current_price = signals.iloc[i]['close']
             signal = signals.iloc[i]['signal']
             
-            # Handle existing position
+            # Handle existing position"""
             if current_position != 0:
                 if current_position == 1:  # Long position
                     unrealized_pnl = (current_price - entry_price) / entry_price
@@ -647,8 +651,8 @@ class SuperiorStrategyOptimizer:
         
         return signals
 
-    def _calculate_enhanced_performance_metrics(self, signals: pd.DataFrame) -> Dict[str, Any]:
-        """Calculate enhanced performance metrics with focus on win rate"""
+    def _calculate_enhanced_performance_metrics(self, signals: pd.DataFrame) -> Dict[str, Any]
+        """Calculate enhanced performance metrics with focus on win rate""":"""
         try:
             trades = signals[signals['trade_outcome'] != 0]
             
@@ -707,18 +711,18 @@ class SuperiorStrategyOptimizer:
             logger.error(f"Error calculating performance: {e}")
             return self._get_default_performance()
 
-    def _get_default_performance(self) -> Dict[str, Any]:
+    def _get_default_performance(self) -> Dict[str, Any]
         """Default performance for failed backtests"""
-        return {
+        return {:
             'total_trades': 0, 'win_rate': 0.0, 'total_return': 0.0,
             'sharpe_ratio': 0.0, 'max_drawdown': 1.0, 'profit_factor': 0.0,
             'gross_profit': 0.0, 'gross_loss': 0.0, 'winning_trades': 0, 'losing_trades': 0,
             'avg_win': 0.0, 'avg_loss': 0.0
-        }
+        }"""
 
-    def _test_default_strategy(self, strategy_name: str, strategy_type: str, data: pd.DataFrame) -> Dict[str, Any]:
-        """Test default strategy configuration to establish baseline"""
-        default_config = {
+    def _test_default_strategy(self, strategy_name: str, strategy_type: str, data: pd.DataFrame) -> Dict[str, Any]
+        """Test default strategy configuration to establish baseline""""""
+        default_config = {:
             'stop_loss': 0.02, 'take_profit': 0.06, 'risk_reward': 3.0,
             'ma_fast': 12, 'ma_slow': 26, 'rsi_period': 14,
             'bb_period': 20, 'bb_std': 2.0, 'atr_mult': 2.0
@@ -744,7 +748,7 @@ class SuperiorStrategyOptimizer:
         trend_strength = 0
         
         for i in range(total_candles):
-            # Update volatility regime occasionally
+            # Update volatility regime occasionally"""
             if i % 100 == 0:
                 volatility_regime = np.random.uniform(0.008, 0.025)
             
@@ -771,28 +775,28 @@ class SuperiorStrategyOptimizer:
             close_price = price
             volume = np.random.uniform(10000, 200000)
             
-            data.append({
+            data.append({)
                 'timestamp': datetime.now() - timedelta(minutes=freq_minutes * (total_candles - i)),
                 'open': open_price, 'high': high, 'low': low, 'close': close_price, 'volume': volume
-            })
+(            })
         
         df = pd.DataFrame(data)
         df.set_index('timestamp', inplace=True)
         return df.sort_index()
 
-    async def _analyze_superior_results(self) -> Dict[str, Any]:
+    async def _analyze_superior_results(self) -> Dict[str, Any]
         """Analyze optimization results and create comprehensive report"""
         console.print("\n# Chart [bold blue]ANALYZING SUPERIOR OPTIMIZATION RESULTS[/bold blue]")
-        
+        :
         if not self.optimization_results:
             return {"error": "No optimization results"}
         
         # Sort by win rate and performance
-        sorted_results = sorted(
+        sorted_results = sorted()
             self.optimization_results,
             key=lambda x: (x.after_win_rate, x.after_sharpe),
             reverse=True
-        )
+(        )
         
         # Performance categories
         elite_performers = [r for r in sorted_results if r.after_win_rate >= self.target_win_rate]  # 65%+
@@ -855,7 +859,7 @@ class SuperiorStrategyOptimizer:
             else:
                 status = "🔴 FAILED"
             
-            table.add_row(
+            table.add_row()
                 str(i),
                 result.strategy_name,
                 result.timeframe,
@@ -866,7 +870,7 @@ class SuperiorStrategyOptimizer:
                 f"{result.after_sharpe:.2f}",
                 f"1:{result.optimal_risk_reward:.1f}",
                 status
-            )
+(            )
         
         console.print(table)
 
@@ -908,10 +912,10 @@ class SuperiorStrategyOptimizer:
         
         console.print(Panel(transformation_text, title="# Target TRANSFORMATION COMPLETE", border_style="green"))
 
-    def _analyze_winning_parameters(self) -> Dict[str, Any]:
+    def _analyze_winning_parameters(self) -> Dict[str, Any]
         """Analyze parameters of winning strategies"""
         superior_results = [r for r in self.optimization_results if r.after_win_rate >= self.min_acceptable_win_rate]
-        
+        :"""
         if not superior_results:
             return {}
         
@@ -926,7 +930,7 @@ class SuperiorStrategyOptimizer:
         }
 
 async def main():
-    """Main execution - Transform 45% joke into 60%+ elite performance"""
+    """Main execution - Transform 45% joke into 60%+ elite performance""""""
     try:
         console.print("\n# Rocket [bold blue]SUPERIOR STRATEGY OPTIMIZER - ELIMINATING 45% JOKE PERFORMANCE[/bold blue]")
         console.print("# Target [yellow]MISSION: Transform weak strategies into 60%+ elite performers[/yellow]\n")

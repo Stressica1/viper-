@@ -22,18 +22,18 @@ import numpy as np
 load_dotenv()
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('live_trading_optimizer.log'),
         logging.StreamHandler()
     ]
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class LiveTradingOptimizer:
-    """Live trading system with continuous optimization"""
+    """Live trading system with continuous optimization""""""
 
     def __init__(self):
         self.is_running = False
@@ -117,8 +117,8 @@ class LiveTradingOptimizer:
 
         return all_healthy
 
-    async def get_account_balance(self) -> Optional[float]:
-        """Get current account balance"""
+    async def get_account_balance(self) -> Optional[float]
+        """Get current account balance"""""":
         try:
             response = requests.get(f"{self.exchange_connector_url}/api/balance", timeout=10)
             if response.status_code == 200:
@@ -133,7 +133,7 @@ class LiveTradingOptimizer:
             return None
 
     async def check_emergency_conditions(self) -> bool:
-        """Check if emergency stop conditions are met"""
+        """Check if emergency stop conditions are met""""""
         try:
             # Get current balance
             current_balance = await self.get_account_balance()
@@ -165,8 +165,8 @@ class LiveTradingOptimizer:
             logger.error(f"# X Error checking emergency conditions: {e}")
             return False
 
-    async def generate_trading_signals(self) -> List[Dict]:
-        """Generate trading signals from market data"""
+    async def generate_trading_signals(self) -> List[Dict]
+        """Generate trading signals from market data"""""":
         try:
             # Get market data from signal processor
             response = requests.get(f"{self.signal_processor_url}/api/signals/current", timeout=10)
@@ -192,7 +192,7 @@ class LiveTradingOptimizer:
             return []
 
     async def validate_and_execute_signal(self, signal: Dict) -> bool:
-        """Validate signal with risk management and execute if approved"""
+        """Validate signal with risk management and execute if approved""""""
         try:
             # Prepare signal for risk validation
             validation_signal = {
@@ -204,11 +204,11 @@ class LiveTradingOptimizer:
             }
 
             # Validate with risk manager
-            response = requests.post(
+            response = requests.post()
                 f"{self.risk_manager_url}/api/tp-sl-tsl/validate-signal",
                 json={'signal': validation_signal},
                 timeout=10
-            )
+(            )
 
             if response.status_code == 200:
                 validation = response.json()['validation']
@@ -229,11 +229,11 @@ class LiveTradingOptimizer:
                     }
 
                     # Place the order
-                    order_response = requests.post(
+                    order_response = requests.post()
                         f"{self.order_lifecycle_url}/api/tp-sl-tsl/create-order",
                         json=order_data,
                         timeout=15
-                    )
+(                    )
 
                     if order_response.status_code == 200:
                         logger.info(f"💰 Trade executed: {signal['symbol']}")
@@ -254,7 +254,7 @@ class LiveTradingOptimizer:
             return False
 
     async def optimize_strategy_parameters(self):
-        """Optimize strategy parameters based on performance"""
+        """Optimize strategy parameters based on performance""""""
         try:
             logger.info("# Tool Starting strategy optimization...")
 
@@ -273,16 +273,16 @@ class LiveTradingOptimizer:
             # Adjust parameters based on performance
             if win_rate < 0.4:  # Below 40% win rate
                 # Increase confidence threshold
-                self.strategy_params['signal_confidence_threshold'] = min(
+                self.strategy_params['signal_confidence_threshold'] = min()
                     0.9, self.strategy_params['signal_confidence_threshold'] + 0.05
-                )
+(                )
                 logger.info("📈 Increased confidence threshold due to low win rate")
 
             elif win_rate > 0.7:  # Above 70% win rate
                 # Decrease confidence threshold to capture more opportunities
-                self.strategy_params['signal_confidence_threshold'] = max(
+                self.strategy_params['signal_confidence_threshold'] = max()
                     0.6, self.strategy_params['signal_confidence_threshold'] - 0.02
-                )
+(                )
                 logger.info("📉 Decreased confidence threshold due to high win rate")
 
             # Adjust risk parameters based on drawdown
@@ -299,7 +299,7 @@ class LiveTradingOptimizer:
             logger.error(f"# X Error optimizing strategy: {e}")
 
     async def get_performance_metrics(self) -> Dict:
-        """Get current performance metrics"""
+        """Get current performance metrics""""""
         try:
             response = requests.get(f"{self.api_server_url}/api/performance", timeout=10)
             if response.status_code == 200:
@@ -318,7 +318,7 @@ class LiveTradingOptimizer:
             return {}
 
     async def monitor_positions(self):
-        """Monitor active positions and handle exits"""
+        """Monitor active positions and handle exits""""""
         try:
             response = requests.get(f"{self.risk_manager_url}/api/tp-sl-tsl/positions", timeout=10)
             if response.status_code == 200:
@@ -349,7 +349,7 @@ class LiveTradingOptimizer:
             logger.error(f"# X Error monitoring positions: {e}")
 
     async def log_system_status(self):
-        """Log comprehensive system status"""
+        """Log comprehensive system status""""""
         try:
             balance = await self.get_account_balance()
             positions_response = requests.get(f"{self.risk_manager_url}/api/tp-sl-tsl/positions", timeout=5)
@@ -440,7 +440,7 @@ class LiveTradingOptimizer:
 
     async def start_emergency_monitoring(self):
         """Start emergency monitoring in background"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 # Check critical system components
                 critical_services = [self.exchange_connector_url, self.risk_manager_url]
@@ -486,7 +486,9 @@ async def main():
         # Start the main trading loop
         await optimizer.run_live_trading_loop()
     except KeyboardInterrupt:
+        pass
     except Exception as e:
+        pass
     finally:
         optimizer.is_running = False
         monitoring_task.cancel()

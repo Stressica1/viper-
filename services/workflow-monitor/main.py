@@ -4,6 +4,7 @@
 Comprehensive workflow validation and health monitoring for the entire trading system
 
 Features:
+    pass
 - End-to-end workflow validation
 - Service health monitoring
 - Performance metrics collection
@@ -38,14 +39,14 @@ MAX_WORKFLOW_LATENCY = float(os.getenv('MAX_WORKFLOW_LATENCY', '30.0'))  # secon
 
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
-logging.basicConfig(
+logging.basicConfig()
     level=log_level,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class ServiceHealth:
-    """Service health monitoring"""
+    """Service health monitoring""""""
 
     def __init__(self, name: str, url: str, dependencies: List[str] = None):
         self.name = name
@@ -58,8 +59,8 @@ class ServiceHealth:
         self.consecutive_failures = 0
         self.last_error = None
 
-    def check_health(self) -> Dict[str, Any]:
-        """Check service health"""
+    def check_health(self) -> Dict[str, Any]
+        """Check service health""":"""
         try:
             start_time = time.time()
             response = requests.get(f"{self.url}/health", timeout=10)
@@ -94,9 +95,9 @@ class ServiceHealth:
 
         return self.get_health_status()
 
-    def get_health_status(self) -> Dict[str, Any]:
+    def get_health_status(self) -> Dict[str, Any]
         """Get current health status"""
-        return {
+        return {:
             'service': self.name,
             'status': self.status,
             'url': self.url,
@@ -107,10 +108,10 @@ class ServiceHealth:
             'consecutive_failures': self.consecutive_failures,
             'last_error': self.last_error,
             'healthy': self.status in ['healthy', 'ok']
-        }
+        }"""
 
 class WorkflowStep:
-    """Workflow step definition"""
+    """Workflow step definition""""""
 
     def __init__(self, name: str, description: str, service: str, endpoint: str, expected_latency: float = 5.0):
         self.name = name
@@ -124,8 +125,8 @@ class WorkflowStep:
         self.failure_count = 0
         self.average_latency = 0.0
 
-    def execute_step(self, service_urls: Dict[str, str]) -> Dict[str, Any]:
-        """Execute workflow step"""
+    def execute_step(self, service_urls: Dict[str, str]) -> Dict[str, Any]
+        """Execute workflow step""":"""
         try:
             if self.service not in service_urls:
                 return {
@@ -174,7 +175,7 @@ class WorkflowStep:
             }
 
 class WorkflowMonitor:
-    """Comprehensive workflow monitoring service"""
+    """Comprehensive workflow monitoring service""""""
 
     def __init__(self):
         self.redis_client = None
@@ -191,7 +192,7 @@ class WorkflowMonitor:
         logger.info("# Chart Workflow Monitor initialized")
 
     def initialize_redis(self) -> bool:
-        """Initialize Redis connection"""
+        """Initialize Redis connection""""""
         try:
             self.redis_client = redis.Redis.from_url(REDIS_URL, decode_responses=True)
             self.redis_client.ping()
@@ -219,17 +220,17 @@ class WorkflowMonitor:
             self.services[service_name] = ServiceHealth(service_name, url, dependencies)
 
         # Initialize workflow definitions
-        self.initialize_workflows()
+        self.initialize_workflows()"""
 
-    def get_service_dependencies(self, service_name: str) -> List[str]:
+    def get_service_dependencies(self, service_name: str) -> List[str]
         """Get service dependencies"""
-        dependencies = {
+        dependencies = {:
             'viper-scoring-service': ['market-data-manager'],
             'live-trading-engine': ['viper-scoring-service', 'risk-manager'],
             'unified-scanner': ['market-data-manager', 'viper-scoring-service'],
             'risk-manager': ['market-data-manager']
         }
-        return dependencies.get(service_name, [])
+        return dependencies.get(service_name, [])"""
 
     def initialize_workflows(self):
         """Initialize workflow definitions"""
@@ -258,7 +259,7 @@ class WorkflowMonitor:
 
     async def check_service_health(self):
         """Check health of all services"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 health_status = {}
                 unhealthy_services = []
@@ -305,8 +306,8 @@ class WorkflowMonitor:
                 logger.error(f"# X Error in health check loop: {e}")
                 await asyncio.sleep(10)
 
-    def validate_workflow(self, workflow_name: str) -> Dict[str, Any]:
-        """Validate a complete workflow"""
+    def validate_workflow(self, workflow_name: str) -> Dict[str, Any]
+        """Validate a complete workflow""":"""
         try:
             if workflow_name not in self.workflows:
                 return {'error': f'Workflow {workflow_name} not found'}
@@ -357,7 +358,7 @@ class WorkflowMonitor:
 
     async def run_workflow_validations(self):
         """Run periodic workflow validations"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 for workflow_name in self.workflows.keys():
                     logger.info(f"# Search Validating workflow: {workflow_name}")
@@ -367,11 +368,11 @@ class WorkflowMonitor:
                     self.redis_client.setex(f"workflow:{workflow_name}", 600, json.dumps(result))
 
                     # Publish validation result
-                    self.redis_client.publish('workflow_validations', json.dumps({
+                    self.redis_client.publish('workflow_validations', json.dumps({))
                         'workflow': workflow_name,
                         'result': result,
                         'timestamp': datetime.now().isoformat()
-                    }))
+((                    }))
 
                     await asyncio.sleep(1)  # Small delay between workflows
 
@@ -383,7 +384,7 @@ class WorkflowMonitor:
 
     async def collect_performance_metrics(self):
         """Collect system performance metrics"""
-        while self.is_running:
+        while self.is_running:"""
             try:
                 metrics = {
                     'timestamp': datetime.now().isoformat(),
@@ -411,20 +412,20 @@ class WorkflowMonitor:
 
                 # Check for performance issues
                 if metrics['system']['cpu_percent'] > 90:
-                    self.generate_alert({
+                    self.generate_alert({)
                         'type': 'high_cpu_usage',
                         'severity': 'medium',
                         'message': f"High CPU usage: {metrics['system']['cpu_percent']}%",
                         'timestamp': datetime.now().isoformat()
-                    })
+(                    })
 
                 if metrics['system']['memory_percent'] > 90:
-                    self.generate_alert({
+                    self.generate_alert({)
                         'type': 'high_memory_usage',
                         'severity': 'medium',
                         'message': f"High memory usage: {metrics['system']['memory_percent']}%",
                         'timestamp': datetime.now().isoformat()
-                    })
+(                    })
 
                 await asyncio.sleep(PERFORMANCE_MONITORING_INTERVAL)
 
@@ -432,8 +433,8 @@ class WorkflowMonitor:
                 logger.error(f"# X Error collecting performance metrics: {e}")
                 await asyncio.sleep(60)
 
-    def get_redis_metrics(self) -> Dict[str, Any]:
-        """Get Redis performance metrics"""
+    def get_redis_metrics(self) -> Dict[str, Any]
+        """Get Redis performance metrics""":"""
         try:
             info = self.redis_client.info()
             return {
@@ -448,7 +449,7 @@ class WorkflowMonitor:
             return {}
 
     def generate_alert(self, alert: Dict[str, Any]):
-        """Generate and escalate alerts"""
+        """Generate and escalate alerts""""""
         try:
             alert_id = f"{alert['type']}_{int(time.time())}"
             alert['id'] = alert_id
@@ -461,7 +462,6 @@ class WorkflowMonitor:
             cutoff_time = datetime.now() - timedelta(hours=24)
             self.alerts = [a for a in self.alerts
                           if datetime.fromisoformat(a['timestamp']) > cutoff_time]:
-
             # Publish alert
             self.redis_client.publish('system_alerts', json.dumps(alert))
             self.redis_client.lpush('alert_history', json.dumps(alert))
@@ -472,8 +472,8 @@ class WorkflowMonitor:
         except Exception as e:
             logger.error(f"# X Error generating alert: {e}")
 
-    def get_system_overview(self) -> Dict[str, Any]:
-        """Get comprehensive system overview"""
+    def get_system_overview(self) -> Dict[str, Any]
+        """Get comprehensive system overview""":"""
         try:
             # Get latest workflow results
             workflow_status = {}
@@ -496,8 +496,8 @@ class WorkflowMonitor:
             total_services = len(service_health)
             health_score = (healthy_services / total_services) * 100 if total_services > 0 else 0
 
-            successful_workflows = sum(1 for w in workflow_status.values()
-                                     if w.get('status') == 'success'):
+            successful_workflows = sum(1 for w in workflow_status.values())
+(                                     if w.get('status') == 'success')
             total_workflows = len(workflow_status)
             workflow_score = (successful_workflows / total_workflows) * 100 if total_workflows > 0 else 0
 
@@ -524,8 +524,8 @@ class WorkflowMonitor:
                     'details': workflow_status
                 },
                 'performance': performance,
-                'active_alerts': len([a for a in self.alerts
-                                    if (datetime.now() - datetime.fromisoformat(a['timestamp'])).seconds < 3600]):
+                'active_alerts': len([a for a in self.alerts)
+(                                    if (datetime.now() - datetime.fromisoformat(a['timestamp'])).seconds < 3600])
             }
 
         except Exception as e:
@@ -546,7 +546,7 @@ class WorkflowMonitor:
         logger.info("# Target Background monitoring tasks started")
 
     def start(self):
-        """Start the workflow monitor service"""
+        """Start the workflow monitor service""""""
         try:
             logger.info("# Rocket Starting Workflow Monitor Service...")
 
@@ -577,7 +577,7 @@ class WorkflowMonitor:
             self.stop()
 
     def check_alert_escalation(self):
-        """Check and escalate alerts if needed"""
+        """Check and escalate alerts if needed""""""
         try:
             current_time = datetime.now()
 
@@ -586,9 +586,8 @@ class WorkflowMonitor:
                 time_since_alert = (current_time - alert_time).seconds
 
                 # Escalate if alert is older than escalation time and not already escalated
-                if (time_since_alert > ALERT_ESCALATION_TIME and:
-                    alert.get('escalation_level', 1) < 3):
-
+                if (time_since_alert > ALERT_ESCALATION_TIME and):
+(                    alert.get('escalation_level', 1) < 3)
                     alert['escalation_level'] = alert.get('escalation_level', 1) + 1
                     alert['escalated_at'] = current_time.isoformat()
 
@@ -606,17 +605,17 @@ class WorkflowMonitor:
         logger.info("# Check Workflow Monitor Service stopped")
 
 # FastAPI application
-app = FastAPI(
+app = FastAPI()
     title="VIPER Workflow Monitor",
     version="1.0.0",
     description="Comprehensive workflow validation and health monitoring service"
-)
+()
 
 workflow_monitor = WorkflowMonitor()
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize services on startup"""
+    """Initialize services on startup""""""
     if not workflow_monitor.initialize_redis():
         logger.error("# X Failed to initialize Redis")
         return
@@ -632,7 +631,7 @@ async def shutdown_event():
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
+    """Health check endpoint""""""
     try:
         overview = workflow_monitor.get_system_overview()
         return {
@@ -643,18 +642,18 @@ async def health_check():
             **overview['system_health']
         }
     except Exception as e:
-        return JSONResponse(
+        return JSONResponse()
             status_code=503,
             content={
                 "status": "unhealthy",
                 "service": "workflow-monitor",
                 "error": str(e)
             }
-        )
+(        )
 
 @app.get("/api/overview")
 async def get_system_overview():
-    """Get comprehensive system overview"""
+    """Get comprehensive system overview""""""
     try:
         return workflow_monitor.get_system_overview()
     except Exception as e:
@@ -662,7 +661,7 @@ async def get_system_overview():
 
 @app.post("/api/workflow/validate/{workflow_name}")
 async def validate_workflow(workflow_name: str):
-    """Validate a specific workflow"""
+    """Validate a specific workflow""""""
     try:
         result = workflow_monitor.validate_workflow(workflow_name)
         return result
@@ -671,7 +670,7 @@ async def validate_workflow(workflow_name: str):
 
 @app.get("/api/workflows")
 async def get_workflow_status():
-    """Get status of all workflows"""
+    """Get status of all workflows""""""
     try:
         workflows = {}
         for workflow_name in workflow_monitor.workflows.keys():
@@ -684,7 +683,7 @@ async def get_workflow_status():
 
 @app.get("/api/services/health")
 async def get_service_health():
-    """Get health status of all services"""
+    """Get health status of all services""""""
     try:
         health_status = {}
         for service_name, service in workflow_monitor.services.items():
@@ -694,13 +693,12 @@ async def get_service_health():
         raise HTTPException(status_code=503, detail=f"Unable to get service health: {e}")
 
 @app.get("/api/alerts")
-async def get_alerts(hours: int = Query(24, description="Hours of alert history", ge=1, le=168)):
-    """Get recent alerts"""
+async def get_alerts(hours: int = Query(24, description="Hours of alert history", ge=1, le=168))
+    """Get recent alerts""""""
     try:
         cutoff_time = datetime.now() - timedelta(hours=hours)
         recent_alerts = [alert for alert in workflow_monitor.alerts
                         if datetime.fromisoformat(alert['timestamp']) > cutoff_time]:
-
         return {
             "alerts": recent_alerts,
             "count": len(recent_alerts),
@@ -710,8 +708,8 @@ async def get_alerts(hours: int = Query(24, description="Hours of alert history"
         raise HTTPException(status_code=503, detail=f"Unable to get alerts: {e}")
 
 @app.get("/api/performance")
-async def get_performance_metrics(limit: int = Query(10, description="Number of recent metrics", ge=1, le=100)):
-    """Get recent performance metrics"""
+async def get_performance_metrics(limit: int = Query(10, description="Number of recent metrics", ge=1, le=100))
+    """Get recent performance metrics""""""
     try:
         metrics = workflow_monitor.redis_client.lrange('performance_metrics', 0, limit - 1)
         parsed_metrics = [json.loads(metric) for metric in metrics]
@@ -724,7 +722,7 @@ async def get_performance_metrics(limit: int = Query(10, description="Number of 
 
 @app.delete("/api/alerts")
 async def clear_alerts():
-    """Clear all active alerts"""
+    """Clear all active alerts""""""
     try:
         workflow_monitor.alerts.clear()
         return {"status": "cleared", "message": "All alerts cleared"}
@@ -734,10 +732,10 @@ async def clear_alerts():
 if __name__ == "__main__":
     port = int(os.getenv("WORKFLOW_MONITOR_PORT", 8013))
     logger.info(f"Starting VIPER Workflow Monitor on port {port}")
-    uvicorn.run(
+    uvicorn.run()
         "main:app",
         host="0.0.0.0",
         port=port,
         reload=os.getenv("DEBUG_MODE", "false").lower() == "true",
         log_level="info"
-    )
+(    )

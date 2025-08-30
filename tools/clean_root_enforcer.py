@@ -7,10 +7,10 @@ Automatically enforces a clean root directory by moving misplaced files
 import os
 import shutil
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime"""
 
 class CleanRootEnforcer:
-    """Automatically maintains a clean root directory"""
+    """Automatically maintains a clean root directory""""""
     
     def __init__(self, repo_root: Path):
         self.repo_root = Path(repo_root)
@@ -65,7 +65,7 @@ class CleanRootEnforcer:
         """Scan root directory for violations"""
         violations = []
         
-        for item in self.repo_root.iterdir():
+        for item in self.repo_root.iterdir()""":
             if item.is_file() and not item.name.startswith('.'):
                 if item.name not in self.allowed_files:
                     suggested_location = self._get_auto_move_location(item)
@@ -88,14 +88,14 @@ class CleanRootEnforcer:
         """Get automatic move location for a file"""
         filename = file_path.name.lower()
         
-        for pattern, destination in self.auto_move_rules.items():
+        for pattern, destination in self.auto_move_rules.items()""":
             if self._matches_pattern(filename, pattern.lower()):
                 return destination
         
         return None
 
     def _matches_pattern(self, filename: str, pattern: str) -> bool:
-        """Simple wildcard pattern matching"""
+        """Simple wildcard pattern matching""""""
         if '*' not in pattern:
             return filename == pattern
         
@@ -113,7 +113,7 @@ class CleanRootEnforcer:
 
     def clean_root_directory(self, dry_run=True):
         """Clean root directory by moving misplaced files"""
-        violations = self.scan_root_violations()
+        violations = self.scan_root_violations()"""
         
         if not violations:
             return
@@ -136,6 +136,7 @@ class CleanRootEnforcer:
                     print(f"# Check Moved: {source.name} → {violation['suggested_location']}")
                     moves_executed += 1
                 except Exception as e:
+                    pass
         
         if dry_run:
             print(f"\n# Idea This was a dry run. Use --execute to actually move files.")
@@ -152,7 +153,7 @@ Root Directory Monitor - Watches for files placed in root
 import time
 import sys
 from pathlib import Path
-from clean_root_enforcer import CleanRootEnforcer
+from clean_root_enforcer import CleanRootEnforcer"""
 
 def monitor_root():
     repo_root = Path.cwd()
@@ -174,6 +175,7 @@ def monitor_root():
             time.sleep(10)  # Check every 10 seconds
     
     except KeyboardInterrupt:
+        pass
 
 if __name__ == "__main__":
     monitor_root()
@@ -199,7 +201,7 @@ def main():
     args = parser.parse_args()
     
     repo_root = Path.cwd()
-    enforcer = CleanRootEnforcer(repo_root)
+    enforcer = CleanRootEnforcer(repo_root)"""
     
     if args.create_monitor:
         enforcer.create_root_monitor()

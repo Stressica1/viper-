@@ -20,18 +20,18 @@ from ai_ml_optimizer import AIMLOptimizer
 from comprehensive_backtester import ComprehensiveBacktester
 
 # Configure logging
-logging.basicConfig(
+logging.basicConfig()
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler('viper_live_optimized.log'),
         logging.StreamHandler()
     ]
-)
-logger = logging.getLogger(__name__)
+()
+logger = logging.getLogger(__name__)"""
 
 class ViperLiveOptimized:
-    """Complete AI/ML-powered live trading system"""
+    """Complete AI/ML-powered live trading system""""""
 
     def __init__(self):
         self.ai_optimizer = AIMLOptimizer()
@@ -79,7 +79,7 @@ class ViperLiveOptimized:
         }
 
         ready_services = 0
-        for name, url in services.items():
+        for name, url in services.items()""":
             try:
                 import requests
                 response = requests.get(url, timeout=5)
@@ -88,15 +88,16 @@ class ViperLiveOptimized:
                 else:
                     print(f"   # X {name}: HTTP {response.status_code}")
             except Exception as e:
+                pass
 
         readiness = ready_services / len(services)
         print(f"   # Chart System Readiness: {ready_services}/{len(services)} ({readiness:.1%})")
 
         return readiness >= 0.8  # 80% readiness threshold
 
-    async def run_initial_backtest(self) -> Dict[str, Any]:
-        """Run initial comprehensive backtest to establish baseline"""
-
+    async def run_initial_backtest(self) -> Dict[str, Any]
+        """Run initial comprehensive backtest to establish baseline""""""
+:
         try:
             backtest_results = self.backtester.run_multi_scenario_backtest()
 
@@ -122,10 +123,10 @@ class ViperLiveOptimized:
             logger.error(f"# X Error in initial backtest: {e}")
             return {}
 
-    async def optimize_parameters(self) -> Dict[str, Any]:
+    async def optimize_parameters(self) -> Dict[str, Any]
         """Run AI/ML optimization for trading parameters"""
         print("🤖 RUNNING AI/ML PARAMETER OPTIMIZATION...")
-
+:
         try:
             # Collect current market data
             market_data = self.ai_optimizer.collect_market_data()
@@ -135,10 +136,10 @@ class ViperLiveOptimized:
 
             # Run AI/ML optimization
             entry_opt = self.ai_optimizer.optimize_entry_points(market_data)
-            tp_sl_opt = self.ai_optimizer.optimize_tp_sl_levels(
+            tp_sl_opt = self.ai_optimizer.optimize_tp_sl_levels()
                 market_data,
                 market_data.iloc[-1]['close']
-            )
+(            )
 
             # Update current parameters based on AI recommendations
             optimized_params = self.current_parameters.copy()
@@ -167,7 +168,7 @@ class ViperLiveOptimized:
             return self.current_parameters
 
     async def validate_optimization(self, optimized_params: Dict[str, Any]) -> bool:
-        """Validate optimized parameters through quick backtest"""
+        """Validate optimized parameters through quick backtest""""""
 
         try:
             # Create validation scenario
@@ -194,11 +195,11 @@ class ViperLiveOptimized:
             sharpe_ratio = validation_result.get('sharpe_ratio', 0)
             max_drawdown = validation_result.get('max_drawdown', 1)
 
-            validation_passed = (
+            validation_passed = ()
                 win_rate >= 0.50 and  # Minimum 50% win rate
                 sharpe_ratio >= 0.5 and  # Minimum Sharpe ratio
                 max_drawdown <= 0.20  # Maximum 20% drawdown
-            )
+(            )
 
             print(f"   Win Rate: {win_rate:.1%} {'# Check' if win_rate >= 0.50 else '# X'}")
             print(f"   Sharpe Ratio: {sharpe_ratio:.2f} {'# Check' if sharpe_ratio >= 0.5 else '# X'}")
@@ -230,13 +231,14 @@ class ViperLiveOptimized:
             }
 
             import requests
-            response = requests.post(
+            response = requests.post()
                 'http://localhost:8002/api/tp-sl-tsl/config',
                 json=config_update,
                 timeout=10
-            )
+(            )
 
             if response.status_code == 200:
+                pass
             else:
                 print(f"# Warning Risk manager update failed: {response.status_code}")
 
@@ -246,13 +248,14 @@ class ViperLiveOptimized:
                 'confidence_threshold': parameters['entry_threshold']
             }
 
-            response = requests.post(
+            response = requests.post()
                 'http://localhost:8011/api/config',
                 json=signal_config,
                 timeout=10
-            )
+(            )
 
             if response.status_code == 200:
+                pass
             else:
                 print(f"# Warning Signal processor update failed: {response.status_code}")
 
@@ -263,11 +266,11 @@ class ViperLiveOptimized:
             logger.error(f"# X Error applying parameters: {e}")
             return False
 
-    async def monitor_performance(self) -> Dict[str, Any]:
-        """Monitor live trading performance"""
+    async def monitor_performance(self) -> Dict[str, Any]
+        """Monitor live trading performance"""""":
         try:
             # Get current performance metrics
-            import requests
+    import requests
 
             # Account balance
             balance_response = requests.get('http://localhost:8005/api/balance', timeout=5)
@@ -310,7 +313,7 @@ class ViperLiveOptimized:
             return {}
 
     async def check_risk_limits(self) -> bool:
-        """Check if risk limits have been breached"""
+        """Check if risk limits have been breached""""""
         try:
             if len(self.performance_history) < 2:
                 return False
@@ -346,9 +349,8 @@ class ViperLiveOptimized:
                     break
 
                 # Run periodic optimization
-                if (self.last_optimization is None or:
-                    (current_time - self.last_optimization).total_seconds() >= self.optimization_interval):
-
+                if (self.last_optimization is None or):
+(                    (current_time - self.last_optimization).total_seconds() >= self.optimization_interval)
                     print(f"\n# Tool RUNNING PERIODIC OPTIMIZATION ({current_time.strftime('%H:%M:%S')})")
 
                     # Optimize parameters
@@ -360,7 +362,9 @@ class ViperLiveOptimized:
                         if await self.apply_trading_parameters(optimized_params):
                             self.last_optimization = current_time
                         else:
+                            pass
                     else:
+                        pass
 
                 # Monitor performance
                 performance = await self.monitor_performance()
@@ -417,6 +421,7 @@ class ViperLiveOptimized:
             await self.continuous_optimization_loop()
 
         except KeyboardInterrupt:
+            pass
         except Exception as e:
             logger.error(f"# X Fatal error in live trading system: {e}")
         finally:
@@ -438,7 +443,7 @@ class ViperLiveOptimized:
 
 
 def main():
-    """Main entry point"""
+    """Main entry point""""""
     if len(sys.argv) > 1:
         if sys.argv[1] == "--backtest-only":
             # Run comprehensive backtest only

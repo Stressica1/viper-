@@ -145,7 +145,7 @@ class LRUCache:
         now = time.time()
         expired_keys = [
             key for key, entry in self.cache.items()
-            if now - entry.timestamp > entry.ttl:
+            if now - entry.timestamp > entry.ttl
         ]
         for key in expired_keys:
             del self.cache[key]
@@ -426,7 +426,7 @@ class EnhancedCachingSystem:
             with self.memory_cache.lock:
                 matching_keys = [
                     key for key in self.memory_cache.cache.keys()
-                    if self._pattern_matches(key, pattern):
+                    if self._pattern_matches(key, pattern)
                 ]
                 for key in matching_keys:
                     if self.memory_cache.delete(key):
@@ -506,12 +506,12 @@ class EnhancedCachingSystem:
                     recent_events = self.performance_log[-1000:]
                     avg_hit_time = np.mean([
                         event['duration'] for event in recent_events 
-                        if event['event'] == 'hit':
+                        if event['event'] == 'hit'
                     ]) if recent_events else 0
                     
                     avg_miss_time = np.mean([
                         event['duration'] for event in recent_events 
-                        if event['event'] == 'miss':
+                        if event['event'] == 'miss'
                     ]) if recent_events else 0
                     
                     logger.info(f"# Chart Cache Performance: Hit={avg_hit_time:.4f}s, Miss={avg_miss_time:.4f}s")

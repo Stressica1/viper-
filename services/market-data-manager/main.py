@@ -511,13 +511,13 @@ async def get_market_stats():
     try:
         total_symbols = len(market_data_manager.market_data_cache)
         updates_in_last_minute = sum(1 for timestamp in market_data_manager.last_update.values()
-                                   if isinstance(timestamp, datetime) and:
+                                   if isinstance(timestamp, datetime) and
                                    (datetime.now() - timestamp).seconds < 60)
 
         return {
             'total_symbols': total_symbols,
             'active_symbols': len([s for s in market_data_manager.market_data_cache.keys()
-                                 if market_data_manager.market_data_cache[s].get('ticker', {}).get('volume', 0) > 0]),:
+                                 if market_data_manager.market_data_cache[s].get('ticker', {}).get('volume', 0) > 0]),
             'recent_updates': updates_in_last_minute,
             'cache_size': len(market_data_manager.market_data_cache),
             'streaming_active': market_data_manager.is_running,
