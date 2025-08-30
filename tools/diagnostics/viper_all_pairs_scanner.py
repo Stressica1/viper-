@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-# Rocket VIPER ALL PAIRS SCANNER - Comprehensive Multi-Pair Trading Job
-Scans ALL available Bitget swap pairs with advanced filtering and risk management
+# Rocket VIPER ALL PAIRS SCANNER - USDT Swap Pairs Trading Job
+Scans USDT swap pairs only on Bitget exchange with advanced filtering and risk management
 
 This job provides:
-- Dynamic pair discovery from Bitget exchange
+- Dynamic USDT pair discovery from Bitget exchange
 - Volume and volatility-based pair filtering
-- Risk-managed multi-pair trading
-- VIPER scoring across all pairs
+- Risk-managed multi-pair trading focused on USDT
+- VIPER scoring across USDT pairs
 - Position limits distributed across pairs
 - Real-time performance tracking
 - Emergency risk controls
@@ -36,7 +36,7 @@ logger = logging.getLogger(__name__)
 
 class VIPERAllPairsScanner:
     """
-    Comprehensive multi-pair trading scanner with ALL Bitget swap pairs
+    Comprehensive USDT swap pairs trading scanner for Bitget
     """
 
     def __init__(self, config_path: Optional[str] = None):
@@ -178,16 +178,17 @@ class VIPERAllPairsScanner:
     def _discover_all_pairs(self):
         """Discover ALL available swap pairs on Bitget"""
         try:
-            logger.info("# Search Discovering ALL Bitget swap pairs...")
+            logger.info("# Search Discovering USDT swap pairs on Bitget...")
 
             # Get all swap markets
             all_markets = self.exchange.markets
 
-            # Filter for active swap pairs only
+            # Filter for active USDT swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
                 if (market.get('active', False) and
-                    market.get('type') == 'swap'):  # All swap pairs
+                    market.get('type') == 'swap' and
+                    'USDT' in symbol):  # Only USDT swap pairs
 
                     pair_info = {
                         'symbol': symbol,
@@ -201,7 +202,7 @@ class VIPERAllPairsScanner:
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"# Chart Found {len(self.all_pairs)} active swap pairs on Bitget")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs on Bitget")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()

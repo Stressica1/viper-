@@ -108,7 +108,7 @@ class UnifiedScannerService:
     def fetch_all_trading_pairs(self) -> List[str]:
         """Fetch all available swap trading pairs"""
         try:
-            logger.info("# Search Discovering all available swap pairs...")
+            logger.info("# Search Discovering all available USDT swap pairs...")
 
             # Use market data manager if available
             try:
@@ -117,11 +117,11 @@ class UnifiedScannerService:
                     data = response.json()
                     all_pairs = data.get('symbols', [])
                     
-                    # Filter for swap pairs only
+                    # Filter for USDT swap pairs only
                     swap_pairs = [s for s in all_pairs if 
-                                 ('SWAP' in s.upper() or ':' in s)]
+                                 ('SWAP' in s.upper() or ':' in s) and 'USDT' in s]
                     
-                    logger.info(f"# Check Retrieved {len(swap_pairs)} swap pairs from market data manager")
+                    logger.info(f"# Check Retrieved {len(swap_pairs)} USDT swap pairs from market data manager")
                     return swap_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else swap_pairs
             except Exception as e:
                 logger.warning(f"# Warning Market data manager unavailable: {e}")
@@ -134,10 +134,11 @@ class UnifiedScannerService:
                 
                 for symbol, market in markets.items():
                     if (market.get('active', False) and 
-                        market.get('type') == 'swap'):
+                        market.get('type') == 'swap' and
+                        'USDT' in symbol):  # Only USDT swap pairs
                         swap_pairs.append(symbol)
                 
-                logger.info(f"# Check Found {len(swap_pairs)} swap pairs via direct API")
+                logger.info(f"# Check Found {len(swap_pairs)} USDT swap pairs via direct API")
                 return swap_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else swap_pairs
 
             logger.error("# X No method available to fetch trading pairs")

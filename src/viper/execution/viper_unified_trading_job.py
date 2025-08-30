@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """
-# Rocket VIPER UNIFIED TRADING JOB - Complete Multi-Pair Trading System
+# Rocket VIPER UNIFIED TRADING JOB - USDT Swap Pairs Trading System
 Fixed async OHLCV fetching with comprehensive risk management
 
 This job provides:
-    pass
 - Fixed async OHLCV data fetching (no coroutine errors)
-- Multi-pair scanning across all qualified symbols
+- Multi-pair scanning across USDT qualified symbols only
 - 2% risk management per trade (distributed across pairs)
 - VIPER scoring system for opportunity evaluation
 - Real-time position management with TP/SL/TSL
@@ -33,26 +32,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - VIPER_UNIFIED - %(levelname)s - %(message)s'
-()
+)
 logger = logging.getLogger(__name__)
 
-# Import enhanced system components"""
+# Import enhanced system components
 try:
-from enhanced_system_integrator import get_integrator, initialize_enhanced_system
-
-from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
-
-from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
-
-from enhanced_risk_manager import EnhancedRiskManager
-
-from optimized_market_data_streamer import OptimizedMarketDataStreamer
-
-from performance_monitoring_system import PerformanceMonitoringSystem
-
+    from enhanced_system_integrator import get_integrator, initialize_enhanced_system
+    from enhanced_ai_ml_optimizer import EnhancedAIMLOptimizer
+    from enhanced_technical_optimizer import EnhancedTechnicalOptimizer
+    from enhanced_risk_manager import EnhancedRiskManager
+    from optimized_market_data_streamer import OptimizedMarketDataStreamer
+    from performance_monitoring_system import PerformanceMonitoringSystem
     ENHANCED_MODULES_AVAILABLE = True
     logger.info("# Check Enhanced modules imported successfully")
 except ImportError as e:
@@ -62,7 +55,7 @@ except ImportError as e:
 class VIPERUnifiedTradingJob:
     """
     Complete multi-pair trading job with fixed async OHLCV handling
-    """"""
+    """
 
     def __init__(self, config_path: Optional[str] = None):
         self.config_path = config_path or Path(__file__).parent / ".env"
@@ -93,7 +86,7 @@ class VIPERUnifiedTradingJob:
         logger.info("# Check VIPER Unified Trading Job initialized successfully")
 
     def _initialize_components(self):
-        """Initialize all trading components with enhanced modules support""""""
+        """Initialize all trading components with enhanced modules support"""
         try:
             # Initialize enhanced system integrator if available
             if ENHANCED_MODULES_AVAILABLE:
@@ -129,13 +122,12 @@ class VIPERUnifiedTradingJob:
             self._initialize_basic_components()
 
     def _initialize_basic_components(self):
-        """Initialize basic trading components (fallback)""""""
+        """Initialize basic trading components (fallback)"""
         try:
             # Import and initialize core components
-    from utils.mathematical_validator import MathematicalValidator
-    from config.optimal_mcp_config import get_optimal_mcp_config
-from scripts.optimal_entry_point_manager import OptimalEntryPointManager
-
+            from utils.mathematical_validator import MathematicalValidator
+            from config.optimal_mcp_config import get_optimal_mcp_config
+            from scripts.optimal_entry_point_manager import OptimalEntryPointManager
 
             self.math_validator = MathematicalValidator()
             self.mcp_config = get_optimal_mcp_config()
@@ -148,7 +140,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             raise
 
     def _load_configuration(self):
-        """Load comprehensive trading configuration with enhanced system support""""""
+        """Load comprehensive trading configuration with enhanced system support"""
         try:
             # Load enhanced system configuration if available
             enhanced_config = {}
@@ -209,7 +201,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             raise
 
     def _setup_exchange(self):
-        """Setup exchange connection for live trading""""""
+        """Setup exchange connection for live trading"""
         try:
             api_key = os.getenv('BITGET_API_KEY')
             api_secret = os.getenv('BITGET_API_SECRET')
@@ -242,18 +234,19 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             raise
 
     def _discover_all_pairs(self):
-        """Discover ALL available swap pairs""""""
+        """Discover USDT swap pairs on Bitget"""
         try:
-            logger.info("# Search Discovering ALL Bitget swap pairs...")
+            logger.info("# Search Discovering USDT swap pairs on Bitget...")
 
             # Get all swap markets
             all_markets = self.exchange.markets
 
-            # Filter for active swap pairs only
+            # Filter for active USDT swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
                 if (market.get('active', False) and
-                    market.get('type') == 'swap'):
+                    market.get('type') == 'swap' and
+                    'USDT' in symbol):  # Only USDT swap pairs
                     pair_info = {
                         'symbol': symbol,
                         'base': market.get('base'),
@@ -266,7 +259,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"# Chart Found {len(self.all_pairs)} active swap pairs")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()
@@ -276,7 +269,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             raise
 
     def _filter_pairs_by_criteria(self):
-        """Filter pairs based on volume, leverage, and other criteria""""""
+        """Filter pairs based on volume, leverage, and other criteria"""
         try:
             logger.info("# Search Filtering pairs by trading criteria...")
             logger.info(f"# Target Total pairs to filter: {len(self.all_pairs)}")
@@ -370,7 +363,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
                 self.active_pairs = []
 
     def _setup_signal_handlers(self):
-        """Setup signal handlers for graceful shutdown""""""
+        """Setup signal handlers for graceful shutdown"""
         def signal_handler(signum, frame):
             logger.info("🛑 Received shutdown signal")
             self.stop()
@@ -379,7 +372,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
         signal.signal(signal.SIGTERM, signal_handler)
 
     def start(self):
-        """Start the unified trading job""""""
+        """Start the unified trading job"""
         if self.is_running:
             logger.warning("Unified trading job already running")
             return
@@ -457,7 +450,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
                 logger.error(f"Scanning loop error: {e}")
                 await asyncio.sleep(60)  # Wait 1 minute on error
 
-    async def _scan_all_pairs_batch_fixed(self, batch_size: int) -> List[Dict[str, Any]]
+    async def _scan_all_pairs_batch_fixed(self, batch_size: int) -> List[Dict[str, Any]]:
         """Scan all active pairs in batches with fixed async handling"""
         opportunities = []
         total_pairs = len(self.active_pairs)
@@ -478,10 +471,10 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
 
         return opportunities
 
-    async def _scan_pairs_batch_fixed(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    async def _scan_pairs_batch_fixed(self, pairs_batch: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Scan a batch of pairs concurrently with fixed async handling"""
-        opportunities = []"""
-:
+        opportunities = []
+        
         try:
             # Use ThreadPoolExecutor for concurrent scanning
             with ThreadPoolExecutor(max_workers=min(len(pairs_batch), 10)) as executor:
@@ -635,7 +628,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return None
 
     def _calculate_rsi_fixed(self, prices: List[float], period: int = 14) -> float:
-        """Calculate RSI indicator (fixed version)""""""
+        """Calculate RSI indicator (fixed version)"""
         try:
             if len(prices) < period + 1:
                 return 50.0
@@ -668,7 +661,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return 50.0
 
     def _calculate_macd_fixed(self, prices: List[float], fast_period: int = 12, slow_period: int = 26, signal_period: int = 9):
-        """Calculate MACD indicator (fixed version)""""""
+        """Calculate MACD indicator (fixed version)"""
         try:
             if len(prices) < slow_period:
                 return 0.0, 0.0
@@ -686,7 +679,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return 0.0, 0.0
 
     def _calculate_ema_fixed(self, prices: List[float], period: int) -> float:
-        """Calculate EMA (fixed version)""""""
+        """Calculate EMA (fixed version)"""
         try:
             if len(prices) < period:
                 return np.mean(prices)
@@ -855,7 +848,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return {'volume': 0, 'price': 0, 'leverage': 0, 'technical': 0, 'risk': 0, 'ai_ml': 0}
 
     def _prepare_market_data_for_ai_ml(self, symbol: str, market_data: Dict[str, Any]) -> pd.DataFrame:
-        """Prepare market data for AI/ML analysis""""""
+        """Prepare market data for AI/ML analysis"""
         try:
             # Get historical data for AI/ML analysis
             if self.market_data_streamer:
@@ -887,7 +880,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return pd.DataFrame()
 
     def _calculate_enhanced_volume_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced volume score with volume profile analysis""""""
+        """Calculate enhanced volume score with volume profile analysis"""
         try:
             volume = opportunity.get('volume', 0)
             avg_volume = opportunity.get('avg_volume', volume)
@@ -907,7 +900,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return min(opportunity.get('volume', 0) / 5000000, 1.0)
 
     def _calculate_enhanced_risk_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced risk score using risk manager""""""
+        """Calculate enhanced risk score using risk manager"""
         try:
             if self.risk_manager:
                 # Get risk assessment from enhanced risk manager
@@ -936,7 +929,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return 0.5
 
     def _calculate_enhanced_leverage_score(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate enhanced leverage score with dynamic optimization""""""
+        """Calculate enhanced leverage score with dynamic optimization"""
         try:
             leverage = opportunity.get('pair_info', {}).get('leverage', 1)
             max_leverage = self.trading_config.get('max_leverage', 25)
@@ -974,9 +967,9 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             if self.risk_manager and hasattr(self.risk_manager, 'correlation_matrix'):
                 symbol = opportunity.get('symbol', '')
                 if symbol in self.risk_manager.correlation_matrix:
-                    avg_correlation = np.mean([)
+                    avg_correlation = np.mean([
                         abs(corr) for corr in self.risk_manager.correlation_matrix[symbol].values()
-(                    ])
+                    ])
                     metrics['correlation_risk'] = avg_correlation
 
             # Liquidity score
@@ -990,7 +983,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return {}
 
     def _calculate_technical_score(self, market_data: Dict[str, Any]) -> float:
-        """Calculate technical analysis score""""""
+        """Calculate technical analysis score"""
         try:
             score = 0.0
 
@@ -1079,7 +1072,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return []
 
     def _calculate_position_size(self, opportunity: Dict[str, Any]) -> float:
-        """Calculate position size with multi-pair risk management""""""
+        """Calculate position size with multi-pair risk management"""
         try:
             # Get account balance
             balance = self.exchange.fetch_balance()
@@ -1118,7 +1111,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return 0
 
     async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]
-        """Execute a single trade"""""":
+        """Execute a single trade"":
         try:
             symbol = opportunity['symbol']
 
@@ -1161,7 +1154,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return None
 
     async def _setup_tp_sl(self, symbol: str, entry_price: float, order_id: str):
-        """Setup Take Profit and Stop Loss orders""""""
+        """Setup Take Profit and Stop Loss orders"""
         try:
             position = self.positions.get(symbol)
             if not position:
@@ -1207,7 +1200,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             logger.error(f"TP/SL setup failed for {symbol}: {e}")
 
     async def _manage_positions(self):
-        """Manage existing positions across all pairs""""""
+        """Manage existing positions across all pairs"""
         try:
             for symbol, position in list(self.positions.items()):
                 try:
@@ -1276,7 +1269,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return False, ""
 
     async def _close_position(self, symbol: str, reason: str):
-        """Close a position""""""
+        """Close a position"""
         try:
             position = self.positions.get(symbol)
             if not position:
@@ -1313,7 +1306,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             logger.error(f"Position close failed for {symbol}: {e}")
 
     def _should_emergency_stop(self) -> bool:
-        """Check if emergency stop should be triggered""""""
+        """Check if emergency stop should be triggered"""
         try:
             # Check daily loss limit
             if self.trading_stats['total_pnl'] <= -self.emergency_config['max_daily_loss']:
@@ -1360,7 +1353,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
                 logger.error(f"Emergency close failed for {symbol}: {e}")
 
     def _update_performance_stats(self):
-        """Update performance statistics""""""
+        """Update performance statistics"""
         try:
             total_trades = self.trading_stats['trades_executed']
             closed_trades = self.trading_stats['trades_closed']
@@ -1373,7 +1366,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             logger.error(f"Performance stats update failed: {e}")
 
     def _generate_final_report(self):
-        """Generate comprehensive final report""""""
+        """Generate comprehensive final report"""
         try:
             report = {
                 'unified_trading_session': {
@@ -1423,7 +1416,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             logger.error(f"Final report generation failed: {e}")
 
     def _calculate_total_risk_exposure(self) -> float:
-        """Calculate total risk exposure across all positions""""""
+        """Calculate total risk exposure across all positions"""
         try:
             total_exposure = 0.0
             for position in self.positions.values():
@@ -1436,7 +1429,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             return 0.0
 
     def _calculate_average_scan_time(self) -> float:
-        """Calculate average time per scan cycle""""""
+        """Calculate average time per scan cycle"""
         try:
             if not self.trading_stats['start_time'] or not self.trading_stats['end_time']:
                 return 0.0
