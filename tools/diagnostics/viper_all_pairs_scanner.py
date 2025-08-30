@@ -4,7 +4,6 @@
 Scans ALL available Bitget swap pairs with advanced filtering and risk management
 
 This job provides:
-    pass
 - Dynamic pair discovery from Bitget exchange
 - Volume and volatility-based pair filtering
 - Risk-managed multi-pair trading
@@ -377,7 +376,7 @@ class VIPERAllPairsScanner:
                 # Submit all pair scans
                 future_to_pair = {
                     executor.submit(self._scan_single_pair, pair): pair
-                    for pair in pairs_batch:
+                    for pair in pairs_batch
                 }
 
                 # Collect results
@@ -395,8 +394,8 @@ class VIPERAllPairsScanner:
 
         return opportunities
 
-    def _scan_single_pair(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]
-        """Scan a single pair for trading opportunities""":"""
+    def _scan_single_pair(self, pair: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """Scan a single pair for trading opportunities"""
         try:
             symbol = pair['symbol']
 
@@ -423,10 +422,10 @@ class VIPERAllPairsScanner:
 
         return None
 
-    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    def _score_opportunities(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Score trading opportunities using VIPER system"""
         scored_opportunities = []
-:"""
+        
         try:
             for opp in opportunities:
                 try:
@@ -455,8 +454,8 @@ class VIPERAllPairsScanner:
             logger.error(f"Opportunity scoring failed: {e}")
             return []
 
-    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]
-        """Calculate VIPER scores for opportunity""":"""
+    def _calculate_viper_scores(self, opportunity: Dict[str, Any]) -> Dict[str, float]:
+        """Calculate VIPER scores for opportunity"""
         try:
             # Volume Score (30%) - Higher weight for multi-pair
             volume_score = min(opportunity.get('volume', 0) / 5000000, 1.0) * 30  # $5M volume max
@@ -488,16 +487,16 @@ class VIPERAllPairsScanner:
             logger.error(f"VIPER scoring error: {e}")
             return {'volume': 0, 'price': 0, 'leverage': 0, 'spread': 0, 'risk': 0}
 
-    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]
+    async def _execute_trades(self, opportunities: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Execute trades with position limits across all pairs"""
         executed_trades = []
-        current_positions = len(self.positions)"""
-:
+        current_positions = len(self.positions)
+        
         try:
             # Check total position limit
             available_slots = self.trading_config['max_positions_total'] - current_positions
 
-            for opp in opportunities[:available_slots]
+            for opp in opportunities[:available_slots]:
                 try:
                     symbol = opp['symbol']
 
@@ -571,19 +570,19 @@ class VIPERAllPairsScanner:
             logger.error(f"Position size calculation failed: {e}")
             return 0
 
-    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]
-        """Execute a single trade""":
+    async def _execute_single_trade(self, opportunity: Dict[str, Any], position_size: float) -> Optional[Dict[str, Any]]:
+        """Execute a single trade"""
         try:
             symbol = opportunity['symbol']
 
             # Execute live trade
-            order = self.exchange.create_order()
+            order = self.exchange.create_order(
                 symbol=symbol,
                 type='market',
                 side='buy',
                 amount=position_size,
                 params={'leverage': min(self.trading_config['max_leverage'], 50)}
-(            )
+            )
 
             trade_result = {
                 'symbol': symbol,
@@ -632,24 +631,24 @@ class VIPERAllPairsScanner:
             # Try to place actual TP/SL orders
             try:
                 # Place stop loss order
-                sl_order = self.exchange.create_order()
+                sl_order = self.exchange.create_order(
                     symbol=symbol,
                     type='stop',
                     side='sell',
                     amount=position['amount'],
                     price=sl_price,
                     params={'stopPrice': sl_price}
-(                )
+                )
                 position['sl_order_id'] = sl_order['id']
 
                 # Place take profit order
-                tp_order = self.exchange.create_order()
+                tp_order = self.exchange.create_order(
                     symbol=symbol,
                     type='limit',
                     side='sell',
                     amount=position['amount'],
                     price=tp_price
-(                )
+                )
                 position['tp_order_id'] = tp_order['id']
 
                 logger.info(f"🛡️ TP/SL orders placed for {symbol}")
@@ -697,8 +696,8 @@ class VIPERAllPairsScanner:
         except Exception as e:
             logger.error(f"Position management system failed: {e}")
 
-    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]
-        """Determine if position should be closed""":"""
+    def _should_close_position(self, symbol: str, current_price: float, position: Dict[str, Any]) -> Tuple[bool, str]:
+        """Determine if position should be closed"""
         try:
             entry_price = position['entry_price']
 
@@ -737,12 +736,12 @@ class VIPERAllPairsScanner:
                 return
 
             # Close position
-            order = self.exchange.create_order()
+            order = self.exchange.create_order(
                 symbol=symbol,
                 type='market',
                 side='sell',
                 amount=position['amount']
-(            )
+            )
 
             current_price = order['price']
             pnl = (current_price - position['entry_price']) * position['amount']
@@ -778,8 +777,8 @@ class VIPERAllPairsScanner:
                 return True
 
             # Check hourly trade limit
-            trades_this_hour = sum(1 for pos in self.positions.values())
-(                                 if (datetime.now() - pos['entry_time']).seconds < 3600)
+            trades_this_hour = sum(1 for pos in self.positions.values()
+                                   if (datetime.now() - pos['entry_time']).seconds < 3600)
             if trades_this_hour >= self.emergency_config['max_trades_per_hour']:
                 return True
 
@@ -798,12 +797,12 @@ class VIPERAllPairsScanner:
                 position = self.positions[symbol]
 
                 # Close position synchronously
-                order = self.exchange.create_order()
+                order = self.exchange.create_order(
                     symbol=symbol,
                     type='market',
                     side='sell',
                     amount=position['amount']
-(                )
+                )
 
                 pnl = (order['price'] - position['entry_price']) * position['amount']
                 self.trading_stats['total_pnl'] += pnl
@@ -869,8 +868,8 @@ class VIPERAllPairsScanner:
         except Exception as e:
             logger.error(f"Final report generation failed: {e}")
 
-    def _get_top_performing_pairs(self) -> List[Dict[str, Any]]
-        """Get top performing pairs from this session""":"""
+    def _get_top_performing_pairs(self) -> List[Dict[str, Any]]:
+        """Get top performing pairs from this session"""
         try:
             pair_performance = {}
             for symbol, position in self.positions.items():
