@@ -96,7 +96,7 @@ class MultiPairVIPERTrader:
             markets = self.exchange.load_markets()
             self.all_pairs = [
                 symbol for symbol in markets.keys()
-                if symbol.endswith(':USDT') and markets[symbol]['active']
+                if symbol.endswith(':USDT') and markets[symbol]['active']:
             ]
 
             logger.info(f"✅ Connected to Bitget - {len(self.all_pairs)} swap pairs available")
@@ -228,7 +228,7 @@ class MultiPairVIPERTrader:
                 recent_low = min(closes_5m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
-                if current_price > recent_low * 1.005:  # Much more flexible
+                if current_price > recent_low * 1.005:  # Much more flexible:
                     logger.info(f"📈 {symbol}: BULLISH SIGNAL - Primary:{primary_trend}, Secondary:{secondary_trend} - Entry at ${current_price}")
                     return 'BUY'
 
@@ -238,7 +238,7 @@ class MultiPairVIPERTrader:
                 recent_low = min(closes_5m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
-                if current_price < recent_high * 0.995:  # Much more flexible
+                if current_price < recent_high * 0.995:  # Much more flexible:
                     logger.info(f"📉 {symbol}: BEARISH SIGNAL - Primary:{primary_trend}, Secondary:{secondary_trend} - Entry at ${current_price}")
                     return 'SELL'
 
@@ -321,13 +321,13 @@ class MultiPairVIPERTrader:
         ma_diff = (short_ma - long_ma) / long_ma * 100  # Percentage difference
 
         # Trend strength based on MA separation (more sensitive)
-        if ma_diff > 0.2:  # Lower threshold for bullish
-            if current_price > short_ma * 1.002:  # More flexible
+        if ma_diff > 0.2:  # Lower threshold for bullish:
+            if current_price > short_ma * 1.002:  # More flexible:
                 return 'BULLISH'
             else:
                 return 'WEAK_BULLISH'
-        elif ma_diff < -0.2:  # Lower threshold for bearish
-            if current_price < short_ma * 0.998:  # More flexible
+        elif ma_diff < -0.2:  # Lower threshold for bearish:
+            if current_price < short_ma * 0.998:  # More flexible:
                 return 'BEARISH'
             else:
                 return 'WEAK_BEARISH'
@@ -354,9 +354,9 @@ class MultiPairVIPERTrader:
         momentum_strength = (avg_second_half - avg_first_half) / avg_first_half * 100
 
         # Strong momentum thresholds (more sensitive)
-        if momentum_strength > 0.8:  # Strong upward momentum (lowered)
+        if momentum_strength > 0.8:  # Strong upward momentum (lowered):
             return 'STRONG_BULL'
-        elif momentum_strength < -0.8:  # Strong downward momentum (lowered)
+        elif momentum_strength < -0.8:  # Strong downward momentum (lowered):
             return 'STRONG_BEAR'
 
         return None
@@ -402,7 +402,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"💰 FIXED: $1 Margin × {coin_max_leverage}x Leverage = ${notional_value_usdt:.2f} Notional | Account: ${usdt_balance:.2f}")
 
                 # Final safety check: ensure notional value doesn't exceed account balance
-                if notional_value_usdt > usdt_balance * 0.5:  # Max 50% of account as notional
+                if notional_value_usdt > usdt_balance * 0.5:  # Max 50% of account as notional:
                     # Recalculate with safer margin but keep $1 minimum
                     if usdt_balance >= 1.0:
                         margin_value_usdt = max(1.0, usdt_balance * 0.02)  # Minimum $1 or 2% of balance
@@ -715,7 +715,7 @@ class MultiPairVIPERTrader:
             # Check for momentum confirmation
             if self.detect_momentum_signal([candle[4] for candle in ohlcv_5m]):
                 momentum_signal = self.detect_momentum_signal([candle[4] for candle in ohlcv_5m])
-                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \
+                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \:
                    (signal == 'SELL' and momentum_signal == 'STRONG_BEAR'):
                     confidence += 0.1  # Boost for momentum confirmation
 
@@ -1007,7 +1007,7 @@ class MultiPairVIPERTrader:
 
             # Get positions sorted by age (oldest first) to close oldest ones
             positions_to_close = []
-            for symbol, position_data in sorted(self.active_positions.items(),
+            for symbol, position_data in sorted(self.active_positions.items(),:
                                               key=lambda x: x[1].get('timestamp', 0)):
                 if len(positions_to_close) < excess_positions:
                     positions_to_close.append(symbol)
@@ -1020,7 +1020,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"🔄 Closing excess position: {symbol}")
                 try:
                     result = self.close_position(symbol, "position_limit_enforcement")
-                    if result:  # close_position now returns boolean directly
+                    if result:  # close_position now returns boolean directly:
                         closed_count += 1
                         logger.info(f"✅ Successfully closed {symbol}")
                     else:
