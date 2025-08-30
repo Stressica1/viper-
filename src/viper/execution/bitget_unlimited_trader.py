@@ -15,14 +15,14 @@ from datetime import datetime
 from typing import List, Dict, Optional
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class BitgetUnlimitedTrader:
-    """Unlimited trader - NO BALANCE LIMITS - NO LOSS LIMITS""""""
+    """Unlimited trader - NO BALANCE LIMITS - NO LOSS LIMITS"""
 
     def __init__(self):
         self.exchange = None
@@ -89,10 +89,10 @@ class BitgetUnlimitedTrader:
         logger.info(f"🔢 Max Positions: {self.max_positions} (NO LIMIT)")
 
     def connect_bitget_unlimited(self):
-        """Connect to Bitget - NO RESTRICTIONS""""""
+        """Connect to Bitget - NO RESTRICTIONS"""
         try:
             logger.info("🔌 Connecting to Bitget for UNLIMITED trading...")
-            self.exchange = ccxt.bitget(})
+            self.exchange = ccxt.bitget({
                 'apiKey': self.api_key,
                 'secret': self.api_secret,
                 'password': self.api_password,
@@ -102,17 +102,17 @@ class BitgetUnlimitedTrader:
                     'hedgeMode': True,  # Enable hedge mode for proper position management
                 },
                 'sandbox': False,  # LIVE TRADING ONLY
-(            })
+            })
             
             # Load all markets
             markets = self.exchange.load_markets()
             logger.info(f"# Check Bitget Connected - {len(markets)} markets loaded")
             
-            # Get ALL swap pairs with any leverage
+            # Get USDT swap pairs only
             for symbol, market in markets.items():
-                if (market.get('type') == 'swap' and):
+                if (market.get('type') == 'swap' and
                     market.get('active', False) and
-(                    market.get('quote') == 'USDT')
+                    'USDT' in symbol):  # Only USDT swap pairs
                     self.swap_pairs_50x.append(symbol)
             
             logger.info(f"💥 Found {len(self.swap_pairs_50x)} USDT swap pairs for trading")
@@ -124,7 +124,7 @@ class BitgetUnlimitedTrader:
             return False
 
     def get_real_balance_unlimited(self):
-        """Get real balance - TRADE WITH ANY AMOUNT""""""
+        """Get real balance - TRADE WITH ANY AMOUNT"""
         try:
             logger.info("💰 Fetching REAL balance for UNLIMITED trading...")
             
@@ -147,7 +147,7 @@ class BitgetUnlimitedTrader:
             return 0.0
 
     def calculate_aggressive_position(self, symbol: str, price: float) -> Dict:
-        """Calculate AGGRESSIVE position size - NO LIMITS""""""
+        """Calculate AGGRESSIVE position size - NO LIMITS"""
         try:
             # Find group for symbol
             group_config = None
@@ -201,8 +201,8 @@ class BitgetUnlimitedTrader:
                 "stop_loss": 0.08
             }
 
-    def execute_unlimited_trade(self, symbol: str, side: str) -> Optional[Dict]
-        """Execute trade with NO LIMITS""":"""
+    def execute_unlimited_trade(self, symbol: str, side: str) -> Optional[Dict]:
+        """Execute trade with NO LIMITS"""
         try:
             # Get current price
             ticker = self.exchange.fetch_ticker(symbol)
@@ -220,7 +220,7 @@ class BitgetUnlimitedTrader:
             logger.info(f"   # Target NO BALANCE CHECKS - EXECUTING ANYWAY!")
             
             # Execute REAL order with correct Bitget parameters
-            order = self.exchange.create_order()
+            order = self.exchange.create_order(
                 symbol=symbol,
                 type='market',
                 side=side,
@@ -231,7 +231,7 @@ class BitgetUnlimitedTrader:
                     'holdSide': 'long' if side == 'buy' else 'short',  # Required for hedge mode
                     'tradeSide': 'open'  # Open position
                 }
-(            )
+            )
             
             logger.info(f"# Check UNLIMITED ORDER EXECUTED: {order['id']}")
             
@@ -258,7 +258,7 @@ class BitgetUnlimitedTrader:
             return None
 
     def monitor_unlimited_positions(self):
-        """Monitor positions - AGGRESSIVE MANAGEMENT""""""
+        """Monitor positions - AGGRESSIVE MANAGEMENT"""
         try:
             if not self.active_positions:
                 return
@@ -298,7 +298,7 @@ class BitgetUnlimitedTrader:
             logger.error(f"# X Error monitoring positions: {e}")
 
     def close_unlimited_position(self, symbol: str, reason: str):
-        """Close position - NO RESTRICTIONS""""""
+        """Close position - NO RESTRICTIONS"""
         try:
             if symbol not in self.active_positions:
                 return
@@ -308,7 +308,7 @@ class BitgetUnlimitedTrader:
             # Close with opposite order
             opposite_side = 'sell' if position_info['side'] == 'buy' else 'buy'
             
-            close_order = self.exchange.create_order()
+            close_order = self.exchange.create_order(
                 symbol=symbol,
                 type='market',
                 side=opposite_side,
@@ -317,7 +317,7 @@ class BitgetUnlimitedTrader:
                     'holdSide': 'long' if position_info['side'] == 'buy' else 'short',
                     'tradeSide': 'close'  # Close position
                 }
-(            )
+            )
             
             logger.info(f"# Check POSITION CLOSED: {symbol} ({reason})")
             logger.info(f"   📋 Close Order: {close_order['id']}")
@@ -331,16 +331,16 @@ class BitgetUnlimitedTrader:
             if symbol in self.active_positions:
                 del self.active_positions[symbol]
 
-    def scan_unlimited_opportunities(self) -> List[str]
+    def scan_unlimited_opportunities(self) -> List[str]:
         """Scan for UNLIMITED trading opportunities"""
         opportunities = []
-        :"""
+        
         try:
             # Get random sample of pairs for speed
-            pairs_to_check = random.sample()
+            pairs_to_check = random.sample(
                 self.swap_pairs_50x,
                 min(30, len(self.swap_pairs_50x))
-(            )
+            )
             
             for symbol in pairs_to_check:
                 # Skip if already have position
@@ -423,9 +423,9 @@ class BitgetUnlimitedTrader:
                             continue
                 
                 # Status update
-                logger.info(f"💥 Balance: ${self.real_balance:.2f} | ")
+                logger.info(f"💥 Balance: ${self.real_balance:.2f} | "
                           f"Active: {len(self.active_positions)} | "
-(                          f"Total Trades: {self.total_trades}")
+                          f"Total Trades: {self.total_trades}")
                 
                 # Aggressive cycle timing
                 logger.info("⏰ Next cycle in 30 seconds...")

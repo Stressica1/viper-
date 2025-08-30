@@ -16,10 +16,10 @@ sys.path.append(str(project_root / "src"))
 
 # Enhanced terminal display
 try:
-    from src.viper.utils.terminal_display import ()
+    from src.viper.utils.terminal_display import (
         terminal, display_error, display_success, display_warning, 
         print_banner, show_progress
-(    )
+    )
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False
@@ -30,7 +30,7 @@ except ImportError:
     def show_progress(tasks, title): print(f"{title}: {', '.join(tasks)}")
 
 def run_command(cmd, description, check=True):
-    """Run a command with enhanced display""""""
+    """Run a command with enhanced display"""
     try:
         if ENHANCED_DISPLAY:
             terminal.console.print(f"[blue]Running:[/] {description}")
@@ -84,8 +84,8 @@ def setup_python_environment():
             display_success("Dependencies installed successfully")
             break
     else:
-        display_warning("Could not install dependencies automatically", )
-(                       "Please run: pip install -r requirements.txt manually")
+        display_warning("Could not install dependencies automatically, "
+                       "Please run: pip install -r requirements.txt manually")
     
     return True
 
@@ -98,8 +98,8 @@ def setup_configuration():
         if Path(".env.example").exists():
             shutil.copy(".env.example", ".env")
             display_success("Created .env from template")
-            display_warning("IMPORTANT: Edit .env with your API credentials!", )
-(                          "Add your real Bitget API keys and other configuration")
+            display_warning("IMPORTANT: Edit .env with your API credentials! "
+                          "Add your real Bitget API keys and other configuration")
         else:
             display_error("No .env.example found")
             return False

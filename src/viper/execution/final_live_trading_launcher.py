@@ -43,7 +43,7 @@ from dotenv import load_dotenv
 
     try:
         # Import the enhanced trader
-from viper_async_trader import ViperAsyncTrader
+from .viper_async_trader import ViperAsyncTrader
 
 
         print("# Tool Initializing Complete Trading System...")

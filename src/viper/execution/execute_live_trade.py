@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Import trading components
-from viper_async_trader import ViperAsyncTrader
+from .viper_async_trader import ViperAsyncTrader
 from predictive_ranges_strategy import get_predictive_strategy
 from optimized_trade_entry_system import get_optimized_entry_system
 from emergency_stop_system import get_emergency_system

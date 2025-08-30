@@ -37,13 +37,13 @@ from concurrent.futures import ThreadPoolExecutor
 import logging
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - MICROSERVICE_VALIDATOR - %(levelname)s - %(message)s'
-()
+)
 logger = logging.getLogger(__name__)
 
-@dataclass"""
+@dataclass
 class ServiceEndpoint:
     """Represents a microservice endpoint"""
     service_name: str
@@ -52,7 +52,7 @@ class ServiceEndpoint:
     path: str
     expected_status: int = 200
     
-    @property"""
+    @property
     def url(self) -> str:
         return f"http://{self.host}:{self.port}{self.path}"
 
@@ -65,14 +65,14 @@ class ConnectivityResult:
     response_time_ms: float
     status_code: Optional[int]
     error_message: Optional[str]
-    timestamp: str"""
+    timestamp: str
     
     def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now().isoformat()
 
 class MicroservicesConnectivityValidator:
-    """Validates connectivity between all microservices""""""
+    """Validates connectivity between all microservices"""
     
     def __init__(self, project_root: Path = None):
         self.project_root = project_root or Path("/home/runner/work/viper-/viper-")

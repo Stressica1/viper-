@@ -22,7 +22,7 @@ import redis
 import json
 from datetime import datetime, timedelta
 
-logger = logging.getLogger(__name__)"""
+logger = logging.getLogger(__name__)
 
 class CircuitState(Enum):
     """Circuit breaker states"""
@@ -33,16 +33,16 @@ class CircuitState(Enum):
 class CircuitBreaker:
     """
     Circuit breaker implementation for microservice communication
-    """"""
+    """
 
-    def __init__()
+    def __init__(
         self,
         service_name: str,
         failure_threshold: int = 5,
         recovery_timeout: int = 60,
         expected_exception: Exception = Exception,
         redis_client: Optional[redis.Redis] = None
-(    ):
+    ):
         self.service_name = service_name
         self.failure_threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
@@ -61,7 +61,7 @@ class CircuitBreaker:
         logger.info(f"# Rocket Circuit breaker initialized for {service_name}")
 
     def _load_state_from_redis(self) -> None:
-        """Load circuit breaker state from Redis""""""
+        """Load circuit breaker state from Redis"""
         if not self.redis_client:
             return
 
@@ -77,7 +77,7 @@ class CircuitBreaker:
             logger.warning(f"Failed to load circuit breaker state from Redis: {e}")
 
     def _save_state_to_redis(self) -> None:
-        """Save circuit breaker state to Redis""""""
+        """Save circuit breaker state to Redis"""
         if not self.redis_client:
             return
 
@@ -89,16 +89,16 @@ class CircuitBreaker:
                 'success_count': self.success_count,
                 'timestamp': datetime.now().isoformat()
             }
-            self.redis_client.setex()
+            self.redis_client.setex(
                 self.redis_key,
                 300,  # 5 minutes TTL
                 json.dumps(state_data)
-(            )
+            )
         except Exception as e:
             logger.warning(f"Failed to save circuit breaker state to Redis: {e}")
 
     def _should_attempt_reset(self) -> bool:
-        """Check if we should attempt to reset the circuit""""""
+        """Check if we should attempt to reset the circuit"""
         if self.state != CircuitState.OPEN:
             return False
 
@@ -116,7 +116,7 @@ class CircuitBreaker:
         self._save_state_to_redis()
 
     def _record_success(self) -> None:
-        """Record successful operation""""""
+        """Record successful operation"""
         if self.state == CircuitState.HALF_OPEN:
             self.success_count += 1
             if self.success_count >= 3:  # Require 3 consecutive successes
@@ -153,7 +153,7 @@ class CircuitBreaker:
         return False
 
     async def call(self, func: Callable, *args, **kwargs) -> Any:
-        """Execute function with circuit breaker protection""""""
+        """Execute function with circuit breaker protection"""
         if not self.can_execute():
             raise Exception(f"Circuit breaker is OPEN for {self.service_name}")
 
@@ -173,16 +173,16 @@ class CircuitBreaker:
 class RetryLogic:
     """
     Exponential backoff retry logic
-    """"""
+    """
 
-    def __init__()
+    def __init__(
         self,
         max_retries: int = 3,
         base_delay: float = 1.0,
         max_delay: float = 60.0,
         backoff_factor: float = 2.0,
         jitter: bool = True
-(    ):
+    ):
         self.max_retries = max_retries
         self.base_delay = base_delay
         self.max_delay = max_delay
@@ -209,7 +209,7 @@ import secrets
         func: Callable,
         *args,
         **kwargs
-(    ) -> Any:
+    ) -> Any:
         """Execute function with retry logic"""
         last_exception = None
 
@@ -238,15 +238,15 @@ import secrets
 class ServiceClient:
     """
     HTTP client with circuit breaker and retry logic
-    """"""
+    """
 
-    def __init__()
+    def __init__(
         self,
         service_name: str,
         base_url: str,
         redis_client: Optional[redis.Redis] = None,
         timeout: float = 30.0
-(    ):
+    ):
         self.service_name = service_name
         self.base_url = base_url.rstrip('/')
         self.timeout = timeout
@@ -264,13 +264,13 @@ class ServiceClient:
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """Async context manager exit""""""
+        """Async context manager exit"""
         if self._client:
             await self._client.aclose()
             self._client = None
 
     async def _make_request(self, method: str, endpoint: str, **kwargs) -> Dict:
-        """Make HTTP request with circuit breaker protection""""""
+        """Make HTTP request with circuit breaker protection"""
         if not self._client:
             raise Exception("ServiceClient must be used as async context manager")
 
@@ -285,7 +285,7 @@ class ServiceClient:
         return await self.circuit_breaker.call()
             self.retry_logic.execute_with_retry,
             _http_request
-(        )
+        )
 
     async def get(self, endpoint: str, **kwargs) -> Dict:
         """GET request"""
@@ -320,7 +320,7 @@ def get_service_client()
     service_name: str,
     base_url: str,
     redis_client: Optional[redis.Redis] = None
-() -> ServiceClient:
+def example_service_with_circuit_breaker() -> ServiceClient:
     """Get or create service client instance"""
     key = f"{service_name}:{base_url}"
 
@@ -335,7 +335,7 @@ async def call_service():
     method: str = "GET",
     redis_client: Optional[redis.Redis] = None,
     **kwargs
-() -> Dict:
+def example_async_service() -> Dict:
     """
     Convenience function to call a service with circuit breaker protection
 
@@ -344,7 +344,7 @@ async def call_service():
             "data-manager",
             "/api/ticker/BTCUSDT",
             redis_client=redis_client
-(        )
+        )
     """
     # Get service URL from environment
     base_url = os.getenv(f"{service_name.upper()}_URL", f"http://{service_name}:8000")
@@ -365,14 +365,14 @@ async def call_service():
 
 # Example usage in a service
 async def example_service_call():
-    """Example of how to use the circuit breaker in a service""""""
+    """Example of how to use the circuit breaker in a service"""
     try:
         # Call data-manager service
         result = await call_service()
             "data-manager",
             "/api/ticker/BTCUSDT",
             method="GET"
-(        )
+        )
         logger.info(f"Successfully called data-manager: {result}")
         return result
 

@@ -17,6 +17,9 @@ import json
 import time
 import logging
 import threading
+from datetime import datetime
+from typing import Dict, List, Optional, Any
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
 import uvicorn
 import redis
@@ -103,9 +106,9 @@ class UnifiedScannerService:
             return False
 
     def fetch_all_trading_pairs(self) -> List[str]:
-        """Fetch all available USDT trading pairs"""
+        """Fetch all available swap trading pairs"""
         try:
-            logger.info("# Search Discovering all available trading pairs...")
+            logger.info("# Search Discovering all available USDT swap pairs...")
 
             # Use market data manager if available
             try:
@@ -113,16 +116,30 @@ class UnifiedScannerService:
                 if response.status_code == 200:
                     data = response.json()
                     all_pairs = data.get('symbols', [])
-                    logger.info(f"# Check Retrieved {len(all_pairs)} pairs from market data manager")
-                    return all_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else all_pairs
+                    
+                    # Filter for USDT swap pairs only
+                    swap_pairs = [s for s in all_pairs if 
+                                 ('SWAP' in s.upper() or ':' in s) and 'USDT' in s]
+                    
+                    logger.info(f"# Check Retrieved {len(swap_pairs)} USDT swap pairs from market data manager")
+                    return swap_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else swap_pairs
             except Exception as e:
                 logger.warning(f"# Warning Market data manager unavailable: {e}")
 
-            # Fallback to direct API call
+            # Fallback to direct API call - filter for swap pairs only
             if self.exchange:
-                usdt_pairs = [s for s in self.exchange.symbols if ':USDT' in s and self.exchange.market(s).get('active', False)]
-                logger.info(f"# Check Found {len(usdt_pairs)} USDT pairs via direct API")
-                return usdt_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else usdt_pairs
+                # Get all markets and filter for active swap pairs
+                markets = self.exchange.markets
+                swap_pairs = []
+                
+                for symbol, market in markets.items():
+                    if (market.get('active', False) and 
+                        market.get('type') == 'swap' and
+                        'USDT' in symbol):  # Only USDT swap pairs
+                        swap_pairs.append(symbol)
+                
+                logger.info(f"# Check Found {len(swap_pairs)} USDT swap pairs via direct API")
+                return swap_pairs[:MAX_PAIRS_LIMIT] if MAX_PAIRS_LIMIT > 0 else swap_pairs
 
             logger.error("# X No method available to fetch trading pairs")
             return []

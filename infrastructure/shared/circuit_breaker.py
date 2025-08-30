@@ -89,11 +89,11 @@ class CircuitBreaker:
                 'success_count': self.success_count,
                 'timestamp': datetime.now().isoformat()
             }
-            self.redis_client.setex()
+            self.redis_client.setex(
                 self.redis_key,
                 300,  # 5 minutes TTL
                 json.dumps(state_data)
-(            )
+            )
         except Exception as e:
             logger.warning(f"Failed to save circuit breaker state to Redis: {e}")
 

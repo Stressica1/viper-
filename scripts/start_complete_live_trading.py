@@ -44,7 +44,7 @@ async def start_complete_system():
 
     try:
         # Import the main trader
-        from viper_async_trader import ViperAsyncTrader
+        from src.viper.execution.viper_async_trader import ViperAsyncTrader
 
         print("# Tool Initializing Complete Trading System...")
         trader = ViperAsyncTrader()

@@ -262,7 +262,7 @@ import traceback
                 return
 
             # Import VIPER scorer
-from viper_async_trader import ViperAsyncTrader
+from .viper_async_trader import ViperAsyncTrader
 
 
             # Create scorer instance with exchange
