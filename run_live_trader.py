@@ -202,40 +202,54 @@ class MultiPairVIPERTrader:
         """Generate trading signal with MULTI-TIMEFRAME TREND CONFIRMATION - VIPER Style"""
         try:
             # Get price data from multiple timeframes for better signal quality
+            # OPTIMIZED FOR CRYPTO: Using lower timeframes for faster signals
+            ohlcv_1m = self.exchange.fetch_ohlcv(symbol, timeframe='1m', limit=30)  # Added 1m for faster signals  
             ohlcv_5m = self.exchange.fetch_ohlcv(symbol, timeframe='5m', limit=20)
             ohlcv_15m = self.exchange.fetch_ohlcv(symbol, timeframe='15m', limit=12)
 
-            if len(ohlcv_5m) < 10 or len(ohlcv_15m) < 6:
+            if len(ohlcv_1m) < 10 or len(ohlcv_5m) < 10 or len(ohlcv_15m) < 6:
                 logger.debug(f"📊 {symbol}: Insufficient data for trend analysis")
                 return 'HOLD'
 
-            # Extract closing prices
+            # Extract closing prices for analysis
+            closes_1m = [candle[4] for candle in ohlcv_1m]  # Fastest timeframe for crypto
             closes_5m = [candle[4] for candle in ohlcv_5m]
             closes_15m = [candle[4] for candle in ohlcv_15m]
 
-            # PRIMARY TREND ANALYSIS - Use 15m for main trend direction
+            # MULTI-TIMEFRAME ANALYSIS - OPTIMIZED FOR CRYPTO LOWER TF
+            # PRIMARY TREND ANALYSIS - Use 15m for main trend direction  
             primary_trend = self.analyze_trend_relaxed(closes_15m)
-
+            
             # SECONDARY CONFIRMATION - Use 5m for entry timing
             secondary_trend = self.analyze_trend_relaxed(closes_5m)
+            
+            # FAST ENTRY SIGNALS - Use 1m for immediate entry confirmation
+            fast_trend = self.analyze_trend_relaxed(closes_1m)
 
-            # Current price from latest 5m candle
-            current_price = closes_5m[-1]
+            # Current price from latest 1m candle (most up-to-date)
+            current_price = closes_1m[-1]
 
-            # ENHANCED SIGNAL LOGIC: More flexible entry conditions
-            if primary_trend in ['BULLISH', 'WEAK_BULLISH'] and secondary_trend in ['BULLISH', 'WEAK_BULLISH', 'SIDEWAYS']:
-                # Bullish bias - very flexible entry conditions
-                recent_high = max(closes_5m[-5:])
-                recent_low = min(closes_5m[-5:])
+            # ENHANCED SIGNAL LOGIC: Crypto-optimized with 1m confirmation
+            if (primary_trend in ['BULLISH', 'WEAK_BULLISH'] and 
+                secondary_trend in ['BULLISH', 'WEAK_BULLISH', 'SIDEWAYS'] and
+                fast_trend in ['BULLISH', 'WEAK_BULLISH', 'SIDEWAYS']):  # 1m confirmation
+                
+                # Use 1m data for precise entry timing
+                recent_high = max(closes_1m[-5:])
+                recent_low = min(closes_1m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
-                if current_price > recent_low * 1.005:  # Much more flexible:
-                    logger.info(f"📈 {symbol}: BULLISH SIGNAL - Primary:{primary_trend}, Secondary:{secondary_trend} - Entry at ${current_price}")
+                if current_price > recent_low * 1.005:  # More responsive with 1m data
+                    logger.info(f"📈 {symbol}: BULLISH SIGNAL - 15m:{primary_trend}, 5m:{secondary_trend}, 1m:{fast_trend} - Entry at ${current_price}")
                     return 'BUY'
 
-            elif primary_trend in ['BEARISH', 'WEAK_BEARISH'] and secondary_trend in ['BEARISH', 'WEAK_BEARISH', 'SIDEWAYS']:
-                # Bearish bias - very flexible entry conditions
-                recent_high = max(closes_5m[-5:])
+            elif (primary_trend in ['BEARISH', 'WEAK_BEARISH'] and 
+                  secondary_trend in ['BEARISH', 'WEAK_BEARISH', 'SIDEWAYS'] and
+                  fast_trend in ['BEARISH', 'WEAK_BEARISH', 'SIDEWAYS']):  # 1m confirmation
+                
+                # Use 1m data for precise entry timing
+                recent_high = max(closes_1m[-5:])
+                recent_low = min(closes_1m[-5:])
                 recent_low = min(closes_5m[-5:])
 
                 # Very flexible entry: only avoid extreme conditions
@@ -494,7 +508,7 @@ class MultiPairVIPERTrader:
                 logger.info(f"   Stop Loss: ${sl_price:.6f} ({self.stop_loss_pct}%)")
 
                 # Create Take-Profit order
-                    tp_order = self.exchange.create_limit_order(
+                tp_order = self.exchange.create_limit_order(
                         symbol,
                         tp_side,
                         position_size,
@@ -505,10 +519,10 @@ class MultiPairVIPERTrader:
                             'tradeSide': 'close',
                             'reduceOnly': True
                         })
-                    logger.info(f"✅ Take-Profit order placed: {tp_order.get('id', 'N/A')}")
+                logger.info(f"✅ Take-Profit order placed: {tp_order.get('id', 'N/A')}")
 
-                    # VERIFY TP ORDER WAS PLACED
-                    if tp_order and tp_order.get('id'):
+                # VERIFY TP ORDER WAS PLACED
+                if tp_order and tp_order.get('id'):
                         try:
                             # Verify the order exists on exchange
                             order_status = self.exchange.fetch_order(tp_order['id'], symbol)
@@ -665,12 +679,12 @@ class MultiPairVIPERTrader:
                 # Calculate confidence based on signal strength
                 confidence = self.calculate_signal_confidence(symbol, signal)
 
-                opportunities.append())
+                opportunities.append({
                     'symbol': symbol,
                     'signal': signal,
                     'confidence': confidence,
                     'timestamp': time.time()
-(                })
+                })
                 logger.info(f"📊 Found opportunity: {symbol} -> {signal} (confidence: {confidence:.2f})")
 
         logger.info(f"✅ Scan complete - {len(opportunities)} opportunities found")
@@ -679,41 +693,45 @@ class MultiPairVIPERTrader:
     def calculate_signal_confidence(self, symbol: str, signal: str) -> float:
         """Calculate confidence score for trading signal"""
         try:
-            # Get recent price data
+            # Get recent price data - OPTIMIZED FOR CRYPTO: Include 1m for faster signals
+            ohlcv_1m = self.exchange.fetch_ohlcv(symbol, timeframe='1m', limit=30)
             ohlcv_5m = self.exchange.fetch_ohlcv(symbol, timeframe='5m', limit=20)
             ohlcv_15m = self.exchange.fetch_ohlcv(symbol, timeframe='15m', limit=12)
 
-            if len(ohlcv_5m) < 10 or len(ohlcv_15m) < 6:
+            if len(ohlcv_1m) < 10 or len(ohlcv_5m) < 10 or len(ohlcv_15m) < 6:
                 return 0.5  # Neutral confidence
 
-            # Analyze trend consistency across timeframes
+            # Analyze trend consistency across timeframes - ENHANCED WITH 1M
+            fast_trend = self.analyze_trend_relaxed([candle[4] for candle in ohlcv_1m])  # 1m trend
             primary_trend = self.analyze_trend_relaxed([candle[4] for candle in ohlcv_15m])
             secondary_trend = self.analyze_trend_relaxed([candle[4] for candle in ohlcv_5m])
 
-            # Base confidence on trend agreement
-            confidence = 0.6  # Base confidence
+            # CRYPTO-OPTIMIZED CONFIDENCE CALCULATION WITH 1M SUPPORT
+            base_confidence = 0.5
 
-            # Boost confidence for strong trend alignment
+            # Multi-timeframe alignment bonus (1m, 5m, 15m)
             if signal == 'BUY':
-                if primary_trend in ['BULLISH', 'WEAK_BULLISH'] and secondary_trend in ['BULLISH', 'WEAK_BULLISH']:
-                    confidence = 0.8
-                elif primary_trend == 'SIDEWAYS' and secondary_trend in ['BULLISH', 'WEAK_BULLISH']:
-                    confidence = 0.7
-                elif primary_trend in ['BEARISH', 'WEAK_BEARISH']:
-                    confidence = 0.3  # Low confidence against primary trend
-            else:  # SELL signal
-                if primary_trend in ['BEARISH', 'WEAK_BEARISH'] and secondary_trend in ['BEARISH', 'WEAK_BEARISH']:
-                    confidence = 0.8
-                elif primary_trend == 'SIDEWAYS' and secondary_trend in ['BEARISH', 'WEAK_BEARISH']:
-                    confidence = 0.7
-                elif primary_trend in ['BULLISH', 'WEAK_BULLISH']:
-                    confidence = 0.3  # Low confidence against primary trend
+                if fast_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    base_confidence += 0.15  # 1m confirmation
+                if primary_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    base_confidence += 0.15  # 15m trend
+                if secondary_trend in ['BULLISH', 'WEAK_BULLISH']:
+                    base_confidence += 0.15  # 5m trend
+            elif signal == 'SELL':
+                if fast_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    base_confidence += 0.15  # 1m confirmation
+                if primary_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    base_confidence += 0.15  # 15m trend
+                if secondary_trend in ['BEARISH', 'WEAK_BEARISH']:
+                    base_confidence += 0.15  # 5m trend
+
+            confidence = min(base_confidence, 0.95)  # Cap at 95%
 
             # Check for momentum confirmation
             if self.detect_momentum_signal([candle[4] for candle in ohlcv_5m]):
                 momentum_signal = self.detect_momentum_signal([candle[4] for candle in ohlcv_5m])
-                if (signal == 'BUY' and momentum_signal == 'STRONG_BULL') or \:
-                    (signal == 'SELL' and momentum_signal == 'STRONG_BEAR')
+                if ((signal == 'BUY' and momentum_signal == 'STRONG_BULL') or 
+                    (signal == 'SELL' and momentum_signal == 'STRONG_BEAR')):
                     confidence += 0.1  # Boost for momentum confirmation
 
             return min(confidence, 1.0)  # Cap at 100%

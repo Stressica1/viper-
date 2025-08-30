@@ -86,7 +86,7 @@ class OptimizedTradeEntrySystem:
             'min_confidence_threshold': 0.7,
             'min_rr_ratio': 2.0,
             'max_risk_per_trade': 0.015,
-            'timeframes': ['5m', '15m', '1h', '4h'],
+            'timeframes': ['1m', '5m', '15m', '30m'],  # Optimized for crypto lower TF
             'confluence_threshold': 0.75,
             'volume_threshold_multiplier': 1.2,
             'microstructure_weight': 0.3,
@@ -443,7 +443,7 @@ class OptimizedTradeEntrySystem:
         confluence_score = 0.0
         valid_timeframes = 0
 
-        timeframes_to_check = ['5m', '15m', '1h', '4h']
+        timeframes_to_check = ['1m', '5m', '15m', '30m']  # Lower TF for crypto
 
         for timeframe in timeframes_to_check:
             df = market_data.get(timeframe)
