@@ -241,7 +241,7 @@ ENABLE_DEBUG=true
 
         # Test importing all key components
         components_to_test = [
-            ('viper_async_trader', 'ViperAsyncTrader'),
+            ('src.viper.execution.viper_async_trader', 'ViperAsyncTrader'),
             ('v2_risk_optimized_trading_job', 'V2RiskOptimizedTradingJob'),
             ('viper_unified_trading_job', 'VIPERUnifiedTradingJob'),
             ('advanced_trend_detector', 'AdvancedTrendDetector'),

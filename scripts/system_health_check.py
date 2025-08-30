@@ -12,7 +12,7 @@ import requests
 import subprocess
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from enum import Enum"""
+from enum import Enum
 
 class ServiceStatus(Enum):
     HEALTHY = "HEALTHY"
@@ -24,7 +24,7 @@ class ServiceStatus(Enum):
 class SystemHealthChecker:
     """
     Comprehensive system health checker for VIPER trading system
-    """"""
+    """""
 
     def __init__(self):
         """Initialize health checker"""
@@ -52,7 +52,7 @@ class SystemHealthChecker:
             'response_time': None,
             'error': None,
             'details': {}
-        }"""
+        }
 
         try:
             start_time = time.time()
@@ -173,7 +173,7 @@ class SystemHealthChecker:
         """Generate recommendations based on health check results"""
         recommendations = []
 
-        # Check for critical service issues:"""
+        # Check for critical service issues
         if health_report['critical_services_down'] > 0:
             down_critical = [
                 config['name'] for service, config in self.services.items()
@@ -234,7 +234,7 @@ class SystemHealthChecker:
         }
 
         # Test API Server connectivity to other services
-        api_server_status = self.services['api-server']"""
+        api_server_status = self.services['api-server']
         if api_server_status:
             pass
 
@@ -272,16 +272,15 @@ class SystemHealthChecker:
 
         return connectivity_report
 
-    def run_full_diagnostic(self) -> Dict[str, Any]
+    def run_full_diagnostic(self) -> Dict[str, Any]:
         """Run complete system diagnostic"""
-#==============================================================================#
-# # Rocket VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       #
-# # Search Comprehensive Service Health | 🔗 Connectivity Testing | # Chart Performance   #
-# ⚡ Real-time Monitoring | 🧠 System Analysis | 📈 Health Reporting           #
-#==============================================================================#
-(        """)
-
-        diagnostic_report = {:
+        # =============================================================================
+        # VIPER SYSTEM HEALTH DIAGNOSTIC - COMPLETE ANALYSIS                       
+        # Comprehensive Service Health | Connectivity Testing | Performance   
+        # Real-time Monitoring | System Analysis | Health Reporting           
+        # =============================================================================
+        
+        diagnostic_report = {
             'diagnostic_start': datetime.now().isoformat(),
             'health_check': {},
             'connectivity_test': {},
@@ -290,7 +289,7 @@ class SystemHealthChecker:
             'execution_time': None
         }
 
-        start_time = time.time()"""
+        start_time = time.time()
 
         try:
             # Phase 1: Health Check
@@ -425,7 +424,7 @@ class SystemHealthChecker:
 
 def main():
     """Main entry point"""
-    checker = SystemHealthChecker()"""
+    checker = SystemHealthChecker()
 
     try:
         report = checker.run_full_diagnostic()

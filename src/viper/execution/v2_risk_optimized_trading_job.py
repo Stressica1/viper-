@@ -129,7 +129,7 @@ class V2RiskOptimizedTradingJob:
                 self.system_components['risk_manager'] = None
 
             # 6. Enhanced ViperAsyncTrader (Main Trading Engine)
-            from viper_async_trader import ViperAsyncTrader
+            from .viper_async_trader import ViperAsyncTrader
             self.system_components['trader'] = ViperAsyncTrader()
             logger.info("# Check Enhanced ViperAsyncTrader: INITIALIZED")
 

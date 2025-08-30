@@ -27,7 +27,7 @@ import httpx
 from enum import Enum
 
 # Add shared directory to path for circuit breaker
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))"""
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'shared'))
 try:
     CIRCUIT_BREAKER_AVAILABLE = True
 except ImportError:
