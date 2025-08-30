@@ -39,8 +39,8 @@ class TradeSignal(Enum):
 
 class MCPSwapTrader:
     """
-    MCP-powered swap trader for all Bitget pairs with 50x leverage
-    """"""
+    MCP-powered swap trader for all Bitget pairs with leverage support
+    """
 
     def __init__(self, mcp_server_url: str = "http://localhost:8015"):
         """Initialize MCP swap trader"""

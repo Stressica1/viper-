@@ -35,7 +35,7 @@ class CircuitBreaker:
     Circuit breaker implementation for microservice communication
     """
 
-    def __init__()
+    def __init__(
         self,
         service_name: str,
         failure_threshold: int = 5,

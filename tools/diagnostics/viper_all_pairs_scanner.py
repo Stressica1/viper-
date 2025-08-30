@@ -402,8 +402,32 @@ class VIPERAllPairsScanner:
             # Get market data
             ticker = self.exchange.fetch_ticker(symbol)
 
-            # Analyze entry point
-            analysis = self.entry_optimizer.analyze_entry_point(symbol)
+            # Analyze entry point using entry optimizer if available
+            analysis = {'should_enter': False, 'confidence': 0.5}
+            if self.entry_optimizer:
+                try:
+                    analysis = self.entry_optimizer.analyze_entry_point(symbol)
+                except Exception as e:
+                    logger.warning(f"Entry optimizer failed for {symbol}: {e}")
+                    # Use basic analysis based on price action
+                    price_change = ticker.get('percentage', 0)
+                    if abs(price_change) > 2.0:  # Significant price movement
+                        analysis = {
+                            'should_enter': True, 
+                            'confidence': min(abs(price_change) / 10.0, 1.0),
+                            'reason': f'Price change: {price_change:.2f}%'
+                        }
+            else:
+                # Use basic price-based analysis when entry optimizer is not available
+                price_change = ticker.get('percentage', 0)
+                volume_ratio = ticker.get('quoteVolume', 0) / max(pair.get('volume_24h', 1), 1)
+                
+                if abs(price_change) > 1.5 and volume_ratio > 0.8:
+                    analysis = {
+                        'should_enter': True,
+                        'confidence': min(abs(price_change) / 5.0, 0.9),
+                        'reason': f'Price: {price_change:.2f}%, Vol ratio: {volume_ratio:.2f}'
+                    }
 
             if analysis.get('should_enter', False):
                 opportunity = {
@@ -458,18 +482,19 @@ class VIPERAllPairsScanner:
         """Calculate VIPER scores for opportunity"""
         try:
             # Volume Score (30%) - Higher weight for multi-pair
-            volume_score = min(opportunity.get('volume', 0) / 5000000, 1.0) * 30  # $5M volume max
+            volume = max(opportunity.get('volume', 0), 1)  # Prevent division by zero
+            volume_score = min(volume / 5000000, 1.0) * 30  # $5M volume max
 
             # Price Score (25%) - Volatility analysis
             price_change = abs(opportunity.get('change_24h', 0))
             price_score = min(price_change / 5.0, 1.0) * 25
 
             # Leverage Score (20%) - Available leverage
-            leverage = opportunity.get('pair_info', {}).get('leverage', 1)
+            leverage = max(opportunity.get('pair_info', {}).get('leverage', 1), 1)
             leverage_score = min(leverage / 100, 1.0) * 20
 
             # Spread Score (15%) - Tighter spreads preferred
-            spread = opportunity.get('pair_info', {}).get('spread', 0.001)
+            spread = max(opportunity.get('pair_info', {}).get('spread', 0.001), 0.0001)
             spread_score = max(0, (0.001 - spread) / 0.001) * 15
 
             # Risk Score (10%) - Position in Bollinger Bands

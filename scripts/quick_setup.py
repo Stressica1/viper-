@@ -16,10 +16,10 @@ sys.path.append(str(project_root / "src"))
 
 # Enhanced terminal display
 try:
-    from src.viper.utils.terminal_display import ()
+    from src.viper.utils.terminal_display import (
         terminal, display_error, display_success, display_warning, 
         print_banner, show_progress
-(    )
+    )
     ENHANCED_DISPLAY = True
 except ImportError:
     ENHANCED_DISPLAY = False

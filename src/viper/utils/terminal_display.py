@@ -186,15 +186,15 @@ class ViperTerminal:
             Layout(name="positions", ratio=2)
         )
         
-        # Enhanced metrics table
+        # Enhanced metrics table with USDT focus
         metrics_table = Table(
-            title=f"{self.icons['chart']} [bold bright_green]Performance Dashboard[/]", 
+            title=f"{self.icons['chart']} [bold bright_green]USDT Pairs Performance Dashboard[/]", 
             box=box.ROUNDED,
             header_style="bold bright_blue",
             border_style="bright_green"
         )
         metrics_table.add_column("📊 Metric", style="bright_cyan", width=16)
-        metrics_table.add_column("💰 Value", justify="right", width=12)
+        metrics_table.add_column("💰 USDT Value", justify="right", width=12)
         metrics_table.add_column("📈 Change", justify="right", width=10)
         metrics_table.add_column("🎯 Status", justify="center", width=8)
         
@@ -203,16 +203,21 @@ class ViperTerminal:
             value = data.get('value', '0')
             change = data.get('change', '0%')
             
+            # Add USDT symbol if it's a monetary value
+            if any(term in metric.lower() for term in ['p&l', 'profit', 'balance', 'value']):
+                if not value.endswith('USDT') and not value.startswith('$'):
+                    value = f"{value} USDT"
+            
             # Determine colors and status based on metric type and value
             if 'P&L' in metric or 'profit' in metric.lower():
                 value_color = 'bright_green' if value.startswith('+') else 'bright_red'
                 status_icon = self.icons['money'] if value.startswith('+') else '💸'
             elif 'Win Rate' in metric:
-                rate = float(value.replace('%', ''))
+                rate = float(value.replace('%', '').replace(' USDT', ''))
                 value_color = 'bright_green' if rate > 60 else 'yellow' if rate > 40 else 'bright_red'
                 status_icon = self.icons['target'] if rate > 60 else '🎯'
             elif 'Sharpe' in metric:
-                ratio = float(value)
+                ratio = float(value.replace(' USDT', ''))
                 value_color = 'bright_green' if ratio > 1.5 else 'yellow' if ratio > 1.0 else 'bright_red'
                 status_icon = self.icons['diamond'] if ratio > 1.5 else '💎'
             else:
@@ -230,39 +235,256 @@ class ViperTerminal:
         
         layout["metrics"].update(metrics_table)
         
-        # Enhanced positions table
+        # Enhanced positions table with USDT pair highlighting
         positions_table = Table(
-            title=f"{self.icons['shield']} [bold bright_blue]Active Positions[/]", 
+            title=f"{self.icons['shield']} [bold bright_blue]Active USDT Swap Positions[/]", 
             box=box.ROUNDED,
             header_style="bold bright_blue",
             border_style="bright_blue"
         )
-        positions_table.add_column("🪙 Symbol", style="bright_cyan", width=12)
+        positions_table.add_column("🪙 USDT Pair", style="bright_cyan", width=12)
         positions_table.add_column("📈 Side", justify="center", width=8)
         positions_table.add_column("📊 Size", justify="right", width=8)
-        positions_table.add_column("💰 P&L", justify="right", width=10)
+        positions_table.add_column("💰 P&L (USDT)", justify="right", width=12)
         positions_table.add_column("🎯", justify="center", width=3)
         
         for position in summary.get('positions', []):
+            symbol = position['symbol']
             pnl = position['pnl']
             pnl_color = 'bright_green' if pnl > 0 else 'bright_red'
             side = position['side']
             side_color = 'bright_green' if side == 'LONG' else 'bright_red'
             side_icon = '📈' if side == 'LONG' else '📉'
             
+            # Highlight USDT in symbol
+            if 'USDT' in symbol:
+                symbol_display = symbol.replace('USDT', '[bold yellow]USDT[/bold yellow]')
+            else:
+                symbol_display = symbol
+            
             # Status icon based on P&L
             status_icon = self.icons['fire'] if abs(pnl) > 5 else self.icons['target'] if pnl > 0 else '❄️'
             
             positions_table.add_row(
-                f"[bright_cyan]{position['symbol']}[/]",
+                f"[bright_cyan]{symbol_display}[/]",
                 f"[{side_color}]{side_icon} {side}[/]",
                 f"[dim]{position['size']}[/]",
-                f"[{pnl_color}][bold]{pnl:+.2f}%[/bold][/]",
+                f"[{pnl_color}][bold]{pnl:+.2f} USDT[/bold][/]",
                 status_icon
             )
         
         layout["positions"].update(positions_table)
         self.console.print(layout)
+
+    def display_usdt_pairs_scan_status(self, scan_data: Dict[str, Any]):
+        """Display USDT pairs scanning status with enhanced visuals"""
+        if not RICH_AVAILABLE:
+            for key, value in scan_data.items():
+                print(f"{key}: {value}")
+            return
+            
+        # Create scan status layout
+        layout = Layout()
+        layout.split_column(
+            Layout(name="scan_header", size=3),
+            Layout(name="scan_progress", size=8),
+            Layout(name="scan_results", size=6)
+        )
+        
+        # Scan header
+        header_text = f"[bold bright_cyan]🔍 USDT Swap Pairs Scanner Status[/]\n"
+        header_text += f"[dim]Scanning Bitget USDT perpetual swap contracts only[/]"
+        layout["scan_header"].update(Panel(header_text, border_style="bright_cyan"))
+        
+        # Scan progress
+        progress_table = Table(
+            title=f"{self.icons['gear']} Scanning Progress",
+            box=box.ROUNDED,
+            header_style="bold bright_blue"
+        )
+        progress_table.add_column("📊 Metric", style="bright_cyan", width=20)
+        progress_table.add_column("🔢 Value", justify="right", width=15)
+        progress_table.add_column("📈 Status", justify="center", width=10)
+        
+        scan_metrics = {
+            "Total USDT Pairs Found": scan_data.get('total_pairs', 0),
+            "Pairs Scanned": scan_data.get('pairs_scanned', 0),
+            "High Volume Pairs": scan_data.get('high_volume_pairs', 0),
+            "Opportunities Found": scan_data.get('opportunities', 0),
+            "Active Positions": scan_data.get('active_positions', 0),
+            "Scan Progress": f"{scan_data.get('progress', 0):.1f}%"
+        }
+        
+        for metric, value in scan_metrics.items():
+            # Color coding based on metric type
+            if "Opportunities" in metric or "High Volume" in metric:
+                value_color = 'bright_green' if value > 0 else 'dim'
+                status_icon = self.icons['target'] if value > 0 else '⏳'
+            elif "Progress" in metric:
+                progress_val = float(str(value).replace('%', ''))
+                value_color = 'bright_green' if progress_val >= 100 else 'yellow' if progress_val >= 50 else 'white'
+                status_icon = '✅' if progress_val >= 100 else '🔄' if progress_val >= 50 else '⏳'
+            elif "Positions" in metric:
+                value_color = 'bright_blue' if value > 0 else 'dim'
+                status_icon = self.icons['shield'] if value > 0 else '📋'
+            else:
+                value_color = 'white'
+                status_icon = self.icons['info']
+            
+            progress_table.add_row(
+                f"{self.icons.get('chart', '📊')} {metric}",
+                f"[{value_color}][bold]{value}[/bold][/]",
+                status_icon
+            )
+        
+        layout["scan_progress"].update(progress_table)
+        
+        # Top USDT pairs results
+        top_pairs = scan_data.get('top_pairs', [])[:5]  # Show top 5
+        if top_pairs:
+            results_table = Table(
+                title=f"{self.icons['fire']} Top USDT Pairs by Volume",
+                box=box.MINIMAL,
+                header_style="bold bright_green"
+            )
+            results_table.add_column("🥇 Rank", justify="center", width=6)
+            results_table.add_column("🪙 USDT Pair", style="bright_cyan", width=15)
+            results_table.add_column("💰 Volume", justify="right", width=12)
+            results_table.add_column("📈 Score", justify="right", width=8)
+            results_table.add_column("🎯", justify="center", width=3)
+            
+            for i, pair in enumerate(top_pairs, 1):
+                symbol = pair.get('symbol', 'N/A')
+                volume = pair.get('volume', 0)
+                score = pair.get('viper_score', 0)
+                
+                # Rank styling
+                rank_color = 'gold' if i == 1 else 'bright_white' if i == 2 else 'yellow' if i == 3 else 'white'
+                rank_icon = '🥇' if i == 1 else '🥈' if i == 2 else '🥉' if i == 3 else f'{i}.'
+                
+                # Highlight USDT
+                if 'USDT' in symbol:
+                    symbol_display = symbol.replace('USDT', '[bold yellow]USDT[/bold yellow]')
+                else:
+                    symbol_display = symbol
+                
+                # Volume formatting
+                if volume >= 1000000:
+                    volume_str = f"${volume/1000000:.1f}M"
+                elif volume >= 1000:
+                    volume_str = f"${volume/1000:.0f}K"
+                else:
+                    volume_str = f"${volume:.0f}"
+                
+                # Score color
+                score_color = 'bright_green' if score >= 80 else 'yellow' if score >= 60 else 'white'
+                status_icon = self.icons['fire'] if score >= 90 else self.icons['target'] if score >= 70 else '⭐'
+                
+                results_table.add_row(
+                    f"[{rank_color}]{rank_icon}[/]",
+                    f"[bright_cyan]{symbol_display}[/]",
+                    f"[bright_green]{volume_str}[/]",
+                    f"[{score_color}]{score:.0f}[/]",
+                    status_icon
+                )
+            
+            layout["scan_results"].update(results_table)
+        else:
+            no_results = Panel(
+                "[dim]No USDT pairs scanned yet...[/]\n[yellow]Scanning in progress...[/]",
+                title="📋 Results",
+                border_style="dim"
+            )
+            layout["scan_results"].update(no_results)
+        
+        self.console.print(layout)
+
+    def display_api_connection_status(self, connection_data: Dict[str, Any]):
+        """Display API connection status with enhanced error reporting"""
+        if not RICH_AVAILABLE:
+            for service, status in connection_data.items():
+                print(f"{service}: {status}")
+            return
+            
+        # Create connection status table
+        connection_table = Table(
+            title=f"{self.icons['network']} [bold bright_cyan]Bitget API Connection Status[/]",
+            box=box.ROUNDED,
+            header_style="bold bright_blue",
+            border_style="bright_cyan"
+        )
+        connection_table.add_column("🔗 Service", style="bright_cyan", width=20)
+        connection_table.add_column("📡 Status", justify="center", width=12)
+        connection_table.add_column("📊 Details", style="dim", width=30)
+        connection_table.add_column("🕐 Last Check", justify="center", width=12)
+        connection_table.add_column("🎯", justify="center", width=4)
+        
+        for service, data in connection_data.items():
+            status = data.get('status', 'Unknown')
+            details = data.get('details', 'No details')
+            last_check = data.get('last_check', 'Never')
+            error_count = data.get('error_count', 0)
+            
+            # Status color and icon
+            if status == 'Connected':
+                status_color = 'bright_green'
+                status_icon = self.icons['success']
+                service_icon = self.icons['network']
+            elif status == 'Connecting':
+                status_color = 'yellow'
+                status_icon = '🔄'
+                service_icon = self.icons['gear']
+            elif status == 'Error':
+                status_color = 'bright_red'
+                status_icon = self.icons['error']
+                service_icon = '💥'
+            else:
+                status_color = 'dim'
+                status_icon = '❓'
+                service_icon = self.icons['warning']
+            
+            # Service-specific icons
+            if 'bitget' in service.lower():
+                service_icon = '₿'
+            elif 'api' in service.lower():
+                service_icon = self.icons['key']
+            elif 'market' in service.lower():
+                service_icon = self.icons['chart']
+            elif 'swap' in service.lower():
+                service_icon = '🔄'
+            
+            # Error indicator
+            final_icon = f"{status_icon}"
+            if error_count > 0:
+                final_icon += f" ({error_count})"
+            
+            connection_table.add_row(
+                f"{service_icon} [bright_cyan]{service}[/]",
+                f"[{status_color}]{status}[/]",
+                f"[dim]{details}[/]",
+                f"[dim]{last_check}[/]",
+                final_icon
+            )
+        
+        self.console.print(connection_table)
+        
+        # Show additional connection tips if there are errors
+        error_services = [s for s, d in connection_data.items() if d.get('status') == 'Error']
+        if error_services:
+            tips_text = "[bold yellow]🔧 Connection Troubleshooting:[/]\n\n"
+            tips_text += "• Check your [bold]BITGET_API_KEY[/], [bold]BITGET_API_SECRET[/], and [bold]BITGET_API_PASSWORD[/] in .env\n"
+            tips_text += "• Verify API permissions include [bold]Futures Trading[/] and [bold]Read[/] access\n"
+            tips_text += "• Ensure your IP is whitelisted in Bitget API settings\n"
+            tips_text += "• Check network connectivity to [bold]api.bitget.com[/]\n"
+            tips_text += "• For USDT swaps, ensure [bold]USDT-M Futures[/] is enabled"
+            
+            tips_panel = Panel(
+                tips_text,
+                title=f"{self.icons['warning']} [bold yellow]API Connection Issues Detected[/]",
+                border_style="yellow",
+                padding=(1, 2)
+            )
+            self.console.print(tips_panel)
     
     def show_progress(self, tasks: List[str], title: str = "Processing"):
         """Show progress for multiple tasks"""
@@ -617,3 +839,9 @@ def display_config(config):
 
 def display_repo_structure(path="."):
     terminal.display_repository_structure(path)
+
+def display_usdt_scan_status(scan_data):
+    terminal.display_usdt_pairs_scan_status(scan_data)
+
+def display_api_status(connection_data):
+    terminal.display_api_connection_status(connection_data)
