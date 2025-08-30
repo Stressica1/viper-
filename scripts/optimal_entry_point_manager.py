@@ -662,11 +662,14 @@ def main():
     print(f"# Search Confidence: {result['confidence']:.3f}")
     print(f"# Chart Recommendation: {result['recommendation']}")
     for component, score in result['component_scores'].items():
+        print(f"  {component}: {score:.3f}")
     
     for metric, value in result['risk_metrics'].items():
+        print(f"  {metric}: {value}")
     
     if result['optimization_suggestions']:
         for suggestion in result['optimization_suggestions']:
+            print(f"  • {suggestion}")
     
     # Save performance report
     manager.save_performance_report()

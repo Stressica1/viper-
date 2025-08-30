@@ -21,6 +21,8 @@ import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 from enum import Enum
+from typing import Dict, List, Optional, Any
+from datetime import datetime, timedelta
 import ccxt
 from concurrent.futures import ThreadPoolExecutor
 import talib
