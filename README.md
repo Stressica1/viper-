@@ -37,6 +37,12 @@ python viper.py
 
 **This opens an interactive menu where you can setup and start trading in under 2 minutes!**
 
+**🚀 CRYPTO-OPTIMIZED FOR LAUNCH:**
+- **Lower Timeframes**: 1m, 5m, 15m optimized for crypto speed
+- **ALL PAIRS SCANNED**: Automatically trades all available USDT pairs  
+- **Just Add API Keys**: Everything else is handled automatically
+- **Ready to Trade**: Start making money immediately after setup
+
 ---
 
 ## 🚀 Quick Start - THE EASIEST SETUP EVER!
