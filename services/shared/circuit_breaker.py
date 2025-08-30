@@ -89,7 +89,7 @@ class CircuitBreaker:
                 'success_count': self.success_count,
                 'timestamp': datetime.now().isoformat()
             }
-            self.redis_client.setex()
+            self.redis_client.setex(
                 self.redis_key,
                 300,  # 5 minutes TTL
                 json.dumps(state_data)
@@ -175,7 +175,7 @@ class RetryLogic:
     Exponential backoff retry logic
     """
 
-    def __init__()
+    def __init__(
         self,
         max_retries: int = 3,
         base_delay: float = 1.0,
@@ -240,7 +240,7 @@ class ServiceClient:
     HTTP client with circuit breaker and retry logic
     """
 
-    def __init__()
+    def __init__(
         self,
         service_name: str,
         base_url: str,

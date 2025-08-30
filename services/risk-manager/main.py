@@ -78,7 +78,7 @@ class Position:
     take_profit: Optional[float] = None
     trailing_stop: Optional[float] = None
     trailing_activation: Optional[float] = None
-    timestamp: datetime = None"""
+    timestamp: datetime = None
 
     def __post_init__(self):
         if self.timestamp is None:
@@ -95,14 +95,14 @@ class TradeSignal:
     take_profit: float
     trailing_stop: Optional[float] = None
     confidence: float = 0.0
-    timestamp: datetime = None"""
+    timestamp: datetime = None
 
     def __post_init__(self):
         if self.timestamp is None:
             self.timestamp = datetime.now()
 
 class RiskManager:
-    """Risk manager for position control and safety checks""""""
+    """Risk manager for position control and safety checks"""
 
     def __init__(self):
         self.redis_client = None
@@ -139,10 +139,10 @@ class RiskManager:
         self.active_positions: Dict[str, Position] = {}
         self.pending_signals: List[TradeSignal] = []
 
-    def calculate_tp_sl_tsl(self, symbol: str, side: PositionSide, entry_price: float,)
+    def calculate_tp_sl_tsl(self, symbol: str, side: PositionSide, entry_price: float,
                           stop_loss_percent: Optional[float] = None,
                           take_profit_percent: Optional[float] = None,
-(                          trailing_stop_percent: Optional[float] = None) -> Dict[str, float]
+                          trailing_stop_percent: Optional[float] = None) -> Dict[str, float]:
         """Calculate Take Profit, Stop Loss, and Trailing Stop levels"""
         # Use defaults if not specified
         sl_percent = stop_loss_percent or self.default_stop_loss_percent

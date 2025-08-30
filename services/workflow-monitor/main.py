@@ -39,14 +39,14 @@ MAX_WORKFLOW_LATENCY = float(os.getenv('MAX_WORKFLOW_LATENCY', '30.0'))  # secon
 
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
-logging.basicConfig()
+logging.basicConfig(
     level=log_level,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class ServiceHealth:
-    """Service health monitoring""""""
+    """Service health monitoring"""
 
     def __init__(self, name: str, url: str, dependencies: List[str] = None):
         self.name = name

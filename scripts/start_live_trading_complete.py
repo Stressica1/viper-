@@ -34,7 +34,7 @@ from .live_trading_manager import LiveTradingManager
 from .strategy_metrics_dashboard import StrategyMetricsDashboard
 from .github_mcp_trading_tasks import GitHubMCPTradingTasks
 
-@dataclass"""
+@dataclass
 class SystemStatus:
     """Overall system status"""
     live_trading_active: bool = False
@@ -60,9 +60,9 @@ class CompleteLiveTradingSystem:
         signal.signal(signal.SIGTERM, self._signal_handler)
 
 
-    def _load_system_config(self) -> Dict[str, Any]
+    def _load_system_config(self) -> Dict[str, Any]:
         """Load system configuration"""
-        return {:
+        return {
             'min_leverage': 34.0,
             'risk_per_trade': 0.02,
             'max_daily_loss': 100.0,

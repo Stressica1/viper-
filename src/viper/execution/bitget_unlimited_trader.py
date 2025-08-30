@@ -110,12 +110,11 @@ class BitgetUnlimitedTrader:
             
             # Get ALL swap pairs with any leverage
             for symbol, market in markets.items():
-                if (market.get('type') == 'swap' and):
-                    market.get('active', False) and
-(                    market.get('quote') == 'USDT')
+                if (market.get('type') == 'swap' and
+                    market.get('active', False)):
                     self.swap_pairs_50x.append(symbol)
             
-            logger.info(f"💥 Found {len(self.swap_pairs_50x)} USDT swap pairs for trading")
+            logger.info(f"💥 Found {len(self.swap_pairs_50x)} swap pairs for trading")
             
             return True
 

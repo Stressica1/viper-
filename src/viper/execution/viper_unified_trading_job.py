@@ -252,9 +252,8 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
             # Filter for active swap pairs only
             swap_pairs = []
             for symbol, market in all_markets.items():
-                if (market.get('active', False) and):
-                    market.get('type') == 'swap' and
-(                    market.get('quote') == 'USDT')
+                if (market.get('active', False) and
+                    market.get('type') == 'swap'):
                     pair_info = {
                         'symbol': symbol,
                         'base': market.get('base'),
@@ -267,7 +266,7 @@ from scripts.optimal_entry_point_manager import OptimalEntryPointManager
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active swap pairs")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()

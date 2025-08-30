@@ -38,11 +38,11 @@ MAX_SIGNALS_PER_SYMBOL = int(os.getenv('MAX_SIGNALS_PER_SYMBOL', '3'))
 
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
-logging.basicConfig()
+logging.basicConfig(
     level=log_level,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class SignalType(Enum):
     LONG = "LONG"

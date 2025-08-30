@@ -119,7 +119,7 @@ class MultiPairVIPERTrader:
 
                 # Round position size to meet precision requirements
                 if amount_precision > 0:
-                position_size = round(position_size / amount_precision) * amount_precision
+                    position_size = round(position_size / amount_precision) * amount_precision
 
                 # Ensure minimum precision is met
                 if position_size < amount_precision:

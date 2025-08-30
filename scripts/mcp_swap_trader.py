@@ -29,7 +29,7 @@ import ccxt
 BITGET_API_KEY = os.getenv('BITGET_API_KEY', '')
 BITGET_API_SECRET = os.getenv('BITGET_API_SECRET', '')
 BITGET_API_PASSWORD = os.getenv('BITGET_API_PASSWORD', '')
-VIPER_THRESHOLD = float(os.getenv('VIPER_THRESHOLD', '85'))"""
+VIPER_THRESHOLD = float(os.getenv('VIPER_THRESHOLD', '85'))
 
 class TradeSignal(Enum):
     LONG = "LONG"

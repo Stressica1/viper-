@@ -187,8 +187,7 @@ class VIPERAllPairsScanner:
             swap_pairs = []
             for symbol, market in all_markets.items():
                 if (market.get('active', False) and
-                    market.get('type') == 'swap' and
-                    market.get('quote') == 'USDT'):  # Focus on USDT pairs
+                    market.get('type') == 'swap'):  # All swap pairs
 
                     pair_info = {
                         'symbol': symbol,
@@ -202,7 +201,7 @@ class VIPERAllPairsScanner:
                     swap_pairs.append(pair_info)
 
             self.all_pairs = swap_pairs
-            logger.info(f"# Chart Found {len(self.all_pairs)} active USDT swap pairs on Bitget")
+            logger.info(f"# Chart Found {len(self.all_pairs)} active swap pairs on Bitget")
 
             # Filter pairs based on criteria
             self._filter_pairs_by_criteria()

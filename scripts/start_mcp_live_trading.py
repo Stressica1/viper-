@@ -28,14 +28,14 @@ sys.path.append(str(project_root))
 from mcp_live_trading_connector import MCPLiveTradingConnector, create_live_trading_task, start_live_trading_task
 
 # Configure logging
-logging.basicConfig()
+logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - MCP_START - %(levelname)s - %(message)s'
-()
-logger = logging.getLogger(__name__)"""
+)
+logger = logging.getLogger(__name__)
 
 class MCPLiveTradingLauncher:
-    """Launcher for MCP Live Trading System""""""
+    """Launcher for MCP Live Trading System"""
 
     def __init__(self):
         self.connector = None
@@ -45,7 +45,7 @@ class MCPLiveTradingLauncher:
         self.load_task_config()
 
     def load_task_config(self):
-        """Load MCP trading tasks configuration""""""
+        """Load MCP trading tasks configuration"""
         try:
             config_path = project_root / "mcp_trading_tasks.json"
             if config_path.exists():
@@ -146,10 +146,10 @@ class MCPLiveTradingLauncher:
 def main():
     """Main launcher function"""
     parser = argparse.ArgumentParser(description='MCP Live Trading Launcher')
-    parser.add_argument('--mode', choices=['auto', 'interactive'],""")
-(                       default='auto', help='Launch mode')
-    parser.add_argument('--config', type=str,)
-(                       help='Path to custom config file')
+    parser.add_argument('--mode', choices=['auto', 'interactive'],
+                       default='auto', help='Launch mode')
+    parser.add_argument('--config', type=str,
+                       help='Path to custom config file')
 
     args = parser.parse_args()
 
