@@ -43,10 +43,10 @@ SERVICE_NAME = os.getenv('SERVICE_NAME', 'risk-manager')
 
 # Configure logging
 log_level = getattr(logging, LOG_LEVEL.upper(), logging.INFO)
-logging.basicConfig()
+logging.basicConfig(
     level=log_level,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-()
+)
 logger = logging.getLogger(__name__)
 
 class PositionSide(Enum):
